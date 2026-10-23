@@ -10,6 +10,7 @@ Establish a persistent, provider-neutral research memory system for the sleep-st
 - Added a `.gitignore` for local environments, caches, checkpoints, and raw dataset recordings.
 - Created the initial project commit.
 - Created the shared research-state files in this handoff.
+- Inspected the active notebook and recorded its executed configuration and outputs.
 
 ## Files modified
 
@@ -27,19 +28,21 @@ Establish a persistent, provider-neutral research memory system for the sleep-st
 - Git repository initialized successfully.
 - Initial commit created successfully.
 - Notebook execution: NOT RUN.
-- Model training: NOT RUN.
-- Research metrics: NOT VERIFIED.
+- Notebook execution: 21 code cells executed with saved outputs.
+- Model training: supervised comparisons and SleepJEPA pretraining/fine-tuning completed.
+- Research metrics: recorded notebook outputs, not independently reproduced.
 
 ## Current errors
 
-None recorded. The raw dataset is not included in the Git commit because it is approximately
-28 GB and is excluded by `.gitignore`.
+The notebook reports an alignment diagnostic warning for 134/246 eligible nights. The raw dataset
+is not included in the Git commit because it is approximately 28 GB and is excluded by
+`.gitignore`.
 
 ## Next concrete task
 
-Inspect `sleepchannelnet_protocol_patch_v2.ipynb` with a notebook-aware tool, record its cells,
-execution counts, important variables, dataset paths, and any verified outputs in
-`NOTEBOOK_STATE.md`. Do not start expensive training.
+Review the alignment warning against the official dataset documentation, then reproduce the
+primary complete-graph SleepChannelNet comparison using the recorded split before making
+publication claims.
 
 ## Relevant paths
 
@@ -47,4 +50,3 @@ execution counts, important variables, dataset paths, and any verified outputs i
 - `requirements.txt`
 - `a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/README.md`
 - `a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/SHA256SUMS.txt`
-
