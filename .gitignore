@@ -1,0 +1,22 @@
+.venv/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Raw dataset recordings are too large for a normal Git repository.
+a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/Bidslab*/
+
+# Local experiment outputs and checkpoints
+checkpoints/
+outputs/
+runs/
+*.pt
+*.pth
+*.ckpt
+
+# Local editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
