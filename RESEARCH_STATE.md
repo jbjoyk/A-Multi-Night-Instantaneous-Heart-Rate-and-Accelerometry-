@@ -64,9 +64,10 @@ cannot update BatchNorm running statistics.
 
 - Results are from one deterministic subject-level split and seed 42; they are not cross-validation
   results.
-- The notebook reports a substantial label/motion alignment diagnostic warning: 134 of 246
-  eligible nights exceeded the lag threshold or had an undefined lag check. This diagnostic was
-  not used for model selection and requires documentation review.
+- QC reports 134/246 eligible nights with absolute motion-energy/wake cross-correlation lag >4
+  epochs or undefined lag. This is a behavioral correlation diagnostic, not evidence of timestamp
+  misalignment. A three-night raw timestamp spot check found no basis for a global shift; it is not
+  an exhaustive audit. Seven nights were excluded for low usable signal fraction.
 - Raw recordings are not included in the GitHub repository.
 
 ## Unverified assumptions
@@ -84,6 +85,10 @@ NOT RUN; no new performance claims are established. Treat all prior values as hi
 not as results from the revised source.
 
 ## Latest historical recorded results
+
+The latest supplied run artifacts (split hash `a6b569f63126`) report accuracy 0.68659, Macro-F1
+0.67791 and κ 0.54722; see EXP-003. The earlier run reported below remains EXP-001. These are
+separate saved runs, not independent reproductions.
 
 Recorded run results:
 
@@ -104,10 +109,14 @@ These results are verified as notebook outputs for the recorded run, not indepen
 
 ## Next research milestone
 
-Review the 134-night alignment diagnostic against the official dataset documentation, preserve
-the recorded split and artifacts, and independently reproduce the primary comparison before
-using the metrics in a paper or claim.
+Preserve the current split manifest and compare its 33/7/7 subject membership with the earlier
+manifest if available. Complete a raw timestamp/coverage audit for flagged and long-gap nights;
+do not shift timestamps based on motion/wake correlation. Then independently reproduce this exact
+baseline and only afterward run validation-selected ablations.
 
 ## Notebook revision note (2026-10-24)
 
 The notebook has an unverified implementation revision adding an SE model, optional HR-motion features, transition regularization/Viterbi decoding, and unsupervised head-entropy adaptation. No revised training was run and no metrics are established. The previously recorded results above remain saved outputs from the older code, not current verified results. Exact SLAMSS-IFS reproduction remains unimplemented/unverified; the project scope is healthy-population longitudinal sleep monitoring.
+
+
+The supplied latest baseline run and preliminary timestamp QC audit are recorded in EXP-003. The 134-night value is a motion-wake correlation flag, not a confirmed alignment failure.
