@@ -2,7 +2,8 @@
 
 ## Current task
 
-Establish a persistent, provider-neutral research memory system for the sleep-staging project.
+Update and validate the revised wearable sleep-staging notebook and its opt-in ablations. No new
+training results have been established.
 
 ## Previous work
 
@@ -27,9 +28,9 @@ Establish a persistent, provider-neutral research memory system for the sleep-st
 
 - Git repository initialized successfully.
 - Initial commit created successfully.
-- Notebook execution: NOT RUN.
-- Notebook execution: 21 code cells executed with saved outputs.
-- Model training: supervised comparisons and SleepJEPA pretraining/fine-tuning completed.
+- Revised notebook execution: NOT RUN.
+- Historical notebook execution: 21 code cells executed with saved outputs.
+- Historical model training: supervised comparisons and SleepJEPA pretraining/fine-tuning completed.
 - Research metrics: recorded notebook outputs, not independently reproduced.
 
 ## Current errors
@@ -50,3 +51,13 @@ publication claims.
 - `requirements.txt`
 - `a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/README.md`
 - `a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/SHA256SUMS.txt`
+
+## 2026-10-24 notebook update
+
+- Updated `sleepchannelnet_protocol_patch_v2.ipynb` with an SE channel-attention model, three HR-motion features, transition penalty/Viterbi helpers, a label-free entropy-head adaptation path and a separately named supervised ceiling.
+- Removed the JEPA implementation/run cells from the executable path and documented its recorded negative result and limitation.
+- Reframed claims to healthy-population longitudinal monitoring and marked exact SLAMSS-IFS reproduction as not implemented/verified.
+- New ablation toggles default off. The recorded baseline outputs are historical; no new experiment/training was run.
+- Verification: Python syntax compilation of notebook code cells only. No runtime or data-backed validation; installed `nbformat` was unavailable in the default shell Python.
+- Existing unrelated deletions `pipeline.ipynb` and `sleepgan.ipynb` were present in the working tree and were not touched.
+- Next concrete task: review the notebook source end-to-end, run notebook JSON/metadata validation in the configured project environment, fix runtime issues, then run the exact baseline and opt-in ablations with experiment records before making claims.

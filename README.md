@@ -3,13 +3,20 @@
 This repository contains research materials for investigating sleep staging using instantaneous
 heart rate, accelerometry, and EEG sleep-stage labels.
 
-The research objective is to evaluate wearable-based sleep staging and compare hybrid temporal
-and attention-based models, including SleepChannelNet and experimental SleepJEPA pretraining.
+The research scope is healthy-population longitudinal sleep monitoring using wearable heart rate and
+accelerometry against EEG-derived stage labels. The active notebook retains the recorded
+SleepChannelNet baseline and adds opt-in SE channel attention, HR-motion features, transition
+constraints, and unsupervised personalization experiments. The prior SleepJEPA run did not improve
+over supervised learning and is documented as a negative result, not an active contribution.
+
+The revised experiment code has not been run. The previously recorded metrics belong to the older
+notebook execution and are not results for the revised implementation. Exact SLAMSS-IFS reproduction
+also remains unimplemented and unverified; the notebook labels its GAT-free baseline as a proxy.
 
 ## Repository contents
 
-- `sleepchannelnet_protocol_patch_v2.ipynb` — active real-data-only research notebook; execution
-  state is tracked in [NOTEBOOK_STATE.md](./NOTEBOOK_STATE.md).
+- `sleepchannelnet_protocol_patch_v2.ipynb` — active real-data-only notebook with opt-in ablations;
+  execution and verification state is tracked in [NOTEBOOK_STATE.md](./NOTEBOOK_STATE.md).
 - `requirements.txt` — Python dependencies.
 - `a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/`
   — dataset documentation, license, and checksums. Raw recordings are excluded from Git.
@@ -37,9 +44,11 @@ All coding agents should start with [AGENTS.md](./AGENTS.md), then read:
 
 ## Environment and notebook workflow
 
-Create or activate a project environment, install `requirements.txt`, and inspect the notebook
-before running it. Do not start expensive training automatically. Record execution counts,
-changed cells, configuration, and verified results in `NOTEBOOK_STATE.md` and `EXPERIMENTS.md`.
+Create or activate the configured project environment, install `requirements.txt`, and inspect the
+notebook before running it. New ablation toggles default off. Do not treat saved outputs in unchanged
+cells as results for the revised code or start expensive training automatically. Record execution
+counts, changed cells, configuration, and verification status in `NOTEBOOK_STATE.md` and
+`EXPERIMENTS.md`.
 
 ## Git workflow
 

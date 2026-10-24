@@ -5,8 +5,10 @@ Last updated: 2026-10-23
 ## Research question
 
 Can real Apple Watch instantaneous heart rate and accelerometry signals support four-class sleep
-staging against EEG-derived labels, and does SleepJEPA self-supervised latent-prediction
-pretraining improve SleepChannelNet performance over a supervised baseline?
+staging against EEG-derived labels for healthy-population longitudinal sleep monitoring, and do
+opt-in channel-attention, HR-motion, transition-aware, and unsupervised-personalization experiments
+improve on the recorded supervised baseline? The previous SleepJEPA experiment did not improve over
+supervised learning and is a documented negative result, not an active contribution.
 
 ## Research objectives
 
@@ -16,10 +18,11 @@ pretraining improve SleepChannelNet performance over a supervised baseline?
 
 ## Current research direction
 
-The active notebook runs a real-data-only pipeline comparing supervised SleepChannelNet variants,
-an early-fusion CNN-GRU baseline, a gradient-boosted tree baseline, and SleepJEPA pretraining
-followed by SleepChannelNet fine-tuning. The primary task is four-class classification:
-Wake, Light, Deep, and REM.
+The active notebook retains the real-data supervised SleepChannelNet comparisons and adds opt-in
+SE attention, HR-motion interactions, transition regularization/Viterbi, and unsupervised head
+entropy adaptation. The primary task is four-class classification: Wake, Light, Deep, and REM.
+Revised experiments have not been run. Exact SLAMSS-IFS reproduction remains unimplemented and
+unverified; the notebook's GAT-free baseline is explicitly an architectural proxy.
 
 ## Dataset information
 
@@ -31,12 +34,13 @@ the available documentation and integrity information.
 
 ## Model architecture
 
-The primary model is SleepChannelNet with channel attention and a complete graph configuration,
+The recorded baseline is SleepChannelNet with channel attention and a complete graph configuration,
 using 10 registered nodes/features, a bidirectional GRU temporal encoder, frequency/time
 features, embedding dimension 64, 4 attention heads, 2 graph-attention layers, hidden size 96,
-dropout 0.3, and 240-step sequences. The notebook also evaluates identity/no-graph,
-early-fusion CNN-GRU, and GBM baselines. SleepJEPA uses a transformer temporal encoder and
-20 pretraining epochs.
+dropout 0.3, and 240-step sequences. The notebook also retains identity/no-graph, early-fusion
+CNN-GRU, and GBM baselines. New model/configuration paths are unverified and opt-in. Existing
+architectures use GroupNorm, so the unsupervised adaptation path entropy-minimizes the head and
+cannot update BatchNorm running statistics.
 
 ## Current implementation
 
@@ -46,7 +50,7 @@ early-fusion CNN-GRU, and GBM baselines. SleepJEPA uses a transformer temporal e
 - Additional research documents: `Problem Statement.docx`, `Research Gaps.docx`, and
   `Datasets Informations.docx`
 
-## Completed tasks
+## Historical completed tasks (recorded 2026-10-23)
 
 - Git repository initialized on the `main` branch.
 - Initial project materials committed locally.
@@ -74,12 +78,12 @@ early-fusion CNN-GRU, and GBM baselines. SleepJEPA uses a transformer temporal e
 
 ## Current experiment and training status
 
-Completed for the recorded run. The primary supervised model achieved test accuracy 0.6932,
-macro-F1 0.6851, and kappa 0.5529. SleepJEPA fine-tuning achieved accuracy 0.6411,
-macro-F1 0.6325, and kappa 0.4844. The frozen JEPA validation probe achieved macro-F1 0.4508.
-See [EXPERIMENTS.md](./EXPERIMENTS.md) for the full comparison and caveats.
+The older recorded run completed, with historical metrics listed below and in
+[EXPERIMENTS.md](./EXPERIMENTS.md). The revised notebook's added models and experiment paths are
+NOT RUN; no new performance claims are established. Treat all prior values as historical outputs,
+not as results from the revised source.
 
-## Latest verified results
+## Latest historical recorded results
 
 Recorded run results:
 
@@ -103,3 +107,7 @@ These results are verified as notebook outputs for the recorded run, not indepen
 Review the 134-night alignment diagnostic against the official dataset documentation, preserve
 the recorded split and artifacts, and independently reproduce the primary comparison before
 using the metrics in a paper or claim.
+
+## Notebook revision note (2026-10-24)
+
+The notebook has an unverified implementation revision adding an SE model, optional HR-motion features, transition regularization/Viterbi decoding, and unsupervised head-entropy adaptation. No revised training was run and no metrics are established. The previously recorded results above remain saved outputs from the older code, not current verified results. Exact SLAMSS-IFS reproduction remains unimplemented/unverified; the project scope is healthy-population longitudinal sleep monitoring.

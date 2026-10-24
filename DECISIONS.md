@@ -33,3 +33,25 @@
   inspection and execution.
 - Reversible: Yes.
 
+
+## DEC-004 — Keep requested ablations separate from the recorded baseline
+
+- Date: 2026-10-24
+- Decision: Preserve the original SleepChannelNet and its 10-feature default inputs, add the SE-Net and HR-motion variants alongside it, and make the new experiments opt-in.
+- Reason: The baseline's saved outputs are historical and should remain distinguishable from new, unexecuted implementations.
+- Expected consequences: New model comparisons require a fresh run; no new metrics are implied by the notebook edits.
+- Reversible: Yes.
+
+## DEC-005 — Do not describe current no-graph control as exact SLAMSS-IFS
+
+- Date: 2026-10-24
+- Decision: Mark exact SLAMSS-IFS reproduction as not implemented/verified because the current pipeline lacks the paper's intra-epoch LSTM and a confirmed matching preprocessing protocol.
+- Reason: Avoid attributing preprocessing or architecture differences to the requested improvements.
+- Reversible: Yes, after the paper protocol is implemented and verified.
+
+## DEC-006 — Use head entropy adaptation where BatchNorm adaptation is unavailable
+
+- Date: 2026-10-24
+- Decision: The unsupervised personalization implementation freezes the backbone and optionally entropy-minimizes the prediction head. It does not adapt BatchNorm running statistics.
+- Reason: Existing models use GroupNorm, which has no running statistics.
+- Reversible: Yes, if a BatchNorm-based architecture is deliberately added.

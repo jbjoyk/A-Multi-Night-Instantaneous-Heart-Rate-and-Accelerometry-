@@ -66,3 +66,22 @@ For every experiment, add a section using this structure:
 
 Do not fill fields from stale notebook outputs without confirming their provenance and execution
 state.
+
+## EXP-002 — Requested SE, transitions, HR-motion and unsupervised-personalization implementation
+
+- Date: 2026-10-24 (implementation only)
+- Research question: Whether SE channel attention, HR-motion features, transition regularization/decoding, and label-free personalization improve four-class wearable sleep staging.
+- Hypothesis: NOT TESTED.
+- Dataset and split: The same real-data subject-level 70/15/15 split; split seed remains 0. No new data run was performed.
+- Model architecture: Added `SleepChannelNet_SE` alongside the existing `SleepChannelNet`; baseline default remains the original ten features. Three interaction channels are registered for the opt-in 13-node variant.
+- Configuration: New feature/transition/Viterbi flags added. Lambda candidates 0.05/0.10/0.20 are selected using training and validation only when the transition ablation is run. New ablation toggles default off.
+- Random seed: No training run. Existing split seed 0 was not changed.
+- Hardware: No experiment run.
+- Python / PyTorch / CUDA versions: No experiment run; project-recorded environment remains Python 3.14.7 / PyTorch 2.14.1+cu130 / CUDA with 2 GPUs detected, not re-verified here.
+- Training duration: Not applicable; NOT RUN.
+- Checkpoint path: None created.
+- Evaluation metrics: None generated for this implementation.
+- Results: NOT RUN; no performance claim.
+- Failures: Notebook code syntax was checked with Python's built-in compiler. Runtime behavior, cached data compatibility, and metric calculations are NOT VERIFIED.
+- Interpretation: Implementation scaffold only. Exact SLAMSS-IFS reimplementation remains NOT IMPLEMENTED/VERIFIED. Existing architecture uses GroupNorm, so the unsupervised path cannot adapt BatchNorm running statistics; it optionally entropy-minimizes the prediction head. Feature engineering uses retrospective centered/forward windows and is not causal.
+- Verified: NO (syntax only; no notebook execution or training).
