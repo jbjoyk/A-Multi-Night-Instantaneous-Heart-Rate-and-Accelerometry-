@@ -80,9 +80,10 @@ cannot update BatchNorm running statistics.
 ## Current experiment and training status
 
 The older recorded run completed, with historical metrics listed below and in
-[EXPERIMENTS.md](./EXPERIMENTS.md). The revised notebook's added models and experiment paths are
-NOT RUN; no new performance claims are established. Treat all prior values as historical outputs,
-not as results from the revised source.
+[EXPERIMENTS.md](./EXPERIMENTS.md). At the time of the initial implementation note, revised-source
+experiments had not run. The latest revised-source validation search and one frozen test evaluation
+are now recorded below and in EXP-004. Treat the historical values as results from their own saved
+run, not as reproduced results from the revised source.
 
 ## Latest historical recorded results
 
@@ -116,7 +117,14 @@ baseline and only afterward run validation-selected ablations.
 
 ## Notebook revision note (2026-10-24)
 
-The notebook has an unverified implementation revision adding an SE model, optional HR-motion features, transition regularization/Viterbi decoding, and unsupervised head-entropy adaptation. No revised training was run and no metrics are established. The previously recorded results above remain saved outputs from the older code, not current verified results. Exact SLAMSS-IFS reproduction remains unimplemented/unverified; the project scope is healthy-population longitudinal sleep monitoring.
+The notebook has an implementation revision adding an SE model, optional HR-motion features, transition regularization/Viterbi decoding, unsupervised head-entropy adaptation, and revised training controls. A validation-only optimizer search and one frozen final test evaluation are now recorded in EXP-004. The previously recorded results above remain historical results from a separate run. Exact SLAMSS-IFS reproduction remains unimplemented/unverified; the project scope is healthy-population longitudinal sleep monitoring.
 
 
 The supplied latest baseline run and preliminary timestamp QC audit are recorded in EXP-003. The 134-night value is a motion-wake correlation flag, not a confirmed alignment failure.
+
+## Latest revised-source run (2026-10-24)
+
+- Preserved subject split: seed 0, 33/7/7 subjects, split hash `a6b569f63126`.
+- Validation-selected training configuration: AdamW, lr 0.001, Plateau scheduler, grouped weight decay 0.01, dropout 0.2; confirmation validation Macro-F1 0.678384.
+- Frozen final test, evaluated once: accuracy 0.677715, Macro-F1 0.664803, kappa 0.531064; 7 test subjects, 38 nights, 33,126 known epochs. Subject-bootstrap CIs and detailed reporting are in EXP-004.
+- This revised result is below the supplied historical pooled Macro-F1 of 0.67791. No improvement is claimed. Requested ablations and personalization remain unrun.

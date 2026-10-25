@@ -55,3 +55,20 @@
 - Decision: The unsupervised personalization implementation freezes the backbone and optionally entropy-minimizes the prediction head. It does not adapt BatchNorm running statistics.
 - Reason: Existing models use GroupNorm, which has no running statistics.
 - Reversible: Yes, if a BatchNorm-based architecture is deliberately added.
+
+## DEC-007 — Keep optimization and final evaluation separate
+
+- Date: 2026-10-24
+- Decision: Make core training and optimizer search independently opt-in. The optimizer sweep trains on train subjects and selects only from validation subjects; final test evaluation stays in the separate core/ablation run.
+- Reason: The validation search should be runnable before any test metrics are produced, and expensive training should not start when opening the notebook.
+- Expected consequences: Run `RUN_OPTIMIZER_SEARCH=True` for the controlled search; use its returned configuration for a separately requested final run. Existing SleepChannelNet remains the primary core baseline.
+- Reversible: Yes.
+
+## DEC-008 — Freeze optimizer settings before the one-time test pass
+
+- Date: 2026-10-24
+- Decision: Use the validation-search selection (AdamW, lr 0.001, Plateau, grouped weight decay 0.01, dropout 0.2) for one final fit and held-out test evaluation; do not tune further against that test result.
+- Reason: The attached research prompt requires a validation-driven search and reserves test data for a final frozen evaluation.
+- Observed result: Test Macro-F1 was 0.6648, below the supplied historical result 0.6779. No improvement claim is supported.
+- Expected consequences: Further model or ablation changes must be selected with training/validation data; this held-out result remains a one-time report for this revision.
+- Reversible: Only by a separately documented protocol or a newly justified evaluation split.
