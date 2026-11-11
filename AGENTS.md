@@ -52,3 +52,10 @@ Then inspect the relevant source files and notebook cells.
 - Update [DECISIONS.md](./DECISIONS.md) when an implementation or research decision changes.
 - Update [EXPERIMENTS.md](./EXPERIMENTS.md) for every experiment, including failed or unverified runs.
 
+## Continuous Git synchronization (Claude & collaborator access)
+
+- **MANDATORY PUSH POLICY**: Immediately after every completed experiment, evaluation, or research documentation change, all experiment artifacts (markdown reports, CSV summaries, metrics JSON, scripts, and documentation) **MUST be committed and pushed to GitHub (`origin main`)**.
+- This ensures Claude and any external collaborator or agent can immediately inspect the latest findings and propose next research actions.
+- Never let findings sit unpushed locally.
+- Heavy raw dataset files (`Bidslab*`, ~28 GB) and binary checkpoints/pickles (`*.pt`, `*.pkl`) are strictly ignored via `.gitignore` to keep syncs fast, reliable, and lightweight.
+
