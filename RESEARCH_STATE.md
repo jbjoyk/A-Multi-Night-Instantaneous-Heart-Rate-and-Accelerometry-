@@ -135,19 +135,18 @@ These results are verified as notebook outputs for the recorded run, not indepen
 
 ## Important constraints
 
-- Do not change the methodology, architecture, dataset, training configuration, or experimental
-  results without explicit approval.
+- Preserve existing verified findings and results; under [DEC-021](./DECISIONS.md), exploratory audits, exports, and new protocol formulation are authorized and no longer blocked.
 - Do not fabricate metrics or claim that a notebook cell executed when it has not been verified.
 - Do not commit the raw dataset recordings or local environment files.
 
 ## Next research milestone
 
-Under [DEC-021](./DECISIONS.md), the experimental phase has been formally reopened; the prior restriction specifying "no further training runs" (from DEC-019 and DEC-020) no longer applies. While core benchmark evaluations (EXP-012 frozen test benchmark, EXP-013 component attribution, and EXP-014 75-run 5-fold cross-validation) are completed and frozen, new methodological and exploratory investigations are active:
+Under [DEC-021](./DECISIONS.md), the experimental phase has been formally reopened; the prior restrictions specifying "no further training runs" (from DEC-019 and DEC-020) and "do not change methodology without approval" no longer block audit, review package creation, or new protocol design. While core benchmark evaluations (EXP-012 frozen test benchmark, EXP-013 component attribution, and EXP-014 75-run 5-fold cross-validation) are completed and frozen, new methodological and exploratory investigations are active:
 - Investigating the impact of sequence truncation ($T=600$ vs full-night sequences; ~28% labeled epochs dropped).
 - Auditing window picking strategies and start offsets.
 - Dissecting metadata feature representations (`x_meta`) and ablation in baseline models.
 - Auditing normalization mechanics and inter-subject variance predictors (intraclass correlation, sleep fragmentation, motion-wake coupling).
-All future training runs remain strictly subject to explicit user authorization. Zero unauthorized or unapproved training jobs may be launched. All findings and artifacts are continuously synchronized to GitHub (`origin main`).
+All future training runs remain strictly subject to explicit user authorization under a documented protocol. Zero unauthorized or unapproved training jobs may be launched. All findings and artifacts are continuously synchronized to GitHub (`origin main`).
 
 ## Notebook revision note (2026-10-24)
 

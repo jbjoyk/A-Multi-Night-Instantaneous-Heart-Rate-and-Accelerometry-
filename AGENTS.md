@@ -5,9 +5,10 @@
 This workspace contains research materials for sleep staging using instantaneous heart rate,
 accelerometry, and EEG sleep-stage labels. The exact research question, model architecture,
 training status, and verified metrics are recorded in [RESEARCH_STATE.md](./RESEARCH_STATE.md).
-Under [DEC-021](./DECISIONS.md), the experimental phase has been reopened; the prior restriction
-specifying "no further training runs" no longer applies (though launching training jobs remains
-strictly subject to explicit user approval).
+Under [DEC-021](./DECISIONS.md), the experimental phase has been reopened; the prior restrictions
+specifying "no further training runs" and "do not change methodology without approval" no longer block
+audit analysis, review package creation, or new protocol design (though launching any actual training
+jobs remains strictly subject to explicit user approval under a documented protocol).
 Do not invent missing research facts.
 
 ## Required context before work
@@ -25,7 +26,7 @@ Then inspect the relevant source files and notebook cells.
 ## Research integrity
 
 - Preserve the existing methodology, model architecture, dataset, configuration, and results unless
-  the user explicitly requests a change.
+  the user explicitly requests a change; under DEC-021, exploratory audits, exports, and new protocol development are authorized.
 - Distinguish clearly between code that exists and code that has executed successfully.
 - Never treat stale notebook outputs as current results.
 - Record experiment configuration, random seeds, hardware, failures, and verification status.

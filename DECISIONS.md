@@ -238,16 +238,16 @@
 ## DEC-021 — Reopening Experimental Phase for Exploratory and Methodological Research
 
 - Date: 2026-11-11
-- Decision: Reopen the experimental phase of the SLEEP research project. The prior constraint specifying "no further training runs" (stipulated in DEC-019 and DEC-020) no longer applies.
-  1. Motivation & Scope: Following the successful conclusion and verification of EXP-012 (frozen test benchmark), EXP-013 (OFAT component attribution), and EXP-014 (75-run 5-fold cross-validation), new methodological and empirical investigations are authorized to probe open research questions, including:
-     - The impact of sequence truncation ($T=600$ vs full-night sequences; ~28% labeled epochs dropped).
-     - Alignment and window selection mechanics (fixed start offset vs alternative windowing).
-     - Role and contribution of the 5 metadata features (`x_meta`).
-     - Normalization strategies and subject-level variance predictors (intraclass correlation, sleep fragmentation, motion-wake coupling).
+- Decision: Experimental phase reopened. Reason: external audit found protocol issues (5-hour crop vs full nights, EXP-012 window-count inconsistency, GRL scaling). DEC-018/019/020 "no further runs" no longer applies; any new run must follow a documented protocol.
+  1. Motivation & Scope: Following the conclusion of EXP-012, EXP-013, and EXP-014, an external audit identified key methodological and protocol issues:
+     - 5-hour crop ($T=600$ epochs) versus full nights (~28% of labeled epochs dropped; selective REM depletion and Deep sleep enrichment).
+     - EXP-012 window-count inconsistency (34,800 raw unmasked slots vs 34,241 valid evaluated windows after masking 559 invalid/unknown epochs).
+     - GRL gradient scaling mechanics ($\lambda_{\text{adv}}=0.10 \times \alpha_{\text{grl}}=0.10 \implies 0.010$ effective gradient scale to encoder; unscheduled).
+     - Normalization locality and metadata feature attribution in baseline models.
   2. Protocol & Guardrails:
-     - While the experimental phase is reopened, all standing integrity rules remain strictly in effect: any future training runs require explicit user authorization.
-     - Zero automatic or speculative training without locked protocols.
-     - All experimental artifacts, code, and documentation continue under mandatory Git push synchronization to `origin main`.
+     - All standing integrity rules remain strictly in effect: any new training run must follow a documented, frozen protocol and requires explicit user authorization before execution.
+     - Zero automatic, speculative, or undocumented training runs.
+     - All artifacts, code, and documentation continue under mandatory Git push synchronization to `origin main`.
 - Reversible: Yes; experimental phase can transition to locked/frozen upon concluding new investigations.
 
 
