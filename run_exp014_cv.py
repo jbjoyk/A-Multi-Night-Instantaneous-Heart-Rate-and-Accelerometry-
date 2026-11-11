@@ -77,6 +77,8 @@ def evaluate_outer_test(
     all_boundaries = []
     all_probs = []
     all_subjects = []
+    all_nights = []
+    all_night_ids = []
     all_alphas = []
     
     with torch.no_grad():
@@ -101,10 +103,12 @@ def evaluate_outer_test(
             
             valid = (targets >= 0) & (targets < 4) & mask
             subjs = batch["subject"]
+            nights = batch["night"]
             alpha_tensor = out.get("alpha_gate")
             
             for b_i in range(len(subjs)):
                 s_name = subjs[b_i]
+                n_name = nights[b_i]
                 m_b = valid[b_i].cpu().numpy()
                 p_b = preds[b_i][m_b].cpu().numpy()
                 t_b = targets[b_i][m_b].cpu().numpy()
@@ -116,6 +120,8 @@ def evaluate_outer_test(
                 all_boundaries.extend(bnd_b)
                 all_probs.append(prb_b)
                 all_subjects.extend([s_name] * len(p_b))
+                all_nights.extend([n_name] * len(p_b))
+                all_night_ids.extend([f"{s_name}__{n_name}"] * len(p_b))
                 
                 if alpha_tensor is not None:
                     alp_b = alpha_tensor[b_i][m_b].cpu().squeeze(-1).numpy()
@@ -194,6 +200,9 @@ def evaluate_outer_test(
         "y_true": y_true,
         "y_pred": y_pred,
         "subjects": subjects_arr,
+        "night_id": np.array(all_night_ids),
+        "night_ids": np.array(all_night_ids),
+        "nights": np.array(all_nights),
         "subject_predictions": subject_predictions
     }
 
@@ -328,6 +337,9 @@ def run_exp014_cv():
                         "y_true": test_m["y_true"],
                         "y_pred": test_m["y_pred"],
                         "subjects": test_m["subjects"],
+                        "night_id": test_m["night_id"],
+                        "night_ids": test_m["night_ids"],
+                        "nights": test_m["nights"],
                         "confusion_matrix_raw": test_m["confusion_matrix_raw"],
                         "subject_metrics": test_m["subject_metrics"]
                     }, f)

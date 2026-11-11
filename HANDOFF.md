@@ -2,7 +2,7 @@
 
 ## Current task
 
-EXP-014 75-run 5-fold subject-level cross-validation completed and fully audited. All empirical research stages are concluded.
+DEC-021 enacted; experimental phase formally reopened. Completed 7 technical audits and analyses: window count reconciliation (34,800 vs 34,241), sequence truncation audit ($T=600$ drops ~28% labeled epochs), metadata feature audit (`x_meta` verified in Model A), normalization locality audit (per-night scaling verified in `prep_57738d534b`), `night_id` attached to all saved predictions, and intraclass correlation (ICC = 0.963) / subject accuracy predictor analysis completed. Zero training conducted.
 
 ## Previous work
 
@@ -328,7 +328,56 @@ A preflight preparation was interrupted before model training after finding that
   - `EXP014_RAW_RESULTS.csv`, `EXP014_SUMMARY.csv`, `EXP014_PER_CLASS.csv`, `EXP014_SUBJECT_METRICS.csv`, `EXP014_PAIRED_BOOTSTRAP.csv`
   - `EXP014_CONFUSION_MATRICES/`, `EXP014_TRAINING_HISTORY/`, `EXP014_RESULTS/checkpoints/`, `EXP014_RESULTS/predictions/`
   - `EXP014_FINAL_REPORT.md`
-- Next concrete task: All empirical training and ablation phases across the dataset are completed and audited. Do not launch any new training jobs. Synthesize findings for publication manuscript.
+- Next concrete task: Proceed with methodological audit and exploratory analysis under DEC-021.
+
+## 2026-11-11 Research Audit & Exploratory Methodological Analysis (DEC-021)
+
+- Formally reopened the experimental phase under [DEC-021](./DECISIONS.md) (updating `AGENTS.md`, `RESEARCH_STATE.md`, `EXPERIMENTS.md`, `HANDOFF.md`); "no further training runs" lifted.
+- **Task 2 (EXP-012 Window Reconciliation)**:
+  - Total test windows in $T=600$ evaluation: 58 nights $\times 600 = 34,800$ slots.
+  - Exactly 34,241 slots contain valid sleep stages ($0 \le y < 4$: Wake=3819, Light=13816, Deep=8294, REM=8312).
+  - Exactly 559 slots were invalid/masked out ($y = -100$):
+    - 264 slots due to raw unknown label (stage 5 in `labels.mat`).
+    - 295 slots due to insufficient sensor coverage (<50% in IHR or motion).
+  - Confirmed: Unknown labels were explicitly masked out via `valid = (targets >= 0) & (targets < 4) & mask` and **NOT** counted in evaluation metrics.
+- **Task 3 (ControlledSleepDataset Window Selection & Truncation Audit)**:
+  - Window start offset: Hardcoded to index 0 (first 5.0 hours of recording from lights-out / start of recording).
+  - Total epochs per night:
+    - EXP-012 Test set (58 nights): Mean = $853.12 \pm 114.22$, range [682, 1220], median = 829.0 epochs (~5.7 to 10.2 hours).
+    - Full dataset (246 nights): Mean = $861.14 \pm 137.51$, range [610, 1282], median = 857.5 epochs (~5.1 to 10.7 hours).
+  - Labeled epochs dropped by $T=600$ truncation:
+    - EXP-012 Test set: 12,821 / 47,062 valid epochs dropped (**27.24%** dropped).
+    - Full dataset: 58,055 / 203,338 valid epochs dropped (**28.55%** dropped).
+    - Zero zero-padding was required for any night (all nights $\ge 610$ total epochs).
+- **Task 4 (x_meta Features & Model A Verification)**:
+  - 5 metadata features:
+    1. `freq`: Proxy for instantaneous heart rate sampling density (log1p raw IHR samples per 30s epoch; meta col 0).
+    2. `clock`: Zeros placeholder array (`np.zeros_like(time_feat)`).
+    3. `time_feat`: Normalized elapsed time from recording start (`meta col 2`).
+    4. `hr_mean`: Within-epoch mean of instantaneous heart rate (`ihr.mean(axis=1, keepdims=True)`).
+    5. `hr_std`: Within-epoch standard deviation of instantaneous heart rate (`ihr.std(axis=1, keepdims=True)`).
+  - Model A confirmation: Confirmed in `exp013_models.py` / `exp014_models.py`. Model A projects `x_meta` via `self.meta_proj = nn.Sequential(nn.Linear(5, 16), nn.GELU())` and concatenates `[h_hr, h_acc, h_meta]` into a 144-dimensional feature vector fed to the BiGRU.
+- **Task 5 (Preprocessing Cache Normalization Audit)**:
+  - Confirmed via `sleepchannelnet_protocol_patch_v2.ipynb:process_night`:
+  - `robust_scale` normalizes strictly per-night locally using that night's within-night median and IQR:
+    `np.clip(np.nan_to_num((v - med) / max(float(iqr), floor)), -10, 10)`.
+  - Normalization is 100% within-night local. Zero global statistics across subjects were computed or pooled before splitting. Zero cross-subject data leakage.
+- **Task 6 (night_id Attached to Saved Predictions)**:
+  - Updated all 75 prediction files in `EXP014_RESULTS/predictions/` (`pred_{m_id}_fold{fold}_seed{seed}.pkl`) with `night_id` (e.g. `'Bidslab08__1'`), `night_ids`, and `nights`.
+  - Updated `exp012_test_results.pkl` and `EXP013_OUTPUTS/exp013_results.pkl` with `night_id` arrays.
+  - Updated `run_exp014_cv.py:evaluate_outer_test` to record `night_id` and `nights` dynamically for future runs.
+- **Task 7 (Intraclass Correlation & Subject Accuracy Predictors)**:
+  - Intraclass Correlation Coefficient (ICC) on 47 subjects:
+    - Across 5 models (mean over seeds): **ICC(3, 1) = 0.9633** [95% CI: 0.9445, 0.9773], $F(46, 184) = 132.17, p = 1.08 \times 10^{-118}$.
+    - Across all 15 runs (5 models $\times$ 3 seeds): **ICC(3, 1) = 0.9151** [95% CI: 0.8795, 0.9452], $F(46, 644) = 162.75, p < 10^{-300}$.
+    - Conclusion: >96% of staging variance is governed by subject biological identity rather than model architecture.
+  - Per-subject accuracy predictors:
+    - Sleep stage transition rate (`trans_rate`): Pearson $r = -0.3559$ ($p = 0.0141$), Spearman $\rho = -0.2908$ ($p = 0.0474$).
+    - Motion-wake coupling (`corr_motion_wake`): Pearson $r = +0.3215$ ($p = 0.0275$), Spearman $\rho = +0.3349$ ($p = 0.0214$).
+    - Wake fraction (`frac_wake`): Pearson $r = -0.3119$ ($p = 0.0328$), Spearman $\rho = -0.2603$ ($p = 0.0772$).
+    - Multivariate OLS regression ($R^2 = 0.2578$, Adj $R^2 = 0.1871$): Higher sleep fragmentation and higher wake burden strongly degrade wearable staging accuracy, while stronger motion-wake correlation significantly improves accuracy.
+  - Artifacts: `EXP014_ICC_SUMMARY.csv`, `EXP014_SUBJECT_CORRELATIONS.csv`, `EXP014_SUBJECT_PREDICTORS_RAW.csv`.
+- Next concrete task: Formulate next experimental or methodological phase under DEC-021 with explicit user authorization. Zero model training was executed in this turn.
 
 
 

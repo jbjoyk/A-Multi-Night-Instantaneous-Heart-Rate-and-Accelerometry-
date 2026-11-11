@@ -564,4 +564,4 @@ state.
 7. **What we learned**:
    - **Outcome B (Equivalence / Parity Across Cohort)**: Across diverse subject folds, conventional matched-capacity CNN-BiGRU sequence models perform comparably to architectures with specialized gating, transition matrices, and GRL.
    - Inter-subject variability (Folds range from ~62.5% to ~72.3%) is the dominant source of performance variance, far exceeding architectural differences among ~160k parameter models.
-8. **Final Conclusion**: The empirical cross-validation evaluation is complete. All 75 runs are archived and documented. The experimental phase is completely concluded. No further training runs.
+8. **Reopened Experimental Phase (DEC-021)**: Following the completion and archiving of EXP-012, EXP-013, and EXP-014, the experimental phase has been formally reopened under [DEC-021](./DECISIONS.md); the prior restriction specifying "no further training runs" no longer applies. Methodological investigations are underway (sequence truncation audit, window picking mechanics, metadata feature ablation, normalization integrity, and subject accuracy predictors). Any future training runs require explicit user authorization.

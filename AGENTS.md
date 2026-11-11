@@ -5,6 +5,9 @@
 This workspace contains research materials for sleep staging using instantaneous heart rate,
 accelerometry, and EEG sleep-stage labels. The exact research question, model architecture,
 training status, and verified metrics are recorded in [RESEARCH_STATE.md](./RESEARCH_STATE.md).
+Under [DEC-021](./DECISIONS.md), the experimental phase has been reopened; the prior restriction
+specifying "no further training runs" no longer applies (though launching training jobs remains
+strictly subject to explicit user approval).
 Do not invent missing research facts.
 
 ## Required context before work

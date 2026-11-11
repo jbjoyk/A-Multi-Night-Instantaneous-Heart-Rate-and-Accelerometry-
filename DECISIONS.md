@@ -235,4 +235,19 @@
   3. Final Scientific Conclusion: The empirical research cycle across all 47 subjects confirms that conventional matched-capacity CNN-BiGRU models perform comparably to architectures with specialized gating, transition matrices, and GRL. Performance variance is dominated by subject physiological heterogeneity rather than architectural micro-modifications. All 75 runs are archived and documented in `EXP014_FINAL_REPORT.md`.
 - Reversible: No; empirical cross-validation is completed and frozen.
 
+## DEC-021 — Reopening Experimental Phase for Exploratory and Methodological Research
+
+- Date: 2026-11-11
+- Decision: Reopen the experimental phase of the SLEEP research project. The prior constraint specifying "no further training runs" (stipulated in DEC-019 and DEC-020) no longer applies.
+  1. Motivation & Scope: Following the successful conclusion and verification of EXP-012 (frozen test benchmark), EXP-013 (OFAT component attribution), and EXP-014 (75-run 5-fold cross-validation), new methodological and empirical investigations are authorized to probe open research questions, including:
+     - The impact of sequence truncation ($T=600$ vs full-night sequences; ~28% labeled epochs dropped).
+     - Alignment and window selection mechanics (fixed start offset vs alternative windowing).
+     - Role and contribution of the 5 metadata features (`x_meta`).
+     - Normalization strategies and subject-level variance predictors (intraclass correlation, sleep fragmentation, motion-wake coupling).
+  2. Protocol & Guardrails:
+     - While the experimental phase is reopened, all standing integrity rules remain strictly in effect: any future training runs require explicit user authorization.
+     - Zero automatic or speculative training without locked protocols.
+     - All experimental artifacts, code, and documentation continue under mandatory Git push synchronization to `origin main`.
+- Reversible: Yes; experimental phase can transition to locked/frozen upon concluding new investigations.
+
 

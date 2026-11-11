@@ -1,6 +1,6 @@
 # Research State
 
-Last updated: 2026-10-23
+Last updated: 2026-11-11 (DEC-021: Experimental Phase Reopened)
 
 ## Research question
 
@@ -142,7 +142,12 @@ These results are verified as notebook outputs for the recorded run, not indepen
 
 ## Next research milestone
 
-All planned empirical research stages (baseline audit, model architecture validation, ablations A0–A5, boundary sweep, multi-seed stability, long-training convergence, and final frozen test benchmark EXP-012) have concluded. The experimental findings and frozen artifacts are archived. Manuscript writeup and analysis synthesis represent the subsequent phase.
+Under [DEC-021](./DECISIONS.md), the experimental phase has been formally reopened; the prior restriction specifying "no further training runs" (from DEC-019 and DEC-020) no longer applies. While core benchmark evaluations (EXP-012 frozen test benchmark, EXP-013 component attribution, and EXP-014 75-run 5-fold cross-validation) are completed and frozen, new methodological and exploratory investigations are active:
+- Investigating the impact of sequence truncation ($T=600$ vs full-night sequences; ~28% labeled epochs dropped).
+- Auditing window picking strategies and start offsets.
+- Dissecting metadata feature representations (`x_meta`) and ablation in baseline models.
+- Auditing normalization mechanics and inter-subject variance predictors (intraclass correlation, sleep fragmentation, motion-wake coupling).
+All future training runs remain strictly subject to explicit user authorization. Zero unauthorized or unapproved training jobs may be launched. All findings and artifacts are continuously synchronized to GitHub (`origin main`).
 
 ## Notebook revision note (2026-10-24)
 
