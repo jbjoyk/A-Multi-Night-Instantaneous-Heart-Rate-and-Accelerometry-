@@ -8,3 +8,4 @@ torch-geometric
 matplotlib
 ipykernel
 pytest
+optuna

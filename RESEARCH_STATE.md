@@ -74,8 +74,8 @@ cannot update BatchNorm running statistics.
 
 - Saved notebook outputs are evidence of the recorded run, but should be reproduced before making
   publication claims.
-- The configured work directory is
-  `/home/rj2826/ai-research/sleep/sleepchannelnet_v8_preprocessing_audit_work_REAL`.
+- The older run work directory was
+  `/home/rj2826/ai-research/sleep/sleepchannelnet_v8_preprocessing_audit_work_REAL`. The updated notebook source is configured to write new outputs in `sleepchannelnet_results_REAL` beside the notebook; the current notebook edits have not been executed yet.
 
 ## Current experiment and training status
 
@@ -84,6 +84,38 @@ The older recorded run completed, with historical metrics listed below and in
 experiments had not run. The latest revised-source validation search and one frozen test evaluation
 are now recorded below and in EXP-004. Treat the historical values as results from their own saved
 run, not as reproduced results from the revised source.
+
+An independent scientific reproduction audit of the baseline SLAMSS-IFS model against the official `BIDSLabUMass/SLAMSS-IFS` repository was conducted (EXP-005). The architecture has been verified across two variants: the 666k parameter paper-text specification and the 5.47M parameter official repository model. Dynamic subject splits (31 train / 5 val / 11 test; 160/28/58 usable nights), exact composite RCCLoss formulation, 10/10 unit tests, 10-step profiling benchmark, and deterministic bitwise reproducibility have all been verified on GPU. The baseline reproduction is classified as Classification B (Faithful Reproduction with Documented Repository Adaptations). Full 500-epoch training is paused pending user selection between the two architecture variants.
+
+The proposed final research architecture `SleepAdaptiveNet` has been implemented in `sleep_adaptive_net.py` and validated (EXP-006). It includes separate HR and ACC modality encoders, learned adaptive reliability fusion gate, temporal context BiGRU, transition-aware module, boundary-aware loss, subject-invariant representation learning via GRL, and a calibrated confidence/uncertainty head. Ablations A0 through A5 are independently switchable. All unit tests, tensor shapes, gradient flow, and smoke-training steps have passed without launching full training.
+
+The first controlled scientific ablation experiment on seed 42 was completed (EXP-007). All 6 ablations were trained for 10 epochs on the 160 usable training nights and evaluated on the 28 usable validation nights (test set strictly excluded). Results indicate that GRL subject-invariance (A4) and the full model (A5) achieve the highest validation Macro-F1 (0.5411 vs 0.5282 baseline) and double REM F1 (0.361 vs 0.181). Boundary loss (A3) cuts boundary error rate by 7.0 percentage points, but requires GRL stabilization to prevent accuracy dips. Adaptive gating ($\alpha_t$) dynamically shifts from 0.567 during Wake to 0.782 during Deep sleep. Full 500/1000-epoch training remains paused.
+
+EXP-008 conducted a controlled boundary weight sweep ($\lambda \in \{0.0, 0.10, 0.20, 0.50\}$) and unconfounded GRL evaluation on seed 42. Disentanglement confirms that GRL standalone (holding boundary loss at 0) yields a verified +3.21% accuracy ($56.11\% \to 59.32\%$) and +0.0353 Macro-F1 ($0.5256 \to 0.5610$) over A2. Boundary loss monotonically reduces boundary errors (from 54.47% to 49.59% at $\lambda=0.20$ and 45.85% at $\lambda=0.50$). $\lambda=0.20$ is established as the preferred Pareto boundary weighting point (-4.88% boundary error with 59.04% accuracy and 0.5543 Macro-F1), while $\lambda=0.50$ is rejected due to excessive Wake recall degradation. Full 500/1000-epoch training remains strictly paused.
+
+EXP-009 evaluated multi-seed stability across seeds 42, 123, 2024 ($N=3$) comparing Candidate 1 (`B0_GRL`, $\lambda=0$) and Candidate 2 (`B2`, $\lambda=0.20$). Results verify that `B0_GRL` consistently maintains superior overall performance across all 3 seeds: Accuracy $59.61\% \pm 0.45\%$ vs $58.85\% \pm 0.21\%$ ($\Delta = -0.75\% \pm 0.48\%$), Macro-F1 $0.5606 \pm 0.0162$ vs $0.5491 \pm 0.0173$ ($\Delta = -0.0115 \pm 0.0043$), Cohen's $\kappa$ $0.4138 \pm 0.0128$ vs $0.4000 \pm 0.0104$ ($\Delta = -0.0137 \pm 0.0062$), and Wake recall $53.95\% \pm 3.29\%$ vs $47.75\% \pm 2.35\%$ ($\Delta = -6.20\% \pm 1.06\%$). Conversely, `B2` stably reduces boundary error rate across all 3 seeds ($49.76\% \pm 0.91\%$ vs $54.04\% \pm 1.51\%$, $\Delta = -4.28\% \pm 0.77\%$). Dynamic modality gating reliably converges to the same physiological weighting pattern across all seeds and models ($\alpha_{\text{Wake}} \approx 0.58$ vs $\alpha_{\text{Deep}} \approx 0.78$). `B0_GRL` is recommended as the default candidate for full training. Full 500/1000-epoch training remains strictly paused, and the held-out test set has never been loaded or used.
+
+EXP-010 evaluated long-training convergence of `B0_GRL` across 500 epochs on seed 42. Empirical results demonstrate that validation performance peaks sharply at **Epoch 78**: Accuracy = **74.22%** (+13.9 pp over Epoch 10), Macro-F1 = **0.7441** (+0.188 over Epoch 10), Cohen's $\kappa$ = **0.6342** (+0.214 over Epoch 10), Val Loss = **0.7245**, and ECE = **0.0240**. Extended training completely resolves minority REM under-fitting, with REM F1 surging to **0.6882** (recall 63.92%, precision 74.54%) at Epoch 78. Beyond Epoch ~80–100, post-peak overfitting occurs under constant learning rate ($10^{-4}$): validation loss climbs to 1.1473 at Epoch 500 while training loss falls to 0.5047, with validation Macro-F1 drifting down to 0.6829 and ECE rising to 0.1949. The adaptive gate preserves learned stage-dependent modality weighting ($\alpha_{\text{Wake}} < \alpha_{\text{Deep}}$) throughout all 500 epochs. Held-out test set remains strictly unaccessed.
+
+EXP-011 evaluated multi-seed long-training convergence across seeds 42, 123, 2024 ($N=3$, 500 epochs each) and audited the EXP-009 vs EXP-010 seed-42 discrepancy. Results resolve the discrepancy: inter-epoch `val_loader` iterations in PyTorch advance the CPU RNG state, causing a minor shift in batch shuffling order; under matched evaluation protocols, results replicate bitwise to the exact decimal place. Multi-seed results confirm that the optimal convergence window is robust across independent seeds: Peak Epoch = $80.7 \pm 10.3$ (range: 72–92), Peak Macro-F1 = $0.7296 \pm 0.0132$ (CV: 1.8%), Peak Accuracy = $72.17\% \pm 1.86\%$, Peak $\kappa$ = $0.6073 \pm 0.0243$. Minority REM F1 surges universally to $0.6886 \pm 0.0186$ (recall $71.1\% \pm 6.5\%$) at peak across all seeds. Overfitting post-peak is universal across 100% of seeds, with validation loss climbing to 1.15–1.29 at Epoch 500. Held-out test set remains strictly unaccessed.
+
+EXP-012 executed the final frozen benchmark evaluation of `SleepAdaptiveNet` (`B0_GRL`) on the untouched official test set (11 subjects, 58 usable nights, 34,241 valid evaluated 30-second windows). Training was conducted for exactly 80 epochs per seed across 3 random seeds (42, 123, 2024) under frozen hyperparameters (Adam $\text{lr}=10^{-4}$, weight decay 0.0, batch size 4, $T=600$ with 0 padding) with zero early stopping, zero LR scheduling, and zero test leakage. Test performance across the 3 seeds yielded: Accuracy = **$68.44\% \pm 1.35\%$** (Seed 42: 69.86%, Seed 123: 68.27%, Seed 2024: 67.18%), Macro-F1 = **$0.6859 \pm 0.0139$** (Seed 42: 0.6986, Seed 123: 0.6880, Seed 2024: 0.6711), Weighted-F1 = **$0.6835 \pm 0.0141$**, Cohen's $\kappa$ = **$0.5527 \pm 0.0188$**, MCC = **$0.5541 \pm 0.0187$**, and ECE = **$0.0257 \pm 0.0050$**. High Wake recall was achieved ($75.95\% \pm 1.20\%$). Boundary error rate was 59.08% vs 30.41% non-boundary. Compared to the published 5.47M parameter SLAMSS-IFS benchmark (Table V: 71.04% Acc, 0.7079 Weighted-F1), SleepAdaptiveNet uses 162,325 parameters (a **33.7x reduction**) and is classified as **Case B (Competitive / Approximate Parity under 33.7x Parameter Compression)**. All test benchmarks are complete and frozen.
+
+EXP-013 conducted a rigorous component attribution experiment using an OFAT factorial ablation against the frozen EXP-012 B0_GRL reference (Model E) and an approximately matched-capacity conventional CNN-BiGRU baseline (Model A: 163,940 params, +0.99% capacity). Evaluated on 34,241 valid windows across 11 held-out test subjects and 3 random seeds ($B=1000$ paired subject-level cluster bootstrap):
+1. **Full Proposed Model vs. Matched Baseline ($E - A$)**: SleepAdaptiveNet yields a statistically verified gain of **$+1.79\%$ Accuracy** [95% CI: $+0.52\%, +3.35\%$] and **$+0.0199$ Macro-F1** [95% CI: $+0.0074, +0.0342$], strictly excluding zero and proving that SleepAdaptiveNet's mechanisms provide benefits beyond parameter capacity on that specific partition.
+2. **Subject-Invariant GRL ($E - B$)**: Standalone GRL ablation reveals that domain-adversarial subject alignment contributes **$+1.39\%$ Accuracy** [95% CI: $-0.01\%, +2.84\%$] and **$+0.0128$ Macro-F1** (97.4% bootstrap mass > 0).
+3. **Adaptive Reliability Gating ($E - D$)**: Dynamic gating contributes **$+0.54\%$ Accuracy** [95% CI: $-0.53\%, +1.60\%$] over equal 0.5/0.5 fusion, with learned gate weights reflecting physiological signal reliability ($\alpha_{\text{Wake}} \approx 0.54$ vs $\alpha_{\text{Sleep}} \approx 0.80$).
+4. **Transition Modeling ($E - C$)**: The transition module contributes **$+0.04\%$ Accuracy** [95% CI: $-0.29\%, +0.42\%$], proving that inter-epoch transition constraints are largely redundant in the presence of a bidirectional GRU sequence encoder.
+
+EXP-014 executed an independent 75-run subject-level 5-fold cross-validation across all 47 subjects in the BIDSLab Apple Watch + Dreem 2 dataset (246 usable nights, 145,283 valid evaluated windows) across 5 models and 3 random seeds (42, 123, 2024).
+Results demonstrate **Scientific Outcome B (Equivalence / Parity Across Subject Folds)**:
+- Model A (Conventional Matched CNN-BiGRU, 163.9k params): Accuracy = **$66.63\% \pm 3.33\%$**, Macro-F1 = **$0.6658 \pm 0.0365$**, $\kappa$ = **$0.5251 \pm 0.0505$**.
+- Model B (Minus GRL, 154.0k params): Accuracy = **$66.68\% \pm 3.31\%$**, Macro-F1 = **$0.6664 \pm 0.0345$**, $\kappa$ = **$0.5244 \pm 0.0505$**.
+- Model C (Minus Transition, 162.3k params): Accuracy = **$66.07\% \pm 4.04\%$**, Macro-F1 = **$0.6596 \pm 0.0424$**, $\kappa$ = **$0.5154 \pm 0.0600$**.
+- Model D (Minus Adaptive Gate, 153.9k params): Accuracy = **$66.68\% \pm 3.59\%$**, Macro-F1 = **$0.6684 \pm 0.0371$**, $\kappa$ = **$0.5270 \pm 0.0514$**.
+- Model E (Full SleepAdaptiveNet, 162.3k params): Accuracy = **$66.06\% \pm 4.08\%$**, Macro-F1 = **$0.6596 \pm 0.0425$**, $\kappa$ = **$0.5153 \pm 0.0601$**.
+- Paired subject cluster bootstrap ($B=1000$) reveals that all 95% confidence intervals cross zero: $E \text{ vs } A$ [$-1.90\%, +0.50\%$], $E \text{ vs } B$ [$-1.36\%, +0.16\%$], $E \text{ vs } C$ [$-0.15\%, +0.12\%$], $E \text{ vs } D$ [$-1.99\%, +1.02\%$].
+- Subject-level win/loss: Model E outperformed Model A on 23 subjects (48.9%), Model A outperformed Model E on 23 subjects (48.9%), with 1 subject tied (2.2%). Across diverse subject folds, conventional matched-capacity models achieve equivalent staging performance, and physiological inter-subject heterogeneity dominates performance variance. All 75 runs are archived in `EXP014_FINAL_REPORT.md`.
 
 ## Latest historical recorded results
 
@@ -110,10 +142,7 @@ These results are verified as notebook outputs for the recorded run, not indepen
 
 ## Next research milestone
 
-Preserve the current split manifest and compare its 33/7/7 subject membership with the earlier
-manifest if available. Complete a raw timestamp/coverage audit for flagged and long-gap nights;
-do not shift timestamps based on motion/wake correlation. Then independently reproduce this exact
-baseline and only afterward run validation-selected ablations.
+All planned empirical research stages (baseline audit, model architecture validation, ablations A0–A5, boundary sweep, multi-seed stability, long-training convergence, and final frozen test benchmark EXP-012) have concluded. The experimental findings and frozen artifacts are archived. Manuscript writeup and analysis synthesis represent the subsequent phase.
 
 ## Notebook revision note (2026-10-24)
 

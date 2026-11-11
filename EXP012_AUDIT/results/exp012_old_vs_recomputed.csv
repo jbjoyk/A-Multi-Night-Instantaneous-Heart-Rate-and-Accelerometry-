@@ -1,0 +1,33 @@
+metric,seed,old_value,recomputed_value,absolute_difference,relative_difference,status,likely_cause
+total_test_windows,all,34800.0,34241.0,559.0,0.016063218390804598,DISCREPANCY,"Old report counted 58 nights * 600 slots, including 559 padded/invalid slots"
+wake_support,all,3819.0,3819.0,0.0,0.0,MATCH,Exact match
+light_support,all,13816.0,13816.0,0.0,0.0,MATCH,Exact match
+deep_support,all,8294.0,8294.0,0.0,0.0,MATCH,Exact match
+rem_support,all,8871.0,8312.0,559.0,0.06301431631157704,DISCREPANCY,"Old report subtracted Wake+Light+Deep from 34800, falsely absorbing 559 padded slots into REM"
+accuracy,42,0.6986,0.6985777284541923,2.227154580769497e-05,3.1880254519987246e-05,MATCH,Exact 4-decimal rounding of recomputed value
+accuracy,123,0.6827,0.6827487514967436,4.875149674365975e-05,7.140983849947026e-05,MATCH,Exact 4-decimal rounding of recomputed value
+accuracy,2024,0.6718,0.6718261733010134,2.6173301013399097e-05,3.8959959829354185e-05,MATCH,Exact 4-decimal rounding of recomputed value
+accuracy_mean,aggregate,0.6844,0.6843842177506497,1.5782249350282385e-05,2.3059978594768154e-05,MATCH,Exact 4-decimal rounding of recomputed mean
+accuracy_std,aggregate,0.0135,0.013450557169840333,4.944283015966694e-05,0.0036624318634077414,MATCH,Exact 4-decimal rounding of recomputed std
+macro_f1,42,0.6986,0.6986412716728314,4.127167283141109e-05,5.907768799220156e-05,MATCH,Exact 4-decimal rounding of recomputed value
+macro_f1,123,0.688,0.6879521029584862,4.7897041513755845e-05,6.961779289779975e-05,MATCH,Exact 4-decimal rounding of recomputed value
+macro_f1,2024,0.6711,0.6711028205176921,2.820517692070368e-06,4.20282773367034e-06,MATCH,Exact 4-decimal rounding of recomputed value
+macro_f1_mean,aggregate,0.6859,0.6858987317163366,1.268283663313774e-06,1.8490795499517788e-06,MATCH,Exact 4-decimal rounding of recomputed mean
+macro_f1_std,aggregate,0.0139,0.013883581061799715,1.641893820028377e-05,0.0011812185754750037,MATCH,Exact 4-decimal rounding of recomputed std
+kappa,42,0.5726,0.5726307763955343,3.077639553428213e-05,5.374850774402442e-05,MATCH,Exact 4-decimal rounding of recomputed value
+kappa,123,0.5504,0.550428278363297,2.827836329699629e-05,5.1377840292414446e-05,MATCH,Exact 4-decimal rounding of recomputed value
+kappa,2024,0.5352,0.5351812432961838,1.8756703816236175e-05,3.5046158102020045e-05,MATCH,Exact 4-decimal rounding of recomputed value
+kappa_mean,aggregate,0.5527,0.5527467660183384,4.676601833841776e-05,8.461374767203393e-05,MATCH,Exact 4-decimal rounding of recomputed mean
+ece,42,0.0221,0.022143530474342477,4.353047434247498e-05,0.0019697047212898313,MATCH,Exact 4-decimal rounding of recomputed value
+ece,123,0.0234,0.023416859308054625,1.685930805462449e-05,0.0007204832501668378,MATCH,Exact 4-decimal rounding of recomputed value
+ece,2024,0.0315,0.03145237761952989,4.7622380470110914e-05,0.001511821602177749,MATCH,Exact 4-decimal rounding of recomputed value
+boundary_window_count,all,5745.0,1379.0,4366.0,0.759965187119234,DISCREPANCY,Fabricated in old report text to sum to 34800 (5745 + 29055 = 34800)
+stable_window_count,all,29055.0,32862.0,3807.0,0.13102736189984512,DISCREPANCY,Fabricated in old report text to sum to 34800
+boundary_error_rate_seed42,42,0.5874,0.5888324873096447,0.0014324873096446256,0.0024386913681344684,DISCREPANCY,Fabricated/estimated in old report text; recomputed is 0.5888
+boundary_error_rate_seed123,123,0.589,0.587382160986222,0.0016178390137779886,0.0027467555412143325,DISCREPANCY,Fabricated/estimated in old report text; recomputed is 0.5874
+boundary_error_rate_seed2024,2024,0.5961,0.5960841189267585,1.5881073241463817e-05,2.6641625971208148e-05,MATCH,Accurate to 4 decimal rounding
+wake_f1_seed42_text,42,0.7137,0.6910377358490566,0.022662264150943412,0.03175320744137825,DISCREPANCY,Fabricated/hallucinated in old text prose; recomputed is 0.6910
+wake_f1_seed123_text,123,0.6929,0.7145007526342197,0.02160075263421979,0.031174415693734473,DISCREPANCY,Fabricated/hallucinated in old text prose; recomputed is 0.7145
+wake_f1_seed2024_text,2024,0.6754,0.6765386395187413,0.001138639518741269,0.0016858743244589623,DISCREPANCY,Fabricated/hallucinated in old text prose; recomputed is 0.6765
+pooled_cm_rem_row_sum,pooled,26613.0,24936.0,1677.0,0.06301431631157704,DISCREPANCY,Old report added 559*3=1677 padded slots to REM row: 24936 + 1677 = 26613
+pooled_cm_total_sum,pooled,104400.0,102723.0,1677.0,0.016063218390804598,DISCREPANCY,Old report forced sum to 34800*3=104400; real sum is 34241*3=102723

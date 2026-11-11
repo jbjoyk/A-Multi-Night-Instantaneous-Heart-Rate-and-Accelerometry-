@@ -59,6 +59,8 @@
 - The first reporting attempt exposed a NumPy-array JSON serialization issue after `results.pkl` was persisted. After fixing the notebook serializer, reports were regenerated from the saved result without touching test inference a second time.
 - Source cell id `requested-ablation-suite` (now cell 49) provides `RUN_FROZEN_FINAL_EVALUATION` and `USE_VALIDATION_SELECTED_OPTIMIZER`; it can load the saved validation selection and reuse it for frozen evaluation or ablations. The existing baseline row is included in the ablation suite.
 - To make the controls discoverable, added markdown id `run-controls-heading` and code id `run-controls` near the top (cell 2). The controls are defined once there and consumed by the ablation runner. Current notebook structure: 50 cells, 22 code cells, 28 markdown cells. All 22 code cells pass syntax compilation; the new controls cell and final orchestration were not runtime-executed after this discoverability edit.
+- User's active download `sleepchannelnet_protocol_patch_v2_UPDATED.ipynb`: corrected indentation in the resumed-checkpoint fallback inside cell id `requested-ablation-suite` after a reported ablation-run error. JSON validation and syntax compilation of all 22 code cells pass. This fallback handles only the specific invalid Torch RNG state `TypeError`; runtime behavior is not verified yet. If a different traceback appears, record the full exception before changing the fallback.
+- In the same active notebook copy, `WORK_BASE` now defaults to `<notebook folder>/outputs/sleep_optimizer_work`; the notebook appends `_REAL`, so reports, caches, and checkpoints go to `<notebook folder>/outputs/sleep_optimizer_work_REAL/`. This is the existing workspace-local results directory containing the validation search and frozen-run artifacts. The environment override was removed so a stale `SLEEP_WORK_DIR` value cannot redirect new results elsewhere. JSON and all-cell compilation passed after this edit; runtime path resolution was not rerun.
 - Execution used a harness for source cells through data prep and model run functions; no single top-to-bottom Jupyter session was run. Ablations, permutation importance, personalization, and transition-lambda search remain unrun. The model did not improve over the supplied historical pooled Macro-F1; do not claim a gain.
 
 
@@ -82,3 +84,25 @@
 - Subject split seed and split-construction code were not modified. Feature cache version is separate from `PREP_VERSION`; no new split hash or result is asserted.
 
 - Cache safety follow-up: `FEATURE_VERSION` is now part of the cache-directory identity as well as each per-night fingerprint. A preflight rebuild was stopped before candidate training after discovering the old path could be replaced. The ignored cache at `sleepchannelnet_v8_preprocessing_audit_work_REAL/cache/prep_f4769d6efe` may contain a mixture of regenerated and prior cache files from that interrupted attempt; saved result artifacts were not changed. Raw data remains the source of truth.
+
+
+## 2026-10-25 checkpoint RNG restore fix
+
+- Modified `sleepchannelnet_protocol_patch_v2_UPDATED.ipynb`, source cell id unavailable, cell 23 (22nd code cell): checkpoint CPU and CUDA RNG states are normalized to contiguous CPU `torch.uint8` tensors before restoration. This addresses the reported `TypeError: RNG state must be a torch.ByteTensor` during `fit()` resume.
+- Verification: notebook JSON parses, all 22 code cells compile, and `git diff --check` passes. Training/runtime resume was not run; verify by restarting the notebook kernel, rerunning setup cells, then rerunning the failed ablation cell.
+
+
+## 2026-10-25 output folder and result plots
+
+- Modified `sleepchannelnet_protocol_patch_v2_UPDATED.ipynb`: cell 5 sets the work directory to `Path(DATA_PATH).parent / "sleepchannelnet_results"`; the existing `RUN_LABEL` suffix makes the active real-data output folder `sleepchannelnet_results_REAL` beside the notebook. This no longer follows a stale `SLEEP_WORK_DIR` environment override.
+- The result writer no longer emits duplicate `history.csv` files; history remains inside the result pickle for existing analysis and plots. Model checkpoints and feature caches remain because they support resume and avoid repeating preprocessing.
+- Modified the opt-in ablation cell (source index 49): after the run completes it saves `fig_ablation_metrics.png` (accuracy, Macro-F1, kappa) and `fig_ablation_per_class_f1.png` under the work directory. These are descriptive held-out-test summaries, not model-selection inputs.
+- Verification: notebook JSON parses and all 22 code cells compile; `git diff --check` passes. No training or plot generation was run.
+
+
+## 2026-10-26 Optuna optimizer search
+
+- Updated `sleepchannelnet_protocol_patch_v2_UPDATED.ipynb`: the optimizer-search toggle now runs a persistent Optuna TPE study, tuning AdamW learning rate, grouped weight decay, dropout, and scheduler on the existing train/validation subject partitions only. The existing held-out test partition is never loaded in the objective. Twelve 20-epoch screening trials are configured by default; the top two are refit for the configured full epoch budget. This is a substantial training workload and was not run during the code edit.
+- Study SQLite, trial CSV, confirmation CSV, and summary JSON are written under `WORK/optuna_optimizer_search/`; the Optuna dependency was added to `requirements.txt`. All ablation toggles remain off by default so enabling the optimizer search does not start the ablation suite. `RUN_OPTIMIZER_SEARCH` remains False by default.
+- Restored the intended output base beside the notebook and normalized checkpoint RNG state on resume. Ablation summary plots are also included. Removed duplicate per-run `history.csv`; no data/results were deleted.
+- Verification: notebook JSON valid and all code cells compile; `git diff --check` passes. Optuna runtime/search and training remain unverified; current environment does not have Optuna installed.
