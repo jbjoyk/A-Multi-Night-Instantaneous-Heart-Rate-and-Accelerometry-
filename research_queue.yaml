@@ -1,0 +1,55 @@
+# research_queue.yaml: Structured Hypothesis and Experiment Execution Queue
+# Governance: DEC-021 (Experimental Phase Reopened for Methodological Audits)
+
+research_queue:
+  - id: "RQ-001"
+    research_question: "Does removing the dummy zero-placeholder clock feature impact baseline performance?"
+    candidate_hypotheses:
+      - id: "HYP-001"
+        hypothesis: "Removing the all-zero 'clock' feature from x_meta will maintain Macro-F1 parity while pruning 16 unnecessary projection weights."
+        motivation: "DEC-021 audit identified that 'clock' in ControlledSleepDataset is hardcoded to zeros_like."
+        experiment_id: "EXP-015"
+        priority: "HIGH"
+        required_evidence: "Validation Macro-F1 delta within +/- 0.002 on inner validation split (seed 42)."
+        budget: "SHORT"
+        target_device: "cuda:0"
+        status: "PROPOSED"
+
+  - id: "RQ-002"
+    research_question: "Does recalibrating GRL gradient scaling to -0.050 / -0.100 enhance subject invariance?"
+    candidate_hypotheses:
+      - id: "HYP-002"
+        hypothesis: "Implementing progressive alpha scheduling (reaching -0.050) will improve validation Macro-F1 over the 100x attenuated fixed scale (-0.010)."
+        motivation: "DEC-021 audit revealed that lambda_adv=0.10 * alpha_grl=0.10 caused 100-fold gradient attenuation with set_alpha never called."
+        experiment_id: "EXP-016"
+        priority: "MEDIUM"
+        required_evidence: "Validation Macro-F1 improvement >= +0.008 without destabilizing validation loss."
+        budget: "SHORT"
+        target_device: "cuda:1"
+        status: "PROPOSED"
+
+  - id: "RQ-003"
+    research_question: "What is the true impact of sequence truncation (T=600 vs full night) on REM sleep recall?"
+    candidate_hypotheses:
+      - id: "HYP-003"
+        hypothesis: "Evaluating full nights (up to 10 hours) will restore late-night REM sleep representation and boost overall REM recall by >= 5 pp."
+        motivation: "DEC-021 audit verified that T=600 drops 28.55% of labeled data, causing an artificial 18% relative depletion of REM sleep."
+        experiment_id: "EXP-017"
+        priority: "HIGH"
+        required_evidence: "REM recall increases from ~60% to >= 66% on validation nights."
+        budget: "STANDARD"
+        target_device: "cuda:0"
+        status: "PENDING_APPROVAL"
+
+  - id: "RQ-004"
+    research_question: "Can multi-night longitudinal calibration reduce inter-subject performance variance?"
+    candidate_hypotheses:
+      - id: "HYP-004"
+        hypothesis: "Normalizing Night N HR dynamics by Night 1 resting baseline will reduce inter-subject variance (ICC from 0.963 to < 0.900)."
+        motivation: "EXP-014 proved that inter-subject physiological variance dominates staging error across all models."
+        experiment_id: "EXP-018"
+        priority: "LOW"
+        required_evidence: "Reduced standard deviation of per-subject accuracy across validation cohort."
+        budget: "STANDARD"
+        target_device: "cuda:1"
+        status: "BLOCKED_PENDING_RQ001_RQ003"

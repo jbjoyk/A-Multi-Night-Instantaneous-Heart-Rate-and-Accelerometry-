@@ -2,7 +2,7 @@
 
 ## Current task
 
-DEC-021 enacted; experimental phase formally reopened. Completed 7 technical audits and analyses: window count reconciliation (34,800 vs 34,241), sequence truncation audit ($T=600$ drops ~28% labeled epochs), metadata feature audit (`x_meta` verified in Model A), normalization locality audit (per-night scaling verified in `prep_57738d534b`), `night_id` attached to all saved predictions, and intraclass correlation (ICC = 0.963) / subject accuracy predictor analysis completed. Zero training conducted.
+Autonomous research infrastructure successfully implemented and verified under DEC-021. Integrated concepts from SakanaAI/AI-Scientist (literature grounding, 10-point hypothesis schema, hostile peer review) and Karpathy/autoresearch (iterative lifecycle loop, Git experiment isolation, multi-factor keep/discard logic) with a supreme Research Governor. Implemented hard gates for test-set protection, 500-epoch training block, dataset/split integrity, dual-RTX 3060 GPU resource tracking, and configurable budgets (SMOKE, SHORT, STANDARD, FULL). Complete test suite (22 tests) and simulated dry-run loop executed and verified. Zero training runs launched.
 
 ## Previous work
 
