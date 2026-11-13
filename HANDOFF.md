@@ -2,7 +2,16 @@
 
 ## Current task
 
-Autonomous research infrastructure successfully implemented and verified under DEC-021. Integrated concepts from SakanaAI/AI-Scientist (literature grounding, 10-point hypothesis schema, hostile peer review) and Karpathy/autoresearch (iterative lifecycle loop, Git experiment isolation, multi-factor keep/discard logic) with a supreme Research Governor. Implemented hard gates for test-set protection, 500-epoch training block, dataset/split integrity, dual-RTX 3060 GPU resource tracking, and configurable budgets (SMOKE, SHORT, STANDARD, FULL). Complete test suite (22 tests) and simulated dry-run loop executed and verified. Zero training runs launched.
+PHASE 2: ADVERSARIAL AUDIT AND HARDENING COMPLETED under DEC-021.
+Conducted comprehensive security and scientific integrity audit of the SLEEP autonomous research infrastructure.
+1. Decoupled execution mode (`REAL`, `SIMULATION`, `DRY_RUN`) from lifecycle status (`PROPOSED`..`MEMORY`).
+2. Isolated `EXP-015-SIM` as `SIMULATION — NON-EVIDENCE` with explicit non-evidence flags; verified complete exclusion from leaderboards, model selection, and scientific baselines.
+3. Hardened Research Governor against bypass Attacks A through L (numerical >= 500 epoch detection, budget ceilings, Level 4/5 escalation gating, HMAC anti-bypass execution tokens, invalid ID validation, dataset/split integrity).
+4. Implemented 11-stage Experiment State Machine (`state_machine.py`) preventing illegal state transitions and in-place mode mutation.
+5. Implemented Research Memory Validator (`memory_validator.py`) detecting schema corruption, duplicate IDs, impossible metrics, and provenance gaps.
+6. Hardened GPU Resource Manager with safe context manager leases, strict device bounds checking, and stale lease recovery.
+7. Disclosed capabilities honestly: `LITERATURE_RETRIEVAL_NOT_IMPLEMENTED` and `LIVE_EXECUTION_INTERFACE_NOT_ENABLED`.
+8. Complete test suite expanded from 22 to 67 tests; all 67 tests pass. Zero real model training launched; zero test set access.
 
 ## Previous work
 

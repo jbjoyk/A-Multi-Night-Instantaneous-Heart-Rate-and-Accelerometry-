@@ -29,7 +29,14 @@
       "decision": "KEPT",
       "reason": "Established initial real-data supervised benchmark.",
       "review": "SleepJEPA negative result documented; supervised graph network provided strong baseline.",
-      "timestamp": "2026-10-23T18:53:00"
+      "timestamp": "2026-10-23T18:53:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-005",
@@ -58,7 +65,14 @@
       "decision": "KEPT",
       "reason": "Verified exact baseline code and disclosed 5.47M parameter architectural divergence.",
       "review": "Reproducibility confirmed on hardware; paper model (666k) diverges from repo model (5.47M).",
-      "timestamp": "2026-11-09T22:25:00"
+      "timestamp": "2026-11-09T22:25:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-006",
@@ -85,7 +99,14 @@
       "decision": "KEPT",
       "reason": "All gradient flow and tensor shapes verified under 162,325 parameter budget.",
       "review": "Clean modular implementation; unit tests pass.",
-      "timestamp": "2026-11-09T23:22:00"
+      "timestamp": "2026-11-09T23:22:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-007",
@@ -112,7 +133,14 @@
       "decision": "KEPT",
       "reason": "GRL subject invariance doubled REM F1 (0.181 -> 0.361) and improved Macro-F1.",
       "review": "Early evidence of GRL utility; boundary loss requires GRL stabilization.",
-      "timestamp": "2026-11-09T23:37:00"
+      "timestamp": "2026-11-09T23:37:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-008",
@@ -139,7 +167,14 @@
       "decision": "KEPT",
       "reason": "GRL standalone verified +3.21% accuracy gain; lambda=0.50 rejected due to Wake recall dip.",
       "review": "B0_GRL (lambda=0) and B2 (lambda=0.20) identified as lead candidates.",
-      "timestamp": "2026-11-09T23:46:00"
+      "timestamp": "2026-11-09T23:46:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-009",
@@ -171,7 +206,14 @@
       "decision": "KEPT",
       "reason": "B0_GRL consistently beat B2 on all 3 seeds by +0.75% Acc and +0.0115 Macro-F1.",
       "review": "B0_GRL locked as lead candidate for convergence studies.",
-      "timestamp": "2026-11-09T23:55:00"
+      "timestamp": "2026-11-09T23:55:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-010",
@@ -200,7 +242,14 @@
       "decision": "KEPT",
       "reason": "Demonstrated sharp convergence peak at Epoch 78-80; revealed severe overfitting beyond epoch 100.",
       "review": "Crucial finding: locked 80-epoch training budget for subsequent benchmarks.",
-      "timestamp": "2026-11-10T08:02:00"
+      "timestamp": "2026-11-10T08:02:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-011",
@@ -232,7 +281,14 @@
       "decision": "KEPT",
       "reason": "Confirmed optimal stopping window at exactly 80 epochs across 100% of seeds.",
       "review": "RNG discrepancy resolved; 80 epochs established as frozen budget.",
-      "timestamp": "2026-11-10T09:07:00"
+      "timestamp": "2026-11-10T09:07:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-012",
@@ -267,7 +323,14 @@
       "decision": "KEPT",
       "reason": "Classified as Case B: Approximate Parity under 33.7x compression compared to 5.47M SLAMSS-IFS.",
       "review": "Frozen evaluation executed with zero test tuning or leakage.",
-      "timestamp": "2026-11-10T09:39:00"
+      "timestamp": "2026-11-10T09:39:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-013",
@@ -302,7 +365,14 @@
       "decision": "KEPT",
       "reason": "Model E outperformed Model A by +1.79% Acc [95% CI: +0.52%, +3.35%]; GRL was primary contributor (+1.39%).",
       "review": "Component attribution established on official test partition.",
-      "timestamp": "2026-11-10T13:44:00"
+      "timestamp": "2026-11-10T13:44:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-014",
@@ -338,7 +408,14 @@
       "decision": "KEPT",
       "reason": "Established Scientific Outcome B: Equivalence / Parity. Inter-subject variance (ICC=0.963) dominates performance.",
       "review": "Comprehensive 75-run cross-validation demonstrates that matched-capacity models perform equivalently across random subject folds.",
-      "timestamp": "2026-11-11T00:34:00"
+      "timestamp": "2026-11-11T00:34:00",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true
     },
     {
       "experiment_id": "EXP-015-SIM",
@@ -361,10 +438,18 @@
         "kappa": 0.6919901436845979
       },
       "status": "COMPLETED",
-      "decision": "KEPT",
-      "reason": "Statistically meaningful Macro-F1 improvement (+0.1029) under matched capacity.",
+      "decision": "SIMULATION_NON_EVIDENCE",
+      "reason": "SIMULATION \u2014 NON-EVIDENCE: Infrastructure dry-run verification only. Zero model training; synthetic random validation labels; non-empirical.",
       "review": "Scientific Review Verdict: ACCEPT (10/10 checks passed). All 10 experimental validity checks PASSED.",
-      "timestamp": "2026-11-13T22:13:14"
+      "timestamp": "2026-11-13T22:13:14",
+      "execution_mode": "SIMULATION",
+      "lifecycle_status": "COMPLETED",
+      "real_training": false,
+      "scientific_evidence": false,
+      "eligible_for_model_selection": false,
+      "eligible_for_research_conclusions": false,
+      "eligible_for_leaderboard": false,
+      "simulation_tag": "SIMULATION \u2014 NON-EVIDENCE"
     }
   ]
 }

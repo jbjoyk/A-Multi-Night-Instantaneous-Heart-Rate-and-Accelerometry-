@@ -6,6 +6,7 @@ import os
 import json
 import tempfile
 import pytest
+from governor import ResearchGovernor
 from research_engine.hypothesis_agent import HypothesisAgent
 from research_engine.experiment_engine import ExperimentEngine
 from research_engine.decision_logic import DecisionEngine, ExperimentDecision
@@ -61,32 +62,38 @@ def test_engine_simulated_cycle_success():
         with open(mem_file, "w") as f:
             json.dump({"experiments": []}, f)
 
+        gov = ResearchGovernor()
         engine = ExperimentEngine(memory_path=mem_file)
         hyp_agent = HypothesisAgent()
         hyp = hyp_agent.get_grounded_candidates()[0]
 
+        token = gov.generate_governance_token("EXP-996", "SHORT")
+
         res = engine.execute_lifecycle_step(
             hypothesis=hyp,
-            experiment_id="EXP-SIM-SUCCESS",
+            experiment_id="EXP-996",
             parent_experiment="EXP-014",
             baseline_model="Model A",
             exact_change="Prune dummy clock channel",
             fixed_components=["HREncoder", "BiGRU", "RCCLoss"],
             compute_budget="SHORT",
             dry_run=True,
+            governance_token=token,
             simulate_failure=False,
             simulate_blocked=False
         )
 
-        assert res["record"]["status"] == "COMPLETED"
-        assert res["record"]["experiment_id"] == "EXP-SIM-SUCCESS"
+        assert res["record"]["lifecycle_status"] == "COMPLETED"
+        assert res["record"]["execution_mode"] == "DRY_RUN"
+        assert res["record"]["scientific_evidence"] is False
+        assert res["record"]["experiment_id"] == "EXP-996"
         assert "macro_f1" in res["record"]["metrics"]
 
         # Verify persisted to memory
         with open(mem_file, "r") as f:
             loaded_mem = json.load(f)
         assert len(loaded_mem["experiments"]) == 1
-        assert loaded_mem["experiments"][0]["experiment_id"] == "EXP-SIM-SUCCESS"
+        assert loaded_mem["experiments"][0]["experiment_id"] == "EXP-996"
 
 
 def test_engine_simulated_cycle_failure():
@@ -95,25 +102,29 @@ def test_engine_simulated_cycle_failure():
         with open(mem_file, "w") as f:
             json.dump({"experiments": []}, f)
 
+        gov = ResearchGovernor()
         engine = ExperimentEngine(memory_path=mem_file)
         hyp_agent = HypothesisAgent()
         hyp = hyp_agent.get_grounded_candidates()[0]
 
+        token = gov.generate_governance_token("EXP-997", "SHORT")
+
         res = engine.execute_lifecycle_step(
             hypothesis=hyp,
-            experiment_id="EXP-SIM-FAIL",
+            experiment_id="EXP-997",
             parent_experiment="EXP-014",
             baseline_model="Model A",
             exact_change="Prune dummy clock channel",
             fixed_components=["HREncoder", "BiGRU", "RCCLoss"],
             compute_budget="SHORT",
             dry_run=True,
+            governance_token=token,
             simulate_failure=True,
             simulate_blocked=False
         )
 
-        assert res["record"]["status"] == "FAILED"
-        assert "Simulated CUDA out-of-memory" in res["record"]["reason"]
+        assert res["record"]["lifecycle_status"] == "FAILED"
+        assert "Simulated execution failure" in res["record"]["reason"]
 
 
 def test_engine_simulated_cycle_blocked():
@@ -122,22 +133,26 @@ def test_engine_simulated_cycle_blocked():
         with open(mem_file, "w") as f:
             json.dump({"experiments": []}, f)
 
+        gov = ResearchGovernor()
         engine = ExperimentEngine(memory_path=mem_file)
         hyp_agent = HypothesisAgent()
         hyp = hyp_agent.get_grounded_candidates()[0]
 
+        token = gov.generate_governance_token("EXP-998", "SHORT")
+
         res = engine.execute_lifecycle_step(
             hypothesis=hyp,
-            experiment_id="EXP-SIM-BLOCKED",
+            experiment_id="EXP-998",
             parent_experiment="EXP-014",
             baseline_model="Model A",
             exact_change="Prune dummy clock channel",
             fixed_components=["HREncoder", "BiGRU", "RCCLoss"],
             compute_budget="SHORT",
             dry_run=True,
+            governance_token=token,
             simulate_failure=False,
             simulate_blocked=True
         )
 
-        assert res["record"]["status"] == "BLOCKED"
+        assert res["record"]["lifecycle_status"] == "BLOCKED"
         assert "BLOCKED_BY_RESEARCH_GOVERNANCE" in res["record"]["reason"]

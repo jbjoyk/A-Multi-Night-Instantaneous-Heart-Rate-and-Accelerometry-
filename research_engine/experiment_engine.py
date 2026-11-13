@@ -3,19 +3,27 @@ research_engine/experiment_engine.py: Autonomous Experimentation Engine.
 
 Implements Karpathy's Autoresearch experiment execution loop adapted for Sleep Staging:
   PROPOSE
-  -> GOVERN (Safety, Budget, Test-Set Protection, 500-Epoch Rule)
+  -> GOVERN (Safety, Budget, Test-Set Protection, 500-Epoch Rule, Token Verification)
   -> DESIGN (Controlled OFAT Specification)
   -> REVIEW (Autonomous Scientific Peer Review)
   -> IMPLEMENT (Isolated Git Tracking & Artifact Directory)
-  -> RUN (Supervised Training or Dry-Run Simulation)
+  -> RUN (Supervised Training or Dry-Run Simulation under Exclusive GPU Lease)
   -> EVALUATE (SleepEvaluator: Primary Macro-F1, Secondary, Diagnostics)
   -> DECISION (Multi-factor Keep / Discard / Investigate)
-  -> MEMORY (Structured Registration in research_memory.json)
+  -> MEMORY (Structured Registration in research_memory.json with Simulation Shielding)
+
+Hard Invariants:
+  1. Direct runner execution without a valid Governor authorization token is strictly blocked.
+  2. Sequential state transitions enforced via ExperimentStateMachine.
+  3. Execution modes (REAL, SIMULATION, DRY_RUN) strictly decoupled from lifecycle statuses.
+  4. Simulation results cannot enter leaderboards, model selection, or scientific evidence.
 """
 
 import os
 import json
 import time
+import hmac
+import hashlib
 import subprocess
 from typing import Dict, List, Optional, Any
 import numpy as np
@@ -25,15 +33,27 @@ from evaluator import SleepEvaluator, TestSetProtectionViolation
 from research_engine.resource_manager import GPUResourceManager, ResourceAllocationError
 from research_engine.literature_agent import LiteratureAgent
 from research_engine.hypothesis_agent import HypothesisAgent, ResearchHypothesis
-from research_engine.experiment_designer import ExperimentDesigner, ExperimentSpecification
+from research_engine.experiment_designer import ExperimentDesigner, ExperimentSpecification, ExperimentDesignError
 from research_engine.scientific_reviewer import ScientificReviewer, ReviewVerdict
 from research_engine.decision_logic import DecisionEngine, ExperimentDecision
+from research_engine.state_machine import (
+    ExecutionMode, LifecycleStatus, ExperimentStateMachine,
+    IllegalStateTransitionError, ExecutionModeViolationError
+)
+from research_engine.memory_validator import ResearchMemoryValidator, MemoryCorruptionError
+
+
+class GovernanceBlockError(Exception):
+    """Raised when an operation is blocked by Research Governance."""
+    pass
 
 
 class ExperimentEngine:
     """
     Coordinates the controlled, research-grade autonomous experimentation lifecycle.
     """
+    GOVERNOR_SECRET_KEY = b"sleep_research_governor_internal_auth_key_dec021"
+
     def __init__(
         self,
         base_dir: Optional[str] = None,
@@ -77,9 +97,22 @@ class ExperimentEngine:
             return json.load(f)
 
     def save_memory(self, memory: Dict[str, Any]) -> None:
-        """Persists updated research memory to disk."""
+        """Persists updated research memory to disk after validation."""
+        ResearchMemoryValidator.validate_memory_integrity(memory)
         with open(self.memory_path, "w") as f:
             json.dump(memory, f, indent=2)
+
+    def verify_governance_token(self, experiment_id: str, compute_budget: str, token: Optional[str]) -> bool:
+        """Verifies if the provided governance token is valid for this experiment."""
+        if not token:
+            return False
+        # Valid across allowed autonomy levels
+        for aut_level in (0, 1, 2, 3, 4, 5):
+            payload = f"{experiment_id}:{compute_budget.upper()}:{aut_level}".encode("utf-8")
+            expected = hmac.new(self.GOVERNOR_SECRET_KEY, payload, hashlib.sha256).hexdigest()
+            if hmac.compare_digest(expected, token):
+                return True
+        return False
 
     def execute_lifecycle_step(
         self,
@@ -91,6 +124,7 @@ class ExperimentEngine:
         fixed_components: List[str],
         compute_budget: str,
         dry_run: bool = True,
+        governance_token: Optional[str] = None,
         simulate_failure: bool = False,
         simulate_blocked: bool = False
     ) -> Dict[str, Any]:
@@ -99,19 +133,53 @@ class ExperimentEngine:
         PROPOSE -> GOVERN -> DESIGN -> REVIEW -> IMPLEMENT -> RUN -> EVALUATE -> DECISION -> MEMORY
         """
         cycle_log: List[str] = []
-        cycle_log.append(f"Starting Experiment Cycle for {experiment_id} (Hypothesis: {hypothesis.hypothesis_id})")
+        cycle_log.append(f"Starting Governed Experiment Cycle for {experiment_id} (Hypothesis: {hypothesis.hypothesis_id})")
+
+        # Determine execution mode upfront
+        exec_mode = ExecutionMode.DRY_RUN.value if dry_run else ExecutionMode.REAL.value
+        is_simulation = dry_run
 
         # 1. PROPOSE
-        status = "PROPOSED"
-        cycle_log.append("Step 1 [PROPOSE]: Hypothesis registered.")
+        current_status = LifecycleStatus.PROPOSED
+        cycle_log.append(f"Step 1 [{current_status.value}]: Hypothesis registered.")
 
-        # 2. GOVERN (Pre-flight safety checks)
+        # 2. GOVERN (Pre-flight safety & direct runner bypass check)
+        next_status = LifecycleStatus.GOVERNED
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
+
+        # Anti-bypass check: Direct runner execution without Governor token is blocked
+        if not self.verify_governance_token(experiment_id, compute_budget, governance_token):
+            current_status = LifecycleStatus.BLOCKED
+            cycle_log.append(f"Step 2 [GOVERN]: BLOCKED - Direct runner bypass attempt or invalid governance token.")
+            raise GovernanceBlockError(
+                f"DIRECT RUNNER BYPASS BLOCKED: Direct runner execution for {experiment_id} "
+                f"without valid Governor authorization token is forbidden."
+            )
+
         if simulate_blocked:
-            status = "BLOCKED"
+            current_status = LifecycleStatus.BLOCKED
             record = {
                 "experiment_id": experiment_id,
-                "hypothesis_id": hypothesis.hypothesis_id,
-                "status": status,
+                "parent_experiment": parent_experiment,
+                "hypothesis": hypothesis.hypothesis,
+                "research_question": hypothesis.research_question,
+                "change": exact_change,
+                "git_commit": self.get_current_git_commit(),
+                "dataset_fingerprint": self.dataset_gate.compute_dataset_fingerprint(),
+                "split_hash": "inner_val_split_seed42",
+                "seed": 42,
+                "budget": compute_budget,
+                "gpu": "none",
+                "metrics": {},
+                "execution_mode": exec_mode,
+                "lifecycle_status": current_status.value,
+                "real_training": False,
+                "scientific_evidence": False,
+                "eligible_for_model_selection": False,
+                "eligible_for_research_conclusions": False,
+                "eligible_for_leaderboard": False,
+                "status": current_status.value,
                 "decision": "DISCARDED",
                 "reason": "BLOCKED_BY_RESEARCH_GOVERNANCE: Simulated governance hard block.",
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S")
@@ -121,11 +189,28 @@ class ExperimentEngine:
 
         # Check 500-epoch restriction
         if "500" in compute_budget or "500" in exact_change:
-            status = "BLOCKED"
+            current_status = LifecycleStatus.BLOCKED
             record = {
                 "experiment_id": experiment_id,
-                "hypothesis_id": hypothesis.hypothesis_id,
-                "status": status,
+                "parent_experiment": parent_experiment,
+                "hypothesis": hypothesis.hypothesis,
+                "research_question": hypothesis.research_question,
+                "change": exact_change,
+                "git_commit": self.get_current_git_commit(),
+                "dataset_fingerprint": self.dataset_gate.compute_dataset_fingerprint(),
+                "split_hash": "inner_val_split_seed42",
+                "seed": 42,
+                "budget": compute_budget,
+                "gpu": "none",
+                "metrics": {},
+                "execution_mode": exec_mode,
+                "lifecycle_status": current_status.value,
+                "real_training": False,
+                "scientific_evidence": False,
+                "eligible_for_model_selection": False,
+                "eligible_for_research_conclusions": False,
+                "eligible_for_leaderboard": False,
+                "status": current_status.value,
                 "decision": "DISCARDED",
                 "reason": "BLOCKED_BY_RESEARCH_GOVERNANCE: 500-epoch training paused under DEC-019/020 and user governance.",
                 "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S")
@@ -138,6 +223,10 @@ class ExperimentEngine:
         cycle_log.append(f"Step 2 [GOVERN]: Dataset gate passed (Fingerprint: {ds_fp}).")
 
         # 3. DESIGN
+        next_status = LifecycleStatus.DESIGNED
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
+
         spec = self.designer.design_experiment(
             experiment_id=experiment_id,
             hypothesis_id=hypothesis.hypothesis_id,
@@ -155,17 +244,38 @@ class ExperimentEngine:
         cycle_log.append(f"Step 3 [DESIGN]: Specification created for budget {spec.compute_budget}.")
 
         # 4. REVIEW
+        next_status = LifecycleStatus.REVIEWED
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
+
         memory = self.load_memory()
         existing_ids = [exp["experiment_id"] for exp in memory.get("experiments", [])]
         review = self.reviewer.review_proposal(spec, existing_experiment_ids=existing_ids)
         cycle_log.append(f"Step 4 [REVIEW]: Verdict = {review['verdict']} ({review['checks_passed']}/10 checks passed).")
 
         if review["verdict"] == ReviewVerdict.REJECT.value:
-            status = "DISCARDED"
+            current_status = LifecycleStatus.DISCARDED
             record = {
                 "experiment_id": experiment_id,
-                "hypothesis_id": hypothesis.hypothesis_id,
-                "status": status,
+                "parent_experiment": parent_experiment,
+                "hypothesis": hypothesis.hypothesis,
+                "research_question": hypothesis.research_question,
+                "change": exact_change,
+                "git_commit": self.get_current_git_commit(),
+                "dataset_fingerprint": ds_fp,
+                "split_hash": "inner_val_split_seed42",
+                "seed": 42,
+                "budget": compute_budget,
+                "gpu": "none",
+                "metrics": {},
+                "execution_mode": exec_mode,
+                "lifecycle_status": current_status.value,
+                "real_training": False,
+                "scientific_evidence": False,
+                "eligible_for_model_selection": False,
+                "eligible_for_research_conclusions": False,
+                "eligible_for_leaderboard": False,
+                "status": current_status.value,
                 "decision": "DISCARDED",
                 "reason": f"Rejected by Scientific Reviewer: {'; '.join(review['flags'])}",
                 "review": review,
@@ -173,35 +283,60 @@ class ExperimentEngine:
             }
             return {"record": record, "log": cycle_log}
 
-        status = "APPROVED"
+        # 5. APPROVE
+        next_status = LifecycleStatus.APPROVED
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
 
-        # 5. IMPLEMENT
-        # Prepare experiment directory and record git commit
+        # 6. IMPLEMENT
+        next_status = LifecycleStatus.IMPLEMENTING
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
+
         exp_dir = os.path.join(self.base_dir, "research", "experiments", experiment_id)
         os.makedirs(exp_dir, exist_ok=True)
         git_commit = self.get_current_git_commit()
-        cycle_log.append(f"Step 5 [IMPLEMENT]: Experiment workspace prepared at {exp_dir} (Commit: {git_commit}).")
+        cycle_log.append(f"Step 5 [IMPLEMENT]: Workspace ready at {exp_dir} (Commit: {git_commit}).")
 
-        # 6. RUN
-        allocated_device = self.resource_manager.allocate_gpu(experiment_id, compute_budget)
-        status = "RUNNING"
-        cycle_log.append(f"Step 6 [RUN]: Allocated device {allocated_device} for budget {compute_budget}.")
+        # 7. RUN (Under safe resource lease context)
+        next_status = LifecycleStatus.RUNNING
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
 
         try:
-            if simulate_failure:
-                raise RuntimeError("Simulated CUDA out-of-memory or numerical instability error.")
+            with self.resource_manager.lease(experiment_id, compute_budget) as allocated_device:
+                cycle_log.append(f"Step 6 [RUN]: Leased device {allocated_device} for budget {compute_budget}.")
+                if simulate_failure:
+                    raise RuntimeError("Simulated execution failure or out-of-memory error.")
 
-            # In dry-run simulation mode, simulate realistic outputs based on baseline
-            time.sleep(0.1)  # simulated run
-            cycle_log.append("Step 6 [RUN]: Training execution completed successfully.")
+                if dry_run:
+                    time.sleep(0.05)  # Simulated execution
+                    cycle_log.append("Step 6 [RUN]: Dry-run simulation completed successfully.")
+                else:
+                    raise NotImplementedError("LIVE_EXECUTION_INTERFACE_NOT_ENABLED: Live model training is disabled during Phase 2 audit.")
         except Exception as e:
-            status = "FAILED"
-            self.resource_manager.release_gpu(allocated_device)
+            current_status = LifecycleStatus.FAILED
             record = {
                 "experiment_id": experiment_id,
                 "parent_experiment": parent_experiment,
-                "hypothesis_id": hypothesis.hypothesis_id,
-                "status": status,
+                "hypothesis": hypothesis.hypothesis,
+                "research_question": hypothesis.research_question,
+                "change": exact_change,
+                "git_commit": git_commit,
+                "dataset_fingerprint": ds_fp,
+                "split_hash": "inner_val_split_seed42",
+                "seed": 42,
+                "budget": compute_budget,
+                "gpu": "none",
+                "metrics": {},
+                "execution_mode": exec_mode,
+                "lifecycle_status": current_status.value,
+                "real_training": False,
+                "scientific_evidence": False,
+                "eligible_for_model_selection": False,
+                "eligible_for_research_conclusions": False,
+                "eligible_for_leaderboard": False,
+                "status": current_status.value,
                 "decision": "DISCARDED",
                 "reason": f"Runtime execution failure: {str(e)}",
                 "git_commit": git_commit,
@@ -210,18 +345,18 @@ class ExperimentEngine:
             cycle_log.append(f"Step 6 [RUN]: FAILED - {str(e)}")
             return {"record": record, "log": cycle_log}
 
-        self.resource_manager.release_gpu(allocated_device)
+        # 8. EVALUATE
+        next_status = LifecycleStatus.EVALUATING
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
 
-        # 7. EVALUATE (Using SleepEvaluator on inner validation partition)
-        # Mock validation evaluation simulating realistic outputs
+        # Simulated evaluation on inner validation partition
         rng = np.random.RandomState(42)
         n_val = 1000
         y_val_true = rng.randint(0, 4, size=n_val)
         y_val_pred = y_val_true.copy()
-        # Introduce controlled error
         y_val_pred[rng.choice(n_val, size=320, replace=False)] = rng.randint(0, 4, size=320)
         
-        # Candidate metrics
         eval_metrics = self.evaluator.evaluate_predictions(y_val_true, y_val_pred)
         cycle_log.append(
             f"Step 7 [EVALUATE]: Validation Macro-F1 = {eval_metrics['primary']['macro_f1']:.4f}, "
@@ -235,20 +370,31 @@ class ExperimentEngine:
             "secondary": {"rem_f1": 0.6120}
         }
 
-        # 8. DECISION (Multi-factor evaluation)
+        # 9. DECISION
+        next_status = LifecycleStatus.COMPLETED
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
+
+        next_status = LifecycleStatus.DECISION
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
+
         outcome = self.decision_engine.evaluate_outcome(
             baseline_metrics=baseline_metrics,
             candidate_metrics=eval_metrics,
             baseline_params=163940,
-            candidate_params=162325,  # minor reduction
+            candidate_params=162325,
             baseline_vram_mb=4000,
             candidate_vram_mb=3900
         )
-        status = "COMPLETED"
         decision = outcome["decision"]
         cycle_log.append(f"Step 8 [DECISION]: Verdict = {decision}. Rationale: {outcome['rationale']}")
 
-        # 9. MEMORY (Persist to research_memory.json)
+        # 10. MEMORY
+        next_status = LifecycleStatus.MEMORY
+        ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
+        current_status = next_status
+
         record = {
             "experiment_id": experiment_id,
             "parent_experiment": parent_experiment,
@@ -267,13 +413,27 @@ class ExperimentEngine:
                 "accuracy": eval_metrics["secondary"]["accuracy"],
                 "kappa": eval_metrics["secondary"]["kappa"]
             },
-            "status": status,
-            "decision": decision,
-            "reason": outcome["rationale"],
+            "execution_mode": exec_mode,
+            "lifecycle_status": LifecycleStatus.COMPLETED.value,
+            "real_training": not is_simulation,
+            "scientific_evidence": not is_simulation,
+            "eligible_for_model_selection": not is_simulation,
+            "eligible_for_research_conclusions": not is_simulation,
+            "eligible_for_leaderboard": not is_simulation,
+            "status": LifecycleStatus.COMPLETED.value,
+            "decision": "SIMULATION_NON_EVIDENCE" if is_simulation else decision,
+            "reason": (
+                f"SIMULATION — NON-EVIDENCE: {outcome['rationale']}"
+                if is_simulation else outcome["rationale"]
+            ),
             "review": review["summary"],
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S")
         }
+        if is_simulation:
+            record["simulation_tag"] = "SIMULATION — NON-EVIDENCE"
 
+        # Validate with memory validator before persisting
+        ResearchMemoryValidator.validate_record(record)
         memory["experiments"].append(record)
         self.save_memory(memory)
         cycle_log.append(f"Step 9 [MEMORY]: Experiment {experiment_id} successfully persisted to research_memory.json.")

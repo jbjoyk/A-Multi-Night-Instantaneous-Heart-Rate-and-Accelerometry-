@@ -9,6 +9,7 @@ The core mandate of Research Governance is:
 2. Prevent un-monitored or excessive compute expenditure.
 3. Enforce deterministic, reproducible science over speculative score-chasing.
 4. Guarantee that every code modification tests an explicit, falsifiable scientific hypothesis.
+5. Strictly shield empirical leaderboards and baseline selection from simulation and dry-run contamination.
 
 ---
 
@@ -17,7 +18,7 @@ The core mandate of Research Governance is:
 The system defines six explicit, non-overlapping autonomy levels:
 
 | Level | Name | Permissions and Scope | Human Approval Required? |
-| :---: | :--- | :--- | :---: |
+| :---: | :--- | :--- | :--- |
 | **LEVEL 0** | **Analysis Only** | Read-only inspection of repository state, research memory, historical metrics, and audit dossiers. Cannot propose or execute experiments. | No |
 | **LEVEL 1** | **Hypothesis Generation** | Proposes scientific hypotheses formatted according to the 10-point schema. Identifies research gaps from memory and literature. | No |
 | **LEVEL 2** | **Experiment Design** | Transforms hypotheses into controlled OFAT experiment specifications. Assesses feasibility and compute budgets. | No |
@@ -46,11 +47,13 @@ To prevent accidental resource exhaustion and run-away loops, all experiments mu
 
 ### Mandatory Rule: 500-Epoch Hard Block
 - Under **DEC-019**, **DEC-020**, and user governance, the 500-epoch experimental protocol is explicitly paused.
-- If any proposed experiment requests $\ge 500$ epochs, or attempts to resume the historical long-run convergence protocol, the Governor immediately blocks execution:
-  ```
-  Status: BLOCKED_BY_RESEARCH_GOVERNANCE
-  Reason: 500-epoch training paused under DEC-019/020 and user governance. Long-training jobs require explicit supervisor protocol authorization.
-  ```
+- The Governor enforces numerical parsing of requested epochs:
+  - Any request with $\ge 500$ epochs (e.g., 500, 501, 1000) or negative epochs is immediately blocked:
+    ```
+    Status: BLOCKED_BY_RESEARCH_GOVERNANCE
+    Reason: 500-epoch training requested. 500-epoch training paused under DEC-019/020 and user governance. Training >= 500 epochs is paused and strictly blocked.
+    ```
+  - Any epoch count exceeding the budget tier ceiling is blocked.
 
 ---
 
@@ -64,7 +67,8 @@ The workstation is equipped with:
 ### Resource Management Guardrails:
 1. **Hard VRAM Ceiling**: The `GPUResourceManager` enforces a maximum allocation ceiling of **10.0 GB per device**, guaranteeing a 2.0 GB buffer for CUDA runtime contexts and OS display overhead.
 2. **Single-Job Exclusivity**: Concurrent execution of two memory-intensive training runs on the same physical GPU is strictly prohibited to eliminate out-of-memory errors and context switching thrash.
-3. **Dual-Device Distribution**: Independent tasks (e.g., parallel validation screening or independent fold evaluations) must be explicitly mapped to disjoint devices (`cuda:0` and `cuda:1`).
+3. **Safe Context Manager Leases**: GPUs must be leased via `with resource_manager.lease(...):`, guaranteeing immediate cleanup on success, runtime failure, or unexpected exception.
+4. **Stale Lease Recovery**: An automated garbage collector releases locks older than 3600 seconds, preventing hung tasks from locking hardware.
 
 ---
 
@@ -75,7 +79,7 @@ Protecting the held-out test cohort from leakage or subtle selection bias is of 
 ### Safeguards Implemented:
 1. **Dataset Gate (`DatasetGate.assert_no_test_leakage`)**:
    - Compares the subject IDs accessed by the active dataloader against the held-out test partition.
-   - If any subject from the test partition appears in an operation labeled `train`, `validation`, `search`, `tuning`, `feature_selection`, or `early_stopping`, a `TestSetLeakageError` is thrown immediately, killing the job.
+   - If any subject from the test partition appears in an operation labeled `train`, `validation`, `search`, `tuning`, `feature_selection`, `calibration`, or `early_stopping`, a `TestSetLeakageError` is thrown immediately, killing the job.
 2. **Evaluator Gate (`SleepEvaluator.evaluate_model`)**:
    - If `split_role == 'test'`, evaluation is blocked unless the flag `frozen_evaluation_authorized=True` is provided.
    - Any attempt to compute test metrics during development or hypothesis ranking raises `TestSetProtectionViolation`.
@@ -84,22 +88,69 @@ Protecting the held-out test cohort from leakage or subtle selection bias is of 
 
 ---
 
-## 6. The Governed Experiment Lifecycle
+## 6. Simulation Non-Evidence Boundaries & Data Model Decoupling
 
-Every research investigation follows the strict 9-stage finite state machine:
+To prevent simulated or dry-run metrics from contaminating real scientific evidence:
+1. **Decoupled Attributes**:
+   - `execution_mode`: `REAL`, `SIMULATION`, `DRY_RUN`
+   - `lifecycle_status`: `PROPOSED`, `GOVERNED`, `DESIGNED`, `REVIEWED`, `APPROVED`, `IMPLEMENTING`, `RUNNING`, `EVALUATING`, `COMPLETED`, `FAILED`, `BLOCKED`, `DISCARDED`, `NEEDS_REVIEW`, `MEMORY`
+2. **Explicit Semantic Invariants**:
+   Every simulation record MUST explicitly declare:
+   ```json
+   "real_training": false,
+   "scientific_evidence": false,
+   "eligible_for_model_selection": false,
+   "eligible_for_research_conclusions": false,
+   "eligible_for_leaderboard": false,
+   "simulation_tag": "SIMULATION — NON-EVIDENCE"
+   ```
+3. **Leaderboard Shielding**:
+   - The institutional memory leaderboard (`ResearchMemoryValidator.get_leaderboard`) strictly filters for `execution_mode == 'REAL'` and `scientific_evidence == true`.
+   - Simulation results cannot become best models, influence rankings, or serve as baselines.
+4. **Anti-Mutation Invariant**:
+   - Attempting to mutate `execution_mode` from `SIMULATION` to `REAL` in-place raises `ExecutionModeViolationError`.
+
+---
+
+## 7. The Governed Experiment Lifecycle State Machine
+
+Every research investigation follows the strict 11-stage finite state machine enforced by `ExperimentStateMachine`:
 
 ```
-[PROPOSE] ---> [GOVERN] ---> [DESIGN] ---> [REVIEW] ---> [IMPLEMENT]
-                                                            |
-[MEMORY] <--- [DECISION] <--- [EVALUATE] <--- [RUN] <-------+
+[PROPOSE] ---> [GOVERN] ---> [DESIGN] ---> [REVIEW] ---> [APPROVE] ---> [IMPLEMENT]
+                                                                             |
+[MEMORY] <--- [DECISION] <--- [COMPLETED] <--- [EVALUATE] <--- [RUN] <-------+
 ```
 
-1. **`PROPOSE`**: Hypothesis Agent drafts a proposal addressing an open gap from `research_queue.yaml` adhering to the 10-point schema.
-2. **`GOVERN`**: Governor screens for budget compliance, 500-epoch rule, and autonomy permissions.
-3. **`DESIGN`**: Experiment Designer specifies exact single-factor modification and fixed controls.
-4. **`REVIEW`**: Scientific Reviewer audits proposal across 10 critical standards (`ACCEPT`, `REVISE`, or `REJECT`).
-5. **`IMPLEMENT`**: Workspace prepared under Git commit tracking (`research/experiments/EXP-XXX/`).
-6. **`RUN`**: GPU allocated via `GPUResourceManager`; training executed under monitored budget.
-7. **`EVALUATE`**: `SleepEvaluator` scores model against inner-validation split using Macro-F1, accuracy, $\kappa$, and ECE.
-8. **`DECISION`**: `DecisionEngine` evaluates multi-criteria trade-offs (`KEPT`, `DISCARDED`, `NEEDS_REVIEW`, `INVESTIGATE`).
-9. **`MEMORY`**: Comprehensive experiment metadata and metrics appended to `research_memory.json`.
+Terminal Exception States:
+- `BLOCKED`: Triggered by safety, 500-epoch, or dataset gate violations.
+- `DISCARDED`: Triggered by reviewer veto or model performance degradation.
+- `FAILED`: Triggered by execution crash or numerical instability.
+- `NEEDS_REVIEW`: Triggered by ambiguous trade-offs or complexity traps.
+
+### Anti-Bypass Execution Token:
+- Direct execution of `ExperimentEngine` without Governor screening is strictly prohibited.
+- When an experiment is approved by the Governor, an HMAC execution token is issued:
+  ```python
+  token = governor.generate_governance_token(experiment_id, compute_budget)
+  ```
+- The engine validates this token; missing or forged tokens immediately raise `GovernanceBlockError`.
+
+---
+
+## 8. Git Governance and Branch Isolation
+
+- Current State: Commits are tracked locally on `main` for Claude/collaborator synchronization.
+- Governance Risk: Direct autonomous modification of `main` without PR or human review risks publishing unvetted code.
+- Recommended Staged Branch Workflow:
+  ```text
+  feature branch (research/EXP-XXX)
+          ↓
+  automated verification (67/67 unit tests pass)
+          ↓
+  scientific peer review (ReviewVerdict.ACCEPT)
+          ↓
+  human supervisor authorization
+          ↓
+  merge to main
+  ```

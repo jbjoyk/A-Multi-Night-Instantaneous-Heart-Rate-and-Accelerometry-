@@ -10,6 +10,8 @@ Inspired by SakanaAI/AI-Scientist:
        - SPECULATIVE_HYPOTHESIS (untested conjectures requiring experimentation)
   3. Rejects unsubstantiated claims of novelty: any claim not backed by literature
      is classified as "candidate novelty requiring literature verification".
+  4. Explicitly acknowledges that automated external literature retrieval is:
+     LITERATURE_RETRIEVAL_NOT_IMPLEMENTED
 """
 
 from enum import Enum
@@ -27,9 +29,27 @@ class LiteratureAgent:
     """
     Maintains literature evidence, prevents unverified claims, and grounds hypotheses.
     """
+    LITERATURE_RETRIEVAL_STATUS = "LITERATURE_RETRIEVAL_NOT_IMPLEMENTED"
+
     def __init__(self):
         self.literature_index: Dict[str, Dict[str, Any]] = self._init_default_literature()
         self.project_observations: Dict[str, Dict[str, Any]] = self._init_default_observations()
+
+    def search_external_literature(self, query: str) -> Dict[str, Any]:
+        """
+        Explicitly reports that automated external literature search/retrieval is NOT implemented.
+        Prevents hallucinated external literature evidence from entering the system.
+        """
+        return {
+            "status": self.LITERATURE_RETRIEVAL_STATUS,
+            "results": [],
+            "query": query,
+            "message": (
+                "LITERATURE_RETRIEVAL_NOT_IMPLEMENTED: Automated external literature retrieval "
+                "is disabled. Literature grounding is strictly restricted to locally audited and "
+                "verified citations to prevent LLM hallucinations."
+            )
+        }
 
     def _init_default_literature(self) -> Dict[str, Dict[str, Any]]:
         return {
