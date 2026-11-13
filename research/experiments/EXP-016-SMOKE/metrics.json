@@ -1,0 +1,13 @@
+{
+  "experiment_id": "EXP-016-SMOKE",
+  "execution_mode": "INFRASTRUCTURE_SMOKE_TEST",
+  "epoch": 1,
+  "train_loss": 1.3409123331308366,
+  "val_loss": 1.247626883643014,
+  "macro_f1": 0.285480432566267,
+  "accuracy": 0.449604506232023,
+  "kappa": 0.12553220954186006,
+  "peak_vram_mb": 267.0712890625,
+  "test_set_accessed": false,
+  "scientific_evidence": false
+}

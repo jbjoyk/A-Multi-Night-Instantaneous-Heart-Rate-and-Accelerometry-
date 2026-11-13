@@ -1,8 +1,17 @@
 # PHASE 3 INFRASTRUCTURE SMOKE TEST SPECIFICATION
 
 > [!IMPORTANT]
-> **EXECUTION STATUS: NOT EXECUTED**  
-> This specification documents the controlled parameters for a future single-epoch smoke test. Under Phase 2.1 hardening rules, **no real training, no tensor execution, and no optimizer step has been performed**. This file serves as an authorized protocol specification for human authorization prior to Phase 3.
+> **EXECUTION STATUS: EXECUTED & PASSED (2026-11-14)**  
+> Governed Phase-3 infrastructure smoke test `EXP-016-SMOKE` executed under explicit human authorization.
+> - **Execution Mode**: `INFRASTRUCTURE_SMOKE_TEST`
+> - **Status**: `COMPLETED`
+> - **Scientific Evidence**: `FALSE` (strictly classified as operational non-evidence)
+> - **Runtime**: 1.20s epoch execution (2.38s total cycle) on `cuda:0` (NVIDIA GeForce RTX 3060 12GB).
+> - **Memory**: Peak VRAM allocated was 267.1 MB (well below the 10,240 MB limit).
+> - **Leakage Check**: 0 outer test subjects accessed (`test_set_accessed = false`).
+> - **Metrics**: Train Loss = 1.3409, Val Loss = 1.2476, Val Macro-F1 = 0.2855, Accuracy = 0.4496, Kappa = 0.1255.
+> - **Decision**: `SIMULATION_NON_EVIDENCE`.
+> - **Registry**: Successfully persisted as 13th entry in `research_memory.json`. All 76 automated repository tests pass cleanly.
 
 ---
 

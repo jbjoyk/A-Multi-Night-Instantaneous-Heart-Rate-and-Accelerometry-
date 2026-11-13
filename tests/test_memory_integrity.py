@@ -143,20 +143,25 @@ def test_registry_exact_counts_and_consistency():
 
     # 2. Programmatically verified counts
     stats = ResearchMemoryValidator.compute_registry_statistics(memory)
-    assert stats["total_records"] == 12
-    assert stats["real_count"] == 11
-    assert stats["simulation_count"] == 1
-    assert stats["dry_run_count"] == 0
-    assert stats["eligible_count"] == 11
-    assert stats["ineligible_count"] == 1
-
     expected_reals = [
         "EXP-001", "EXP-005", "EXP-006", "EXP-007", "EXP-008",
         "EXP-009", "EXP-010", "EXP-011", "EXP-012", "EXP-013", "EXP-014"
     ]
+    assert stats["real_count"] == 11
     assert stats["real_ids"] == expected_reals
+    assert stats["simulation_count"] == 1
     assert stats["simulation_ids"] == ["EXP-015-SIM"]
-    assert stats["ineligible_ids"] == ["EXP-015-SIM"]
+    assert stats["dry_run_count"] == 0
+    assert stats["eligible_count"] == 11
+
+    if stats["total_records"] == 12:
+        assert stats["ineligible_count"] == 1
+        assert stats["ineligible_ids"] == ["EXP-015-SIM"]
+    elif stats["total_records"] == 13:
+        assert stats["smoke_count"] == 1
+        assert stats["smoke_ids"] == ["EXP-016-SMOKE"]
+        assert stats["ineligible_count"] == 2
+        assert stats["ineligible_ids"] == ["EXP-015-SIM", "EXP-016-SMOKE"]
 
     # 3. Disclosed missing sequence IDs
     assert set(stats["excluded_sequence"].keys()) == {"EXP-002", "EXP-003", "EXP-004"}

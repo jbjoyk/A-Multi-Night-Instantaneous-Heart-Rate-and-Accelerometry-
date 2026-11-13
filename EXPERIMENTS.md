@@ -541,6 +541,39 @@ state.
   - `EXP014_FINAL_REPORT.md`
 - Status: **75-RUN CROSS-VALIDATION COMPLETE AND FROZEN.**
 
+### EXP-016-SMOKE — Phase-3 Governed Live Infrastructure Smoke Test
+
+- Date: 2026-11-14
+- Execution Mode: `INFRASTRUCTURE_SMOKE_TEST`
+- Scientific Classification: **NOT SCIENTIFIC EVIDENCE** (`SCIENTIFIC EVIDENCE = FALSE`, `MODEL SELECTION ELIGIBLE = FALSE`, `LEADERBOARD ELIGIBLE = FALSE`, `SIMULATION_NON_EVIDENCE`)
+- Research question: RQ-INFRA: Can the governed training lifecycle execute 1 real epoch on `cuda:0` without violating safety gates?
+- Hypothesis: Governed execution pipeline runs 1 epoch of Model A training within budget and resource limits without held-out leakage.
+- Protocol:
+  - Model A baseline (`ConventionalCNNBiGRU`, 163,940 parameters; adaptive fusion: OFF, transition: OFF, GRL: OFF).
+  - Seed: 42. Optimizer: Adam (`lr=1e-4`, `weight_decay=0.0`). Loss: RCCLoss / CrossEntropy with stage weights.
+  - Hardware: Exclusive lease on `cuda:0` (NVIDIA GeForce RTX 3060 12GB).
+  - Compute budget: `SMOKE` (1 epoch, batch size 4, sequence length $T=600$).
+  - Dataset: Audited preprocessing cache `prep_57738d534b` (Fingerprint: `8ae7a916a4cd5709`).
+  - Partitions: 31 train subjects (160 nights loaded), 5 validation subjects (28 nights loaded). Split hash: `bf33573623f47f3f`.
+  - Outer test protection: 11 held-out test subjects strictly protected (`test_set_accessed = False`, `assert_no_test_leakage` passed).
+- Runtime & Resource Consumption:
+  - Total cycle duration: 2.38 s.
+  - 1 epoch training duration: 1.20 s.
+  - Peak VRAM allocated: 267.1 MB (well below the 10,240 MB budget ceiling).
+- Metrics (1 epoch non-converged engineering verification):
+  - Train Loss: 1.3409
+  - Validation Loss: 1.2476
+  - Validation Macro-F1: 0.2855
+  - Validation Accuracy: 0.4496
+  - Cohen's Kappa ($\kappa$): 0.1255
+- Governance & Verification:
+  - Cryptographic HMAC execution token issued by `ResearchGovernor` at Level 4 (Supervised Execution).
+  - Scientific Reviewer passed all 10 experimental validity checks (Verdict: ACCEPT).
+  - GPU lock on `cuda:0` leased and cleanly released via context manager.
+  - Registry consistency verified: 13 records total (11 real scientific, 2 simulation/smoke non-evidence).
+  - Artifacts persisted: `research/experiments/EXP-016-SMOKE/config.json`, `research/experiments/EXP-016-SMOKE/metrics.json`.
+- Status: **SMOKE TEST COMPLETED SUCCESSFULLY [PASS]. READY FOR CONTROLLED BASELINE.**
+
 ## RESEARCH TRAJECTORY
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

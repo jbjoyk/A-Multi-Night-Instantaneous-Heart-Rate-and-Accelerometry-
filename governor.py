@@ -369,7 +369,8 @@ class ResearchGovernor:
         fixed_components: List[str],
         compute_budget: str,
         dry_run: bool = True,
-        human_approved: bool = False
+        human_approved: bool = False,
+        execution_mode: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Executes a complete governed experimentation cycle under active autonomy policies.
@@ -424,7 +425,8 @@ class ResearchGovernor:
             fixed_components=fixed_components,
             compute_budget=compute_budget,
             dry_run=dry_run,
-            governance_token=gov_token
+            governance_token=gov_token,
+            execution_mode=execution_mode
         )
         return result
 

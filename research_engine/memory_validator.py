@@ -122,6 +122,32 @@ class ResearchMemoryValidator:
                     f"SIMULATION SAFETY VIOLATION for {exp_id}: 'eligible_for_leaderboard' must be false for {mode_str}."
                 )
 
+        if mode_str == ExecutionMode.INFRASTRUCTURE_SMOKE_TEST.value:
+            if record.get("real_training") is not True:
+                raise MemoryCorruptionError(
+                    f"SMOKE TEST SAFETY VIOLATION for {exp_id}: 'real_training' must be true for INFRASTRUCTURE_SMOKE_TEST."
+                )
+            if record.get("scientific_evidence") is not False:
+                raise MemoryCorruptionError(
+                    f"SMOKE TEST SAFETY VIOLATION for {exp_id}: 'scientific_evidence' must be false for INFRASTRUCTURE_SMOKE_TEST."
+                )
+            if record.get("eligible_for_model_selection") is not False:
+                raise MemoryCorruptionError(
+                    f"SMOKE TEST SAFETY VIOLATION for {exp_id}: 'eligible_for_model_selection' must be false for INFRASTRUCTURE_SMOKE_TEST."
+                )
+            if record.get("eligible_for_research_conclusions") is not False:
+                raise MemoryCorruptionError(
+                    f"SMOKE TEST SAFETY VIOLATION for {exp_id}: 'eligible_for_research_conclusions' must be false for INFRASTRUCTURE_SMOKE_TEST."
+                )
+            if record.get("eligible_for_leaderboard") is not False:
+                raise MemoryCorruptionError(
+                    f"SMOKE TEST SAFETY VIOLATION for {exp_id}: 'eligible_for_leaderboard' must be false for INFRASTRUCTURE_SMOKE_TEST."
+                )
+            if record.get("simulation_tag") != "INFRASTRUCTURE SMOKE TEST — NON-EVIDENCE":
+                raise MemoryCorruptionError(
+                    f"SMOKE TEST SAFETY VIOLATION for {exp_id}: 'simulation_tag' must be 'INFRASTRUCTURE SMOKE TEST — NON-EVIDENCE'."
+                )
+
         if mode_str == ExecutionMode.REAL.value:
             if record.get("real_training") is not True:
                 raise MemoryCorruptionError(
@@ -215,6 +241,7 @@ class ResearchMemoryValidator:
         reals = [e for e in exps if str(e.get("execution_mode", "")).upper() == "REAL"]
         sims = [e for e in exps if str(e.get("execution_mode", "")).upper() == "SIMULATION"]
         dry_runs = [e for e in exps if str(e.get("execution_mode", "")).upper() == "DRY_RUN"]
+        smoke_tests = [e for e in exps if str(e.get("execution_mode", "")).upper() == "INFRASTRUCTURE_SMOKE_TEST"]
 
         eligible_real = [
             e for e in reals
@@ -228,6 +255,7 @@ class ResearchMemoryValidator:
         real_ids = [e["experiment_id"] for e in reals]
         sim_ids = [e["experiment_id"] for e in sims]
         dry_ids = [e["experiment_id"] for e in dry_runs]
+        smoke_ids = [e["experiment_id"] for e in smoke_tests]
         eligible_ids = [e["experiment_id"] for e in eligible_real]
         ineligible_ids = [e["experiment_id"] for e in ineligible]
 
@@ -239,10 +267,10 @@ class ResearchMemoryValidator:
         }
 
         # Check internal consistency
-        if total != (len(reals) + len(sims) + len(dry_runs)):
+        if total != (len(reals) + len(sims) + len(dry_runs) + len(smoke_tests)):
             raise MemoryCorruptionError(
                 f"Registry Count Inconsistency: Total records ({total}) != REAL ({len(reals)}) + "
-                f"SIMULATION ({len(sims)}) + DRY_RUN ({len(dry_runs)})"
+                f"SIMULATION ({len(sims)}) + DRY_RUN ({len(dry_runs)}) + SMOKE ({len(smoke_tests)})"
             )
 
         if len(eligible_real) != len(reals):
@@ -251,22 +279,24 @@ class ResearchMemoryValidator:
                 f"Registry Inconsistency: REAL experiments found with ineligible status: {uneligible_reals}"
             )
 
-        # Check that no simulation appears in eligible_ids
-        for sid in sim_ids:
+        # Check that no simulation or smoke test appears in eligible_ids
+        for sid in sim_ids + smoke_ids:
             if sid in eligible_ids:
-                raise MemoryCorruptionError(f"CRITICAL CONTAMINATION: Simulation record '{sid}' flagged as eligible!")
+                raise MemoryCorruptionError(f"CRITICAL CONTAMINATION: Non-evidence record '{sid}' flagged as eligible!")
 
         return {
             "total_records": total,
             "real_count": len(reals),
             "simulation_count": len(sims),
             "dry_run_count": len(dry_runs),
+            "smoke_count": len(smoke_tests),
             "eligible_count": len(eligible_real),
             "ineligible_count": len(ineligible),
             "all_ids": all_ids,
             "real_ids": real_ids,
             "simulation_ids": sim_ids,
             "dry_run_ids": dry_ids,
+            "smoke_ids": smoke_ids,
             "eligible_ids": eligible_ids,
             "ineligible_ids": ineligible_ids,
             "excluded_sequence": excluded_sequence

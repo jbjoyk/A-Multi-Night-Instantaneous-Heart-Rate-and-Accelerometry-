@@ -1,0 +1,23 @@
+{
+  "experiment_id": "EXP-016-SMOKE",
+  "hypothesis_id": "HYP-INFRA-016",
+  "research_question": "RQ-INFRA: Can the governed training lifecycle execute 1 real epoch on cuda:0 without violating safety gates?",
+  "hypothesis_statement": "Governed execution pipeline runs 1 epoch of Model A training within budget and resource limits without held-out leakage.",
+  "baseline_model": "Model A",
+  "exact_change": "Infrastructure smoke test 1 epoch on cuda:0",
+  "fixed_components": [
+    "HREncoder",
+    "BiGRU",
+    "RCCLoss"
+  ],
+  "success_metric": "Validation Macro-F1 parity (delta >= -0.010) on inner validation split",
+  "falsification_criteria": "Validation Macro-F1 degrades by > 0.010 or loss diverges.",
+  "confounders": [
+    "inter-subject physiological variance",
+    "class imbalance"
+  ],
+  "compute_budget": "SMOKE",
+  "target_device": "cuda:0",
+  "expected_vram_mb": 4000,
+  "is_controlled_ablation": true
+}

@@ -2,41 +2,27 @@
 
 ## Current task
 
-PHASE 2.1: FINAL HARDENING, CONSISTENCY FIX & PHASE-3 READINESS AUDIT COMPLETED under DEC-021.
-Conducted consolidated corrective hardening and readiness audit of the SLEEP autonomous research infrastructure:
-1. **Experiment Registry Consistency Programmatically Verified**:
-   - Total records in `research_memory.json`: **12**
-   - REAL experiments: **11** (`EXP-001`, `EXP-005` through `EXP-014`).
-   - SIMULATION records: **1** (`EXP-015-SIM`, explicitly flagged `SIMULATION — NON-EVIDENCE`).
-   - DRY_RUN records: **0**.
-   - Eligible real scientific experiments: **11**.
-   - Ineligible records: **1** (`EXP-015-SIM`).
-   - Historical sequence exclusions disclosed and explained: `EXP-002` (implementation only, no model trained), `EXP-003` (read-only baseline QC audit), `EXP-004` (staged optimizer search on legacy split archived in `outputs/sleep_optimizer_work_REAL/`).
-   - Added automated consistency tests in `tests/test_memory_integrity.py` asserting registry counts and flagging corruptions.
-2. **Simulation / Non-Evidence Boundaries Hardened**:
-   - Invariant enforced: Simulations can never enter leaderboards, become baselines, or be converted in-place to REAL.
-   - `DecisionEngine` raises `ValueError` if a candidate attempts to anchor against a simulation baseline.
-3. **Governor Numerical Bypass Resistance Hardened**:
-   - Enhanced numerical epoch extractor to block key-value formats (`epochs: 500`, `num_epochs=501`), scientific notation (`5e2`), negative epochs, and floating-point epochs (`10.5 epochs`, `500.0 epochs`).
-   - Enforced budget ceilings: `SMOKE` ($\le 2$), `SHORT` ($\le 10$), `STANDARD` ($\le 80$), `FULL` ($\le 80$).
-4. **Direct Runner Bypass & Token Cryptography Hardened**:
-   - HMAC execution tokens bind `experiment_id`, `compute_budget`, `autonomy_level`, `exact_change` hash, `dataset_fingerprint`, and unix timestamp.
-   - 3600-second expiration strictly enforced.
-   - Single-use replay protection tracked in `engine.used_tokens`.
-   - Tampered proposal detection: Any change to `exact_change` after token issuance raises `GovernanceBlockError`.
-5. **Frozen Test-Set Protection Gated Across All Roles**:
-   - Expanded protected roles in `DatasetGate.assert_no_test_leakage` to include `calibration`, `threshold_tuning`, `ensemble_weighting`, `model_selection`, `architecture_selection`.
-6. **Hardware & Safety Verification**:
-   - Dual-GPU resource manager tested with context manager release and stale lease garbage collection.
-7. **Capability & Governance Disclosures**:
-   - Disclosed `LITERATURE_RETRIEVAL_NOT_IMPLEMENTED`.
-   - Disclosed `LIVE_EXECUTION_INTERFACE_NOT_ENABLED`.
-   - Disclosed `GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED` (direct commit to `main`).
-8. **Phase-3 Smoke Test Specification Created**:
-   - Written to `PHASE3_SMOKE_TEST_SPEC.md` for 1 seed (42), 1 epoch, `SMOKE` budget on `cuda:0`, marked `EXECUTION STATUS: NOT EXECUTED`.
-9. **Zero Real Training Launched / Zero Test Set Access**:
-   - All 76 automated unit, attack, and safety tests pass cleanly (76/76).
-10. **Phase 3 Readiness Status**: `READY_FOR_PHASE_3` (with documented warnings/limitations).
+PHASE 3: GOVERNED INFRASTRUCTURE SMOKE TEST COMPLETED (`EXP-016-SMOKE`).
+Successfully diagnosed, implemented, and verified the governed live execution interface under explicit human authorization:
+1. **Live Execution Interface Enabled for Smoke Testing**:
+   - Resolved the `LIVE_EXECUTION_INTERFACE_NOT_ENABLED` blocker in `ExperimentEngine.execute_lifecycle_step`.
+   - Wired genuine 1-epoch execution for `ExecutionMode.INFRASTRUCTURE_SMOKE_TEST` on `cuda:0` under `resource_manager.lease`.
+   - Enforced non-evidence classification: `real_training = True`, `scientific_evidence = False`, `eligible_for_leaderboard = False`, `simulation_tag = "INFRASTRUCTURE SMOKE TEST — NON-EVIDENCE"`.
+2. **EXP-016-SMOKE Successfully Executed on Hardware**:
+   - Hardware: NVIDIA GeForce RTX 3060 12GB (`cuda:0`).
+   - Duration: 1 epoch trained in 1.20s (total cycle 2.38s).
+   - Peak VRAM: 267.1 MB (well below 10,240 MB budget limit).
+   - Dataset & Cache: Audited cache `prep_57738d534b` (Fingerprint: `8ae7a916a4cd5709`).
+   - Split: 31 train subjects (160 nights loaded), 5 validation subjects (28 nights loaded). Split hash: `bf33573623f47f3f`.
+   - Test-Set Protection: 11 held-out test subjects strictly protected (`test_set_accessed = False`, `assert_no_test_leakage` passed).
+   - Recorded metrics: Train Loss = 1.3409, Val Loss = 1.2476, Val Macro-F1 = 0.2855, Accuracy = 0.4496, Kappa = 0.1255.
+3. **Artifact and Institutional Memory Persistence**:
+   - Artifacts generated: `research/experiments/EXP-016-SMOKE/config.json`, `research/experiments/EXP-016-SMOKE/metrics.json`.
+   - Persisted as 13th entry in `research_memory.json`.
+   - Memory integrity & registry stats programmatically verified: 13 total records (11 real scientific, 1 simulation, 1 smoke test non-evidence).
+4. **Automated Test Suite**:
+   - 76/76 tests passed cleanly (0 failed, 0 warnings).
+5. **Readiness Status**: `READY_FOR_CONTROLLED_BASELINE`.
 
 ## Previous work
 

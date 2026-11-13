@@ -450,6 +450,40 @@
       "eligible_for_research_conclusions": false,
       "eligible_for_leaderboard": false,
       "simulation_tag": "SIMULATION \u2014 NON-EVIDENCE"
+    },
+    {
+      "experiment_id": "EXP-016-SMOKE",
+      "parent_experiment": "EXP-014",
+      "hypothesis": "Governed execution pipeline runs 1 epoch of Model A training within budget and resource limits without held-out leakage.",
+      "research_question": "RQ-INFRA: Can the governed training lifecycle execute 1 real epoch on cuda:0 without violating safety gates?",
+      "change": "Infrastructure smoke test 1 epoch on cuda:0",
+      "files_changed": [
+        "research/experiments/EXP-016-SMOKE/config.json"
+      ],
+      "git_commit": "7d06137",
+      "dataset_fingerprint": "8ae7a916a4cd5709",
+      "split_hash": "bf33573623f47f3f",
+      "seed": 42,
+      "budget": "SMOKE",
+      "gpu": "cuda:0",
+      "metrics": {
+        "macro_f1": 0.285480432566267,
+        "accuracy": 0.449604506232023,
+        "kappa": 0.12553220954186006
+      },
+      "execution_mode": "INFRASTRUCTURE_SMOKE_TEST",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": false,
+      "eligible_for_model_selection": false,
+      "eligible_for_research_conclusions": false,
+      "eligible_for_leaderboard": false,
+      "status": "COMPLETED",
+      "decision": "SIMULATION_NON_EVIDENCE",
+      "reason": "INFRASTRUCTURE SMOKE TEST \u2014 NON-EVIDENCE: 1-epoch execution verified on cuda:0; non-evidence.",
+      "review": "Scientific Review Verdict: ACCEPT (10/10 checks passed). All 10 experimental validity checks PASSED.",
+      "timestamp": "2026-11-14T00:08:05",
+      "simulation_tag": "INFRASTRUCTURE SMOKE TEST \u2014 NON-EVIDENCE"
     }
   ]
 }

@@ -21,6 +21,7 @@ class ExecutionMode(str, Enum):
     REAL = "REAL"
     SIMULATION = "SIMULATION"
     DRY_RUN = "DRY_RUN"
+    INFRASTRUCTURE_SMOKE_TEST = "INFRASTRUCTURE_SMOKE_TEST"
 
 
 class LifecycleStatus(str, Enum):
@@ -143,10 +144,10 @@ class ExperimentStateMachine:
         ex_mode = existing_mode.upper()
         att_mode = attempted_mode.upper()
 
-        if ex_mode in ("SIMULATION", "DRY_RUN") and att_mode == "REAL":
+        if ex_mode in ("SIMULATION", "DRY_RUN", "INFRASTRUCTURE_SMOKE_TEST") and att_mode == "REAL":
             raise ExecutionModeViolationError(
                 f"CRITICAL INTEGRITY VIOLATION for {experiment_id}: Cannot mutate execution_mode "
-                f"from '{existing_mode}' to 'REAL'. Simulated results can never be converted "
+                f"from '{existing_mode}' to 'REAL'. Simulated or smoke-test results can never be converted "
                 f"into real empirical scientific evidence. A real experiment requires independent "
                 f"execution under an approved protocol with a distinct experiment ID."
             )

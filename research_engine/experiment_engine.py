@@ -20,6 +20,7 @@ Hard Invariants:
 """
 
 import os
+import glob
 import json
 import time
 import hmac
@@ -27,6 +28,14 @@ import hashlib
 import subprocess
 from typing import Dict, List, Optional, Any
 import numpy as np
+import torch
+from torch.utils.data import DataLoader
+
+from exp014_models import build_exp014_model
+from slamss_ifs_baseline import make_reproducible_split
+from slamss_ifs_train import load_night_features
+from run_controlled_experiment import ControlledSleepDataset
+from run_exp013_attribution import evaluate_validation_sweep_exp013
 
 from dataset_gate import DatasetGate, TestSetLeakageError
 from evaluator import SleepEvaluator, TestSetProtectionViolation
@@ -177,7 +186,8 @@ class ExperimentEngine:
         dry_run: bool = True,
         governance_token: Optional[str] = None,
         simulate_failure: bool = False,
-        simulate_blocked: bool = False
+        simulate_blocked: bool = False,
+        execution_mode: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Executes one full controlled experimentation cycle:
@@ -187,7 +197,16 @@ class ExperimentEngine:
         cycle_log.append(f"Starting Governed Experiment Cycle for {experiment_id} (Hypothesis: {hypothesis.hypothesis_id})")
 
         # Determine execution mode upfront
-        exec_mode = ExecutionMode.DRY_RUN.value if dry_run else ExecutionMode.REAL.value
+        if execution_mode is not None:
+            exec_mode = execution_mode
+        elif dry_run:
+            exec_mode = ExecutionMode.DRY_RUN.value
+        elif compute_budget == "SMOKE" or "SMOKE" in experiment_id:
+            exec_mode = ExecutionMode.INFRASTRUCTURE_SMOKE_TEST.value
+        else:
+            exec_mode = ExecutionMode.REAL.value
+
+        is_smoke_test = (exec_mode == ExecutionMode.INFRASTRUCTURE_SMOKE_TEST.value)
         is_simulation = dry_run
 
         # 1. PROPOSE
@@ -365,6 +384,13 @@ class ExperimentEngine:
         ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
         current_status = next_status
 
+        eval_metrics = None
+        smoke_train_loss = None
+        smoke_val_loss = None
+        peak_vram_mb = 0.0
+        test_set_accessed = False
+        split_hash = "inner_val_split_seed42"
+
         try:
             with self.resource_manager.lease(experiment_id, compute_budget) as allocated_device:
                 cycle_log.append(f"Step 6 [RUN]: Leased device {allocated_device} for budget {compute_budget}.")
@@ -374,8 +400,116 @@ class ExperimentEngine:
                 if dry_run:
                     time.sleep(0.05)  # Simulated execution
                     cycle_log.append("Step 6 [RUN]: Dry-run simulation completed successfully.")
+                elif is_smoke_test:
+                    cycle_log.append(f"Step 6 [RUN]: Initializing genuine 1-epoch infrastructure smoke test on {allocated_device}...")
+                    dev = torch.device(allocated_device if torch.cuda.is_available() and allocated_device != "cpu" else "cpu")
+
+                    # 1. Subject partitions (paper split: 31 train, 5 val, 11 test)
+                    all_mat_files = sorted(glob.glob(os.path.join(self.dataset_gate.dataset_dir, "Bidslab*", "*", "labels.mat")))
+                    dataset_nights = [(f.split(os.sep)[-3], f.split(os.sep)[-2].replace("Night ", "")) for f in all_mat_files]
+                    subjects = sorted(list(set(s for s, _ in dataset_nights)))
+                    splits = make_reproducible_split(subjects, split_type="paper", seed=0)
+                    train_subs = splits["train"]
+                    val_subs = splits["val"]
+                    test_subs = splits["test"]
+
+                    # 2. Strict dataset admission & test leakage gates
+                    split_info = self.dataset_gate.verify_split(train_subs, val_subs, test_subs, strict_cohort_coverage=True)
+                    split_hash = split_info["split_hash"]
+                    self.dataset_gate.assert_no_test_leakage("train", train_subs, test_subs)
+                    self.dataset_gate.assert_no_test_leakage("validation", val_subs, test_subs)
+                    cycle_log.append(f"Step 6 [RUN]: Dataset admission verified (Split Hash: {split_hash}).")
+
+                    # 3. Load preprocessed night records from cache
+                    train_records = []
+                    val_records = []
+                    for s, n in dataset_nights:
+                        if s in set(train_subs):
+                            rec = load_night_features(self.dataset_gate.cache_dir, s, n)
+                            if rec is not None:
+                                train_records.append(rec)
+                        elif s in set(val_subs):
+                            rec = load_night_features(self.dataset_gate.cache_dir, s, n)
+                            if rec is not None:
+                                val_records.append(rec)
+
+                    cycle_log.append(
+                        f"Step 6 [RUN]: Loaded {len(train_records)} train nights (31 subjects) and {len(val_records)} val nights (5 subjects)."
+                    )
+
+                    # 4. Construct DataLoaders
+                    subject_to_idx = {s: i for i, s in enumerate(train_subs)}
+                    train_ds = ControlledSleepDataset(train_records, subject_to_idx=subject_to_idx, seq_len=600)
+                    val_ds = ControlledSleepDataset(val_records, subject_to_idx=subject_to_idx, seq_len=600)
+
+                    train_loader = DataLoader(train_ds, batch_size=4, shuffle=True, num_workers=0)
+                    val_loader = DataLoader(val_ds, batch_size=4, shuffle=False, num_workers=0)
+
+                    # 5. Deterministic Seed & Model Instantiation
+                    torch.manual_seed(42)
+                    np.random.seed(42)
+                    if torch.cuda.is_available():
+                        torch.cuda.manual_seed_all(42)
+                        torch.backends.cudnn.deterministic = True
+                        torch.backends.cudnn.benchmark = False
+
+                    model = build_exp014_model("A", n_train_subjects=len(train_subs), loss_type="rccloss").to(dev)
+                    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=0.0)
+
+                    # 6. Execute exactly 1 training epoch
+                    model.train()
+                    running_loss = 0.0
+                    n_batches = 0
+                    t_ep_start = time.time()
+                    for batch in train_loader:
+                        x_ihr = batch["ihr"].to(dev)
+                        x_acc = batch["accel"].to(dev)
+                        x_meta = batch["meta"].to(dev)
+                        targets = batch["y"].to(dev)
+                        mask = batch["mask"].to(dev)
+                        subj_idx = batch["subject_idx"].to(dev)
+
+                        optimizer.zero_grad()
+                        out = model(x_ihr, x_acc, x_meta, targets=targets, mask=mask, subject_idx=subj_idx)
+                        loss = out["total_loss"]
+                        loss.backward()
+                        optimizer.step()
+
+                        running_loss += loss.item()
+                        n_batches += 1
+
+                    smoke_train_loss = running_loss / max(1, n_batches)
+                    ep_time = time.time() - t_ep_start
+                    peak_vram_mb = torch.cuda.max_memory_allocated(dev) / (1024 * 1024) if dev.type == "cuda" else 0.0
+
+                    if peak_vram_mb > 10240:
+                        raise ResourceAllocationError(f"VRAM ceiling exceeded: {peak_vram_mb:.1f} MB > 10240 MB")
+
+                    cycle_log.append(
+                        f"Step 6 [RUN]: 1 epoch completed in {ep_time:.2f}s (Train Loss: {smoke_train_loss:.4f}, Peak VRAM: {peak_vram_mb:.1f} MB)."
+                    )
+
+                    # 7. Validation evaluation on 5 validation subjects (zero test access!)
+                    cycle_log.append("Step 7 [EVALUATE]: Evaluating model on 5 validation subjects...")
+                    val_eval_results = evaluate_validation_sweep_exp013(model, val_loader, dev)
+                    smoke_val_loss = float(val_eval_results["val_loss"])
+                    eval_metrics = {
+                        "primary": {"macro_f1": float(val_eval_results["macro_f1"])},
+                        "secondary": {
+                            "accuracy": float(val_eval_results["accuracy"]),
+                            "kappa": float(val_eval_results["kappa"]),
+                            "val_loss": smoke_val_loss,
+                            "rem_f1": float(val_eval_results.get("rem_f1", 0.0))
+                        }
+                    }
+                    test_set_accessed = False
+                    cycle_log.append(
+                        f"Step 7 [EVALUATE]: Validation Macro-F1 = {eval_metrics['primary']['macro_f1']:.4f}, "
+                        f"Accuracy = {eval_metrics['secondary']['accuracy']:.4f}, Kappa = {eval_metrics['secondary']['kappa']:.4f}. "
+                        f"(Test set accessed: {test_set_accessed})"
+                    )
                 else:
-                    raise NotImplementedError("LIVE_EXECUTION_INTERFACE_NOT_ENABLED: Live model training is disabled during Phase 2 audit.")
+                    raise NotImplementedError("LIVE_EXECUTION_INTERFACE_NOT_ENABLED: Live model training is disabled.")
         except Exception as e:
             current_status = LifecycleStatus.FAILED
             record = {
@@ -386,7 +520,7 @@ class ExperimentEngine:
                 "change": exact_change,
                 "git_commit": git_commit,
                 "dataset_fingerprint": ds_fp,
-                "split_hash": "inner_val_split_seed42",
+                "split_hash": split_hash,
                 "seed": 42,
                 "budget": compute_budget,
                 "gpu": "none",
@@ -412,18 +546,19 @@ class ExperimentEngine:
         ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
         current_status = next_status
 
-        # Simulated evaluation on inner validation partition
-        rng = np.random.RandomState(42)
-        n_val = 1000
-        y_val_true = rng.randint(0, 4, size=n_val)
-        y_val_pred = y_val_true.copy()
-        y_val_pred[rng.choice(n_val, size=320, replace=False)] = rng.randint(0, 4, size=320)
-        
-        eval_metrics = self.evaluator.evaluate_predictions(y_val_true, y_val_pred)
-        cycle_log.append(
-            f"Step 7 [EVALUATE]: Validation Macro-F1 = {eval_metrics['primary']['macro_f1']:.4f}, "
-            f"Accuracy = {eval_metrics['secondary']['accuracy']:.4f}."
-        )
+        if eval_metrics is None:
+            # Simulated evaluation on inner validation partition
+            rng = np.random.RandomState(42)
+            n_val = 1000
+            y_val_true = rng.randint(0, 4, size=n_val)
+            y_val_pred = y_val_true.copy()
+            y_val_pred[rng.choice(n_val, size=320, replace=False)] = rng.randint(0, 4, size=320)
+            
+            eval_metrics = self.evaluator.evaluate_predictions(y_val_true, y_val_pred)
+            cycle_log.append(
+                f"Step 7 [EVALUATE]: Validation Macro-F1 = {eval_metrics['primary']['macro_f1']:.4f}, "
+                f"Accuracy = {eval_metrics['secondary']['accuracy']:.4f}."
+            )
 
         # Baseline metrics (Model A reference from EXP-014: Macro-F1 = 0.6658, Acc = 0.6663)
         baseline_metrics = {
@@ -448,7 +583,7 @@ class ExperimentEngine:
             candidate_params=162325,
             baseline_vram_mb=4000,
             candidate_vram_mb=3900,
-            is_simulation=is_simulation
+            is_simulation=is_simulation or is_smoke_test
         )
         decision = outcome["decision"]
         cycle_log.append(f"Step 8 [DECISION]: Verdict = {decision}. Rationale: {outcome['rationale']}")
@@ -457,6 +592,26 @@ class ExperimentEngine:
         next_status = LifecycleStatus.MEMORY
         ExperimentStateMachine.validate_transition(current_status, next_status, experiment_id)
         current_status = next_status
+
+        # Save artifacts to experiment directory
+        exp_metrics = {
+            "experiment_id": experiment_id,
+            "execution_mode": exec_mode,
+            "epoch": 1 if is_smoke_test else 0,
+            "train_loss": float(smoke_train_loss) if smoke_train_loss is not None else None,
+            "val_loss": float(smoke_val_loss) if smoke_val_loss is not None else None,
+            "macro_f1": float(eval_metrics["primary"]["macro_f1"]),
+            "accuracy": float(eval_metrics["secondary"]["accuracy"]),
+            "kappa": float(eval_metrics["secondary"]["kappa"]),
+            "peak_vram_mb": float(peak_vram_mb),
+            "test_set_accessed": False,
+            "scientific_evidence": False if is_smoke_test else (not is_simulation)
+        }
+        with open(os.path.join(exp_dir, "metrics.json"), "w") as f:
+            json.dump(exp_metrics, f, indent=2)
+
+        with open(os.path.join(exp_dir, "config.json"), "w") as f:
+            json.dump(spec.to_dict(), f, indent=2)
 
         record = {
             "experiment_id": experiment_id,
@@ -467,32 +622,37 @@ class ExperimentEngine:
             "files_changed": [f"research/experiments/{experiment_id}/config.json"],
             "git_commit": git_commit,
             "dataset_fingerprint": ds_fp,
-            "split_hash": "inner_val_split_seed42",
+            "split_hash": split_hash,
             "seed": 42,
             "budget": compute_budget,
             "gpu": allocated_device,
             "metrics": {
-                "macro_f1": eval_metrics["primary"]["macro_f1"],
-                "accuracy": eval_metrics["secondary"]["accuracy"],
-                "kappa": eval_metrics["secondary"]["kappa"]
+                "macro_f1": float(eval_metrics["primary"]["macro_f1"]),
+                "accuracy": float(eval_metrics["secondary"]["accuracy"]),
+                "kappa": float(eval_metrics["secondary"]["kappa"])
             },
             "execution_mode": exec_mode,
             "lifecycle_status": LifecycleStatus.COMPLETED.value,
-            "real_training": not is_simulation,
-            "scientific_evidence": not is_simulation,
-            "eligible_for_model_selection": not is_simulation,
-            "eligible_for_research_conclusions": not is_simulation,
-            "eligible_for_leaderboard": not is_simulation,
+            "real_training": is_smoke_test or (not is_simulation),
+            "scientific_evidence": False if is_smoke_test else (not is_simulation),
+            "eligible_for_model_selection": False if is_smoke_test else (not is_simulation),
+            "eligible_for_research_conclusions": False if is_smoke_test else (not is_simulation),
+            "eligible_for_leaderboard": False if is_smoke_test else (not is_simulation),
             "status": LifecycleStatus.COMPLETED.value,
-            "decision": "SIMULATION_NON_EVIDENCE" if is_simulation else decision,
+            "decision": "SIMULATION_NON_EVIDENCE" if (is_simulation or is_smoke_test) else decision,
             "reason": (
-                f"SIMULATION — NON-EVIDENCE: {outcome['rationale']}"
-                if is_simulation else outcome["rationale"]
+                "INFRASTRUCTURE SMOKE TEST — NON-EVIDENCE: 1-epoch execution verified on cuda:0; non-evidence."
+                if is_smoke_test else (
+                    f"SIMULATION — NON-EVIDENCE: {outcome['rationale']}"
+                    if is_simulation else outcome["rationale"]
+                )
             ),
-            "review": review["summary"],
+            "review": review.get("summary", f"Scientific Review Verdict: {review.get('verdict')} ({review.get('checks_passed')}/10 checks passed)."),
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S")
         }
-        if is_simulation:
+        if is_smoke_test:
+            record["simulation_tag"] = "INFRASTRUCTURE SMOKE TEST — NON-EVIDENCE"
+        elif is_simulation:
             record["simulation_tag"] = "SIMULATION — NON-EVIDENCE"
 
         # Validate with memory validator before persisting
