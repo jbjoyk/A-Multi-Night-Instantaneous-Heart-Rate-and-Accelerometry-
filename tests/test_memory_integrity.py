@@ -125,3 +125,69 @@ def test_invalid_lifecycle_status_raises(valid_record):
     with pytest.raises(MemoryCorruptionError) as exc_info:
         ResearchMemoryValidator.validate_record(bad_stat)
     assert "Invalid lifecycle_status" in str(exc_info.value)
+
+
+def test_registry_exact_counts_and_consistency():
+    import os
+    import json
+
+    mem_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "research_memory.json"
+    )
+    with open(mem_path, "r") as f:
+        memory = json.load(f)
+
+    # 1. Must pass full consistency audit without exceptions
+    ResearchMemoryValidator.assert_registry_consistency(memory)
+
+    # 2. Programmatically verified counts
+    stats = ResearchMemoryValidator.compute_registry_statistics(memory)
+    assert stats["total_records"] == 12
+    assert stats["real_count"] == 11
+    assert stats["simulation_count"] == 1
+    assert stats["dry_run_count"] == 0
+    assert stats["eligible_count"] == 11
+    assert stats["ineligible_count"] == 1
+
+    expected_reals = [
+        "EXP-001", "EXP-005", "EXP-006", "EXP-007", "EXP-008",
+        "EXP-009", "EXP-010", "EXP-011", "EXP-012", "EXP-013", "EXP-014"
+    ]
+    assert stats["real_ids"] == expected_reals
+    assert stats["simulation_ids"] == ["EXP-015-SIM"]
+    assert stats["ineligible_ids"] == ["EXP-015-SIM"]
+
+    # 3. Disclosed missing sequence IDs
+    assert set(stats["excluded_sequence"].keys()) == {"EXP-002", "EXP-003", "EXP-004"}
+
+
+def test_registry_inconsistency_detection():
+    import os
+    import json
+
+    mem_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "research_memory.json"
+    )
+    with open(mem_path, "r") as f:
+        memory = json.load(f)
+
+    # Inconsistency A: Contaminate simulation by marking eligible_for_leaderboard = True
+    corrupt_a = copy.deepcopy(memory)
+    for exp in corrupt_a["experiments"]:
+        if exp["experiment_id"] == "EXP-015-SIM":
+            exp["eligible_for_leaderboard"] = True
+    with pytest.raises(MemoryCorruptionError) as exc_a:
+        ResearchMemoryValidator.assert_registry_consistency(corrupt_a)
+    assert "SIMULATION SAFETY VIOLATION" in str(exc_a.value) or "CRITICAL CONTAMINATION" in str(exc_a.value)
+
+    # Inconsistency B: Demote a REAL experiment to ineligible
+    corrupt_b = copy.deepcopy(memory)
+    for exp in corrupt_b["experiments"]:
+        if exp["experiment_id"] == "EXP-014":
+            exp["eligible_for_leaderboard"] = False
+    with pytest.raises(MemoryCorruptionError) as exc_b:
+        ResearchMemoryValidator.assert_registry_consistency(corrupt_b)
+    assert "REAL experiments found with ineligible status" in str(exc_b.value)
+

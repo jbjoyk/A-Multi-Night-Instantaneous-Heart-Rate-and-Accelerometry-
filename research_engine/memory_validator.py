@@ -205,6 +205,80 @@ class ResearchMemoryValidator:
         ]
 
     @classmethod
+    def compute_registry_statistics(cls, memory: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Programmatically calculates exact counts, modes, and eligibility across research memory.
+        Identifies excluded historical IDs and detects inconsistencies.
+        """
+        exps = memory.get("experiments", [])
+        total = len(exps)
+        reals = [e for e in exps if str(e.get("execution_mode", "")).upper() == "REAL"]
+        sims = [e for e in exps if str(e.get("execution_mode", "")).upper() == "SIMULATION"]
+        dry_runs = [e for e in exps if str(e.get("execution_mode", "")).upper() == "DRY_RUN"]
+
+        eligible_real = [
+            e for e in reals
+            if e.get("eligible_for_leaderboard") is True
+            and e.get("scientific_evidence") is True
+            and e.get("real_training") is True
+        ]
+        ineligible = [e for e in exps if e not in eligible_real]
+
+        all_ids = [e["experiment_id"] for e in exps]
+        real_ids = [e["experiment_id"] for e in reals]
+        sim_ids = [e["experiment_id"] for e in sims]
+        dry_ids = [e["experiment_id"] for e in dry_runs]
+        eligible_ids = [e["experiment_id"] for e in eligible_real]
+        ineligible_ids = [e["experiment_id"] for e in ineligible]
+
+        # Audit excluded numerical sequence IDs between EXP-001 and EXP-014
+        excluded_sequence = {
+            "EXP-002": "Implementation scaffold only; syntax compiled, no training or evaluation was performed.",
+            "EXP-003": "Read-only QC audit of prior baseline artifacts; no independent trained model registered.",
+            "EXP-004": "Controlled optimizer search protocol setup; no standalone trained checkpoint archived in registry."
+        }
+
+        # Check internal consistency
+        if total != (len(reals) + len(sims) + len(dry_runs)):
+            raise MemoryCorruptionError(
+                f"Registry Count Inconsistency: Total records ({total}) != REAL ({len(reals)}) + "
+                f"SIMULATION ({len(sims)}) + DRY_RUN ({len(dry_runs)})"
+            )
+
+        if len(eligible_real) != len(reals):
+            uneligible_reals = [e["experiment_id"] for e in reals if e not in eligible_real]
+            raise MemoryCorruptionError(
+                f"Registry Inconsistency: REAL experiments found with ineligible status: {uneligible_reals}"
+            )
+
+        # Check that no simulation appears in eligible_ids
+        for sid in sim_ids:
+            if sid in eligible_ids:
+                raise MemoryCorruptionError(f"CRITICAL CONTAMINATION: Simulation record '{sid}' flagged as eligible!")
+
+        return {
+            "total_records": total,
+            "real_count": len(reals),
+            "simulation_count": len(sims),
+            "dry_run_count": len(dry_runs),
+            "eligible_count": len(eligible_real),
+            "ineligible_count": len(ineligible),
+            "all_ids": all_ids,
+            "real_ids": real_ids,
+            "simulation_ids": sim_ids,
+            "dry_run_ids": dry_ids,
+            "eligible_ids": eligible_ids,
+            "ineligible_ids": ineligible_ids,
+            "excluded_sequence": excluded_sequence
+        }
+
+    @classmethod
+    def assert_registry_consistency(cls, memory: Dict[str, Any]) -> None:
+        """Runs full consistency audit over memory and fails loudly on any contradiction."""
+        cls.validate_memory_integrity(memory)
+        cls.compute_registry_statistics(memory)
+
+    @classmethod
     def get_leaderboard(cls, memory: Dict[str, Any], sort_by: str = "macro_f1") -> List[Dict[str, Any]]:
         """
         Returns ranked leaderboard composed STRICTLY of real empirical experiments.

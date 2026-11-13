@@ -2,16 +2,41 @@
 
 ## Current task
 
-PHASE 2: ADVERSARIAL AUDIT AND HARDENING COMPLETED under DEC-021.
-Conducted comprehensive security and scientific integrity audit of the SLEEP autonomous research infrastructure.
-1. Decoupled execution mode (`REAL`, `SIMULATION`, `DRY_RUN`) from lifecycle status (`PROPOSED`..`MEMORY`).
-2. Isolated `EXP-015-SIM` as `SIMULATION — NON-EVIDENCE` with explicit non-evidence flags; verified complete exclusion from leaderboards, model selection, and scientific baselines.
-3. Hardened Research Governor against bypass Attacks A through L (numerical >= 500 epoch detection, budget ceilings, Level 4/5 escalation gating, HMAC anti-bypass execution tokens, invalid ID validation, dataset/split integrity).
-4. Implemented 11-stage Experiment State Machine (`state_machine.py`) preventing illegal state transitions and in-place mode mutation.
-5. Implemented Research Memory Validator (`memory_validator.py`) detecting schema corruption, duplicate IDs, impossible metrics, and provenance gaps.
-6. Hardened GPU Resource Manager with safe context manager leases, strict device bounds checking, and stale lease recovery.
-7. Disclosed capabilities honestly: `LITERATURE_RETRIEVAL_NOT_IMPLEMENTED` and `LIVE_EXECUTION_INTERFACE_NOT_ENABLED`.
-8. Complete test suite expanded from 22 to 67 tests; all 67 tests pass. Zero real model training launched; zero test set access.
+PHASE 2.1: FINAL HARDENING, CONSISTENCY FIX & PHASE-3 READINESS AUDIT COMPLETED under DEC-021.
+Conducted consolidated corrective hardening and readiness audit of the SLEEP autonomous research infrastructure:
+1. **Experiment Registry Consistency Programmatically Verified**:
+   - Total records in `research_memory.json`: **12**
+   - REAL experiments: **11** (`EXP-001`, `EXP-005` through `EXP-014`).
+   - SIMULATION records: **1** (`EXP-015-SIM`, explicitly flagged `SIMULATION — NON-EVIDENCE`).
+   - DRY_RUN records: **0**.
+   - Eligible real scientific experiments: **11**.
+   - Ineligible records: **1** (`EXP-015-SIM`).
+   - Historical sequence exclusions disclosed and explained: `EXP-002` (implementation only, no model trained), `EXP-003` (read-only baseline QC audit), `EXP-004` (staged optimizer search on legacy split archived in `outputs/sleep_optimizer_work_REAL/`).
+   - Added automated consistency tests in `tests/test_memory_integrity.py` asserting registry counts and flagging corruptions.
+2. **Simulation / Non-Evidence Boundaries Hardened**:
+   - Invariant enforced: Simulations can never enter leaderboards, become baselines, or be converted in-place to REAL.
+   - `DecisionEngine` raises `ValueError` if a candidate attempts to anchor against a simulation baseline.
+3. **Governor Numerical Bypass Resistance Hardened**:
+   - Enhanced numerical epoch extractor to block key-value formats (`epochs: 500`, `num_epochs=501`), scientific notation (`5e2`), negative epochs, and floating-point epochs (`10.5 epochs`, `500.0 epochs`).
+   - Enforced budget ceilings: `SMOKE` ($\le 2$), `SHORT` ($\le 10$), `STANDARD` ($\le 80$), `FULL` ($\le 80$).
+4. **Direct Runner Bypass & Token Cryptography Hardened**:
+   - HMAC execution tokens bind `experiment_id`, `compute_budget`, `autonomy_level`, `exact_change` hash, `dataset_fingerprint`, and unix timestamp.
+   - 3600-second expiration strictly enforced.
+   - Single-use replay protection tracked in `engine.used_tokens`.
+   - Tampered proposal detection: Any change to `exact_change` after token issuance raises `GovernanceBlockError`.
+5. **Frozen Test-Set Protection Gated Across All Roles**:
+   - Expanded protected roles in `DatasetGate.assert_no_test_leakage` to include `calibration`, `threshold_tuning`, `ensemble_weighting`, `model_selection`, `architecture_selection`.
+6. **Hardware & Safety Verification**:
+   - Dual-GPU resource manager tested with context manager release and stale lease garbage collection.
+7. **Capability & Governance Disclosures**:
+   - Disclosed `LITERATURE_RETRIEVAL_NOT_IMPLEMENTED`.
+   - Disclosed `LIVE_EXECUTION_INTERFACE_NOT_ENABLED`.
+   - Disclosed `GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED` (direct commit to `main`).
+8. **Phase-3 Smoke Test Specification Created**:
+   - Written to `PHASE3_SMOKE_TEST_SPEC.md` for 1 seed (42), 1 epoch, `SMOKE` budget on `cuda:0`, marked `EXECUTION STATUS: NOT EXECUTED`.
+9. **Zero Real Training Launched / Zero Test Set Access**:
+   - All 76 automated unit, attack, and safety tests pass cleanly (76/76).
+10. **Phase 3 Readiness Status**: `READY_FOR_PHASE_3` (with documented warnings/limitations).
 
 ## Previous work
 

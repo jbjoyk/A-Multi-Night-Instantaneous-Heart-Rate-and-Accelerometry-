@@ -17,6 +17,9 @@ Attacks:
 """
 
 import pytest
+import time
+import hashlib
+import hmac
 from governor import ResearchGovernor, AutonomyLevel, GovernanceBlockError
 from research_engine.experiment_designer import ExperimentDesigner
 from research_engine.experiment_engine import ExperimentEngine
@@ -27,6 +30,19 @@ from dataset_gate import SplitDisjointnessError, DatasetIntegrityError
 @pytest.fixture
 def governor():
     return ResearchGovernor()
+
+
+@pytest.fixture
+def isolated_engine(tmp_path, governor):
+    import json
+    mem_file = str(tmp_path / "test_memory.json")
+    with open(mem_file, "w") as f:
+        json.dump({"experiments": []}, f)
+    return ExperimentEngine(
+        base_dir=str(tmp_path),
+        memory_path=mem_file,
+        dataset_gate=governor.dataset_gate
+    )
 
 
 @pytest.fixture
@@ -135,13 +151,12 @@ def test_attack_d_unauthorized_level_5(governor):
 
 
 # Attack E: Direct runner bypass
-def test_attack_e_direct_runner_bypass(governor):
-    engine = ExperimentEngine()
+def test_attack_e_direct_runner_bypass(governor, isolated_engine):
     hyp = HypothesisAgent().get_grounded_candidates()[0]
 
     # Calling engine.execute_lifecycle_step directly without Governor token MUST raise GovernanceBlockError
     with pytest.raises(GovernanceBlockError) as exc_info:
-        engine.execute_lifecycle_step(
+        isolated_engine.execute_lifecycle_step(
             hypothesis=hyp,
             experiment_id="EXP-BYPASS-001",
             parent_experiment="EXP-014",
@@ -156,17 +171,16 @@ def test_attack_e_direct_runner_bypass(governor):
 
 
 # Attack F: Fake approval token
-def test_attack_f_fake_approval_token(governor):
+def test_attack_f_fake_approval_token(governor, isolated_engine):
     # Fake human token
     with pytest.raises(GovernanceBlockError) as exc_info:
         governor.escalate_autonomy(AutonomyLevel.LEVEL_4_SUPERVISED_EXECUTION, human_approval_token="FORGED_SECRET_123")
     assert "REJECTED: Invalid or missing human authorization token" in str(exc_info.value)
 
     # Fake governor execution token
-    engine = ExperimentEngine()
     hyp = HypothesisAgent().get_grounded_candidates()[0]
     with pytest.raises(GovernanceBlockError) as exc_info2:
-        engine.execute_lifecycle_step(
+        isolated_engine.execute_lifecycle_step(
             hypothesis=hyp,
             experiment_id="EXP-BYPASS-002",
             parent_experiment="EXP-014",
@@ -289,3 +303,204 @@ def test_attack_l_invalid_budget_and_negative_epochs(governor, designer, valid_s
     assert safety_exceed["allowed"] is False
     assert safety_exceed["status"] == "BLOCKED_BY_RESEARCH_GOVERNANCE"
     assert "exceeds ceiling" in safety_exceed["reason"]
+
+
+# Numerical Bypass: Hidden and key-value epoch declarations
+def test_attack_b_hidden_and_keyvalue_epochs(governor, designer):
+    hidden_variants = [
+        "epochs: 500",
+        "num_epochs=501",
+        "max_epochs: 1000",
+        "5e2 epochs"
+    ]
+    for variant in hidden_variants:
+        spec = designer.design_experiment(
+            experiment_id="EXP-980",
+            hypothesis_id="HYP-001",
+            research_question="RQ",
+            hypothesis_statement=f"Probe with hidden declaration: {variant}",
+            baseline_model="Model A",
+            exact_change=f"Configuration includes {variant}",
+            fixed_components=["HREncoder", "BiGRU"],
+            success_metric="Macro-F1",
+            falsification_criteria="Loss",
+            confounders=["v"],
+            compute_budget="STANDARD"
+        )
+        safety = governor.check_experiment_safety(spec, human_approved=True)
+        assert safety["allowed"] is False
+        assert safety["status"] == "BLOCKED_BY_RESEARCH_GOVERNANCE"
+
+
+# Numerical Bypass: Floating-point epoch declarations
+def test_attack_b_floating_point_epochs(governor, designer, valid_spec):
+    # Float in text
+    spec_float = designer.design_experiment(
+        experiment_id="EXP-981",
+        hypothesis_id="HYP-001",
+        research_question="RQ",
+        hypothesis_statement="Probe with float epochs: 10.5 epochs",
+        baseline_model="Model A",
+        exact_change="Train for 10.5 epochs",
+        fixed_components=["HREncoder", "BiGRU"],
+        success_metric="Macro-F1",
+        falsification_criteria="Loss",
+        confounders=["v"],
+        compute_budget="SHORT"
+    )
+    safety_float = governor.check_experiment_safety(spec_float, human_approved=True)
+    assert safety_float["allowed"] is False
+    assert safety_float["status"] == "BLOCKED_BY_RESEARCH_GOVERNANCE"
+    assert "Floating-point epoch" in safety_float["reason"]
+
+    # Float requested_epochs parameter
+    safety_param = governor.check_experiment_safety(valid_spec, human_approved=True, requested_epochs=5.5)
+    assert safety_param["allowed"] is False
+    assert safety_param["status"] == "BLOCKED_BY_RESEARCH_GOVERNANCE"
+    assert "Floating-point epoch" in safety_param["reason"]
+
+
+# Numerical Bypass: Conflicting epoch declarations taking maximum
+def test_attack_b_conflicting_epoch_declarations(governor, designer):
+    # Mentions 10 epochs (legal for SHORT) but also 80 epochs (illegal for SHORT ceiling of 10)
+    spec_conflict = designer.design_experiment(
+        experiment_id="EXP-982",
+        hypothesis_id="HYP-001",
+        research_question="RQ",
+        hypothesis_statement="Initial test mentions 10 epochs but later declares 80 epochs",
+        baseline_model="Model A",
+        exact_change="Start at 10 epochs and extend to 80 epochs",
+        fixed_components=["HREncoder", "BiGRU"],
+        success_metric="Macro-F1",
+        falsification_criteria="Loss",
+        confounders=["v"],
+        compute_budget="SHORT"
+    )
+    safety_conflict = governor.check_experiment_safety(spec_conflict, human_approved=True)
+    assert safety_conflict["allowed"] is False
+    assert safety_conflict["status"] == "BLOCKED_BY_RESEARCH_GOVERNANCE"
+    assert "exceeds ceiling" in safety_conflict["reason"]
+
+
+# Token Security: Reused token blocked
+def test_attack_f_reused_token_blocked(governor, isolated_engine):
+    hyp = HypothesisAgent().get_grounded_candidates()[0]
+    ds_fp = governor.dataset_gate.compute_dataset_fingerprint()
+
+    token = governor.generate_governance_token("EXP-983", "SHORT", exact_change="Change", dataset_fingerprint=ds_fp)
+
+    # First run succeeds
+    isolated_engine.execute_lifecycle_step(
+        hypothesis=hyp,
+        experiment_id="EXP-983",
+        parent_experiment="EXP-014",
+        baseline_model="Model A",
+        exact_change="Change",
+        fixed_components=["HREncoder", "BiGRU"],
+        compute_budget="SHORT",
+        dry_run=True,
+        governance_token=token
+    )
+
+    # Replay attempt with same token must fail
+    with pytest.raises(GovernanceBlockError) as exc_info:
+        isolated_engine.execute_lifecycle_step(
+            hypothesis=hyp,
+            experiment_id="EXP-983",
+            parent_experiment="EXP-014",
+            baseline_model="Model A",
+            exact_change="Change",
+            fixed_components=["HREncoder", "BiGRU"],
+            compute_budget="SHORT",
+            dry_run=True,
+            governance_token=token
+        )
+    assert "REUSED_GOVERNOR_TOKEN" in str(exc_info.value)
+
+
+# Token Security: Altered proposal after token generation blocked
+def test_attack_f_altered_proposal_after_token_generation(governor, isolated_engine):
+    hyp = HypothesisAgent().get_grounded_candidates()[0]
+    ds_fp = governor.dataset_gate.compute_dataset_fingerprint()
+
+    token = governor.generate_governance_token("EXP-984", "SHORT", exact_change="Original Change", dataset_fingerprint=ds_fp)
+
+    # Attempt execution with altered exact_change
+    with pytest.raises(GovernanceBlockError) as exc_info:
+        isolated_engine.execute_lifecycle_step(
+            hypothesis=hyp,
+            experiment_id="EXP-984",
+            parent_experiment="EXP-014",
+            baseline_model="Model A",
+            exact_change="TAMPERED_MALICIOUS_CHANGE",
+            fixed_components=["HREncoder", "BiGRU"],
+            compute_budget="SHORT",
+            dry_run=True,
+            governance_token=token
+        )
+    assert "ALTERED_PROPOSAL_AFTER_TOKEN_GENERATION" in str(exc_info.value)
+
+
+# Token Security: Wrong experiment ID or budget blocked
+def test_attack_f_wrong_experiment_id_or_budget(governor, isolated_engine):
+    hyp = HypothesisAgent().get_grounded_candidates()[0]
+    ds_fp = governor.dataset_gate.compute_dataset_fingerprint()
+
+    token = governor.generate_governance_token("EXP-985", "SHORT", exact_change="Change", dataset_fingerprint=ds_fp)
+
+    # Try applying to different experiment ID
+    with pytest.raises(GovernanceBlockError) as exc_info1:
+        isolated_engine.execute_lifecycle_step(
+            hypothesis=hyp,
+            experiment_id="EXP-986",  # Different ID!
+            parent_experiment="EXP-014",
+            baseline_model="Model A",
+            exact_change="Change",
+            fixed_components=["HREncoder", "BiGRU"],
+            compute_budget="SHORT",
+            dry_run=True,
+            governance_token=token
+        )
+    assert "FORGED_SIGNATURE" in str(exc_info1.value)
+
+    # Try applying to different budget
+    with pytest.raises(GovernanceBlockError) as exc_info2:
+        isolated_engine.execute_lifecycle_step(
+            hypothesis=hyp,
+            experiment_id="EXP-985",
+            parent_experiment="EXP-014",
+            baseline_model="Model A",
+            exact_change="Change",
+            fixed_components=["HREncoder", "BiGRU"],
+            compute_budget="STANDARD",  # Different budget!
+            dry_run=True,
+            governance_token=token
+        )
+    assert "FORGED_SIGNATURE" in str(exc_info2.value)
+
+
+# Token Security: Expired token blocked
+def test_attack_f_expired_token_blocked(governor, isolated_engine):
+    hyp = HypothesisAgent().get_grounded_candidates()[0]
+    ds_fp = governor.dataset_gate.compute_dataset_fingerprint()
+
+    # Create expired token (timestamp 4000 seconds in the past)
+    expired_ts = int(time.time()) - 4000
+    content_hash = hashlib.sha256(f"Change:{ds_fp}".encode("utf-8")).hexdigest()[:16]
+    payload = f"EXP-987:SHORT:{governor.autonomy_level.value}:{content_hash}:{expired_ts}".encode("utf-8")
+    sig = hmac.new(governor.GOVERNOR_SECRET_KEY, payload, hashlib.sha256).hexdigest()
+    expired_token = f"{expired_ts}:{content_hash}:{sig}"
+
+    with pytest.raises(GovernanceBlockError) as exc_info:
+        isolated_engine.execute_lifecycle_step(
+            hypothesis=hyp,
+            experiment_id="EXP-987",
+            parent_experiment="EXP-014",
+            baseline_model="Model A",
+            exact_change="Change",
+            fixed_components=["HREncoder", "BiGRU"],
+            compute_budget="SHORT",
+            dry_run=True,
+            governance_token=expired_token
+        )
+    assert "EXPIRED_GOVERNOR_TOKEN" in str(exc_info.value)

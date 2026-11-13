@@ -18,6 +18,7 @@ runs/
 # Local editor and OS files
 .vscode/
 .idea/
+.obsidian/
 .DS_Store
 Thumbs.db
 *.pkl

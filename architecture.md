@@ -159,3 +159,26 @@ Guarantees institutional memory integrity:
   - Every simulation/dry-run record explicitly carries `real_training: false`, `scientific_evidence: false`, `eligible_for_model_selection: false`, `eligible_for_leaderboard: false`.
   - Filters out non-real experiments from leaderboard rankings and scientific baseline selection.
   - Prevents `EXP-015-SIM` from entering empirical conclusions.
+- **Audited Registry Statistics (Phase 2.1 Consistency Verification)**:
+  - **Total Records in `research_memory.json`**: **12**
+  - **REAL Experiments**: **11** (`EXP-001`, `EXP-005`, `EXP-006`, `EXP-007`, `EXP-008`, `EXP-009`, `EXP-010`, `EXP-011`, `EXP-012`, `EXP-013`, `EXP-014`).
+  - **SIMULATION Records**: **1** (`EXP-015-SIM` marked `SIMULATION — NON-EVIDENCE`).
+  - **DRY_RUN Records**: **0**.
+  - **Eligible Real Scientific Experiments**: **11**.
+  - **Ineligible Records**: **1** (`EXP-015-SIM`).
+  - **Disclosed Historical Sequence Exclusions (EXP-002, EXP-003, EXP-004)**:
+    - `EXP-002`: Implementation scaffold only; syntax compiled, no training or evaluation was performed.
+    - `EXP-003`: Read-only QC audit of prior baseline artifacts; no independent trained model registered.
+    - `EXP-004`: Staged optimizer search on legacy 33/7/7 split archived in `outputs/sleep_optimizer_work_REAL/`; not preserved as an independent 31/5/11 benchmark checkpoint in the DEC-021 registry.
+
+---
+
+## 3. System Limitations & Capability Disclosures
+
+1. **Literature Retrieval Limitation**:
+   - `LITERATURE_RETRIEVAL_STATUS = "LITERATURE_RETRIEVAL_NOT_IMPLEMENTED"`. Automated external web scraping / PubMed querying is not implemented; literature context is strictly curated from local audited sources to prevent hallucinated citations.
+2. **Live Execution Runner Limitation**:
+   - `LIVE_EXECUTION_INTERFACE_STATUS = "LIVE_EXECUTION_INTERFACE_NOT_ENABLED"`. Live training runner interface is deliberately gated pending human authorization; CLI `EXECUTE` commands report this limitation.
+3. **Git Branch Isolation Governance Limitation**:
+   - `GIT_BRANCH_ISOLATION_STATUS = "GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED"`. In the current repository configuration, commits are performed directly on `main` to ensure immediate collaborator synchronization. Automated feature-branch creation and pull request merging are not yet automated by the engine.
+

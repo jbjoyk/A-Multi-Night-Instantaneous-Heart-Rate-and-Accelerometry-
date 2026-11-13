@@ -130,23 +130,29 @@ Terminal Exception States:
 
 ### Anti-Bypass Execution Token:
 - Direct execution of `ExperimentEngine` without Governor screening is strictly prohibited.
-- When an experiment is approved by the Governor, an HMAC execution token is issued:
+- When an experiment is approved by the Governor, an HMAC execution token is issued binding:
+  - `experiment_id`
+  - `compute_budget`
+  - `autonomy_level`
+  - `exact_change` content hash
+  - `dataset_fingerprint`
+  - `timestamp` (with 3600-second expiration)
   ```python
-  token = governor.generate_governance_token(experiment_id, compute_budget)
+  token = governor.generate_governance_token(experiment_id, compute_budget, exact_change, dataset_fingerprint)
   ```
-- The engine validates this token; missing or forged tokens immediately raise `GovernanceBlockError`.
+- The engine validates this token; missing, forged, altered, expired, or replayed tokens immediately raise `GovernanceBlockError`. Single-use replay protection is tracked in `engine.used_tokens`.
 
 ---
 
-## 8. Git Governance and Branch Isolation
+## 8. Git Governance and Branch Isolation (`GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED`)
 
-- Current State: Commits are tracked locally on `main` for Claude/collaborator synchronization.
-- Governance Risk: Direct autonomous modification of `main` without PR or human review risks publishing unvetted code.
-- Recommended Staged Branch Workflow:
+- **Current Operational Reality**: Commits are made directly on branch `main` and pushed to `origin main` to ensure continuous Claude and collaborator access per project guidelines.
+- **Unresolved Limitation**: `GIT_BRANCH_ISOLATION_STATUS = "GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED"`. While this enables instant visibility, lack of automated branch isolation is documented as a known infrastructure limitation.
+- **Recommended Hardened Staged Branch Workflow for Phase 3+**:
   ```text
   feature branch (research/EXP-XXX)
           ↓
-  automated verification (67/67 unit tests pass)
+  automated verification (76/76 unit tests pass)
           ↓
   scientific peer review (ReviewVerdict.ACCEPT)
           ↓
@@ -154,3 +160,19 @@ Terminal Exception States:
           ↓
   merge to main
   ```
+
+---
+
+## 9. Registry Statistics & Institutional Memory Verification
+
+The registry (`research_memory.json`) has been audited for internal mathematical consistency:
+- **Total Records**: **12**
+- **REAL Experiments**: **11** (`EXP-001`, `EXP-005` through `EXP-014`)
+- **SIMULATION Records**: **1** (`EXP-015-SIM`, marked `SIMULATION — NON-EVIDENCE`)
+- **DRY_RUN Records**: **0**
+- **Eligible Real Scientific Experiments**: **11**
+- **Ineligible Records**: **1** (`EXP-015-SIM`)
+- **Missing Sequence Explanations**:
+  - `EXP-002`: Syntax implementation scaffold only (code compilation; no independent trained model or test evaluation registered).
+  - `EXP-003`: Read-only QC audit of prior baseline artifacts (verifying split hash `a6b569f63126` and timestamp QC; no new model registered).
+  - `EXP-004`: Staged optimizer search on legacy 33/7/7 split archived in `outputs/sleep_optimizer_work_REAL/`; not preserved as an independent 31/5/11 benchmark checkpoint in the DEC-021 registry.

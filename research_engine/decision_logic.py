@@ -23,6 +23,7 @@ class ExperimentDecision(str, Enum):
     DISCARDED = "DISCARDED"
     NEEDS_REVIEW = "NEEDS_REVIEW"
     INVESTIGATE = "INVESTIGATE"
+    SIMULATION_NON_EVIDENCE = "SIMULATION_NON_EVIDENCE"
 
 
 class DecisionEngine:
@@ -39,11 +40,22 @@ class DecisionEngine:
         baseline_params: int = 162325,
         candidate_params: int = 162325,
         baseline_vram_mb: int = 4000,
-        candidate_vram_mb: int = 4000
+        candidate_vram_mb: int = 4000,
+        is_simulation: bool = False
     ) -> Dict[str, Any]:
         """
         Computes multi-factor outcome decision comparing candidate against baseline.
+        Enforces that simulation results cannot serve as scientific baselines or empirical evidence.
         """
+        # Baseline simulation check: A simulation can NEVER be used as a scientific baseline
+        if baseline_metrics.get("is_simulation") is True or baseline_metrics.get("scientific_evidence") is False or baseline_metrics.get("execution_mode") in ("SIMULATION", "DRY_RUN"):
+            raise ValueError(
+                "CANNOT_USE_SIMULATION_AS_SCIENTIFIC_BASELINE: A simulation result cannot serve as a baseline model for empirical research."
+            )
+
+        # Candidate simulation check: A simulation cannot constitute real scientific evidence
+        candidate_is_sim = is_simulation or candidate_metrics.get("is_simulation", False) or candidate_metrics.get("scientific_evidence") is False or candidate_metrics.get("execution_mode") in ("SIMULATION", "DRY_RUN")
+
         # Primary Macro-F1
         base_f1 = baseline_metrics.get("macro_f1", baseline_metrics.get("primary", {}).get("macro_f1", 0.0))
         cand_f1 = candidate_metrics.get("macro_f1", candidate_metrics.get("primary", {}).get("macro_f1", 0.0))
@@ -63,6 +75,18 @@ class DecisionEngine:
 
         decision = ExperimentDecision.NEEDS_REVIEW
         rationale = []
+
+        if candidate_is_sim:
+            decision = ExperimentDecision.SIMULATION_NON_EVIDENCE
+            rationale.append(f"Simulation/Dry-Run: Pipeline mechanics verified (ΔF1={delta_f1:+.4f}); non-evidence.")
+            return {
+                "decision": decision.value,
+                "delta_macro_f1": float(delta_f1),
+                "delta_accuracy": float(delta_acc),
+                "delta_params_pct": float(delta_params_pct),
+                "vram_ratio": float(vram_ratio),
+                "rationale": " ".join(rationale)
+            }
 
         # Rule 1: Substantial Primary Improvement with Reasonable Capacity
         if delta_f1 >= 0.010 and delta_params_pct <= 15.0:

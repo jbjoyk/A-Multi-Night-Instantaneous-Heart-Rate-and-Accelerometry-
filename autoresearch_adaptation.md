@@ -66,15 +66,16 @@ Neither framework was blindly cloned or adopted in its raw form. Wearable physio
 
 ---
 
-## 5. Governance Risk: Direct Autonomous Git Push to Main
+## 5. Governance Limitation: Direct Git Push to Main (`GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED`)
 
-In the current setup, all git commits occur locally on branch `main`. While this facilitates synchronization, autonomous pushes directly to `main` pose a governance risk:
-- An errant agent could commit unvetted code directly to the authoritative branch.
+In the current setup, all git commits occur directly on branch `main` and are pushed to `origin main` to guarantee immediate visibility to Claude and external collaborators per mandatory research rules.
+- **Identified Limitation**: `GIT_BRANCH_ISOLATION_STATUS = "GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED"`.
+- Direct pushes to `main` without automated branch creation and automated PR review remain a known governance limitation.
 - Recommended future hardening:
   ```text
   development / experiment branch: research/EXP-XXX
           ↓
-  automated unit & safety tests (67/67 pass)
+  automated unit & safety tests (76/76 pass)
           ↓
   autonomous scientific review (ReviewVerdict.ACCEPT)
           ↓
@@ -82,3 +83,21 @@ In the current setup, all git commits occur locally on branch `main`. While this
           ↓
   merge to main
   ```
+
+---
+
+## 6. Institutional Memory Consistency Audit (Phase 2.1)
+
+The research registry (`research_memory.json`) has been programmatically verified:
+- **Total Records**: **12**
+- **REAL Scientific Experiments**: **11** (`EXP-001`, `EXP-005`..`EXP-014`)
+- **SIMULATION Records**: **1** (`EXP-015-SIM`, marked `SIMULATION — NON-EVIDENCE`)
+- **DRY_RUN Records**: **0**
+- **Eligible Real Scientific Experiments**: **11**
+- **Ineligible Records**: **1** (`EXP-015-SIM`)
+- **Historical Exclusions Clarification**:
+  - `EXP-002`: Implementation syntax scaffold only (no trained model checkpoint).
+  - `EXP-003`: QC artifact audit of prior run (no new model checkpoint).
+  - `EXP-004`: Staged optimizer search on legacy 33/7/7 split (archived under `outputs/sleep_optimizer_work_REAL/`, not preserved in the DEC-021 31/5/11 registry).
+- **Automated Consistency Test**: `tests/test_memory_integrity.py::test_registry_exact_counts_and_consistency` validates that these counts and flags remain mathematically consistent on every test run.
+

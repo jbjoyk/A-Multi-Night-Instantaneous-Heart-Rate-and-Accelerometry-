@@ -63,11 +63,17 @@ def test_engine_simulated_cycle_success():
             json.dump({"experiments": []}, f)
 
         gov = ResearchGovernor()
-        engine = ExperimentEngine(memory_path=mem_file)
+        engine = ExperimentEngine(base_dir=tmpdir, memory_path=mem_file, dataset_gate=gov.dataset_gate)
         hyp_agent = HypothesisAgent()
         hyp = hyp_agent.get_grounded_candidates()[0]
 
-        token = gov.generate_governance_token("EXP-996", "SHORT")
+        ds_fp = gov.dataset_gate.compute_dataset_fingerprint()
+        token = gov.generate_governance_token(
+            "EXP-996",
+            "SHORT",
+            exact_change="Prune dummy clock channel",
+            dataset_fingerprint=ds_fp
+        )
 
         res = engine.execute_lifecycle_step(
             hypothesis=hyp,
@@ -103,11 +109,17 @@ def test_engine_simulated_cycle_failure():
             json.dump({"experiments": []}, f)
 
         gov = ResearchGovernor()
-        engine = ExperimentEngine(memory_path=mem_file)
+        engine = ExperimentEngine(base_dir=tmpdir, memory_path=mem_file, dataset_gate=gov.dataset_gate)
         hyp_agent = HypothesisAgent()
         hyp = hyp_agent.get_grounded_candidates()[0]
 
-        token = gov.generate_governance_token("EXP-997", "SHORT")
+        ds_fp = gov.dataset_gate.compute_dataset_fingerprint()
+        token = gov.generate_governance_token(
+            "EXP-997",
+            "SHORT",
+            exact_change="Prune dummy clock channel",
+            dataset_fingerprint=ds_fp
+        )
 
         res = engine.execute_lifecycle_step(
             hypothesis=hyp,
@@ -134,11 +146,17 @@ def test_engine_simulated_cycle_blocked():
             json.dump({"experiments": []}, f)
 
         gov = ResearchGovernor()
-        engine = ExperimentEngine(memory_path=mem_file)
+        engine = ExperimentEngine(base_dir=tmpdir, memory_path=mem_file, dataset_gate=gov.dataset_gate)
         hyp_agent = HypothesisAgent()
         hyp = hyp_agent.get_grounded_candidates()[0]
 
-        token = gov.generate_governance_token("EXP-998", "SHORT")
+        ds_fp = gov.dataset_gate.compute_dataset_fingerprint()
+        token = gov.generate_governance_token(
+            "EXP-998",
+            "SHORT",
+            exact_change="Prune dummy clock channel",
+            dataset_fingerprint=ds_fp
+        )
 
         res = engine.execute_lifecycle_step(
             hypothesis=hyp,

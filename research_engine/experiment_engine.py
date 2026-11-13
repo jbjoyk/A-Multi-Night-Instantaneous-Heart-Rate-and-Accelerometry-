@@ -74,6 +74,7 @@ class ExperimentEngine:
         self.designer = ExperimentDesigner()
         self.reviewer = reviewer or ScientificReviewer()
         self.decision_engine = decision_engine or DecisionEngine()
+        self.used_tokens: set[str] = set()
 
     def get_current_git_commit(self) -> str:
         """Retrieves the current git commit hash."""
@@ -102,17 +103,67 @@ class ExperimentEngine:
         with open(self.memory_path, "w") as f:
             json.dump(memory, f, indent=2)
 
-    def verify_governance_token(self, experiment_id: str, compute_budget: str, token: Optional[str]) -> bool:
-        """Verifies if the provided governance token is valid for this experiment."""
+    def verify_governance_token(
+        self,
+        experiment_id: str,
+        compute_budget: str,
+        exact_change: str,
+        dataset_fingerprint: str,
+        token: Optional[str]
+    ) -> tuple[bool, str]:
+        """
+        Verifies if the provided governance token is valid for this experiment.
+        Checks:
+          - Token existence
+          - Expiration (valid for 3600 seconds)
+          - Single-use replay protection
+          - Proposal content hash invariance
+          - HMAC signature validity
+        """
         if not token:
-            return False
-        # Valid across allowed autonomy levels
+            return False, "MISSING_GOVERNOR_TOKEN"
+
+        parts = token.split(":")
+        # Hardened format: ts:content_hash:sig (3 parts)
+        if len(parts) == 3:
+            ts_str, content_hash, sig = parts
+            try:
+                ts = int(ts_str)
+            except ValueError:
+                return False, "MALFORMED_TIMESTAMP"
+
+            # Check expiration (1 hour)
+            if time.time() - ts > 3600:
+                return False, "EXPIRED_GOVERNOR_TOKEN"
+
+            # Check replay prevention
+            if token in self.used_tokens:
+                return False, "REUSED_GOVERNOR_TOKEN"
+
+            # Check proposal content invariance
+            expected_content_hash = hashlib.sha256(f"{exact_change}:{dataset_fingerprint}".encode("utf-8")).hexdigest()[:16]
+            if not hmac.compare_digest(expected_content_hash, content_hash):
+                return False, "ALTERED_PROPOSAL_AFTER_TOKEN_GENERATION"
+
+            # Verify HMAC signature against allowed autonomy levels
+            for aut_level in (0, 1, 2, 3, 4, 5):
+                payload = f"{experiment_id}:{compute_budget.upper()}:{aut_level}:{content_hash}:{ts}".encode("utf-8")
+                expected_sig = hmac.new(self.GOVERNOR_SECRET_KEY, payload, hashlib.sha256).hexdigest()
+                if hmac.compare_digest(expected_sig, sig):
+                    return True, "VALID_TOKEN"
+
+            return False, "FORGED_SIGNATURE"
+
+        # Legacy 1-part hex digest fallback
         for aut_level in (0, 1, 2, 3, 4, 5):
             payload = f"{experiment_id}:{compute_budget.upper()}:{aut_level}".encode("utf-8")
             expected = hmac.new(self.GOVERNOR_SECRET_KEY, payload, hashlib.sha256).hexdigest()
             if hmac.compare_digest(expected, token):
-                return True
-        return False
+                if token in self.used_tokens:
+                    return False, "REUSED_GOVERNOR_TOKEN"
+                return True, "VALID_LEGACY_TOKEN"
+
+        return False, "INVALID_TOKEN_FORMAT"
 
     def execute_lifecycle_step(
         self,
@@ -149,13 +200,24 @@ class ExperimentEngine:
         current_status = next_status
 
         # Anti-bypass check: Direct runner execution without Governor token is blocked
-        if not self.verify_governance_token(experiment_id, compute_budget, governance_token):
+        ds_fp = self.dataset_gate.compute_dataset_fingerprint()
+        valid_tok, token_reason = self.verify_governance_token(
+            experiment_id=experiment_id,
+            compute_budget=compute_budget,
+            exact_change=exact_change,
+            dataset_fingerprint=ds_fp,
+            token=governance_token
+        )
+        if not valid_tok:
             current_status = LifecycleStatus.BLOCKED
-            cycle_log.append(f"Step 2 [GOVERN]: BLOCKED - Direct runner bypass attempt or invalid governance token.")
+            cycle_log.append(f"Step 2 [GOVERN]: BLOCKED - Direct runner bypass attempt or invalid governance token ({token_reason}).")
             raise GovernanceBlockError(
                 f"DIRECT RUNNER BYPASS BLOCKED: Direct runner execution for {experiment_id} "
-                f"without valid Governor authorization token is forbidden."
+                f"rejected by Governor token verification gate ({token_reason})."
             )
+
+        if governance_token:
+            self.used_tokens.add(governance_token)
 
         if simulate_blocked:
             current_status = LifecycleStatus.BLOCKED
@@ -385,7 +447,8 @@ class ExperimentEngine:
             baseline_params=163940,
             candidate_params=162325,
             baseline_vram_mb=4000,
-            candidate_vram_mb=3900
+            candidate_vram_mb=3900,
+            is_simulation=is_simulation
         )
         decision = outcome["decision"]
         cycle_log.append(f"Step 8 [DECISION]: Verdict = {decision}. Rationale: {outcome['rationale']}")

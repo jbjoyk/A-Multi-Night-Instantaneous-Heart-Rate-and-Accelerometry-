@@ -182,7 +182,9 @@ class DatasetGate:
         development_roles = {
             "train", "training", "val", "validation",
             "tuning", "search", "hyperparameter_search",
-            "feature_selection", "early_stopping", "ablation"
+            "feature_selection", "early_stopping", "ablation",
+            "calibration", "threshold_tuning", "ensemble_weighting",
+            "model_selection", "architecture_selection"
         }
 
         role_clean = active_role.lower().strip()
