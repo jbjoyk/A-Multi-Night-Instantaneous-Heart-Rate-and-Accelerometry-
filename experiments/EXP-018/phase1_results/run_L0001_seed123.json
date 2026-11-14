@@ -1,0 +1,102 @@
+{
+  "context_len": 1,
+  "seed": 123,
+  "neutralize_circadian": true,
+  "optimizer_steps": 3200,
+  "tokens_per_step": 2400,
+  "total_tokens_exposed": 7680000,
+  "train_time_sec": 274.73419404029846,
+  "metrics": {
+    "macro_f1": 0.36397314739069,
+    "accuracy": 0.48574386403830394,
+    "kappa": 0.17011182089819032,
+    "mcc": 0.2060902866739731,
+    "per_class_f1": [
+      0.35072250795983345,
+      0.6272438528246672,
+      0.19570001692906722,
+      0.2822262118491921
+    ],
+    "per_class_recall": [
+      0.23591433278418453,
+      0.8835712849386688,
+      0.13012156686177398,
+      0.2046875
+    ],
+    "per_stage_f1": {
+      "Wake": 0.35072250795983345,
+      "Light": 0.6272438528246672,
+      "Deep": 0.19570001692906722,
+      "REM": 0.2822262118491921
+    },
+    "per_stage_recall": {
+      "Wake": 0.23591433278418453,
+      "Light": 0.8835712849386688,
+      "Deep": 0.13012156686177398,
+      "REM": 0.2046875
+    },
+    "subject_macro_f1": {
+      "Bidslab13": 0.38545461154475863,
+      "Bidslab40": 0.35385120595668795,
+      "Bidslab55": 0.32393369452061777,
+      "Bidslab56": 0.3789025323530524,
+      "Bidslab64": 0.3387106525674266
+    },
+    "subject_accuracy": {
+      "Bidslab13": 0.5259977738909206,
+      "Bidslab40": 0.4667312661498708,
+      "Bidslab55": 0.4831639135959339,
+      "Bidslab56": 0.4697830578512397,
+      "Bidslab64": 0.4679521998913634
+    },
+    "subject_kappa": {
+      "Bidslab13": 0.2053548566242135,
+      "Bidslab40": 0.18513976900451956,
+      "Bidslab55": 0.12649658651558537,
+      "Bidslab56": 0.1790177129680589,
+      "Bidslab64": 0.09763346772639858
+    }
+  },
+  "clinical_metrics": {
+    "tst_min_mae": 45.375,
+    "tst_min_bias": 44.910714285714285,
+    "tst_min_rmse": 56.540045858791856,
+    "tst_min_true_mean": 359.7857142857143,
+    "tst_min_pred_mean": 404.69642857142856,
+    "sol_min_mae": 26.5,
+    "sol_min_bias": -26.5,
+    "sol_min_rmse": 38.12901032772066,
+    "sol_min_true_mean": 31.678571428571427,
+    "sol_min_pred_mean": 5.178571428571429,
+    "waso_min_mae": 13.089285714285714,
+    "waso_min_bias": -2.8392857142857144,
+    "waso_min_rmse": 20.571955598407683,
+    "waso_min_true_mean": 16.678571428571427,
+    "waso_min_pred_mean": 13.839285714285714,
+    "sleep_efficiency_pct_mae": 10.926932764110715,
+    "sleep_efficiency_pct_bias": 10.826971431262967,
+    "sleep_efficiency_pct_rmse": 13.907856706933845,
+    "sleep_efficiency_pct_true_mean": 84.62246263374315,
+    "sleep_efficiency_pct_pred_mean": 95.44943406500612,
+    "deep_pct_tst_mae": 15.867561112709597,
+    "deep_pct_tst_bias": -15.867561112709597,
+    "deep_pct_tst_rmse": 17.173553335464668,
+    "deep_pct_tst_true_mean": 22.293875563738705,
+    "deep_pct_tst_pred_mean": 6.426314451029109,
+    "rem_pct_tst_mae": 16.645880326087205,
+    "rem_pct_tst_bias": -16.645880326087205,
+    "rem_pct_tst_rmse": 18.17848491127978,
+    "rem_pct_tst_true_mean": 28.086768596350574,
+    "rem_pct_tst_pred_mean": 11.44088827026337,
+    "n_nights": 28
+  },
+  "experiment_id": "EXP-018",
+  "phase": "1",
+  "git_commit": "17260f263380d64b80e414599253595b708402a5",
+  "device": "cuda:1",
+  "device_name": "NVIDIA GeForce RTX 3060",
+  "split_hash": "bf33573623f47f3f",
+  "cache_fingerprint": "prep_57738d534b",
+  "run_status": "SUCCESS",
+  "timestamp": "2026-11-14 14:08:46"
+}
