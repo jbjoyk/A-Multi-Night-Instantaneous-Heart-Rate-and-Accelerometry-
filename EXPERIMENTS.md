@@ -657,24 +657,32 @@ state.
 - Mechanistic Conclusion: **Circadian Information Subsumption Verified**. Clock time provides massive value for an isolated epoch (+14.77 pp) and moderate value for local context (+4.38 pp), but its marginal contribution diminishes sharply to +1.36 pp at multi-hour context ($L=600$). The recurrent BiGRU autonomously extracts diurnal progression directly from underlying physiological time-series (heart rate dip, HRV dynamics), confirming that the $+4.27\text{ pp}$ context horizon gain reflects true sequence modeling.
 - Status: **PHASE 1b COMPLETE (9/9 RUNS PASS). REPORT: [`EXP018_PHASE1B_REPORT.md`](experiments/EXP-018/EXP018_PHASE1B_REPORT.md).**
 
-### EXP-018 Phase 2 — Cohort-Wide 5-Fold Cross-Validation (In Progress)
+### EXP-018 Phase 2 — Cohort-Wide 5-Fold Cross-Validation (Completed)
 
 - Date: 2026-11-15
 - Research question: Does the monotonic context-horizon scaling observed on the validation set hold across the entire cohort of 47 subjects (246 usable nights)?
 - Design: Full 5-fold cross-validation ($7 L \in \{1, 20, 60, 120, 300, 600, 1200\} \times 5\text{ folds} \times 3\text{ seeds} = 105\text{ runs}$).
-- Progress: 23 / 105 runs completed on disk in `experiments/EXP-018/phase2_results/`:
-  - Fold 1: 21 / 21 runs completed.
-  - Fold 2: 2 / 21 runs completed ($L=1$, seeds 42, 123).
-  - Folds 3–5: Pending execution.
-- Fold 1 Out-Of-Fold Progression (Mean $\pm$ SD across 3 seeds on 10 held-out subjects):
-  - $L=1$: $0.380 \pm 0.002$
-  - $L=20$: $0.539 \pm 0.004$
-  - $L=60$: $0.571 \pm 0.002$
-  - $L=120$: $0.582 \pm 0.004$
-  - $L=300$: $0.591 \pm 0.003$
-  - $L=600$: $0.604 \pm 0.005$
-  - $L=1200$: $0.617 \pm 0.018$
-- Status: **IN PROGRESS (23/105 runs completed). Awaiting completion of concurrent GPU job.**
+- Status: **COMPLETED (105/105 runs pass, 100% success)**.
+- Cohort-Wide Out-Of-Fold Progression (Mean $\pm$ SD across 3 seeds on all 47 subjects):
+  - $L=1$ (0.5m): Macro-F1 = $0.3692 \pm 0.0011$, Accuracy = $47.58\% \pm 0.09\%$, $\kappa = 0.1661 \pm 0.0013$.
+  - $L=20$ (10m): Macro-F1 = $0.5319 \pm 0.0036$, Accuracy = $57.54\% \pm 0.19\%$, $\kappa = 0.3588 \pm 0.0046$.
+  - $L=60$ (30m): Macro-F1 = $0.5773 \pm 0.0039$, Accuracy = $60.85\% \pm 0.55\%$, $\kappa = 0.4148 \pm 0.0050$.
+  - $L=120$ (60m): Macro-F1 = $0.5894 \pm 0.0045$, Accuracy = $62.06\% \pm 0.59\%$, $\kappa = 0.4323 \pm 0.0061$.
+  - $L=300$ (150m): Macro-F1 = $0.6049 \pm 0.0058$, Accuracy = $63.62\% \pm 0.50\%$, $\kappa = 0.4549 \pm 0.0077$.
+  - $L=600$ (300m): Macro-F1 = $0.6306 \pm 0.0031$, Accuracy = $65.45\% \pm 0.14\%$, $\kappa = 0.4877 \pm 0.0048$.
+  - $L=1200$ (600m): Macro-F1 = **$0.6479 \pm 0.0053$**, Accuracy = **$66.18\% \pm 0.73\%$**, $\kappa = \mathbf{0.5078 \pm 0.0076}$.
+- Primary Estimand ($L=600$ vs $L=60$ across 47 Subjects):
+  - $\Delta \text{Macro-F1} = \mathbf{+5.33\text{ percentage points}}$ [95% CI: $\mathbf{+4.28\text{ pp}, +6.39\text{ pp}}$].
+  - Pre-registered decision rule: **`SUPPORTED (Context Benefit)`** ($\Delta \ge +1.0\text{ pp}$ with strictly positive CI).
+  - Subject-level win/loss: **46 / 47 subjects positive (97.9%)** for $L=600$ over $L=60$.
+- Parametric Saturation Fit ($N=47$):
+  - $F_1(L) = 0.6143 - 0.2545 e^{-0.04998 L}$ ($R^2 = 0.9472$, $L^* = 59.9\text{ epochs} / 30.0\text{ min}$).
+  - Multi-hour ultradian scaling continues to climb beyond local saturation, gaining an additional $+7.06\text{ pp}$ from $L=60$ to $L=1200$.
+- Final Artifacts:
+  - Report: [`experiments/EXP-018/EXP018_PHASE2_REPORT.md`](experiments/EXP-018/EXP018_PHASE2_REPORT.md)
+  - Metrics Table: `experiments/EXP-018/phase2_results/phase2_metrics_table.csv`
+  - Subject Deltas: `experiments/EXP-018/phase2_results/phase2_subject_deltas.csv`
+  - Summary JSON: `experiments/EXP-018/phase2_results/phase2_summary.json`
 
 ## RESEARCH TRAJECTORY
 

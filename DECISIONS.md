@@ -325,5 +325,35 @@
 - Reversible: Yes.
 
 
+## DEC-025 — EXP-018 Phase 2 Cohort-Wide Cross-Validation Completion & Definitive Horizon Scaling
+
+- Date: 2026-11-15
+- Decision: Conclude EXP-018 Phase 2 (Cohort-Wide 5-Fold Cross-Validation across all 47 subjects, 246 usable nights, 105 total runs) and formally record the definitive empirical scaling curve and primary estimand.
+  1. Execution & Protocol Verification:
+     - 105 / 105 runs completed successfully (5 folds $\times$ 7 context lengths $\times$ 3 seeds).
+     - Model A (`ConventionalCNNBiGRU`, 163,940 parameters; `exp013_models.py`).
+     - Compute Invariant: $B \times L \times N_{\text{accum}} = 2,400$ tokens/step ($3,200\text{ steps} = 7,680,000\text{ tokens/run}$) maintained strictly across all 105 runs.
+     - Out-Of-Fold Evaluation: Covers 100% of the 47 subjects (246 usable nights) with zero test set leakage.
+  2. Cohort-Wide Findings:
+     - **Primary Estimand ($L=600$ vs $L=60$)**: $\Delta \text{Macro-F1} = \mathbf{+5.33\text{ percentage points}}$ [95% CI: $\mathbf{+4.28\text{ pp}, +6.39\text{ pp}}$].
+     - **Subject-Level Win/Loss**: **46 / 47 subjects positive (97.9%)** favoring $L=600$ over $L=60$.
+     - **Pre-Registered Decision Rule**: **`SUPPORTED (Context Benefit)`** ($\Delta \ge +1.0\text{ pp}$, CI excludes 0).
+     - **Out-of-Fold Macro-F1 Progression (Mean $\pm$ SD across 3 seeds)**:
+       - $L=1$: $0.3692 \pm 0.0011$ (Acc: $47.58\%$)
+       - $L=20$: $0.5319 \pm 0.0036$ (Acc: $57.54\%$)
+       - $L=60$: $0.5773 \pm 0.0039$ (Acc: $60.85\%$)
+       - $L=120$: $0.5894 \pm 0.0045$ (Acc: $62.06\%$)
+       - $L=300$: $0.6049 \pm 0.0058$ (Acc: $63.62\%$)
+       - $L=600$: $0.6306 \pm 0.0031$ (Acc: $65.45\%$)
+       - $L=1200$: **$0.6479 \pm 0.0053$** (Acc: **$66.18\%$**)
+     - **Parametric Saturation Fit**:
+       - $F_1(L) = 0.6143 - 0.2545 e^{-0.04998 L}$ ($R^2 = 0.9472$, $L^* = 59.9\text{ epochs} / 30.0\text{ min}$).
+       - Confirms that while single-exponential transition inertia saturates around ~30 minutes, multi-hour ultradian NREM-REM cycles provide an ongoing $+7.06\text{ pp}$ boost through whole-night context ($L=1200$).
+  3. Action:
+     - EXP-018 (Phases 1, 1b, and 2) is officially **COMPLETE**.
+     - All 105 run JSONs, metrics table, subject deltas, summary JSON, and report are archived and synchronized to GitHub.
+- Reversible: No; 5-fold cross-validation across the complete cohort is finalized.
+
+
 
 

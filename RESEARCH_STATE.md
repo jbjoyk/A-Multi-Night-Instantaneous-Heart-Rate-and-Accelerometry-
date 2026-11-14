@@ -1,6 +1,6 @@
 # Research State
 
-Last updated: 2026-11-14 (DEC-023: EXP-018 Phase 1 Horizon Curve Evaluated & Phase 2 Authorized)
+Last updated: 2026-11-15 (DEC-025: EXP-018 Complete — Phase 1, Phase 1b, and Phase 2 5-Fold Cross-Validation Finished)
 
 ## Research question
 

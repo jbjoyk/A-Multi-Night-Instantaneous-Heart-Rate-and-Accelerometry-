@@ -2,7 +2,7 @@
 
 ## Current task
 
-EXP-018: CONTEXT-HORIZON CURVE WITH DATA-COVERAGE CONTROL — EXECUTION & ABLATIONS:
+EXP-018: CONTEXT-HORIZON CURVE WITH DATA-COVERAGE CONTROL — FULLY COMPLETED (PHASES 1, 1b, AND 2):
 1. **Phase 1 (Validation Horizon Scaling)**:
    - 21/21 runs completed on `cuda:1`.
    - Primary Estimand ($L=600$ vs $L=60$): $\Delta \text{Macro-F1} = \mathbf{+4.27\text{ pp}}$ [95% CI: $\mathbf{+2.53\text{ pp}, +6.46\text{ pp}}$].
@@ -13,20 +13,26 @@ EXP-018: CONTEXT-HORIZON CURVE WITH DATA-COVERAGE CONTROL — EXECUTION & ABLATI
    - Tested active `time_feat` vs neutralized baseline across $L \in \{1, 60, 600\}$.
    - Finding: Monotonic decay of circadian clock contribution (+14.77 pp at $L=1 \to +4.38$ pp at $L=60 \to +1.36$ pp at $L=600$). Circadian information subsumption verified.
    - Report generated and committed (`8d98814`).
-3. **Phase 2 (Cohort-Wide 5-Fold Cross-Validation, 105 Runs)**:
-   - Implemented in `experiments/EXP-018/run_exp018_execution.py` with individual JSON run caching and fold-by-fold execution (`--folds`).
-   - Current Progress: 23 / 105 runs completed and saved in `experiments/EXP-018/phase2_results/`:
-     - Fold 1: 21 / 21 runs completed.
-     - Fold 2: 2 / 21 runs completed ($L=1$, seeds 42 and 123).
-     - Folds 3–5: Pending execution.
-4. **Current Execution Hold / Resource Audit**:
-   - GPUs currently 100% occupied by PID 111725 (`run_exp_026_screen.py` in competition project) running parallel TabPFN 100k context.
-   - GPU 0 reached 92°C (fan 95%). To prevent GPU OOM crash and thermal shutdown, remaining Phase 2 folds (Fold 2 remainder, Folds 3, 4, 5: 82 runs) are held until GPU resources become free.
-5. **Next Concrete Task**:
-   - Monitor GPU status until PID 111725 finishes.
-   - Resume Phase 2 execution: Fold 2 remainder (`--folds 2`), then Folds 3, 4, 5.
-   - Generate out-of-fold 47-subject summary, metrics table, and `EXP018_PHASE2_REPORT.md`.
-   - Commit and push all artifacts to `origin main`.
+3. **Phase 2 (Cohort-Wide 5-Fold Cross-Validation across 47 Subjects)**:
+   - 105 / 105 runs completed successfully (100% success across all 5 folds $\times$ 7 horizons $\times$ 3 seeds).
+   - Evaluated out-of-fold across all 47 subjects (246 usable nights, 145,283 valid epochs) with zero test set leakage.
+   - **Cohort Primary Estimand ($L=600$ vs $L=60$)**: $\Delta \text{Macro-F1} = \mathbf{+5.33\text{ pp}}$ [95% CI: $\mathbf{+4.28\text{ pp}, +6.39\text{ pp}}$].
+   - **Subject Concordance**: **46 out of 47 subjects positive (97.9%)** for $L=600$ over $L=60$.
+   - **Pre-Registered Decision Rule**: **`SUPPORTED (Context Benefit)`** ($\Delta \ge +1.0\text{ pp}$ with strictly positive CI lower bound).
+   - **Out-of-Fold Macro-F1 Progression (Mean $\pm$ SD across 3 seeds)**:
+     - $L=1$ (0.5m): $0.3692 \pm 0.0011$ (Acc: $47.58\%$)
+     - $L=20$ (10m): $0.5319 \pm 0.0036$ (Acc: $57.54\%$)
+     - $L=60$ (30m): $0.5773 \pm 0.0039$ (Acc: $60.85\%$)
+     - $L=120$ (60m): $0.5894 \pm 0.0045$ (Acc: $62.06\%$)
+     - $L=300$ (150m): $0.6049 \pm 0.0058$ (Acc: $63.62\%$)
+     - $L=600$ (300m): $0.6306 \pm 0.0031$ (Acc: $65.45\%$)
+     - $L=1200$ (600m): **$0.6479 \pm 0.0053$** (Acc: **$66.18\%$**)
+   - **Parametric Saturation**: $F_1(L) = 0.6143 - 0.2545 e^{-0.04998 L}$ ($R^2 = 0.9472$, $L^* = 59.9\text{ epochs} / 30.0\text{ min}$).
+   - Artifacts generated: `EXP018_PHASE2_REPORT.md`, `phase2_metrics_table.csv`, `phase2_subject_deltas.csv`, `phase2_summary.json`.
+4. **Next Concrete Task**:
+   - Conclude EXP-018 research cycle.
+   - Synthesize publication-ready findings contrasting Phase 1, Phase 1b, and Phase 2.
+   - Commit and push all remaining artifacts to `origin main`.
 
 
 ## Previous work

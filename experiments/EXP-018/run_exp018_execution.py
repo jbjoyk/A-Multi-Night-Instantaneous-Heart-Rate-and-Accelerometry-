@@ -1298,7 +1298,7 @@ def run_phase2_orchestrator(args, gate: DatasetGate):
         "n_subjects": 47,
         "L_values": L_values,
         "seeds": seeds,
-        "folds": folds,
+        "folds": all_folds,
         "git_commit": git_commit,
         "device": str(device),
         "primary_estimand": {
@@ -1327,7 +1327,7 @@ def run_phase2_orchestrator(args, gate: DatasetGate):
     df_deltas.to_csv(os.path.join(phase2_dir, "phase2_subject_deltas.csv"), index=False)
 
     report_path = os.path.join(args.output_dir, "EXP018_PHASE2_REPORT.md")
-    generate_phase2_report(report_path, phase2_summary, df_p2, L_values, seeds, folds)
+    generate_phase2_report(report_path, phase2_summary, df_p2, L_values, seeds, all_folds)
 
     print("=" * 70)
     print("PHASE 2 CROSS-VALIDATION COMPLETE ACROSS ALL 47 SUBJECTS.")
@@ -1362,15 +1362,14 @@ def generate_phase2_report(report_path: str, summary: dict, df: pd.DataFrame, L_
     md.append(f"- **Subject-Level Win/Loss**: {pos_count} / 47 subjects positive ({pos_count / 47.0 * 100.0:.1f}%) for $L=600$ over $L=60$.\n\n---\n")
 
     md.append("## 2. Cohort-Wide Out-Of-Fold Performance Curve (Mean ± SD across 3 Seeds)\n\n")
-    md.append("| Context Length ($L$) | Window (min) | Out-Of-Fold Macro-F1 | Accuracy (%) | Cohen's $\\kappa$ | MCC |\n")
-    md.append("| :--- | ---: | :---: | ---: | ---: | ---: |\n")
+    md.append("| Context Length ($L$) | Window (min) | Out-Of-Fold Macro-F1 | Accuracy (%) | Cohen's $\\kappa$ |\n")
+    md.append("| :--- | ---: | :---: | ---: | ---: |\n")
     for _, r in df.iterrows():
         md.append(
             f"| $L={int(r['Context_L'])}$ | {r['Duration_min']:.1f} | "
             f"**{r['Macro_F1_mean']:.4f}** $\\pm$ {r['Macro_F1_std']:.4f} | "
             f"{r['Accuracy_mean']*100:.2f} $\\pm$ {r['Accuracy_std']*100:.2f} | "
-            f"{r['Kappa_mean']:.4f} $\\pm$ {r['Kappa_std']:.4f} | "
-            f"{r['MCC_mean']:.4f} $\\pm$ {r['MCC_std']:.4f} |\n"
+            f"{r['Kappa_mean']:.4f} $\\pm$ {r['Kappa_std']:.4f} |\n"
         )
     md.append("\n---\n")
 
