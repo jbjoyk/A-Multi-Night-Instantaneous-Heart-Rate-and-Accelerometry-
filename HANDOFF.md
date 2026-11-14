@@ -29,7 +29,12 @@ Successfully executed and evaluated the governed EXP-017 scientific protocol und
    - `research_memory.json` updated and validated (14 records total; 12 real scientific, 1 simulation, 1 smoke test).
 6. **Unit Tests & Integrity**:
    - 79/79 unit tests passing (`pytest` clean).
-7. **Next Concrete Task**:
+7. **Experiment Repository Reorganization (`experiments/EXP-XXX`)**:
+   - All historical and active experiments (EXP-001 through EXP-017) are now organized into dedicated isolated directories under `experiments/` (`experiments/EXP-001/` through `experiments/EXP-017/`).
+   - All artifacts, scripts, checkpoints, logs, and markdown reports corresponding to each experiment reside cleanly inside their respective folder.
+   - Compatibility symlink layer maintained in `research/experiments/` resolving to `../../experiments/EXP-XXX` to support governed `ExperimentEngine` paths.
+   - Core root modules remain intact and importable with 79/79 unit tests passing.
+8. **Next Concrete Task**:
    - Formulate protocol for RQ-001 (EXP-015: Clock Feature Pruning in `x_meta`) or RQ-002 (EXP-016: Unsupervised GRL Adaptation Schedule Recalibration).
 
 

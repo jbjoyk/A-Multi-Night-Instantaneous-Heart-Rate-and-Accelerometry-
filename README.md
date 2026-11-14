@@ -19,37 +19,38 @@ The project investigates wearable-based sleep staging on the *Multi-Night Instan
 ```
 ├── README.md                              # This file
 ├── RESEARCH_STATE.md                      # Current research facts, objectives, and verified findings
-├── EXPERIMENTS.md                         # Complete registry of all experiments (EXP-001 through EXP-014)
-├── DECISIONS.md                           # Architectural and experimental decisions (DEC-001 through DEC-020)
+├── EXPERIMENTS.md                         # Complete registry of all experiments (EXP-001 through EXP-017)
+├── DECISIONS.md                           # Architectural and experimental decisions (DEC-001 through DEC-022)
 ├── HANDOFF.md                             # Continuity handoff notes and active task state
 ├── NOTEBOOK_STATE.md                      # Notebook execution and environment audit state
 │
-├── EXP014_FINAL_REPORT.md                 # Complete report on 75-run 5-fold cross-validation
-├── EXP014_PROTOCOL.md                     # Frozen evaluation protocol for EXP-014
-├── EXP014_SUMMARY.csv                     # Model performance summary across all 75 runs
-├── EXP014_RESULTS.csv                     # Per-fold, per-seed aggregate results
-├── EXP014_PER_CLASS.csv                   # Per-class metrics across folds and models
-├── EXP014_SUBJECT_METRICS.csv             # Per-subject metrics across all 47 subjects
-├── EXP014_PAIRED_BOOTSTRAP.csv            # Paired subject-level cluster bootstrap statistics (B=1000)
-├── EXP014_CONFUSION_MATRICES/             # Normalized and raw confusion matrices
-├── EXP014_MANIFESTS/                      # Subject partition manifests for folds 1–5
-├── EXP014_TRAINING_HISTORY/               # Validation loss/Macro-F1 trajectories
+├── experiments/                           # Isolated directory per experiment (EXP-001 through EXP-017)
+│   ├── EXP-001/                           # Baseline SleepChannelNet, notebooks, problem context
+│   ├── EXP-002/                           # SleepJEPA pretraining & fine-tuning
+│   ├── EXP-003/                           # Hyperparameter & optimization search
+│   ├── EXP-004/                           # Frozen test set baseline evaluation
+│   ├── EXP-005/                           # SLAMSS-IFS reproduction, tests, official repo
+│   ├── EXP-006/                           # SleepAdaptiveNet modular implementation
+│   ├── EXP-007/                           # Controlled ablation (A0–A5, Seed 42)
+│   ├── EXP-008/                           # Boundary weight sweep & GRL disentanglement
+│   ├── EXP-009/                           # Multi-seed stability (B0_GRL vs B2)
+│   ├── EXP-010/                           # Long-training convergence (500 epochs)
+│   ├── EXP-011/                           # Multi-seed long-training convergence audit
+│   ├── EXP-012/                           # Frozen test benchmark, reports, audit dossiers
+│   ├── EXP-013/                           # Component attribution (Models A–E)
+│   ├── EXP-014/                           # 75-run 5-fold cross-validation suite
+│   ├── EXP-015/                           # Clock feature pruning simulation
+│   ├── EXP-016/                           # Governed live execution smoke test
+│   └── EXP-017/                           # Sequence horizon evaluation (T=600 vs T<=1200)
 │
-├── EXP013_RESULTS.md                      # Component attribution report on test partition
-├── EXP013_OUTPUTS/                        # CSVs and metrics for EXP-013 factorial ablations
-│
-├── EXP012_AUDIT/                          # Independent reproduction & benchmark audit
-├── EXP012_BENCHMARK_REPORT.pdf            # 10-page publication benchmark report
-├── SUPERVISOR_REVIEW_EXP012/              # Supervisor review dossiers and audit reports
-├── report_assets/                         # High-resolution publication figures (fig1–fig5)
-│
+├── research/experiments/                  # Symlink layer resolving to experiments/EXP-XXX
+├── research_engine/                       # Autonomous governed research engine
+├── tests/                                 # Automated test suite (79/79 passing)
 ├── sleep_adaptive_net.py                  # Core PyTorch model: SleepAdaptiveNet (A0–A5)
 ├── exp013_models.py                       # Factorial ablation model variants (Models A–E)
-├── exp014_models.py                       # Cross-validation model variants
-├── run_exp014_cv.py                       # Cross-validation runner script
-├── run_exp013_attribution.py              # Attribution study runner script
-├── run_exp012_final_benchmark.py          # Benchmark test runner script
-├── official_slamss_ifs/                   # Reference implementation of SLAMSS-IFS
+├── dataset_gate.py                        # Strict dataset split & leakage protection gate
+├── evaluator.py                           # Governed evaluation & metrics engine
+├── governor.py                            # Research governor and safety controller
 └── requirements.txt                       # Python dependencies
 ```
 
