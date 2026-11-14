@@ -50,9 +50,10 @@ def compute_ece(probs: np.ndarray, labels: np.ndarray, n_bins: int = 10) -> floa
 
 class ControlledSleepDataset(Dataset):
     """
-    Dataset for controlled ablation study.
-    Fixed sequence length T = 600 epochs (5.0 hours).
-    Every night in dataset has >= 610 epochs -> 0 zero-padding for any recording.
+    Dataset for controlled sleep experiments.
+    Supports fixed sequence horizon (e.g., T = 600 or T <= 1200).
+    For nights shorter than seq_len, pads up to seq_len and records native sequence length L.
+    Invalid chronological epoch positions remain masked (mask=False / target=-100).
     """
     def __init__(
         self,
@@ -72,18 +73,42 @@ class ControlledSleepDataset(Dataset):
         subj = rec["subject"]
         subj_idx = self.subject_to_idx.get(subj, -100)
         
+        native_len = len(rec["ihr"])
         T = self.seq_len
-        ihr = rec["ihr"][:T]
-        acc = rec["accel"][:T]
-        freq = rec["freq"][:T]
-        time_feat = rec["time"][:T]
-        y = rec["y"][:T]
+        L = min(native_len, T)
+        
+        ihr_valid = rec["ihr"][:L]
+        acc_valid = rec["accel"][:L]
+        freq_valid = rec["freq"][:L]
+        time_valid = rec["time"][:L]
+        y_valid = rec["y"][:L]
+        
+        if L < T:
+            pad_len = T - L
+            ihr_pad = np.zeros((pad_len, 30), dtype=ihr_valid.dtype)
+            acc_pad = np.zeros((pad_len, 30), dtype=acc_valid.dtype)
+            freq_pad = np.zeros((pad_len, 1), dtype=freq_valid.dtype)
+            time_pad = np.zeros((pad_len, 1), dtype=time_valid.dtype)
+            y_pad = np.full(pad_len, -100, dtype=y_valid.dtype)
+            
+            ihr = np.concatenate([ihr_valid, ihr_pad], axis=0)
+            acc = np.concatenate([acc_valid, acc_pad], axis=0)
+            freq = np.concatenate([freq_valid, freq_pad], axis=0)
+            time_feat = np.concatenate([time_valid, time_pad], axis=0)
+            y = np.concatenate([y_valid, y_pad], axis=0)
+            mask = np.concatenate([np.ones(L, dtype=bool), np.zeros(pad_len, dtype=bool)])
+        else:
+            ihr = ihr_valid
+            acc = acc_valid
+            freq = freq_valid
+            time_feat = time_valid
+            y = y_valid
+            mask = np.ones(T, dtype=bool)
         
         hr_mean = ihr.mean(axis=1, keepdims=True)
         hr_std = ihr.std(axis=1, keepdims=True)
         clock = np.zeros_like(time_feat)
         meta = np.concatenate([freq, clock, time_feat, hr_mean, hr_std], axis=-1)
-        mask = np.ones(T, dtype=bool)
         
         return {
             "ihr": torch.from_numpy(ihr.astype(np.float32)),
@@ -91,6 +116,7 @@ class ControlledSleepDataset(Dataset):
             "meta": torch.from_numpy(meta.astype(np.float32)),
             "y": torch.from_numpy(y.astype(np.int64)),
             "mask": torch.from_numpy(mask),
+            "seq_len": torch.tensor(L, dtype=torch.int64),
             "subject_idx": torch.tensor(subj_idx, dtype=torch.int64),
             "subject": subj,
             "night": rec["night"]
@@ -123,8 +149,9 @@ def evaluate_validation(
             targets = batch["y"].to(device)
             mask = batch["mask"].to(device)
             subj_idx = batch["subject_idx"].to(device)
+            seq_lens = batch.get("seq_len", None)
             
-            out = model(x_ihr, x_acc, x_meta, targets=targets, mask=mask, subject_idx=subj_idx)
+            out = model(x_ihr, x_acc, x_meta, targets=targets, mask=mask, subject_idx=subj_idx, seq_lens=seq_lens)
             
             val_losses.append(out["total_loss"].item())
             loss_components["stage"].append(out["loss_stage"].item())
@@ -270,9 +297,10 @@ def train_and_evaluate_ablation(
             targets = batch["y"].to(device)
             mask = batch["mask"].to(device)
             subj_idx = batch["subject_idx"].to(device)
+            seq_lens = batch.get("seq_len", None)
             
             optimizer.zero_grad()
-            out = model(x_ihr, x_acc, x_meta, targets=targets, mask=mask, subject_idx=subj_idx)
+            out = model(x_ihr, x_acc, x_meta, targets=targets, mask=mask, subject_idx=subj_idx, seq_lens=seq_lens)
             loss = out["total_loss"]
             
             # Check for NaN / Inf

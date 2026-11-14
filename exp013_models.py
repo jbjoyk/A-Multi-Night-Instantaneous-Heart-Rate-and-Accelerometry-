@@ -104,10 +104,12 @@ class ConventionalCNNBiGRU(nn.Module):
         x_meta: torch.Tensor,
         targets: Optional[torch.Tensor] = None,
         mask: Optional[torch.Tensor] = None,
-        subject_idx: Optional[torch.Tensor] = None
+        subject_idx: Optional[torch.Tensor] = None,
+        seq_lens: Optional[torch.Tensor] = None
     ) -> Dict[str, torch.Tensor]:
         """
         Forward pass matching SleepAdaptiveNet return dictionary format.
+        Supports recurrent packing via seq_lens to protect valid representations from padding.
         """
         B, T, _ = x_ihr.shape
         
@@ -119,8 +121,19 @@ class ConventionalCNNBiGRU(nn.Module):
         # 2. Direct Feature Concatenation (No Adaptive Gate)
         cat_features = torch.cat([h_hr, h_acc, h_meta], dim=-1) # (B, T, 144)
         
-        # 3. Temporal Sequence Modeling
-        temp_out, _ = self.temporal_gru(cat_features)
+        # 3. Temporal Sequence Modeling with Recurrent Padding Protection
+        if seq_lens is not None:
+            seq_lens_cpu = seq_lens.to("cpu", dtype=torch.int64)
+            packed_features = nn.utils.rnn.pack_padded_sequence(
+                cat_features, seq_lens_cpu, batch_first=True, enforce_sorted=False
+            )
+            packed_out, _ = self.temporal_gru(packed_features)
+            temp_out, _ = nn.utils.rnn.pad_packed_sequence(
+                packed_out, batch_first=True, total_length=T
+            )
+        else:
+            temp_out, _ = self.temporal_gru(cat_features)
+            
         temp_features = self.temp_norm(temp_out) # (B, T, d_temp)
         
         # 4. Classification Emission Logits
