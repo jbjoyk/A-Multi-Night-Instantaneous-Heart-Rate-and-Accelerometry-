@@ -326,6 +326,131 @@ class SleepEvaluator:
         return metrics
 
 
+class ClinicalHypnogramEvaluator:
+    """
+    Computes clinical polysomnography metrics for full-night continuous hypnograms.
+    Epoch duration is 30 seconds (0.5 minutes).
+    Stages: 0 = Wake, 1 = Light, 2 = Deep, 3 = REM.
+    """
+    EPOCH_DURATION_MIN = 0.5
+
+    @classmethod
+    def compute_night_metrics(cls, hypnogram: np.ndarray) -> Dict[str, float]:
+        """
+        Computes clinical metrics for a single continuous night hypnogram.
+        Handles zero-sleep and short-night edge cases per EXP-018 protocol.
+        """
+        hyp = np.asarray(hypnogram, dtype=np.int64)
+        N = len(hyp)
+        tib = float(N * cls.EPOCH_DURATION_MIN)
+        if N == 0:
+            return {
+                "tib_min": 0.0,
+                "tst_min": 0.0,
+                "sol_min": 0.0,
+                "waso_min": 0.0,
+                "sleep_efficiency_pct": 0.0,
+                "wake_min": 0.0,
+                "light_min": 0.0,
+                "deep_min": 0.0,
+                "rem_min": 0.0,
+                "deep_pct_tst": 0.0,
+                "rem_pct_tst": 0.0,
+                "light_pct_tst": 0.0,
+                "wake_pct_tib": 0.0,
+            }
+
+        is_sleep = (hyp == 1) | (hyp == 2) | (hyp == 3)
+        tst = float(np.sum(is_sleep) * cls.EPOCH_DURATION_MIN)
+        se = float((tst / tib * 100.0) if tib > 0 else 0.0)
+
+        # Stage durations
+        wake_min = float(np.sum(hyp == 0) * cls.EPOCH_DURATION_MIN)
+        light_min = float(np.sum(hyp == 1) * cls.EPOCH_DURATION_MIN)
+        deep_min = float(np.sum(hyp == 2) * cls.EPOCH_DURATION_MIN)
+        rem_min = float(np.sum(hyp == 3) * cls.EPOCH_DURATION_MIN)
+
+        deep_pct_tst = float((deep_min / tst * 100.0) if tst > 0 else 0.0)
+        rem_pct_tst = float((rem_min / tst * 100.0) if tst > 0 else 0.0)
+        light_pct_tst = float((light_min / tst * 100.0) if tst > 0 else 0.0)
+        wake_pct_tib = float((wake_min / tib * 100.0) if tib > 0 else 0.0)
+
+        # Sleep Onset Latency (SOL): first 3 consecutive sleep epochs (1.5 min)
+        sleep_indices = np.where(is_sleep)[0]
+        sol_min = tib  # Protocol default if no sleep onset
+        t_onset_idx = None
+
+        if len(sleep_indices) >= 3:
+            for i in range(len(hyp) - 2):
+                if is_sleep[i] and is_sleep[i + 1] and is_sleep[i + 2]:
+                    t_onset_idx = i
+                    sol_min = float(i * cls.EPOCH_DURATION_MIN)
+                    break
+
+        # Wake After Sleep Onset (WASO): wake minutes between sleep onset and final sleep epoch
+        waso_min = 0.0
+        if t_onset_idx is not None and len(sleep_indices) > 0:
+            t_final_idx = sleep_indices[-1]
+            if t_final_idx > t_onset_idx:
+                wake_in_interval = np.sum(hyp[t_onset_idx : t_final_idx + 1] == 0)
+                waso_min = float(wake_in_interval * cls.EPOCH_DURATION_MIN)
+
+        return {
+            "tib_min": tib,
+            "tst_min": tst,
+            "sol_min": sol_min,
+            "waso_min": waso_min,
+            "sleep_efficiency_pct": se,
+            "wake_min": wake_min,
+            "light_min": light_min,
+            "deep_min": deep_min,
+            "rem_min": rem_min,
+            "deep_pct_tst": deep_pct_tst,
+            "rem_pct_tst": rem_pct_tst,
+            "light_pct_tst": light_pct_tst,
+            "wake_pct_tib": wake_pct_tib,
+        }
+
+    @classmethod
+    def evaluate_cohort(
+        cls,
+        true_hypnograms: List[np.ndarray],
+        pred_hypnograms: List[np.ndarray]
+    ) -> Dict[str, Any]:
+        """
+        Evaluates clinical metrics across a cohort of nights, computing
+        per-night values and cohort summary error metrics (MAE, Bias, RMSE).
+        """
+        assert len(true_hypnograms) == len(pred_hypnograms), "Hypnogram list lengths must match"
+        n_nights = len(true_hypnograms)
+
+        metric_keys = ["tst_min", "sol_min", "waso_min", "sleep_efficiency_pct", "deep_pct_tst", "rem_pct_tst"]
+        night_errors = {k: [] for k in metric_keys}
+        night_true_vals = {k: [] for k in metric_keys}
+        night_pred_vals = {k: [] for k in metric_keys}
+
+        for y_t, y_p in zip(true_hypnograms, pred_hypnograms):
+            m_t = cls.compute_night_metrics(y_t)
+            m_p = cls.compute_night_metrics(y_p)
+            for k in metric_keys:
+                diff = m_p[k] - m_t[k]
+                night_errors[k].append(diff)
+                night_true_vals[k].append(m_t[k])
+                night_pred_vals[k].append(m_p[k])
+
+        summary = {}
+        for k in metric_keys:
+            errs = np.array(night_errors[k])
+            summary[f"{k}_mae"] = float(np.mean(np.abs(errs)))
+            summary[f"{k}_bias"] = float(np.mean(errs))
+            summary[f"{k}_rmse"] = float(np.sqrt(np.mean(errs ** 2)))
+            summary[f"{k}_true_mean"] = float(np.mean(night_true_vals[k]))
+            summary[f"{k}_pred_mean"] = float(np.mean(night_pred_vals[k]))
+
+        summary["n_nights"] = n_nights
+        return summary
+
+
 if __name__ == "__main__":
     print("Running SleepEvaluator preflight self-test...")
     evaluator = SleepEvaluator()
