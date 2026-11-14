@@ -609,6 +609,41 @@ state.
   - `EXP017_FINAL_REPORT.md`
 - Status: **EXPERIMENT COMPLETED AND SERIALIZED [VERDICT: INCONCLUSIVE].**
 
+### EXP-018 — Context-Horizon Scaling Curve with Data-Coverage Control (Phase 1)
+
+- Date: 2026-11-14
+- Execution Mode: `REAL`
+- Scientific Classification: **SCIENTIFIC EVIDENCE = TRUE**, **MODEL SELECTION ELIGIBLE = TRUE**, **LEADERBOARD ELIGIBLE = TRUE**
+- Research question: How does temporal context length $L \in \{1, 20, 60, 120, 300, 600, 1200\}$ epochs affect sleep staging accuracy when data coverage across the night and total token exposure are strictly controlled?
+- Hypothesis: Macro-F1 increases with context horizon $L$ and either saturates or demonstrates a sustained multi-scale gain beyond local windows ($L=600$ vs $L=60$).
+- Protocol:
+  - Model: Model A (`ConventionalCNNBiGRU`, 163,940 parameters; identical architecture).
+  - Conditions: $L \in \{1, 20, 60, 120, 300, 600, 1200\}$ epochs.
+  - Training Windows: Random crops from anywhere in the recording extent (`RandomCropSleepDataset`). Circadian neutralization (`time_feat = 0.0`).
+  - Compute Invariant: Constant token exposure per optimizer step ($B \times L \times N_{\text{accum}} = 2,400$ tokens/step, 3,200 optimizer steps, 7,680,000 total tokens per run).
+  - Inference: `SlidingWindowPredictor` (Case 1: $N \le L$ whole-night forward pass; Case 2: $N > L$ strided sliding window with boundary anchoring and emission probability averaging).
+  - Cohort: 31 train subjects (160 nights) / 5 validation subjects (28 nights). 11 held-out test subjects strictly locked (zero test access). Split hash: `bf33573623f47f3f`.
+  - Hardware: Dedicated execution on `cuda:1` (NVIDIA RTX 3060 12GB). 21 runs completed (7 $L$ values $\times$ 3 seeds: 42, 123, 2024).
+- Empirical Results (Mean $\pm$ SD across 3 seeds):
+  - $L=1$ (0.5m): Macro-F1 = $0.3654 \pm 0.0057$, Accuracy = $48.56\% \pm 0.09\%$, $\kappa = 0.1710 \pm 0.0047$, MCC = $0.2066 \pm 0.0023$.
+  - $L=20$ (10m): Macro-F1 = $0.5688 \pm 0.0150$, Accuracy = $58.93\% \pm 0.95\%$, $\kappa = 0.3859 \pm 0.0239$, MCC = $0.3949 \pm 0.0186$.
+  - $L=60$ (30m): Macro-F1 = $0.6117 \pm 0.0025$, Accuracy = $62.30\% \pm 0.22\%$, $\kappa = 0.4451 \pm 0.0017$, MCC = $0.4498 \pm 0.0007$.
+  - $L=120$ (60m): Macro-F1 = $0.6100 \pm 0.0055$, Accuracy = $62.34\% \pm 0.83\%$, $\kappa = 0.4470 \pm 0.0074$, MCC = $0.4506 \pm 0.0085$.
+  - $L=300$ (150m): Macro-F1 = $0.6321 \pm 0.0089$, Accuracy = $64.60\% \pm 0.73\%$, $\kappa = 0.4805 \pm 0.0119$, MCC = $0.4842 \pm 0.0119$.
+  - $L=600$ (300m): Macro-F1 = $0.6529 \pm 0.0078$, Accuracy = $66.49\% \pm 1.33\%$, $\kappa = 0.5114 \pm 0.0118$, MCC = $0.5194 \pm 0.0111$.
+  - $L=1200$ (600m): Macro-F1 = $0.6993 \pm 0.0139$, Accuracy = $70.04\% \pm 1.47\%$, $\kappa = 0.5693 \pm 0.0159$, MCC = $0.5728 \pm 0.0154$.
+- Paired Subject Bootstrap ($B=1000$ iterations over $N=5$ validation subjects):
+  - Primary Estimand ($L=600$ vs $L=60$): $\Delta \text{Macro-F1} = \mathbf{+4.27\text{ pp}}$ [95% CI: $\mathbf{+2.53\text{ pp}, +6.46\text{ pp}}$].
+  - 100% Directional Concordance: `Bidslab13`: $+4.17$, `Bidslab40`: $+3.39$, `Bidslab55`: $+3.92$, `Bidslab56`: $+8.33$, `Bidslab64`: $+1.51\text{ pp}$.
+- Parametric Saturation Fit (Single-Scale Baseline):
+  - $F_1(L) = 0.6435 - 0.2953 e^{-0.0647 L}$ ($R^2 = 0.9258$, $L^* = 46.3\text{ epochs} / 23.1\text{ min}$).
+  - Resolving the saturation paradox: Single-exponential captures local transition inertia ($L \le 60$), while multi-hour ultradian NREM-REM cycles produce a second scaling regime ($L \ge 300$) reaching $0.6529$ ($L=600$) and $0.6993$ ($L=1200$).
+- Clinical PSG Metrics:
+  - TST MAE: $44.30\text{m}$ ($L=1$) $\to 31.04\text{m}$ ($L=60$) $\to 36.61\text{m}$ ($L=600$) $\to 27.14\text{m}$ ($L=1200$).
+  - Explaining the dissociation: Intermediate context acts as a temporal low-pass filter over-smoothing brief micro-arousals (Wake recall drops from $50.8\%$ at $L=60$ to $46.4\%$ at $L=600$), before whole-night boundary anchors restore Wake recall ($60.8\%$) at $L=1200$.
+- Pre-Registered Decision Rule Verdict: **`SUPPORTED (Context Benefit)`** $\implies$ **Phase 2 5-Fold Cross-Validation ($N=47$) is AUTHORIZED**.
+- Status: **PHASE 1 COMPLETE AND FULLY REVIEWED. PHASE 2 CROSS-VALIDATION AUTHORIZED.**
+
 ## RESEARCH TRAJECTORY
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

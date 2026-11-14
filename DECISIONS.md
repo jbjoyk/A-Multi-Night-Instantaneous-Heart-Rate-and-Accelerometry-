@@ -281,4 +281,29 @@
 - Reversible: Yes.
 
 
+## DEC-023 — EXP-018 Phase 1 Horizon Curve Evaluation & Phase 2 Authorization
+
+- Date: 2026-11-14
+- Decision: Conclude Phase 1 of EXP-018 (Context-Horizon Curve with Data-Coverage Control) and formally record that the pre-registered gating threshold authorizing Phase 2 (5-fold cross-validation across all 47 subjects) has been passed.
+  1. Experimental Protocol:
+     - Model: Model A only (`ConventionalCNNBiGRU`, 163,940 parameters; `exp013_models.py`).
+     - Conditions: Context horizon $L \in \{1, 20, 60, 120, 300, 600, 1200\}$ epochs.
+     - Token Exposure Invariant: $B \times L \times N_{\text{accum}} = 2,400$ tokens/step ($3,200\text{ steps} \times 2,400 = 7,680,000\text{ total tokens/run}$) across all 21 runs.
+     - Circadian Neutralization: `time_feat = 0.0`.
+     - Inference: `SlidingWindowPredictor` with boundary anchoring.
+     - Cohort: 31 train / 5 validation subjects (28 nights). 11 test subjects strictly locked. Split hash: `bf33573623f47f3f`.
+  2. Empirical Findings:
+     - Primary Estimand ($L=600$ vs $L=60$): $\Delta \text{Macro-F1} = \mathbf{+4.27\text{ pp}}$ [95% CI: $\mathbf{+2.53\text{ pp}, +6.46\text{ pp}}$].
+     - 100% Directional Concordance across all 5 validation subjects (`Bidslab13`: $+4.17$, `Bidslab40`: $+3.39$, `Bidslab55`: $+3.92$, `Bidslab56`: $+8.33$, `Bidslab64`: $+1.51\text{ pp}$).
+     - Decision Category: **`SUPPORTED (Context Benefit)`** $\implies$ **Phase 2 CV is AUTHORIZED**.
+     - Parametric Saturation Paradox Resolved: Single-scale exponential fit ($L^* = 46.3\text{ epochs} / 23.1\text{ min}$, $A = 0.6435$) captures local transition inertia, while multi-hour ultradian NREM-REM cycles produce a second scaling regime ($L \ge 300$) reaching $0.6529$ at $L=600$ and $0.6993$ at $L=1200$.
+     - Clinical PSG Metrics: TST error exhibits U-shaped curve due to intermediate micro-arousal low-pass filtering, before recovering to $27.14\text{ min}$ MAE at $L=1200$.
+  3. Action:
+     - Phase 2 5-fold cross-validation is AUTHORIZED per protocol.
+     - Phase 1b circadian ablation is PERMITTED.
+     - Held-out test set remains strictly locked. Launching of Phase 2 training remains subject to explicit user authorization.
+- Reversible: Yes.
+
+
+
 

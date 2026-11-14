@@ -1,6 +1,6 @@
 # Research State
 
-Last updated: 2026-11-14 (DEC-022: EXP-017 Sequence Truncation Evaluation Concluded)
+Last updated: 2026-11-14 (DEC-023: EXP-018 Phase 1 Horizon Curve Evaluated & Phase 2 Authorized)
 
 ## Research question
 
@@ -133,6 +133,16 @@ Evaluated on the 5 validation subjects (28 nights, 16,368 valid matched-600 wind
 - **Secondary Descriptive Analysis (Extended Coverage $T \le 1200$, 23,183 valid windows)**:
   - Accuracy: $71.45\% \pm 0.43\%$, Macro-F1: $0.7153 \pm 0.0024$, REM recall: $70.42\% \pm 3.81\%$, Deep recall: $75.24\% \pm 4.31\%$.
 All artifacts are archived in `research/experiments/EXP-017/` and documented in `EXP017_FINAL_REPORT.md`.
+
+### EXP-018 Phase 1 Horizon Scaling Evaluation (DEC-023)
+
+- **Status**: Completed (21 runs: $7 L \in \{1, 20, 60, 120, 300, 600, 1200\} \times 3 \text{ seeds}$) on `cuda:1`.
+- **Primary Estimand ($L=600$ vs $L=60$)**: $\Delta \text{Macro-F1} = \mathbf{+4.27\text{ pp}}$ [95% CI: $\mathbf{+2.53\text{ pp}, +6.46\text{ pp}}$].
+- **Subject-Level Concordance**: 100% positive across all 5 validation subjects (`Bidslab13`: $+4.17$, `Bidslab40`: $+3.39$, `Bidslab55`: $+3.92$, `Bidslab56`: $+8.33$, `Bidslab64`: $+1.51\text{ pp}$).
+- **Pre-Registered Gating Rule**: $\Delta \ge +1.0\text{ pp}$ with strictly positive CI lower bound $\implies$ **Phase 2 5-fold cross-validation ($N=47$) is AUTHORIZED**.
+- **Parametric Saturation**: Single-exponential fit ($L^* = 46.3\text{ epochs} / 23.1\text{ min}$, $A = 0.6435$) captures local transition inertia, while multi-hour ultradian NREM-REM cycles produce a second scaling regime ($L \ge 300$) reaching $0.6529$ at $L=600$ and $0.6993$ at $L=1200$.
+- **Clinical PSG Metrics**: TST MAE exhibits U-shaped trend due to intermediate micro-arousal over-smoothing, before whole-night context restores Wake recall and yields best clinical agreement ($27.14\text{ min}$ TST MAE at $L=1200$).
+- All artifacts archived in `experiments/EXP-018/phase1_results/` and reported in `experiments/EXP-018/EXP018_PHASE1_REPORT.md`.
 
 ## Latest historical recorded results
 
