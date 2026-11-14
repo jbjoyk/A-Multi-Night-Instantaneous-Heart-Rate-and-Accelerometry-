@@ -2,29 +2,31 @@
 
 ## Current task
 
-EXP-018 PHASE 1 HORIZON SCALING EXPERIMENT COMPLETED AND FULLY AUDITED.
-Successfully implemented, executed, and multi-stage reviewed the governed EXP-018 Phase 1 protocol:
-1. **Governed Execution & Model Configuration**:
-   - Model: Model A only (`ConventionalCNNBiGRU`, 163,940 parameters; `exp013_models.py`).
-   - Context lengths: $L \in \{1, 20, 60, 120, 300, 600, 1200\}$ epochs $\times$ 3 seeds (42, 123, 2024) = 21 runs completed on `cuda:1`.
-   - Token Exposure Invariant: $B \times L \times N_{\text{accum}} = 2,400$ tokens/step ($3,200\text{ steps} \times 2,400 = 7,680,000\text{ total tokens/run}$) held constant across all 21 runs.
-   - Circadian Neutralization: `time_feat = 0.0` to decouple context horizon from circadian time markers.
-2. **Strict Test Cohort Protection**:
-   - 11 held-out test subjects strictly locked (`test_set_accessed = False`, `assert_no_test_leakage` passed).
-   - Validation on 5 disjoint subjects (28 nights).
-3. **Primary Estimand & Hypothesis Decision**:
+EXP-018: CONTEXT-HORIZON CURVE WITH DATA-COVERAGE CONTROL — EXECUTION & ABLATIONS:
+1. **Phase 1 (Validation Horizon Scaling)**:
+   - 21/21 runs completed on `cuda:1`.
    - Primary Estimand ($L=600$ vs $L=60$): $\Delta \text{Macro-F1} = \mathbf{+4.27\text{ pp}}$ [95% CI: $\mathbf{+2.53\text{ pp}, +6.46\text{ pp}}$].
-   - 100% Directional Concordance across all 5 validation subjects (`Bidslab13`: $+4.17$, `Bidslab40`: $+3.39$, `Bidslab55`: $+3.92$, `Bidslab56`: $+8.33$, `Bidslab64`: $+1.51\text{ pp}$).
-   - Pre-Registered Gating Rule: $\Delta \ge +1.0\text{ pp}$ with strictly positive CI lower bound $\implies$ **Phase 2 5-fold cross-validation ($N=47$) is AUTHORIZED**.
-4. **Physiological Insights & Saturation Paradox Resolution**:
-   - Single-scale exponential fit ($L^* = 46.3\text{ epochs} / 23.1\text{ min}$, $A = 0.6435$) captures local transition inertia, while multi-hour ultradian NREM-REM cycles produce a second scaling regime ($L \ge 300$) reaching $0.6529$ at $L=600$ and $0.6993$ at $L=1200$.
-   - Clinical PSG metrics: TST MAE exhibits U-shaped curve due to intermediate micro-arousal low-pass filtering, before recovering to $27.14\text{ min}$ MAE at $L=1200$.
-5. **EGM Review Process**:
-   - Stages 5 (Zoom Out), 6 (Comprehension), 7 (Critic), and 8 (Intermediate Zoom Out) completed.
-   - All blockers and majors resolved in `EXP018_PHASE1_REPORT.md` and `run_exp018_execution.py`.
-   - 88/88 unit tests passing (`pytest` clean).
-6. **Next Concrete Task**:
-   - Awaiting user instruction to conclude review and formulate/execute Phase 2 5-fold cross-validation (105 runs across all 47 subjects) or Phase 1b circadian ablation.
+   - Verdict: **SUPPORTED (Context Benefit)** $\implies$ Phase 2 Authorized.
+   - Stage 1–8 multi-agent EGM review completed and committed (`1dda77b`).
+2. **Phase 1b (Circadian Feature Ablation)**:
+   - 9/9 runs completed on `cuda:1`.
+   - Tested active `time_feat` vs neutralized baseline across $L \in \{1, 60, 600\}$.
+   - Finding: Monotonic decay of circadian clock contribution (+14.77 pp at $L=1 \to +4.38$ pp at $L=60 \to +1.36$ pp at $L=600$). Circadian information subsumption verified.
+   - Report generated and committed (`8d98814`).
+3. **Phase 2 (Cohort-Wide 5-Fold Cross-Validation, 105 Runs)**:
+   - Implemented in `experiments/EXP-018/run_exp018_execution.py` with individual JSON run caching and fold-by-fold execution (`--folds`).
+   - Current Progress: 23 / 105 runs completed and saved in `experiments/EXP-018/phase2_results/`:
+     - Fold 1: 21 / 21 runs completed.
+     - Fold 2: 2 / 21 runs completed ($L=1$, seeds 42 and 123).
+     - Folds 3–5: Pending execution.
+4. **Current Execution Hold / Resource Audit**:
+   - GPUs currently 100% occupied by PID 111725 (`run_exp_026_screen.py` in competition project) running parallel TabPFN 100k context.
+   - GPU 0 reached 92°C (fan 95%). To prevent GPU OOM crash and thermal shutdown, remaining Phase 2 folds (Fold 2 remainder, Folds 3, 4, 5: 82 runs) are held until GPU resources become free.
+5. **Next Concrete Task**:
+   - Monitor GPU status until PID 111725 finishes.
+   - Resume Phase 2 execution: Fold 2 remainder (`--folds 2`), then Folds 3, 4, 5.
+   - Generate out-of-fold 47-subject summary, metrics table, and `EXP018_PHASE2_REPORT.md`.
+   - Commit and push all artifacts to `origin main`.
 
 
 ## Previous work

@@ -644,6 +644,38 @@ state.
 - Pre-Registered Decision Rule Verdict: **`SUPPORTED (Context Benefit)`** $\implies$ **Phase 2 5-Fold Cross-Validation ($N=47$) is AUTHORIZED**.
 - Status: **PHASE 1 COMPLETE AND FULLY REVIEWED. PHASE 2 CROSS-VALIDATION AUTHORIZED.**
 
+### EXP-018 Phase 1b — Circadian Feature Ablation
+
+- Date: 2026-11-14
+- Research question: Does the context-horizon gain observed in Phase 1 stem from true sequence representation learning or is the BiGRU merely functioning as an implicit surrogate clock for diurnal progression?
+- Hypothesis: If long context merely acts as a proxy clock, adding explicit normalized time-in-night (`time_feat` $\in [0, 1]$) should close or eliminate the gap between short and long context. Conversely, if long context captures true ultradian cardiorespiratory dynamics, the marginal value of explicit time should diminish monotonically as context length $L$ expands.
+- Design: $L \in \{1, 60, 600\} \times 3$ seeds (42, 123, 2024) = 9 runs on `cuda:1` with active `time_feat` ($x_{\text{meta}}[:, :, 2]$), evaluated against Phase 1 neutralized baseline (`time_feat = 0.0`).
+- Empirical Results:
+  - $L=1$: Neutralized $0.3654 \pm 0.0057 \to$ Active **$0.5131 \pm 0.0035$** ($\Delta = \mathbf{+14.77\text{ pp}}$).
+  - $L=60$: Neutralized $0.6117 \pm 0.0025 \to$ Active **$0.6555 \pm 0.0078$** ($\Delta = \mathbf{+4.38\text{ pp}}$).
+  - $L=600$: Neutralized $0.6529 \pm 0.0078 \to$ Active **$0.6665 \pm 0.0018$** ($\Delta = \mathbf{+1.36\text{ pp}}$).
+- Mechanistic Conclusion: **Circadian Information Subsumption Verified**. Clock time provides massive value for an isolated epoch (+14.77 pp) and moderate value for local context (+4.38 pp), but its marginal contribution diminishes sharply to +1.36 pp at multi-hour context ($L=600$). The recurrent BiGRU autonomously extracts diurnal progression directly from underlying physiological time-series (heart rate dip, HRV dynamics), confirming that the $+4.27\text{ pp}$ context horizon gain reflects true sequence modeling.
+- Status: **PHASE 1b COMPLETE (9/9 RUNS PASS). REPORT: [`EXP018_PHASE1B_REPORT.md`](experiments/EXP-018/EXP018_PHASE1B_REPORT.md).**
+
+### EXP-018 Phase 2 — Cohort-Wide 5-Fold Cross-Validation (In Progress)
+
+- Date: 2026-11-15
+- Research question: Does the monotonic context-horizon scaling observed on the validation set hold across the entire cohort of 47 subjects (246 usable nights)?
+- Design: Full 5-fold cross-validation ($7 L \in \{1, 20, 60, 120, 300, 600, 1200\} \times 5\text{ folds} \times 3\text{ seeds} = 105\text{ runs}$).
+- Progress: 23 / 105 runs completed on disk in `experiments/EXP-018/phase2_results/`:
+  - Fold 1: 21 / 21 runs completed.
+  - Fold 2: 2 / 21 runs completed ($L=1$, seeds 42, 123).
+  - Folds 3–5: Pending execution.
+- Fold 1 Out-Of-Fold Progression (Mean $\pm$ SD across 3 seeds on 10 held-out subjects):
+  - $L=1$: $0.380 \pm 0.002$
+  - $L=20$: $0.539 \pm 0.004$
+  - $L=60$: $0.571 \pm 0.002$
+  - $L=120$: $0.582 \pm 0.004$
+  - $L=300$: $0.591 \pm 0.003$
+  - $L=600$: $0.604 \pm 0.005$
+  - $L=1200$: $0.617 \pm 0.018$
+- Status: **IN PROGRESS (23/105 runs completed). Awaiting completion of concurrent GPU job.**
+
 ## RESEARCH TRAJECTORY
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

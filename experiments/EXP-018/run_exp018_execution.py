@@ -63,6 +63,8 @@ def parse_args():
                         help="Path to preprocessed feature cache")
     parser.add_argument("--max-steps", type=int, default=3200,
                         help="Total optimizer update steps per run (frozen default: 3200)")
+    parser.add_argument("--folds", type=int, nargs="+", default=[1, 2, 3, 4, 5],
+                        help="Folds to execute in Phase 2 cross-validation (default: 1 2 3 4 5)")
     parser.add_argument("--device", type=str, default="cuda:1" if torch.cuda.device_count() > 1 else ("cuda:0" if torch.cuda.is_available() else "cpu"),
                         help="Computation device")
     return parser.parse_args()
@@ -1102,12 +1104,13 @@ def run_phase2_orchestrator(args, gate: DatasetGate):
     device = args.device
     L_values = args.L_values
     seeds = args.seeds
-    folds = [1, 2, 3, 4, 5]
-    total_runs = len(folds) * len(L_values) * len(seeds)  # 5 * 7 * 3 = 105
+    all_folds = [1, 2, 3, 4, 5]
+    folds_to_run = args.folds
+    total_runs = len(all_folds) * len(L_values) * len(seeds)  # 5 * 7 * 3 = 105
     run_count = 0
     raw_results = {}
 
-    for fold in folds:
+    for fold in folds_to_run:
         raw_results[fold] = {}
         manifest_path = os.path.join(manifest_dir, f"fold_{fold}.json")
         with open(manifest_path, "r") as f:
@@ -1132,7 +1135,7 @@ def run_phase2_orchestrator(args, gate: DatasetGate):
                 artifact_name = f"run_L{L:04d}_fold{fold}_seed{seed}.json"
                 artifact_path = os.path.join(phase2_dir, artifact_name)
 
-                print(f"[Phase 2 {run_count:03d}/{total_runs:03d}] Fold {fold}, L={L:04d}, Seed={seed} "
+                print(f"[Phase 2 Run] Fold {fold}, L={L:04d}, Seed={seed} "
                       f"(B={COMPUTE_SCHEDULE_LOOKUP[L]['B']}, N_accum={COMPUTE_SCHEDULE_LOOKUP[L]['N_accum']})...", end=" ", flush=True)
 
                 if os.path.exists(artifact_path):
@@ -1178,8 +1181,32 @@ def run_phase2_orchestrator(args, gate: DatasetGate):
                     raise e
 
     print("\n" + "=" * 70)
-    print("ALL 105 RUNS OF PHASE 2 COMPLETED. COMPILING 47-SUBJECT OUT-OF-FOLD AGGREGATION...")
+    print("CHECKING ALL 105 RUN ARTIFACTS ON DISK...")
     print("=" * 70)
+
+    # Check if all 105 runs exist across all 5 folds
+    all_runs_ready = True
+    completed_runs_count = 0
+    all_raw_results = {f: {L: {} for L in L_values} for f in all_folds}
+
+    for f in all_folds:
+        for L in L_values:
+            for s in seeds:
+                f_path = os.path.join(phase2_dir, f"run_L{L:04d}_fold{f}_seed{s}.json")
+                if os.path.exists(f_path):
+                    completed_runs_count += 1
+                    with open(f_path, "r") as json_f:
+                        all_raw_results[f][L][s] = json.load(json_f)
+                else:
+                    all_runs_ready = False
+
+    print(f"[PHASE 2 STATUS] {completed_runs_count}/105 runs completed on disk.")
+
+    if not all_runs_ready:
+        print(f"Phase 2 partial progress saved. {105 - completed_runs_count} runs remaining.")
+        return
+
+    print("ALL 105 RUNS OF PHASE 2 COMPLETED. COMPILING 47-SUBJECT OUT-OF-FOLD AGGREGATION...")
 
     # Compile Out-Of-Fold metrics for every (L, seed) by combining the 5 outer test splits
     oof_metrics_by_L_seed = {L: {} for L in L_values}
@@ -1192,8 +1219,8 @@ def run_phase2_orchestrator(args, gate: DatasetGate):
             all_subj_kappa = {}
 
             # Collect subject test metrics across the 5 folds
-            for fold in folds:
-                f_res = raw_results[fold][L][seed]
+            for fold in all_folds:
+                f_res = all_raw_results[fold][L][seed]
                 tm = f_res["test_metrics"]
                 for sub, f1_val in tm["subject_macro_f1"].items():
                     all_subj_f1[sub] = f1_val

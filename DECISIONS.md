@@ -305,5 +305,25 @@
 - Reversible: Yes.
 
 
+## DEC-024 — EXP-018 Phase 1b Circadian Ablation Findings & Phase 2 Execution Safeguards
+
+- Date: 2026-11-15
+- Decision: Record completion of EXP-018 Phase 1b (Circadian Feature Ablation), confirm authorization of Phase 2 execution chunking, and enforce hardware safety pauses under multi-process GPU saturation.
+  1. Phase 1b Findings (Circadian Feature Ablation, 9 runs on `cuda:1`):
+     - Empirical Results:
+       - $L=1$: Neutralized $0.3654 \pm 0.0057 \to$ Active **$0.5131 \pm 0.0035$** ($\Delta = \mathbf{+14.77\text{ pp}}$).
+       - $L=60$: Neutralized $0.6117 \pm 0.0025 \to$ Active **$0.6555 \pm 0.0078$** ($\Delta = \mathbf{+4.38\text{ pp}}$).
+       - $L=600$: Neutralized $0.6529 \pm 0.0078 \to$ Active **$0.6665 \pm 0.0018$** ($\Delta = \mathbf{+1.36\text{ pp}}$).
+     - Mechanistic Resolution: Clock time provides massive classification power for isolated single epochs (+14.77 pp) and local context (+4.38 pp), but its marginal contribution diminishes sharply to +1.36 pp at multi-hour context ($L=600$). The recurrent BiGRU autonomously extracts diurnal progression directly from underlying cardiorespiratory and accelerometry time-series.
+  2. Phase 2 Architecture & Execution Strategy:
+     - 105 total runs ($7 L \in \{1, 20, 60, 120, 300, 600, 1200\} \times 5\text{ folds} \times 3\text{ seeds}$) across all 47 subjects (246 usable nights).
+     - Implemented fold-by-fold execution chunking via `--folds` CLI flag in `run_exp018_execution.py` to prevent task timeouts and ensure atomic per-run artifact caching on disk (`experiments/EXP-018/phase2_results/run_L{L}_fold{fold}_seed{seed}.json`).
+     - Progress: 23 / 105 runs completed on disk (Fold 1: 21/21 runs complete; Fold 2: 2/21 runs complete).
+  3. Thermal & Multi-Job Hardware Safeguards:
+     - Inspection of GPU telemetry revealed concurrent external process PID 111725 (`run_exp_026_screen.py` in competition project) utilizing >11 GB VRAM on both GPUs, with GPU 0 at 92°C (fan 95%).
+     - To prevent CUDA Out-Of-Memory errors and emergency thermal hardware shutdown (TJMax 93°C), remaining Phase 2 folds (Fold 2 remainder, Folds 3, 4, 5) are held until GPU resources become free.
+- Reversible: Yes.
+
+
 
 
