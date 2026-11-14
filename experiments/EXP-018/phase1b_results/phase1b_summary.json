@@ -1,0 +1,47 @@
+{
+  "experiment_id": "EXP-018",
+  "phase": "1b",
+  "status": "COMPLETED",
+  "n_runs": 9,
+  "L_values": [
+    1,
+    60,
+    600
+  ],
+  "seeds": [
+    42,
+    123,
+    2024
+  ],
+  "git_commit": "1dda77bb427801bcfb1018284729a86e96f1998c",
+  "device": "cuda:1",
+  "comparison_by_L": {
+    "1": {
+      "active_macro_f1_mean": 0.5131142194725173,
+      "active_macro_f1_std": 0.0035067795634505477,
+      "active_accuracy_mean": 0.5531783346992768,
+      "active_accuracy_std": 0.0013089829244694766,
+      "neutralized_macro_f1_mean": 0.3653702463417034,
+      "neutralized_macro_f1_std": 0.005723454603984776,
+      "delta_macro_f1_percentage_points": 14.774397313081394
+    },
+    "60": {
+      "active_macro_f1_mean": 0.6555420465523539,
+      "active_macro_f1_std": 0.007778573653840781,
+      "active_accuracy_mean": 0.661921810522078,
+      "active_accuracy_std": 0.0025113181939499726,
+      "neutralized_macro_f1_mean": 0.6117180620003941,
+      "neutralized_macro_f1_std": 0.002493906237900851,
+      "delta_macro_f1_percentage_points": 4.382398455195979
+    },
+    "600": {
+      "active_macro_f1_mean": 0.6665075213060562,
+      "active_macro_f1_std": 0.0017548199237035801,
+      "active_accuracy_mean": 0.680383614430114,
+      "active_accuracy_std": 0.006398188906782196,
+      "neutralized_macro_f1_mean": 0.6529232776180284,
+      "neutralized_macro_f1_std": 0.007754206751283051,
+      "delta_macro_f1_percentage_points": 1.3584243688027797
+    }
+  }
+}
