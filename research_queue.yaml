@@ -39,7 +39,9 @@ research_queue:
         required_evidence: "REM recall increases from ~60% to >= 66% on validation nights."
         budget: "STANDARD"
         target_device: "cuda:0"
-        status: "PENDING_APPROVAL"
+        status: "COMPLETED"
+        decision: "INCONCLUSIVE"
+        decision_notes: "Completed 6 governed runs across seeds 42, 123, 2024. Primary matched-600 REM recall delta: -0.84% [95% CI: -5.68%, +3.94%], spanning zero. Macro-F1 gained +1.98% [+1.23%, +2.69%], Accuracy gained +2.33% [+1.64%, +3.03%], Deep recall gained +8.52% [+6.35%, +11.72%]. Direction consistency: 2/5 subjects positive, 3/5 negative. REM hypothesis is inconclusive / not supported under tested protocol."
 
   - id: "RQ-004"
     research_question: "Can multi-night longitudinal calibration reduce inter-subject performance variance?"

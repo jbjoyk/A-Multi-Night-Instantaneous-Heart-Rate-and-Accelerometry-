@@ -484,6 +484,57 @@
       "review": "Scientific Review Verdict: ACCEPT (10/10 checks passed). All 10 experimental validity checks PASSED.",
       "timestamp": "2026-11-14T00:08:05",
       "simulation_tag": "INFRASTRUCTURE SMOKE TEST \u2014 NON-EVIDENCE"
+    },
+    {
+      "experiment_id": "EXP-017",
+      "name": "Controlled Sequence Truncation Horizon Evaluation",
+      "parent_experiment": "EXP-014",
+      "execution_mode": "REAL",
+      "lifecycle_status": "COMPLETED",
+      "real_training": true,
+      "scientific_evidence": true,
+      "eligible_for_model_selection": true,
+      "eligible_for_research_conclusions": true,
+      "eligible_for_leaderboard": true,
+      "status": "COMPLETED",
+      "decision": "INCONCLUSIVE",
+      "reason": "EXP-017 completed 6 runs (seeds: [42, 123, 2024]). Primary estimand point mean: -0.84 pp [95% CI: -5.68, +3.94 pp]. Verdict: INCONCLUSIVE.",
+      "hypothesis": "Training with the extended sequence condition (T <= 1200) improves validation REM recall relative to T=600 when both models are evaluated on the identical first 600 chronological epoch positions.",
+      "research_question": "Does extending the sequence training horizon from T=600 to T <= 1200 materially affect sleep-staging performance when both models are evaluated on the identical first 600 chronological epoch positions, with invalid positions masked?",
+      "change": "Sequence training horizon T=600 vs T<=1200 with recurrent pack_padded_sequence",
+      "git_commit": "7194e17de69bf954fbd4a79a1263dbdb1d4ca6da",
+      "dataset_fingerprint": "8ae7a916a4cd5709",
+      "split_hash": "bf33573623f47f3f",
+      "seeds": [
+        42,
+        123,
+        2024
+      ],
+      "budget": "STANDARD",
+      "gpu": "cuda:0",
+      "metrics": {
+        "matched_600": {
+          "T600_mean_rem_recall": 0.7193826418119863,
+          "T1200_mean_rem_recall": 0.7104630186410102,
+          "delta_rem_recall_mean": -0.00838862315570927,
+          "delta_rem_recall_median": -0.002782415136338386,
+          "ci_95": [
+            -0.056788339991899514,
+            0.03938901535884291
+          ],
+          "T600_mean_macro_f1": 0.7125691026100869,
+          "T1200_mean_macro_f1": 0.7335042643022295,
+          "delta_macro_f1_mean": 0.0209351616921426,
+          "T600_mean_accuracy": 0.7047379354426334,
+          "T1200_mean_accuracy": 0.7280081495685522,
+          "delta_accuracy_mean": 0.023270214125918825,
+          "T600_mean_kappa": 0.5870281867348728,
+          "T1200_mean_kappa": 0.6201021986795742,
+          "delta_kappa_mean": 0.03307401194470142
+        }
+      },
+      "timestamp": "2026-11-14T09:15:19",
+      "seed": 42
     }
   ]
 }

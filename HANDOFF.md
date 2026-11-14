@@ -2,27 +2,36 @@
 
 ## Current task
 
-PHASE 3: GOVERNED INFRASTRUCTURE SMOKE TEST COMPLETED (`EXP-016-SMOKE`).
-Successfully diagnosed, implemented, and verified the governed live execution interface under explicit human authorization:
-1. **Live Execution Interface Enabled for Smoke Testing**:
-   - Resolved the `LIVE_EXECUTION_INTERFACE_NOT_ENABLED` blocker in `ExperimentEngine.execute_lifecycle_step`.
-   - Wired genuine 1-epoch execution for `ExecutionMode.INFRASTRUCTURE_SMOKE_TEST` on `cuda:0` under `resource_manager.lease`.
-   - Enforced non-evidence classification: `real_training = True`, `scientific_evidence = False`, `eligible_for_leaderboard = False`, `simulation_tag = "INFRASTRUCTURE SMOKE TEST — NON-EVIDENCE"`.
-2. **EXP-016-SMOKE Successfully Executed on Hardware**:
-   - Hardware: NVIDIA GeForce RTX 3060 12GB (`cuda:0`).
-   - Duration: 1 epoch trained in 1.20s (total cycle 2.38s).
-   - Peak VRAM: 267.1 MB (well below 10,240 MB budget limit).
-   - Dataset & Cache: Audited cache `prep_57738d534b` (Fingerprint: `8ae7a916a4cd5709`).
-   - Split: 31 train subjects (160 nights loaded), 5 validation subjects (28 nights loaded). Split hash: `bf33573623f47f3f`.
-   - Test-Set Protection: 11 held-out test subjects strictly protected (`test_set_accessed = False`, `assert_no_test_leakage` passed).
-   - Recorded metrics: Train Loss = 1.3409, Val Loss = 1.2476, Val Macro-F1 = 0.2855, Accuracy = 0.4496, Kappa = 0.1255.
-3. **Artifact and Institutional Memory Persistence**:
-   - Artifacts generated: `research/experiments/EXP-016-SMOKE/config.json`, `research/experiments/EXP-016-SMOKE/metrics.json`.
-   - Persisted as 13th entry in `research_memory.json`.
-   - Memory integrity & registry stats programmatically verified: 13 total records (11 real scientific, 1 simulation, 1 smoke test non-evidence).
-4. **Automated Test Suite**:
-   - 76/76 tests passed cleanly (0 failed, 0 warnings).
-5. **Readiness Status**: `READY_FOR_CONTROLLED_BASELINE`.
+EXP-017 CONTROLLED SEQUENCE TRUNCATION EXPERIMENT COMPLETED (`T=600` vs `T<=1200`).
+Successfully executed and evaluated the governed EXP-017 scientific protocol under explicit human authorization:
+1. **Governed Execution & Model Configuration**:
+   - Model: Model A only (`ConventionalCNNBiGRU`, 163,940 parameters).
+   - Conditions: $T=600$ (5 hours / 600 epochs) vs $T \le 1200$ (10 hours / 1200 epochs).
+   - Recurrent Padding Protection: Integrated `pack_padded_sequence` and `pad_packed_sequence(total_length=T)` using native sequence length $L = \min(\text{native\_len}, T)$. Zero tail contamination verified ($\max |\Delta| = 0.0$).
+   - Training: 80 epochs per run, Adam ($\text{lr}=10^{-4}$, weight decay 0.0), batch size 4 nights, seeds 42, 123, 2024. All 6 runs completed on `cuda:0` under `GPUResourceManager`.
+2. **Strict Test Cohort Protection**:
+   - 11 held-out test subjects strictly locked (`test_set_accessed = False`, `assert_no_test_leakage` passed).
+   - Validation on 5 disjoint subjects (28 nights, 16,368 valid matched-600 windows).
+3. **Primary Estimand & Hypothesis Decision**:
+   - Primary Estimand: Matched-600 REM recall difference $\Delta \text{REM Recall} = \text{REM Recall}_{(T \le 1200)}[\text{eval } 0:600] - \text{REM Recall}_{(T = 600)}[\text{eval } 0:600]$ on identical first 600 chronological epoch positions.
+   - Point Estimate: **$-0.84\text{ percentage points}$** (Seed 42: $-5.32$ pp, Seed 123: $-3.85$ pp, Seed 2024: $+6.49$ pp).
+   - Paired Subject Cluster Bootstrap ($B=1000$): **$[-5.68\text{ pp}, +3.94\text{ pp}]$**, strictly crossing zero.
+   - Win/Loss: 2 subjects positive, 3 subjects negative.
+   - Protocol Decision: **`INCONCLUSIVE`** / hypothesis $H_1$ not supported. Extending sequence training horizon does not specifically rescue early-night REM recall.
+4. **Secondary Metrics & Descriptive Analysis**:
+   - Matched-600 Positions: Overall Accuracy $+2.33\text{ pp}$ [95% CI: $+1.64\text{ pp}, +3.03\text{ pp}$] ($70.47\% \to 72.80\%$), Macro-F1 $+0.0210$ ($0.7126 \to 0.7335$), Deep sleep recall $+8.52\text{ pp}$ ($65.77\% \to 74.57\%$), Boundary error rate $-2.72\text{ pp}$ ($44.38\% \to 41.66\%$).
+   - Descriptive Extended Coverage ($T \le 1200$, 23,183 valid windows): Accuracy $71.45\% \pm 0.43\%$, Macro-F1 $0.7153 \pm 0.0024$, REM recall $70.42\% \pm 3.81\%$, Deep recall $75.24\% \pm 4.31\%$.
+5. **Artifacts & Research State**:
+   - Checkpoints saved in `research/experiments/EXP-017/checkpoints/` (~3.9 MB total).
+   - Metrics saved in `research/experiments/EXP-017/` (`EXP017_SUMMARY.csv`, `EXP017_SUBJECT_DELTAS.csv`, `EXP017_BOOTSTRAP.json`, individual run JSONs).
+   - Comprehensive report authored in `EXP017_FINAL_REPORT.md`.
+   - Documented in `DECISIONS.md` (DEC-022) and `RESEARCH_STATE.md`.
+   - `research_memory.json` updated and validated (14 records total; 12 real scientific, 1 simulation, 1 smoke test).
+6. **Unit Tests & Integrity**:
+   - 79/79 unit tests passing (`pytest` clean).
+7. **Next Concrete Task**:
+   - Formulate protocol for RQ-001 (EXP-015: Clock Feature Pruning in `x_meta`) or RQ-002 (EXP-016: Unsupervised GRL Adaptation Schedule Recalibration).
+
 
 ## Previous work
 

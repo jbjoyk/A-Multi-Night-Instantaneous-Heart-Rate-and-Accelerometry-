@@ -574,6 +574,41 @@ state.
   - Artifacts persisted: `research/experiments/EXP-016-SMOKE/config.json`, `research/experiments/EXP-016-SMOKE/metrics.json`.
 - Status: **SMOKE TEST COMPLETED SUCCESSFULLY [PASS]. READY FOR CONTROLLED BASELINE.**
 
+### EXP-017 — Controlled Evaluation of Sequence Truncation in Wearable Sleep Staging
+
+- Date: 2026-11-14
+- Execution Mode: `REAL`
+- Scientific Classification: **SCIENTIFIC EVIDENCE = TRUE**, **MODEL SELECTION ELIGIBLE = TRUE**, **LEADERBOARD ELIGIBLE = TRUE**
+- Research question: Does extending the sequence training horizon from $T=600$ to $T \le 1200$ materially affect sleep-staging performance when both models are evaluated on the identical first 600 chronological epoch positions, with invalid positions masked?
+- Hypothesis: Training with the extended sequence condition ($T \le 1200$) improves validation REM recall relative to $T=600$ when both models are evaluated on the identical first 600 chronological epoch positions.
+- Protocol:
+  - Model: Model A (`ConventionalCNNBiGRU`, 163,940 parameters; identical layer dimensions, kernels, activations).
+  - Conditions:
+    - Condition 1: $T=600$ (first 600 chronological epoch positions from `recStart`, 0 padding).
+    - Condition 2: $T \le 1200$ (10-hour-capped extended sequence condition with `pack_padded_sequence` and `pad_packed_sequence`).
+  - Primary Evaluation: Both models evaluated strictly on the **identical first 600 chronological epoch positions**, with invalid positions masked (`valid = (targets >= 0) & (targets < 4) & mask`).
+  - Secondary Evaluation: Non-causal descriptive reporting of Model A on $T \le 1200$ across its extended coverage.
+  - Controls: 80 fixed optimization epochs per seed (seeds: 42, 123, 2024; $N=3$; 6 total runs). Adam ($\text{lr}=10^{-4}$, weight decay 0.0), batch size 4 nights, per-night robust IQR scaling.
+  - Cohort: 31 train subjects (160 usable nights) / 5 validation subjects (28 usable nights). 11 held-out test subjects strictly locked (zero test access). Split hash: `bf33573623f47f3f`.
+  - Hardware: Dedicated lease on `cuda:0` (NVIDIA GeForce RTX 3060 12GB). Peak VRAM: 255.3 MB ($T=600$) to 456.6 MB ($T \le 1200$).
+- Empirical Results (Primary Matched-600 Positions, Mean $\pm$ SD across 3 seeds):
+  - $T=600$: Accuracy = $70.47\% \pm 1.26\%$, Macro-F1 = $0.7126 \pm 0.0138$, Cohen's $\kappa$ = $0.5870 \pm 0.0112$, MCC = $0.5895 \pm 0.0108$, REM Recall = $71.94\% \pm 5.07\%$, Deep Recall = $65.77\% \pm 3.77\%$.
+  - $T \le 1200$: Accuracy = $72.80\% \pm 0.64\%$, Macro-F1 = $0.7335 \pm 0.0037$, Cohen's $\kappa$ = $0.6201 \pm 0.0058$, MCC = $0.6213 \pm 0.0047$, REM Recall = $71.05\% \pm 1.81\%$, Deep Recall = $74.57\% \pm 7.79\%$.
+- Paired Subject Cluster Bootstrap ($B=1000$ iterations over $N=5$ validation subjects):
+  - Primary Estimand ($\Delta \text{REM Recall}$): Point Mean = **$-0.84\text{ pp}$** [95% CI: **$-5.68\text{ pp}, +3.94\text{ pp}$**], strictly spanning zero.
+  - Direction Consistency: **2 subjects positive (Bidslab40, Bidslab56), 3 subjects negative (Bidslab13, Bidslab55, Bidslab64)**.
+  - Deep Sleep Recall Delta: Point Mean = **$+8.52\text{ pp}$** [95% CI: $+6.35\text{ pp}, +11.72\text{ pp}$].
+  - Overall Accuracy Delta: Point Mean = **$+2.30\text{ pp}$** [95% CI: $+1.64\text{ pp}, +3.03\text{ pp}$].
+  - Overall Macro-F1 Delta: Point Mean = **$+0.0198$** [95% CI: $+0.0123, +0.0269$].
+- Secondary Descriptive Extended Analysis ($T \le 1200$ across 23,183 valid windows):
+  - Accuracy = $71.45\% \pm 0.43\%$, Macro-F1 = $0.7153 \pm 0.0024$, $\kappa$ = $0.5936 \pm 0.0039$, REM Recall = $70.42\% \pm 3.81\%$, Deep Recall = $75.24\% \pm 4.31\%$.
+- Decision Rule Verdict: **INCONCLUSIVE** (Hypothesis $H_1$ is not supported under the tested protocol). Extended sequence training does not specifically improve early-night REM recall, but significantly stabilizes slow-wave sleep (Deep recall +8.52 pp) and general representation learning (+2.33 pp accuracy).
+- Artifacts:
+  - `research/experiments/EXP-017/checkpoints/` (6 PyTorch checkpoints)
+  - `research/experiments/EXP-017/EXP017_SUMMARY.csv`, `EXP017_SUBJECT_DELTAS.csv`, `EXP017_BOOTSTRAP.json`
+  - `EXP017_FINAL_REPORT.md`
+- Status: **EXPERIMENT COMPLETED AND SERIALIZED [VERDICT: INCONCLUSIVE].**
+
 ## RESEARCH TRAJECTORY
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

@@ -1,6 +1,6 @@
 # Research State
 
-Last updated: 2026-11-11 (DEC-021: Experimental Phase Reopened)
+Last updated: 2026-11-14 (DEC-022: EXP-017 Sequence Truncation Evaluation Concluded)
 
 ## Research question
 
@@ -117,6 +117,23 @@ Results demonstrate **Scientific Outcome B (Equivalence / Parity Across Subject 
 - Paired subject cluster bootstrap ($B=1000$) reveals that all 95% confidence intervals cross zero: $E \text{ vs } A$ [$-1.90\%, +0.50\%$], $E \text{ vs } B$ [$-1.36\%, +0.16\%$], $E \text{ vs } C$ [$-0.15\%, +0.12\%$], $E \text{ vs } D$ [$-1.99\%, +1.02\%$].
 - Subject-level win/loss: Model E outperformed Model A on 23 subjects (48.9%), Model A outperformed Model E on 23 subjects (48.9%), with 1 subject tied (2.2%). Across diverse subject folds, conventional matched-capacity models achieve equivalent staging performance, and physiological inter-subject heterogeneity dominates performance variance. All 75 runs are archived in `EXP014_FINAL_REPORT.md`.
 
+EXP-017 conducted a controlled evaluation of sequence truncation horizon ($T=600$ vs $T \le 1200$) using Model A (`ConventionalCNNBiGRU`, 163,940 parameters) across seeds 42, 123, 2024 ($N=3$, 80 epochs each). Recurrent padding protection was formally integrated via `pack_padded_sequence` and `pad_packed_sequence` with native sequence lengths $L = \min(\text{native\_len}, T)$, mathematically preventing artificial tail leakage ($\max |\Delta| = 0.0$).
+Evaluated on the 5 validation subjects (28 nights, 16,368 valid matched-600 windows; held-out test cohort strictly unaccessed):
+- **Primary Estimand (Matched-600 REM Recall Difference)**:
+  - $\Delta \text{REM Recall} = \text{REM Recall}_{(T \le 1200)}[\text{eval } 0:600] - \text{REM Recall}_{(T = 600)}[\text{eval } 0:600]$.
+  - Point estimate (mean across 3 seeds): **$-0.84\text{ percentage points}$** (Seed 42: $-5.32$ pp, Seed 123: $-3.85$ pp, Seed 2024: $+6.49$ pp).
+  - Paired subject cluster bootstrap ($B=1000$): 95% CI is **$[-5.68\text{ pp}, +3.94\text{ pp}]$**, strictly spanning zero.
+  - Subject-level win/loss: 2 positive (Bidslab40, Bidslab56), 3 negative (Bidslab13, Bidslab55, Bidslab64).
+  - Protocol Decision: **`INCONCLUSIVE`** / hypothesis $H_1$ not supported. Extending sequence training horizon does not specifically rescue or enhance early-night REM recall.
+- **Secondary General Performance (Matched-600 Positions)**:
+  - Accuracy: $+2.33\text{ pp}$ [95% CI: $+1.64\text{ pp}, +3.03\text{ pp}$] ($70.47\% \to 72.80\%$).
+  - Macro-F1: $+0.0210$ [95% CI: $+0.0123, +0.0269$] ($0.7126 \to 0.7335$).
+  - Deep Sleep Recall: $+8.52\text{ pp}$ [95% CI: $+6.35\text{ pp}, +11.72\text{ pp}$] ($65.77\% \to 74.57\%$).
+  - Boundary Error Rate: $-2.72\text{ pp}$ ($44.38\% \to 41.66\%$).
+- **Secondary Descriptive Analysis (Extended Coverage $T \le 1200$, 23,183 valid windows)**:
+  - Accuracy: $71.45\% \pm 0.43\%$, Macro-F1: $0.7153 \pm 0.0024$, REM recall: $70.42\% \pm 3.81\%$, Deep recall: $75.24\% \pm 4.31\%$.
+All artifacts are archived in `research/experiments/EXP-017/` and documented in `EXP017_FINAL_REPORT.md`.
+
 ## Latest historical recorded results
 
 The latest supplied run artifacts (split hash `a6b569f63126`) report accuracy 0.68659, Macro-F1
@@ -141,10 +158,9 @@ These results are verified as notebook outputs for the recorded run, not indepen
 
 ## Next research milestone
 
-Under [DEC-021](./DECISIONS.md), the experimental phase has been formally reopened; the prior restrictions specifying "no further training runs" (from DEC-019 and DEC-020) and "do not change methodology without approval" no longer block audit, review package creation, or new protocol design. While core benchmark evaluations (EXP-012 frozen test benchmark, EXP-013 component attribution, and EXP-014 75-run 5-fold cross-validation) are completed and frozen, new methodological and exploratory investigations are active:
-- Investigating the impact of sequence truncation ($T=600$ vs full-night sequences; ~28% labeled epochs dropped).
-- Auditing window picking strategies and start offsets.
-- Dissecting metadata feature representations (`x_meta`) and ablation in baseline models.
+Following the conclusion of EXP-017 (DEC-022), the sequence truncation horizon investigation is completed. Future methodological and exploratory investigations remain active:
+- RQ-001 (EXP-015): Auditing metadata feature representations (`x_meta`) and circ-time clock feature pruning in baseline models.
+- RQ-002 (EXP-016): Unsupervised GRL adaptation schedule recalibration and temperature scaling.
 - Auditing normalization mechanics and inter-subject variance predictors (intraclass correlation, sleep fragmentation, motion-wake coupling).
 All future training runs remain strictly subject to explicit user authorization under a documented protocol. Zero unauthorized or unapproved training jobs may be launched. All findings and artifacts are continuously synchronized to GitHub (`origin main`).
 

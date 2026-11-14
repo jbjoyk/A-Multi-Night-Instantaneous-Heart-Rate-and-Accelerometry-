@@ -251,3 +251,34 @@
 - Reversible: Yes; experimental phase can transition to locked/frozen upon concluding new investigations.
 
 
+## DEC-022 — Controlled Evaluation of Sequence Truncation Horizon (EXP-017: T=600 vs T≤1200)
+
+- Date: 2026-11-14
+- Decision: Conclude EXP-017 evaluating the effect of sequence truncation horizon ($T=600$ vs $T \le 1200$) in wearable sleep staging using Model A (`ConventionalCNNBiGRU`, 163,940 parameters) across seeds 42, 123, 2024.
+  1. Experimental Protocol:
+     - Model: Model A only (`ConventionalCNNBiGRU`, 163,940 parameters).
+     - Conditions: $T=600$ vs $T \le 1200$.
+     - Padding Protection: Implemented native sequence length tracking $L = \min(\text{native\_len}, T)$ with `pack_padded_sequence` / `pad_packed_sequence(total_length=T)` in temporal BiGRU. Verified mathematically zero leakage ($\max |\Delta| = 0.0$) from padded tails.
+     - Primary Estimand: Matched-600 REM recall difference: $\Delta \text{REM Recall} = \text{REM Recall}_{(T \le 1200)}[\text{eval } 0:600] - \text{REM Recall}_{(T = 600)}[\text{eval } 0:600]$ on the identical first 600 chronological epoch positions (invalid positions masked).
+     - Validation Cohort: 5 validation subjects (28 nights, 16,368 valid matched-600 windows). Held-out test cohort (11 subjects, 58 nights) strictly locked with zero access.
+     - Optimization: Adam ($\text{lr}=10^{-4}$, weight decay 0.0), 80 epochs, batch size 4 nights, seeds 42, 123, 2024.
+  2. Empirical Findings:
+     - **Primary Estimand (Matched-600 REM Recall)**: Point estimate (mean across 3 seeds) is **$-0.84\text{ percentage points}$** (Seed 42: $-5.32$ pp, Seed 123: $-3.85$ pp, Seed 2024: $+6.49$ pp).
+     - **Paired Subject Cluster Bootstrap ($B=1000$)**: 95% CI is **$[-5.68\text{ pp}, +3.94\text{ pp}]$**, strictly crossing zero.
+     - **Subject-Level Win/Loss**: 2 positive (Bidslab40, Bidslab56), 3 negative (Bidslab13, Bidslab55, Bidslab64).
+     - **Protocol Decision**: Per pre-specified protocol rules, hypothesis $H_1$ is **`INCONCLUSIVE`** / not supported. Extended sequence training does not specifically rescue or enhance early-night REM recall.
+     - **Secondary Metrics (Matched-600 Positions)**:
+       - Overall Accuracy: $+2.33\text{ pp}$ [95% CI: $+1.64\text{ pp}, +3.03\text{ pp}$] ($70.47\% \to 72.80\%$).
+       - Macro-F1: $+0.0210$ [95% CI: $+0.0123, +0.0269$] ($0.7126 \to 0.7335$).
+       - Deep Sleep Recall: $+8.52\text{ pp}$ [95% CI: $+6.35\text{ pp}, +11.72\text{ pp}$] ($65.77\% \to 74.57\%$).
+       - Boundary Error Rate: $-2.72\text{ pp}$ ($44.38\% \to 41.66\%$).
+     - **Secondary Descriptive Analysis (Extended Coverage $T \le 1200$, 23,183 valid windows)**:
+       - Accuracy: $71.45\% \pm 0.43\%$, Macro-F1: $0.7153 \pm 0.0024$, REM recall: $70.42\% \pm 3.81\%$, Deep recall: $75.24\% \pm 4.31\%$.
+  3. Research Strategy Decision:
+     - Maintain $T=600$ as the primary computationally efficient standard for rapid benchmarking and exploratory iterations.
+     - Acknowledge that while extended sequence training does not solve REM under-representation, it provides moderate global context benefits for slow-wave (Deep) sleep and overall accuracy.
+     - Held-out test set remains locked and untouched.
+- Reversible: Yes.
+
+
+
