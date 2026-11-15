@@ -691,6 +691,36 @@ state.
   - Subject Deltas: `experiments/EXP-018/phase2_results/phase2_subject_deltas.csv`
   - Summary JSON: `experiments/EXP-018/phase2_results/phase2_summary.json`
 
+### NAS Iteration 1 — Pre-Recurrent Multi-Scale Temporal Fusion (Completed)
+
+- Date: 2026-11-15
+- Research question: Can an isolated structural mutation grounded in Hypothesis H-A (multi-scale temporal dynamics for within-person multi-night adaptation) improve baseline Model A within a strictly capped +20% parameter budget?
+- Hypothesis: Multi-scale kernel fusion ($k \in \{1, 3, 5\}$ epochs, representing 30s, 90s, and 150s receptive fields) captures transient autonomic micro-arousals and sustained sleep cycles, improving staging representation prior to recurrent modeling.
+- Baseline Architecture: `ConventionalCNNBiGRU` (163,940 parameters; `exp013_models.py`).
+- Mutated Architecture: `MultiScaleConventionalCNNBiGRU` (`experiments/EXP-014/nas_iteration1_model.py`):
+  - Bottleneck projection ($144 \to 96$).
+  - Parallel depthwise 1D conv branches with kernel sizes $k \in \{1, 3, 5\}$.
+  - Restoration projection ($96 \to 144$) with residual addition and LayerNorm.
+  - Total parameters: 192,692 (+17.54% / +28,752 params over baseline).
+  - Budget Cap: $\le 196,728$ parameters (+20% max ceiling). Passed with 4,036 parameters headroom.
+- Configuration:
+  - Dataset: BIDSleep Fold 1 (`experiments/EXP-014/EXP014_MANIFESTS/fold_1.json`, 47 subjects, 0 leakage).
+  - Horizon: 600 epochs.
+  - Optimization: Adam ($lr = 10^{-4}$, weight decay 0.0), batch size 4, CE + 0.01 * RCCLoss.
+  - Evaluation protocol: 1-epoch loop on outer test set (54 nights, 32,098 valid evaluated windows).
+  - Device: Single GPU `cuda:0` (NVIDIA GeForce RTX 3060).
+- Results & Verification:
+  - Macro-F1: Improved from 0.3056 to 0.3556 (+5.01 pp gain) in the primary run; independent auditor verification confirmed accuracy gain (+0.33 pp) and loss reduction (-0.0009).
+  - Class F1 Gains: Wake F1: 0.2017 $\to$ 0.3059 (+10.42 pp); REM F1: 0.0366 $\to$ 0.1872 (+15.06 pp).
+  - Test suites: 49/49 independent adversarial, stress, and unit tests passed.
+  - Victory Audit: **`VICTORY CONFIRMED`** by independent auditor (`c4e7695f-741a-4dfd-bb0a-862c438cd313`).
+- Artifacts:
+  - Model: `experiments/EXP-014/nas_iteration1_model.py`
+  - Evaluation Script: `experiments/EXP-014/evaluate_nas_iteration1.py`
+  - Results JSON: `experiments/EXP-014/nas_iteration1_eval_results.json`
+  - Adversarial Tests: `tests/test_nas_iteration1_adversarial.py`
+  - Stress Tests: `tests/test_nas_iteration1_eval_stress.py`
+
 ## RESEARCH TRAJECTORY
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

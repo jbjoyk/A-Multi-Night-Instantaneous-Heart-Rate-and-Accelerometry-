@@ -356,5 +356,26 @@
 - Reversible: No; 5-fold cross-validation across the complete cohort is finalized.
 
 
+## DEC-026 — Autonomous NAS Syndicate Iteration 1: Pre-Recurrent Multi-Scale Temporal Fusion (MSTF-Pre)
+
+- Date: 2026-11-15
+- Decision: Authorize and document Iteration 1 structural mutation `MultiScaleConventionalCNNBiGRU` under pre-registered Hypothesis H-A with a +20% parameter ceiling.
+  1. Scope and Parameter Cap:
+     - Baseline Model A: `ConventionalCNNBiGRU` (163,940 parameters).
+     - User-approved parameter cap: $\le +20\%$ ($163,940 \times 1.20 = 196,728$ parameters).
+     - Mutated Model A: `MultiScaleConventionalCNNBiGRU` (192,692 parameters, $+17.54\%$ / $+28,752$ params).
+     - Headroom: 4,036 parameters under the approved ceiling.
+  2. Structural Mutation Mechanism:
+     - Grounded in Hypothesis H-A (`RESEARCH_DIRECTION_v3_FULL.md`): multi-night within-person adaptation via multi-scale temporal kernel fusion.
+     - Inserted pre-recurrent temporal fusion block between 1D CNN epoch encoders and BiGRU sequence model.
+     - Bottleneck projection ($144 \to 96$), parallel depthwise 1D conv branches with kernel sizes $k \in \{1, 3, 5\}$ (30s, 90s, 150s receptive fields), restoration projection ($96 \to 144$) with residual addition and LayerNorm.
+  3. Verification & Governance:
+     - Full tensor dimension compatibility preserved: $(B, T, 144) \to (B, T, 144)$.
+     - 49/49 independent adversarial, stress, and unit tests passed.
+     - Executed 1-epoch evaluation loop on Fold 1 (`experiments/EXP-014/EXP014_MANIFESTS/fold_1.json`) on GPU `cuda:0` with invariant batch size (4), optimizer (Adam), learning rate ($10^{-4}$), and loss function.
+     - Independent victory audit verdict: **`VICTORY CONFIRMED`**.
+- Reversible: Yes; alternative mutations can be explored in subsequent NAS iterations.
+
+
 
 

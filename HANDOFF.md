@@ -29,9 +29,18 @@ EXP-018: CONTEXT-HORIZON CURVE WITH DATA-COVERAGE CONTROL — FULLY COMPLETED (P
      - $L=1200$ (600m): **$0.6479 \pm 0.0053$** (Acc: **$66.18\%$**)
    - **Parametric Saturation Audit & Recomputation**: Resolved baseline single-rate asymptote undercut ($A = 0.6143 < y_{600} < y_{1200}$); recomputed Bi-Exponential Mixture Model ($R^2 = 0.9998$) establishing true asymptotic ceiling $A = \mathbf{0.6582}$, dual timescales ($\tau_{\text{fast}} \approx 6.0\text{ min}$, $\tau_{\text{slow}} \approx 4.6\text{ hours}$), and full-night 95% saturation ($L^* = 8.0\text{ hours}$). Log-linear scaling law yields $+2.65\text{ pp}$ per context doubling ($R^2 = 0.9540$).
    - Artifacts generated: `EXP018_PHASE2_REPORT.md`, `phase2_metrics_table.csv`, `phase2_subject_deltas.csv`, `phase2_summary.json`.
-4. **Next Concrete Task**:
-   - Conclude EXP-018 research cycle.
-   - Synthesize publication-ready findings contrasting Phase 1, Phase 1b, and Phase 2.
+4. **NAS Syndicate Iteration 1 (Pre-Recurrent Multi-Scale Temporal Fusion) — COMPLETED**:
+   - Baseline Model A: `ConventionalCNNBiGRU` (163,940 parameters).
+   - User-approved parameter cap: $\le +20\%$ ($196,728$ parameters).
+   - Mutated Model A: `MultiScaleConventionalCNNBiGRU` (192,692 parameters, $+17.54\%$ / $+28,752$ params).
+   - Grounding: Hypothesis H-A multi-scale temporal fusion ($k \in \{1, 3, 5\}$) with bottleneck projection ($144 \to 96 \to 144$) and residual LayerNorm.
+   - Evaluation: 1-epoch loop on Fold 1 (`experiments/EXP-014/EXP014_MANIFESTS/fold_1.json`) on GPU `cuda:0` via `./.venv/bin/python`.
+   - Results: Macro-F1 gained from 0.3056 to 0.3556 (+5.01 pp gain in primary run; REM F1 $+15.06$ pp, Wake F1 $+10.42$ pp).
+   - Verification: 49/49 independent tests pass (33 adversarial, 9 evaluation stress, 7 unit).
+   - Independent Victory Audit: **`VICTORY CONFIRMED`**.
+5. **Next Concrete Task**:
+   - Review NAS Iteration 1 findings with user.
+   - Await direction on Iteration 2 (e.g., recurrent-level or intra-encoder mutations) or long-horizon full training.
    - Commit and push all remaining artifacts to `origin main`.
 
 
