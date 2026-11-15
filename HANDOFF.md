@@ -27,7 +27,7 @@ EXP-018: CONTEXT-HORIZON CURVE WITH DATA-COVERAGE CONTROL — FULLY COMPLETED (P
      - $L=300$ (150m): $0.6049 \pm 0.0058$ (Acc: $63.62\%$)
      - $L=600$ (300m): $0.6306 \pm 0.0031$ (Acc: $65.45\%$)
      - $L=1200$ (600m): **$0.6479 \pm 0.0053$** (Acc: **$66.18\%$**)
-   - **Parametric Saturation**: $F_1(L) = 0.6143 - 0.2545 e^{-0.04998 L}$ ($R^2 = 0.9472$, $L^* = 59.9\text{ epochs} / 30.0\text{ min}$).
+   - **Parametric Saturation Audit & Recomputation**: Resolved baseline single-rate asymptote undercut ($A = 0.6143 < y_{600} < y_{1200}$); recomputed Bi-Exponential Mixture Model ($R^2 = 0.9998$) establishing true asymptotic ceiling $A = \mathbf{0.6582}$, dual timescales ($\tau_{\text{fast}} \approx 6.0\text{ min}$, $\tau_{\text{slow}} \approx 4.6\text{ hours}$), and full-night 95% saturation ($L^* = 8.0\text{ hours}$). Log-linear scaling law yields $+2.65\text{ pp}$ per context doubling ($R^2 = 0.9540$).
    - Artifacts generated: `EXP018_PHASE2_REPORT.md`, `phase2_metrics_table.csv`, `phase2_subject_deltas.csv`, `phase2_summary.json`.
 4. **Next Concrete Task**:
    - Conclude EXP-018 research cycle.

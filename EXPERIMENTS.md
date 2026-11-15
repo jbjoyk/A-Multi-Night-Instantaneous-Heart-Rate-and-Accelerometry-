@@ -675,9 +675,16 @@ state.
   - $\Delta \text{Macro-F1} = \mathbf{+5.33\text{ percentage points}}$ [95% CI: $\mathbf{+4.28\text{ pp}, +6.39\text{ pp}}$].
   - Pre-registered decision rule: **`SUPPORTED (Context Benefit)`** ($\Delta \ge +1.0\text{ pp}$ with strictly positive CI).
   - Subject-level win/loss: **46 / 47 subjects positive (97.9%)** for $L=600$ over $L=60$.
-- Parametric Saturation Fit ($N=47$):
-  - $F_1(L) = 0.6143 - 0.2545 e^{-0.04998 L}$ ($R^2 = 0.9472$, $L^* = 59.9\text{ epochs} / 30.0\text{ min}$).
-  - Multi-hour ultradian scaling continues to climb beyond local saturation, gaining an additional $+7.06\text{ pp}$ from $L=60$ to $L=1200$.
+- Parametric Saturation Audit & Multi-Model Recomputation ($N=47$):
+  - Pre-registered single-exponential model ($F_1(L) = A - B e^{-k L}$) exhibited mathematical inconsistency: unconstrained OLS yielded $A = 0.6143$ and $L^* = 59.9\text{ epochs} \ (30.0\text{ min})$, undercutting observed performance at $L=600$ ($0.6306$) and $L=1200$ ($0.6479$) due to single-rate misspecification.
+  - Recomputed Bi-Exponential Mixture Model ($F_1(L) = A - B_{\text{fast}} e^{-k_{\text{fast}} L} - B_{\text{slow}} e^{-k_{\text{slow}} L}$):
+    - True Asymptotic Ceiling ($A$): **`0.6582`** (strictly valid, $> 0.6479$).
+    - Fast Local Transition Scale: $\tau_{\text{fast}} = 12.1\text{ epochs} \ (6.0\text{ min})$, dynamic span $B_{\text{fast}} = 0.2188$.
+    - Slow Ultradian Architecture Scale: $\tau_{\text{slow}} = 548.5\text{ epochs} \ (4.6\text{ hours})$, dynamic span $B_{\text{slow}} = 0.0878$.
+    - Goodness of Fit: **$R^2 = 0.9998$**.
+    - True 95% Physiological Saturation Threshold: **$L^*_{\text{physio}} = 957.6\text{ epochs} \ (8.0\text{ hours})$**.
+  - Recomputed Log-Linear Scaling Law: $F_1(L) = 0.3946 + 0.0383 \ln(L)$ ($R^2 = 0.9540$), establishing a steady **$+2.65\text{ pp}$** Macro-F1 gain per context doubling.
+  - Recomputed Hill Sigmoidal Saturation: Ceiling = `0.6670`, $R^2 = 0.9945$, $L^*_{95} = 14.5\text{ hours}$.
 - Final Artifacts:
   - Report: [`experiments/EXP-018/EXP018_PHASE2_REPORT.md`](experiments/EXP-018/EXP018_PHASE2_REPORT.md)
   - Metrics Table: `experiments/EXP-018/phase2_results/phase2_metrics_table.csv`

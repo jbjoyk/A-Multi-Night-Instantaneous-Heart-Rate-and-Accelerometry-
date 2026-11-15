@@ -25,7 +25,7 @@
     4,
     5
   ],
-  "git_commit": "81b7fa1443b574db3d700f2b63956e83278cd0f0",
+  "git_commit": "f6538f4d79775b90e943a65685dde52722c7dfb8",
   "device": "cuda:1",
   "primary_estimand": {
     "contrast": "L=600 vs L=60 (47 Subjects Out-Of-Fold)",
@@ -101,7 +101,64 @@
     "k_rate": 0.049978371288150886,
     "L_star_epochs": 59.940574219236986,
     "L_star_minutes": 29.970287109618493,
-    "r_squared": 0.9471637116219318
+    "r_squared": 0.9471637116219318,
+    "asymptote_valid": false,
+    "asymptote_violation_pp": 3.356909069465208,
+    "models": {
+      "single_exponential_unconstrained": {
+        "A": 0.6143377600735596,
+        "B": 0.2545498231201951,
+        "k": 0.049978371288150886,
+        "L_star_epochs": 59.940574219236986,
+        "L_star_minutes": 29.970287109618493,
+        "r_squared": 0.9471637116219318,
+        "asymptote_valid": false,
+        "diagnostic": "Mathematically inconsistent: asymptote A is lower than empirical points at L=600 and L=1200 due to single-rate misspecification."
+      },
+      "single_exponential_constrained": {
+        "A": 0.6479068507682118,
+        "B": 0.268106034920572,
+        "k": 0.027292152346189043,
+        "L_star_epochs": 109.76533604072094,
+        "L_star_minutes": 54.88266802036047,
+        "r_squared": 0.8737162686783553,
+        "diagnostic": "Constrained A >= max(y); penalizes single-rate assumption, dropping R2."
+      },
+      "bi_exponential_dual_scale": {
+        "A_ceiling": 0.6582312094116738,
+        "B_fast": 0.2187595871822386,
+        "k_fast": 0.08289632292646004,
+        "tau_fast_epochs": 12.063261248476989,
+        "tau_fast_minutes": 6.0316306242384945,
+        "B_slow": 0.08784738568977334,
+        "k_slow": 0.0018230243039569728,
+        "tau_slow_epochs": 548.5390391282475,
+        "tau_slow_hours": 4.571158659402062,
+        "L_star_95_epochs": 957.6211443861532,
+        "L_star_95_hours": 7.980176203217943,
+        "r_squared": 0.9997549534781502,
+        "diagnostic": "Physiologically grounded dual-timescale model: fast transition inertia + slow ultradian architecture."
+      },
+      "log_linear_scaling": {
+        "alpha": 0.39460065573624586,
+        "beta": 0.03827085535506017,
+        "gain_per_doubling_pp": 2.652733548697744,
+        "r_squared": 0.9539572560539935,
+        "diagnostic": "Information scaling law: steady constant gain per octave of temporal horizon."
+      },
+      "hill_saturation": {
+        "y0": 0.20000000028572376,
+        "Vmax": 0.46696935513065074,
+        "ceiling": 0.6669693554163745,
+        "K_epochs": 3.224310799242062,
+        "K_minutes": 1.612155399621031,
+        "n_cooperativity": 0.4682004796197531,
+        "L_star_95_epochs": 1736.3865154566345,
+        "L_star_95_hours": 14.469887628805287,
+        "r_squared": 0.9944986467459982,
+        "diagnostic": "Sigmoidal power-law saturation model with legitimate asymptotic ceiling."
+      }
+    }
   },
   "summary_by_L": {
     "1": {

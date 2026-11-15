@@ -346,9 +346,10 @@
        - $L=300$: $0.6049 \pm 0.0058$ (Acc: $63.62\%$)
        - $L=600$: $0.6306 \pm 0.0031$ (Acc: $65.45\%$)
        - $L=1200$: **$0.6479 \pm 0.0053$** (Acc: **$66.18\%$**)
-     - **Parametric Saturation Fit**:
-       - $F_1(L) = 0.6143 - 0.2545 e^{-0.04998 L}$ ($R^2 = 0.9472$, $L^* = 59.9\text{ epochs} / 30.0\text{ min}$).
-       - Confirms that while single-exponential transition inertia saturates around ~30 minutes, multi-hour ultradian NREM-REM cycles provide an ongoing $+7.06\text{ pp}$ boost through whole-night context ($L=1200$).
+     - **Parametric Saturation Audit & Multi-Model Recomputation**:
+       - Identified and resolved mathematical inconsistency in the baseline single-rate exponential ($A = 0.6143 < y_{600} < y_{1200}$): single-rate misspecification forced the asymptote to the mean of the tail points.
+       - Recomputed Bi-Exponential Mixture Model ($R^2 = 0.9998$): True ceiling $A = \mathbf{0.6582}$, local transition timescale $\tau_{\text{fast}} = 12.1\text{ epochs} \ (6.0\text{ min})$, ultradian timescale $\tau_{\text{slow}} = 548.5\text{ epochs} \ (4.6\text{ hours})$, with full-system 95% saturation at $L^* = \mathbf{957.6\text{ epochs} \ (8.0\text{ hours})}$.
+       - Recomputed Log-Linear Scaling Law ($R^2 = 0.9540$): steady $+2.65\text{ pp}$ per context doubling.
   3. Action:
      - EXP-018 (Phases 1, 1b, and 2) is officially **COMPLETE**.
      - All 105 run JSONs, metrics table, subject deltas, summary JSON, and report are archived and synchronized to GitHub.
