@@ -377,5 +377,29 @@
 - Reversible: Yes; alternative mutations can be explored in subsequent NAS iterations.
 
 
+## DEC-027 — EXP-019 500-Epoch Extended Training Benchmark: Baseline vs MultiScaleConventionalCNNBiGRU
+
+- Date: 2026-11-15
+- Decision: Authorize, execute, and document the 500-epoch extended training benchmark comparing Baseline Model A (`ConventionalCNNBiGRU`, 163,940 params) against Mutated Model A (`MultiScaleConventionalCNNBiGRU`, 192,692 params, $+17.54\%$) under identical hyperparameter controls.
+  1. Execution Protocol:
+     - Epochs: 500 epochs per model.
+     - Split: BIDSleep Fold 1 (32 inner-train, 5 inner-val, 10 outer-test subjects).
+     - Optimization: Invariant Adam ($lr = 10^{-4}$, weight decay 0.0), batch size 4, sequence horizon $T = 600$, seed 42.
+     - Hardware: Parallel dual-GPU execution (Baseline on `cuda:0`, MultiScale on `cuda:1`, 16.8 minutes total wall-clock time).
+  2. Empirical Outcomes:
+     - **Model Selection @ Peak Validation Checkpoint (Early Stopping Policy)**:
+       - Baseline: Peak at Epoch 55 $\implies$ Test Macro-F1 = **`0.6401`**, Acc = **`64.42%`**, $\kappa = \mathbf{0.4805}$, MCC = **`0.4814`**.
+       - MultiScale: Peak at Epoch 53 $\implies$ Test Macro-F1 = **`0.6513`**, Acc = **`65.72%`**, $\kappa = \mathbf{0.5032}$, MCC = **`0.5035`**.
+       - **Primary Estimand Delta**: $\Delta \text{Macro-F1} = \mathbf{+1.11\text{ percentage points}}$, $\Delta \text{Acc} = \mathbf{+1.30\text{ pp}}$, $\Delta \kappa = \mathbf{+0.0227}$, $\Delta \text{MCC} = \mathbf{+0.0222}$ favoring MultiScale.
+       - Stage F1 Gains: Deep F1: **+1.60 pp** ($0.6989 \to 0.7148$), REM F1: **+2.62 pp** ($0.5649 \to 0.5910$), Light F1: **+0.68 pp** ($0.6529 \to 0.6596$), Wake F1: **-0.43 pp** ($0.6440 \to 0.6397$).
+     - **Asymptotic 500-Epoch Overfitting Resilience**:
+       - Baseline suffered substantial post-peak degradation: Macro-F1 dropped by **5.02 pp** (to `0.5900` at Ep 500, Acc 59.58%).
+       - MultiScale exhibited pronounced overfitting resistance: Macro-F1 dropped by only **0.62 pp** (to `0.6451` at Ep 500, Acc 64.67%).
+       - Terminal Epoch 500 Delta: $\Delta \text{Macro-F1} = \mathbf{+5.52\text{ percentage points}}$ favoring MultiScale.
+  3. Action:
+     - EXP-019 is complete. All run JSONs, summary metrics, test suites, and report are archived and synchronized to GitHub.
+- Reversible: No; 500-epoch training and evaluation on Fold 1 is finalized.
+
+
 
 

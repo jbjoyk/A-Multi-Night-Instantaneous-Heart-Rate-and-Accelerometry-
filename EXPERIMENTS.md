@@ -721,6 +721,35 @@ state.
   - Adversarial Tests: `tests/test_nas_iteration1_adversarial.py`
   - Stress Tests: `tests/test_nas_iteration1_eval_stress.py`
 
+### EXP-019 — 500-Epoch Extended Training Benchmark: Baseline vs MultiScale (Completed)
+
+- Date: 2026-11-15
+- Research question: How does the mutated architecture `MultiScaleConventionalCNNBiGRU` (192,692 parameters, +17.54% budget) perform against baseline `ConventionalCNNBiGRU` (163,940 parameters) under extended 500-epoch training, at what epoch do both models peak, and how resilient is multi-scale temporal fusion against post-peak asymptotic overfitting?
+- Hypothesis: Multi-scale kernel fusion provides richer temporal representations that improve peak staging metrics (especially deep sleep and REM) while mitigating late-stage representation collapse and overfitting.
+- Configuration:
+  - Dataset: BIDSleep Fold 1 (32 inner-train / 5 inner-val / 10 outer-test subjects; 54 test nights, 32,098 valid windows).
+  - Epochs: 500 epochs per model.
+  - Hyperparameters: Invariant Adam ($lr = 10^{-4}$, weight decay 0.0), batch size 4, sequence horizon $T = 600$, seed 42.
+  - Hardware: Parallel dual-GPU execution (Baseline on `cuda:0`, MultiScale on `cuda:1`, 16.8 minutes total wall-clock time).
+  - Loss: CrossEntropyLoss + $0.01 \times$ RCCLoss.
+- Results & Key Estimands:
+  - **Peak Checkpoint (Early Stopping Selection on Inner-Val)**:
+    - Baseline: Peak at Epoch 55 $\implies$ Test Macro-F1 = **`0.6401`**, Acc = **`64.42%`**, $\kappa = \mathbf{0.4805}$, MCC = **`0.4814`**.
+    - MultiScale: Peak at Epoch 53 $\implies$ Test Macro-F1 = **`0.6513`**, Acc = **`65.72%`**, $\kappa = \mathbf{0.5032}$, MCC = **`0.5035`**.
+    - **Delta @ Peak**: **$\Delta \text{Macro-F1} = \mathbf{+1.11\text{ pp}}$**, $\Delta \text{Acc} = \mathbf{+1.30\text{ pp}}$, $\Delta \kappa = \mathbf{+0.0227}$, $\Delta \text{MCC} = \mathbf{+0.0222}$ favoring MultiScale.
+    - Stage F1 Gains: Deep F1: **+1.60 pp** ($0.6989 \to 0.7148$), REM F1: **+2.62 pp** ($0.5649 \to 0.5910$), Light F1: **+0.68 pp** ($0.6529 \to 0.6596$), Wake F1: **-0.43 pp** ($0.6440 \to 0.6397$).
+  - **Asymptotic 500-Epoch Overfitting Resilience**:
+    - Baseline suffered heavy late-stage overfitting: Macro-F1 fell by **5.02 pp** from peak to Epoch 500 (degrading to `0.5900`, Acc 59.58%).
+    - MultiScale exhibited high resilience: Macro-F1 dropped by only **0.62 pp** from peak to Epoch 500 (retaining `0.6451`, Acc 64.67%).
+    - Terminal Epoch 500 Delta: **$\Delta \text{Macro-F1} = \mathbf{+5.52\text{ pp}}$**, $\Delta \text{Acc} = \mathbf{+5.09\text{ pp}}$ favoring MultiScale.
+- Artifacts:
+  - Script: `experiments/EXP-019/run_exp019_500epochs.py`
+  - Tests: `tests/test_exp019_pipeline.py` (4/4 passed)
+  - Report: `experiments/EXP-019/EXP019_REPORT.md`
+  - Baseline Results JSON: `experiments/EXP-019/exp019_results/baseline_500epochs_results.json`
+  - MultiScale Results JSON: `experiments/EXP-019/exp019_results/multiscale_500epochs_results.json`
+  - Summary JSON: `experiments/EXP-019/exp019_results/exp019_summary.json`
+
 ## RESEARCH TRAJECTORY
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

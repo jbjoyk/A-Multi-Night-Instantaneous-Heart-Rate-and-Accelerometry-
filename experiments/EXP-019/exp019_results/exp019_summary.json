@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-11-15T04:50:23Z",
+  "experiment": "EXP-019",
+  "title": "500-Epoch Extended Training Benchmark: Baseline vs MultiScaleConventionalCNNBiGRU",
+  "fold": 1,
+  "seed": 42,
+  "epochs": 500,
+  "baseline_params": 163940,
+  "multiscale_params": 192692,
+  "param_delta": 28752,
+  "param_pct_increase": 17.53812370379407,
+  "best_checkpoint": {
+    "baseline_peak_epoch": 55,
+    "multiscale_peak_epoch": 53,
+    "baseline_macro_f1": 0.6401440772584853,
+    "multiscale_macro_f1": 0.6512934946038703,
+    "delta_macro_f1_pp": 1.1149417345384993,
+    "baseline_acc": 0.6442145928095209,
+    "multiscale_acc": 0.6571749018630444,
+    "delta_acc_pp": 1.2960309053523522,
+    "baseline_kappa": 0.480543368300108,
+    "multiscale_kappa": 0.5032292132796929,
+    "delta_kappa": 0.022685844979584924,
+    "baseline_mcc": 0.4813692674932095,
+    "multiscale_mcc": 0.5035414623810087,
+    "delta_mcc": 0.0221721948877992,
+    "per_stage_f1": {
+      "Wake": {
+        "baseline": 0.6440025657472739,
+        "multiscale": 0.6396595208070618,
+        "delta_pp": -0.4343044940212093
+      },
+      "Light": {
+        "baseline": 0.6528543849972421,
+        "multiscale": 0.6596379126730565,
+        "delta_pp": 0.678352767581436
+      },
+      "Deep": {
+        "baseline": 0.6988550866862937,
+        "multiscale": 0.7148326540694084,
+        "delta_pp": 1.5977567383114732
+      },
+      "REM": {
+        "baseline": 0.5648642716031317,
+        "multiscale": 0.5910438908659549,
+        "delta_pp": 2.6179619262823195
+      }
+    }
+  },
+  "final_epoch_500": {
+    "baseline_macro_f1": 0.5899732298440803,
+    "multiscale_macro_f1": 0.6451409636393648,
+    "delta_macro_f1_pp": 5.51677337952845,
+    "baseline_acc": 0.5958003613932332,
+    "multiscale_acc": 0.6466758053461275,
+    "delta_acc_pp": 5.087544395289423,
+    "baseline_overfitting_drop_f1": 5.017084741440502,
+    "multiscale_overfitting_drop_f1": 0.615253096450552
+  }
+}

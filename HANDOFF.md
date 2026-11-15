@@ -38,10 +38,23 @@ EXP-018: CONTEXT-HORIZON CURVE WITH DATA-COVERAGE CONTROL — FULLY COMPLETED (P
    - Results: Macro-F1 gained from 0.3056 to 0.3556 (+5.01 pp gain in primary run; REM F1 $+15.06$ pp, Wake F1 $+10.42$ pp).
    - Verification: 49/49 independent tests pass (33 adversarial, 9 evaluation stress, 7 unit).
    - Independent Victory Audit: **`VICTORY CONFIRMED`**.
-5. **Next Concrete Task**:
-   - Review NAS Iteration 1 findings with user.
-   - Await direction on Iteration 2 (e.g., recurrent-level or intra-encoder mutations) or long-horizon full training.
-   - Commit and push all remaining artifacts to `origin main`.
+5. **EXP-019: 500-Epoch Extended Training Benchmark (Baseline vs MultiScale) — COMPLETED**:
+   - Hardware: Dual RTX 3060 parallel execution (Baseline on `cuda:0`, MultiScale on `cuda:1`, 16.8 minutes).
+   - Protocol: 500 epochs, Adam ($lr = 10^{-4}$), batch size 4, seq len 600, seed 42 on Fold 1 (32 train, 5 val, 10 test subjects; 54 test nights, 32,098 valid windows).
+   - **Early Stopping Peak Model Selection**:
+     - Baseline: Peak at Epoch 55 $\implies$ Test Macro-F1 = **0.6401**, Acc = **64.42%**, $\kappa = \mathbf{0.4805}$, MCC = **0.4814**.
+     - MultiScale: Peak at Epoch 53 $\implies$ Test Macro-F1 = **0.6513**, Acc = **65.72%**, $\kappa = \mathbf{0.5032}$, MCC = **0.5035**.
+     - Delta @ Peak: **$\Delta \text{Macro-F1} = \mathbf{+1.11\text{ pp}}$**, $\Delta \text{Acc} = \mathbf{+1.30\text{ pp}}$, $\Delta \kappa = \mathbf{+0.0227}$, $\Delta \text{MCC} = \mathbf{+0.0222}$ favoring MultiScale.
+     - Stages: Deep F1 $+1.60$ pp ($0.6989 \to 0.7148$), REM F1 $+2.62$ pp ($0.5649 \to 0.5910$), Light F1 $+0.68$ pp.
+   - **Asymptotic 500-Epoch Overfitting Resilience**:
+     - Baseline degraded by **5.02 pp** (to 0.5900 Macro-F1 at Epoch 500).
+     - MultiScale degraded by only **0.62 pp** (retaining 0.6451 Macro-F1 at Epoch 500).
+     - Terminal Epoch 500 Delta: **$\Delta \text{Macro-F1} = \mathbf{+5.52\text{ pp}}$** favoring MultiScale.
+   - Artifacts: `EXP019_REPORT.md`, `baseline_500epochs_results.json`, `multiscale_500epochs_results.json`, `exp019_summary.json`.
+6. **Next Concrete Task**:
+   - Review 500-epoch benchmark findings with user.
+   - Decide next step: 5-fold cross-validation of MultiScale model across all 47 subjects, or proceed to NAS Iteration 2 mutations.
+   - Commit and push all artifacts to `origin main`.
 
 
 ## Previous work
