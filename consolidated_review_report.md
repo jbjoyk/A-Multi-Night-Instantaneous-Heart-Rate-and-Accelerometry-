@@ -1,90 +1,196 @@
-# Consolidated Review Report: `design_draft.md` (EXP-019 Adaptation Specification)
+# Consolidated EGM Goldfish Review Report (Stages 5–9)
 
-* **Target Document:** [`design_draft.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/design_draft.md)
-* **Author:** jbjoyk
-* **Audit Execution Mode:** Consolidated Report / Uninterrupted Full Flow (Stages 5 through 9)
-* **Date:** 2026-11-16
-* **Final Consolidated Verdict:** **APPROVED (100% IMPLEMENTATION READINESS VERIFIED)**
-
----
-
-## 1. Executive Summary
-
-This consolidated report summarizes the multi-stage adversarial review and verification of [`design_draft.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/design_draft.md), which specifies the protocol, architecture, and implementation plan for experiment **EXP-019** (testing hypothesis **H-A**: within-person multi-night sleep staging adaptation on the BIDSleep dataset).
-
-All five specialized review stages were executed in sequence:
-1. **Stage 5 (Initial Zoom Out):** Verified high-altitude architecture, root problem focus, and YAGNI compliance.
-2. **Stage 6 (Comprehension Test):** Paraphrased feature specs and implementation plans with zero institutional knowledge, identifying clarity gaps and terminology ambiguities.
-3. **Stage 7 (Critic Review):** Conducted hostile architectural critique, structural layout validation, and style analysis, uncovering critical masking and mode collapse risks in Arm 5 ($UA\text{-}2$).
-4. **Stage 8 (Intermediate Zoom Out):** Re-audited post-remediation architecture to ensure no complexity bloat or weeds were introduced.
-5. **Stage 9 (Implementation Readiness Test):** Audited implementation details against codebase ground truth, eliminating non-existent symbol imports, aligning batching with actual night lengths, adding shared adaptation libraries, and formalizing inter-script JSON contracts.
-
-Every identified finding has been resolved directly within `design_draft.md` and cross-verified against repository ground truth. The specification is cleared for implementation.
+**Target Document:** [`experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md)  
+**Implementation Script:** [`experiments/EXP-019/audit_heterogeneity_mechanisms.py`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/audit_heterogeneity_mechanisms.py)  
+**Data Artifact:** [`experiments/EXP-019/heterogeneity_predictors_table.csv`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/heterogeneity_predictors_table.csv)  
+**Review Standard:** EGM Goldfish Protocol (Full Uninterrupted Flow: Stages 5 → 6 → 7 → 8 → 9)  
+**Date:** November 17, 2026
 
 ---
 
-## 2. Cross-Stage Traceability Matrix
+## 1. Executive Summary & Review Dashboard
 
-The matrix below maps all findings across the five review stages to their final resolution status in `design_draft.md`:
+The exploratory heterogeneity diagnostic audit delivers critical empirical insights into the EXP-019 multi-night adaptation experiment. It establishes two fundamental scientific conclusions:
+1. **Pre-adaptation subject features offer essentially zero predictive foreknowledge of adaptation gain** ($q \approx 0.9711$ across all 9 pre-adaptation hypotheses).
+2. **Subject performance degradation is governed by inter-night non-stationary label shift** ($D_{JS}(P_C \parallel P_E)$, $\rho = -0.2933, p = 0.0479$). In particular, the severe collapse of `Bidslab34` ($-16.34\text{ pp}$) is traced directly to extreme stage absence during calibration ($0.7\%$ Deep sleep) reappearing in evaluation nights (~$18\%$).
 
-| ID | Originating Stage & Reviewer | Issue / Finding Description | Initial Severity | Final Status | Applied Resolution in `design_draft.md` |
-|---|---|---|---|---|---|
-| **TR-01** | Stage 7 (`egm-design`) | **$UA\text{-}2$ Masking Paradox**: Unsupervised test-time adaptation cannot use EEG headband signal quality masks without leaking labels. | 🔴 Blocker | **RESOLVED** | Formulated an explicit wearable-only quality heuristic ($30 \le \text{HR} \le 180\text{ bpm}$ and non-zero accelerometry variance), preserving the true label-free wearable setting. (Lines 144–146) |
-| **TR-02** | Stage 7 (`egm-design`) | **$UA\text{-}2$ Mode Collapse**: Unconstrained Shannon entropy minimization collapses to the dominant Light-sleep class. | 🔴 Blocker | **RESOLVED** | Added InfoMax diversity regularization ($\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{ent}} - \lambda \mathcal{H}(\bar{p})$ with $\lambda=1.0$) and an automated abort check if entropy drops below $0.5 \cdot \mathcal{H}_{\text{prior}} = 0.6931\text{ nats}$. (Lines 143–147) |
-| **TR-03** | Stage 7 (`egm-design`) | **Compound Decision Power Fallacy**: Compound rule ($\hat{\Delta} \ge 1.5$ AND CI $> 0$) has $50\%$ power at $\delta=1.5\text{ pp}$; discontinuous threshold escalation. | 🔴 Blocker | **RESOLVED** | Clarified power: detecting $\hat{\Delta} \ge 1.5\text{ pp}$ with $80\%$ power requires true effect $\delta \ge 1.95\text{ pp}$. Replaced step-function with continuous smooth rule: $\text{Threshold} = \max(1.5, 0.4131 \cdot s_{\Delta})$ for $N=46$. (Lines 28, 58) |
-| **TR-04** | Stage 9 (`egm-readiness`, `egm-codebase`) | **Non-Existent Symbol & Serialization in EXP-018**: `train_model` does not exist in `run_exp018_execution.py`, and `train_single_run` does not save `.pt` files. | 🔴 Blocker | **RESOLVED** | Replaced with direct coordination of `ConventionalCNNBiGRU`, `create_infinite_batch_stream`, etc., to run the 3,200-step training loop, assert metric parity ($\pm 0.5\text{ pp}$), and serialize `.pt` checkpoints. (Lines 294–302) |
-| **TR-05** | Stage 9 (`egm-codebase`) | **Physical Tensor Batching Invariant**: Median night length is 868 epochs ($< 1150$ for $>98\%$ of nights); stride-300 slicing is physically impossible. | 🔴 Blocker | **RESOLVED** | Clarified tensor reality: full nights right-padded to $L=1200$ (padded targets $=-100$) stacked into a $(B=2, L=1200)$ batch. One epoch equals one gradient step over this batch. (Lines 179–181) |
-| **TR-06** | Stage 5 (`egm-zoom-out`) | **Filesystem Namespace Collision**: Existing exploratory files in `experiments/EXP-019/` collide with new confirmatory scripts. | 🟡 Major | **RESOLVED** | Added Step 0 pre-execution cleanup migrating historical files to `experiments/EXP-019-EXPLORATORY/`. (Lines 261–263, 289–293) |
-| **TR-07** | Stage 6 (`egm-comprehension`) | **Missing Target File in Plan Inventory**: `tests/test_exp019_invariants.py` was relied upon in verification but omitted from the file catalog. | 🟡 Major | **RESOLVED** | Added Target File #7 (`tests/test_exp019_invariants.py`) specifying its automated invariant test assertions. (Lines 342–350) |
-| **TR-08** | Stage 6 (`egm-comprehension`) | **Dual Usage of "Epoch"**: Ambiguity between 30-second physiological scoring windows and optimization gradient epochs. | 🟡 Major | **RESOLVED** | Disambiguated terminology: explicitly uses "30-second sleep scoring epochs" for time-series windows and "training epochs / steps" for model passes. (Lines 28, 98, 171, 180) |
-| **TR-09** | Stage 9 (`egm-readiness`) | **Missing Shared Adaptation Library**: Duplication risk of adaptation loops between Stage D and Stage C. | 🟡 Major | **RESOLVED** | Created Target File #3 (`experiments/EXP-019/exp019_adaptation_core.py`) encapsulating all shared adaptation algorithms and functions. (Lines 304–326) |
-| **TR-10** | Stage 9 (`egm-readiness`) | **Missing JSON Contracts**: Undefined schemas for `selected_configs.json` and `stage_c_results.json` risking runtime deserialization bugs. | 🟡 Major | **RESOLVED** | Documented complete, explicit JSON contracts for both files in the specification. (Lines 314–325, 338–353) |
-| **TR-11** | Stage 9 (`egm-codebase`) | **Target Masking Discrepancy**: Padded positions and unknown stages were labeled `-1` instead of `-100` (`ignore_index`). | 🟡 Major | **RESOLVED** | Explicitly specified `-100` as the masked target value for invalid/padded positions. (Lines 56, 100, 180) |
-| **TR-12** | Stage 9 (`egm-readiness`) | **Float Precision in Stage D Tie-Breaking**: 16-decimal float noise prevents tie-breaker execution. | 🟡 Major | **RESOLVED** | Formalized 4-decimal-place rounding (`round(macro_f1, 4)`) prior to applying the tie-breaker hierarchy. (Lines 68, 178) |
-| **TR-13** | Stage 9 (`egm-readiness`) | **Stage C Dry-Run Test Isolation**: Running Stage C dry-run on outer test subjects risks test leakage. | 🟡 Major | **RESOLVED** | Mandated that `--dry-run` operates strictly on mock/synthetic or inner-validation data, asserting outer test records are never accessed. (Lines 336, 381–386) |
-| **TR-14** | Stage 7 (`egm-style`) | **Confirmation Bias in Research Goals**: Phrasing goals as conclusions to be confirmed rather than empirical hypotheses. | 🟡 Major | **RESOLVED** | Rephrased Goals items 2 and 3 from "Confirm that..." to neutral testing language: "Test whether...". (Lines 29–30) |
-| **TR-15** | Stage 7 (`egm-structural`) | **Markdown Linting Violations**: Missing blank lines before lists across 12 heading sites (MD022/MD032). | 🟡 Major | **RESOLVED** | Inserted blank newlines between all `###` headings and adjoining bullet lists. (Lines 64, 69, 181, 186, 191, etc.) |
-| **TR-16** | Stage 7 & 9 (`egm-style`) | **Colloquialisms & Promotional Words**: Use of informal idioms ("accuracy swings widely", "engine"). | 🟢 Nit | **RESOLVED** | Replaced with dry, descriptive technical prose. (Throughout document) |
+Across all five stages of the EGM Goldfish Review Protocol, the mathematical execution, zero-leakage invariants, and numerical reproduction of results were **verified with 100% parity**. 
+
+However, the review swarm identified critical methodological, architectural, and presentation vulnerabilities:
+- **Flawed Gating Framing (Major):** Section 3 presented a post-hoc compound gate as an exploratory "safety simulation". Critic and Zoom-Out reviews proved that this rule was reverse-engineered to catch `Bidslab34`, discards a confirmed positive responder (`Bidslab15`, $+1.27\text{ pp}$), misses 11 of 12 non-responders (sensitivity = $8.3\%$), and represents brittle symptom-patching rather than principled algorithmic resolution.
+- **Context Insufficiency vs. Textbook Bloat (Major):** The document lacked high-altitude framing of the EXP-019 task, metric ($\Delta$ Macro-F1), and responder threshold, but must resolve this via a concise metadata block rather than sprawling textbook text.
+- **Statistical Calibration (Major):** Oldham's method requires reporting Pearson $r$ alongside Spearman $\rho$, while recognizing that the baseline correlation was already non-significant ($p = 0.256$). Causal overreach ("negative infinity", "causal diagnosis") must be de-escalated to objective diagnostic language.
+- **Implementation Portability & Determinism (Major):** The audit script lacked deterministic RNG seeding for PyTorch dropout during parameter displacement extraction, contained brittle working-directory-dependent CLI defaults, and omitted `sys.path` entries.
 
 ---
 
-## 3. High-Level Summary by Review Stage
+## 2. Reviewer Status Matrix
 
-### Stage 5: Initial Zoom Out Review
-* **Verdict:** CONDITIONAL PASS $\to$ APPROVED
-* **Key Observations:** Verified that the document addresses the primary root problem (between-subject autonomic variance in wearable sleep staging) through within-person multi-night adaptation. Strongly praised the architectural freeze (Model A, 163,940 parameters; Amendment A6) and the empirical negative control ($FT\text{-}other\text{-}2$). Identified the Step 0 directory cleanup requirement and EXP-018 training routine reuse.
-
-### Stage 6: Comprehension Test
-* **Verdict:** PASS WITH MINOR ACTION ITEMS $\to$ APPROVED
-* **Key Observations:** The Naive Reader successfully paraphrased the high-level research problem and the 6-step implementation sequence without misinterpretation. Caught the omission of `tests/test_exp019_invariants.py` from the file inventory and disambiguated the dual usage of "epoch".
-
-### Stage 7: Critic Review
-* **Verdict:** ACTION REQUIRED $\to$ APPROVED
-* **Key Observations:** Hostile review identified three major blocking vulnerabilities: the $UA\text{-}2$ masking paradox, Shannon entropy mode collapse, and compound decision power under $N=46$. Structural review validated the heading hierarchy, tables, and Mermaid syntax, while style review neutralized hypothesis confirmation bias. All 16 findings were remediated.
-
-### Stage 8: Intermediate Zoom Out Review
-* **Verdict:** UNCONDITIONAL PASS (APPROVED FOR STAGE 9)
-* **Key Observations:** Confirmed that the Stage 7 mitigations (InfoMax diversity regularization, physical wearable quality boundaries, smooth MDE threshold formula, and directory isolation) were minimal, robust, and free of architectural bloat or YAGNI violations.
-
-### Stage 9: Implementation Readiness Test
-* **Verdict:** CONDITIONAL PASS $\to$ APPROVED
-* **Key Observations:** Pragmatic Tech Lead and Codebase Auditor verified code alignment against the active repository. Aligned training loop coordination, physical $(B=2, L=1200)$ tensor batching, shared adaptation library (`exp019_adaptation_core.py`), explicit JSON schemas, and test isolation.
+| Stage | Reviewer Lens | Persona / Agent | Target Scope | Status |
+|---|---|---|---|---|
+| **Stage 5** | Skeptical Architect | `egm-zoom-out` | Full Report (Lines 1–51) | **Completed** |
+| **Stage 5** | Inventive Problem Solving | `egm-inventive-catalyst` | Full Report (Lines 1–51) | **Completed** |
+| **Stage 6** | Naive Reader (Comprehension) | `egm-comprehension` | Report (Isolated Reading) | **Completed** |
+| **Stage 7** | Hostile Design Critic | `egm-design` | Feature Scope (Lines 1–51) | **Completed** |
+| **Stage 7** | Document Architect (Layout) | `egm-structural` | Feature Scope (Lines 1–51) | **Completed** |
+| **Stage 7** | Technical Copy Editor | `egm-style` | Feature Scope (Lines 1–51) | **Completed** |
+| **Stage 8** | Intermediate Zoom Out | `egm-zoom-out` | Full Synthesis & Anti-Bloat | **Completed** |
+| **Stage 9** | Pragmatic Tech Lead | `egm-implementation-readiness` | `audit_heterogeneity_mechanisms.py` | **Completed** |
+| **Stage 9** | Codebase Details Auditor | `egm-codebase-details` | Code vs Doc & Tabular Parity | **Completed** |
+| **Stage 9** | Technical Copy Editor | `egm-style` | Docstrings, CLI & Comments | **Completed** |
 
 ---
 
-## 4. Final Implementation Clearance
+## 3. Consolidated Findings by Severity
 
-The design document [`design_draft.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/design_draft.md) (and its mirror [`docs/designs/exp019_adaptation.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/docs/designs/exp019_adaptation.md)) is **100% verified, actionable, unambiguous, and approved for implementation**.
+### 🔴 Blocker / Critical Architectural Decisions
 
-### Immediate Execution Sequence:
-1. **Step 0**: Execute workspace cleanup:
-   ```bash
-   mkdir -p experiments/EXP-019-EXPLORATORY
-   mv experiments/EXP-019/* experiments/EXP-019-EXPLORATORY/ 2>/dev/null || true
-   ```
-2. **Step 1**: Author and run `experiments/EXP-018/regenerate_modelA_checkpoints.py` to regenerate the 15 Model A checkpoints with verified metrics.
-3. **Step 2**: Author `experiments/EXP-019/exp019_adaptation_core.py` and `experiments/EXP-019/run_exp019_stage_d.py`.
-4. **Step 2b**: Author and run `tests/test_exp019_invariants.py` (`pytest -v`).
-5. **Step 3**: Execute Stage D nested selection across the 25 inner-validation subjects.
-6. **Step 4**: Commit locked preregistration in `PREREG_EXP-019_H-A.md` to `origin main`.
-7. **Step 5**: Execute Stage C confirmatory evaluation on the 46 outer test subjects across all 5 arms.
+#### Finding C-1: Reframe Section 3 from "Deployment Gating Solution" to "Diagnostic Counterfactual Stress Test"
+* **Lenses:** `egm-design`, `egm-zoom-out`, `egm-inventive-catalyst`
+* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Section 3; `audit_heterogeneity_mechanisms.py` Section 3 printouts
+* **Discrepancy:** The compound gate ($\min_c P_C(y=c) \ge 3.0\%$ AND $D_{JS}(P_C \parallel P_{\text{pop}}) < 0.35$) is post-hoc data-snooped around `Bidslab34`. In doing so, it:
+  1. Erroneously discards confirmed positive responder `Bidslab15` ($+1.27\text{ pp}$).
+  2. Misses 11 of 12 non-responders in the cohort (sensitivity = $8.3\%$).
+  3. Sits on an unstable threshold boundary where a $+0.5\%$ shift would drop high responders `Bidslab42` ($+6.31\text{ pp}$) and `Bidslab62` ($+4.48\text{ pp}$).
+  4. Masks an architectural limitation (unregularized cross-entropy driving absent-class logits negative) with a brittle client-exclusion heuristic.
+* **Consolidated Action:**
+  - Rename Section 3 to: `## 3. Stress-Testing Static Pre-Adaptation Gating (Counterfactual Analysis)`.
+  - Disclose that the gate excluded positive responder `Bidslab15` and failed to catch 11 of 12 non-responders.
+  - Conclude that static pre-adaptation screening is an ineffective, blunt tool; the principled architectural solution is algorithmic regularization (prior-preserving loss penalties or feature-only adaptation).
+
+---
+
+### 🟡 Major Findings
+
+#### Finding C-2: Add Unified 4-Line Executive Context Box (Preventing Textbook Bloat)
+* **Lenses:** `egm-comprehension`, `egm-zoom-out`, `egm-style`
+* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Header (Lines 1–6)
+* **Discrepancy:** A reader cannot tell what metric `Delta` represents (Macro-F1 percentage points on 4-stage sleep), what `H-A` stands for, what the responder threshold is, or what entity probability distributions $P$ represent.
+* **Consolidated Action:** Add a concise metadata box immediately following the title:
+  - **Task & Model:** EXP-019 subject-specific adaptation of Model A (CNN-BiGRU) on nights 2–3, evaluated on nights 4+ across 46 subjects (5-fold CV).
+  - **Target Metric:** 4-class sleep staging Macro-F1 (Wake, Light, Deep, REM); $\Delta = \text{Macro-F1}_{\text{FT}} - \text{Macro-F1}_{\text{ZS}}$ in percentage points (`pp`).
+  - **Responder Definition:** $\Delta > 0.0\text{ pp}$ ($N=34$ responders, $N=12$ non-responders). Confirmatory H-A mean gain was $+1.01\text{ pp}$ (non-significant vs $+1.50\text{ pp}$ target, $p=0.171$).
+  - **Divergence Metrics:** $D_{JS}$ is base-2 Jensen-Shannon divergence ($\in [0, 1]$) between 4-stage empirical probability vectors ($P_C$ calibration, $P_E$ evaluation, $P_{\text{pop}}$ training fold prior).
+
+#### Finding C-3: Consolidate Null Mechanisms (M2, M4, M6) into a Single Subsection
+* **Lenses:** `egm-structural`, `egm-zoom-out`
+* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Section 1 Table & Section 2 Headings
+* **Discrepancy:** Section 1 tested 6 mechanisms, but Section 2 provided narrative subsections only for M1, M3, and M5. M2 (autonomic HR volatility), M4 (transition friction), and M6 (token exposure) were omitted without explanation.
+* **Consolidated Action:**
+  - Sub-header Table 1 explicitly by **Mechanism 1 through 6** and correlate hypothesis IDs (`H-D1..3`, `H-P1`, `H-C1..2`, `H-L1`, `H-R1`, `H-S1`).
+  - Add a compact subsection `### D. Uniformly Null Autonomic, Structural, and Exposure Predictors (Mechanisms 2, 4, 6)` summarizing that HR volatility ($\rho = -0.21$), transition rate ($\rho = -0.02$), and calibration token volume ($\rho = -0.06$) demonstrated no predictive power after FDR adjustment ($q = 0.9711$).
+
+#### Finding C-4: Methodological & Epistemic Calibration (Oldham's Method & Causal Language)
+* **Lenses:** `egm-design`, `egm-style`, `egm-zoom-out`
+* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Section 2.A & 2.B; `audit_heterogeneity_mechanisms.py` Line 311
+* **Discrepancy:** 
+  1. Oldham's variance cancellation theorem strictly holds for linear Pearson covariance, not rank-order Spearman $\rho$. Furthermore, claiming Oldham's method "proves the ceiling effect is an RTM artifact" is uncalibrated because the baseline correlation was already statistically insignificant ($\rho = -0.1710, p = 0.2559$).
+  2. Section 2.A Line 30 labels an observational case as `*Causal Diagnosis*` and claims fine-tuning drove emission bias to "negative infinity".
+* **Consolidated Action:**
+  - In Section 2.B, report both Pearson ($r = +0.032, p = 0.832$) and Spearman ($\rho = +0.038, p = 0.804$) for Oldham's mean ($\frac{\text{ZS} + \text{FT}}{2}$). State cleanly that baseline performance showed no significant relationship with $\Delta$ before or after adjustment.
+  - Reclassify `*Causal Diagnosis*` to `**Forensic Case Interpretation (Bidslab34):**` and describe emission bias as "severely suppressed" rather than "driven to negative infinity".
+
+#### Finding C-5: Deterministic RNG Seeding for PyTorch Dropout in Parameter Displacement
+* **Lenses:** `egm-implementation-readiness`
+* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 232–246
+* **Discrepancy:** `adapt_supervised_ft()` puts the model in `model.train()`, consuming PyTorch RNG during dropout forward passes. Without explicit seeding, re-running the script produces subtle stochastic fluctuations in `param_displacement_norm`.
+* **Consolidated Action:** Add `torch.manual_seed(42)`, `torch.cuda.manual_seed_all(42)`, and `np.random.seed(42)` at script initialization and before each subject's adaptation.
+
+#### Finding C-6: Portability & Path Anchoring for CLI Execution
+* **Lenses:** `egm-codebase-details`, `egm-implementation-readiness`
+* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 30–35 & Lines 426–433
+* **Discrepancy:** `sys.path` omitted `exp019_dir`, and CLI default arguments were relative paths from CWD. Running the script from `experiments/EXP-019/` caused `FileNotFoundError` and `ModuleNotFoundError`.
+* **Consolidated Action:** Add `exp019_dir` to `sys.path` and anchor all CLI default paths to `repo_root` using `os.path.join(repo_root, ...)`.
+
+#### Finding C-7: Docstrings and CLI Argument Help Strings
+* **Lenses:** `egm-style`
+* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 80–90 & Lines 423–435
+* **Discrepancy:** `run_heterogeneity_audit` lacked a docstring, and all `argparse` options lacked `--help` text.
+* **Consolidated Action:** Add Google-style docstrings with parameter definitions, return types, and descriptive CLI `--help` strings.
+
+---
+
+### 🟢 Nits & Code Quality
+
+#### Finding C-8: Dead Code and In-Loop Import Removal
+* **Lenses:** `egm-implementation-readiness`, `egm-codebase-details`, `egm-style`
+* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 223–227
+* **Consolidated Action:** Relocate `from sklearn.metrics import f1_score` to module header, delete dead lines 223–225 (`pd.Series(...).corr(...)`), and add defensive handling for empty calibration slices.
+
+#### Finding C-9: Normalize TeX Escaping & Standardization
+* **Lenses:** `egm-structural`, `egm-style`, `egm-codebase-details`
+* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Line 408; `HETEROGENEITY_AUDIT_REPORT.md` Line 45
+* **Consolidated Action:** Replace double braces `$D_{{JS}}(P_C \parallel P_{{\text{{pop}}}})$` with standard TeX `$D_{JS}(P_C \parallel P_{\text{pop}})$` and format covariance terms as `\text{Cov}(\text{ZS}, \text{FT} - \text{ZS})`.
+
+#### Finding C-10: Filter Usable Nights in Population Prior Calculation
+* **Lenses:** `egm-implementation-readiness`, `egm-codebase-details`
+* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 103–106
+* **Consolidated Action:** Filter `df_inv[df_inv["usable"] == True]` before averaging demographic stage fractions.
+
+---
+
+## 4. Traceability Matrix
+
+| Raw Finding Source | Primary Lens | Severity | Consolidated Action Item |
+|---|---|---|---|
+| Stage 5 Finding 1 | `egm-zoom-out` | Major | **Finding C-2**: Add 4-line executive context block |
+| Stage 5 Finding 2 | `egm-inventive-catalyst` | Major | **Finding C-1**: Reframe gating to counterfactual analysis & prior regularization |
+| Stage 5 Finding 3 | `egm-inventive-catalyst` | Major | **Finding C-1**: Note architectural extraction/decoupling of prior from features |
+| Stage 5 Finding 4 | `egm-zoom-out` | Nit | **Finding C-2**: Clarify contrast between static predictors and dynamic shift |
+| Stage 6 Finding 1 | `egm-comprehension` | Major | **Finding C-2**: Define `Delta` and Macro-F1 metric in context block |
+| Stage 6 Finding 2 | `egm-comprehension` | Major | **Finding C-2**: Define $P_C, P_E, P_{\text{pop}}$ and $D_{JS}$ bounds |
+| Stage 6 Finding 3 | `egm-comprehension` | Major | **Finding C-2**: Define `H-A` project acronym |
+| Stage 6 Finding 4 | `egm-comprehension` | Major | **Finding C-2**: State responder threshold ($\Delta > 0.0\text{ pp}$) |
+| Stage 6 Finding 5 | `egm-comprehension` | Major | **Finding C-4**: Define Oldham formula and baselines |
+| Stage 6 Finding 6 | `egm-comprehension` | Major | **Finding C-3**: Document Model A and Stage-D hyperparameter origin |
+| Stage 6 Finding 7 | `egm-comprehension` | Major | **Finding C-2**: Defer variable definitions to artifact schemas |
+| Stage 7 Finding 1 | `egm-design` | Blocker/Major | **Finding C-1**: Reframe gating; report responder rejection and low sensitivity |
+| Stage 7 Finding 2 | `egm-design` | Major | **Finding C-4**: Compute Pearson $r$ for Oldham; calibrate null baseline |
+| Stage 7 Finding 3 | `egm-design` | Major | **Finding C-3**: Acknowledge fold-level optimization hyperparameter confounder |
+| Stage 7 Finding 4 | `egm-structural` | Major | **Finding C-3**: Consolidate M2, M4, M6 in narrative subsection |
+| Stage 7 Finding 5 | `egm-structural` | Major | **Finding C-3**: Group Table 1 by Mechanism 1–6 with hypothesis IDs |
+| Stage 7 Finding 6 | `egm-style` | Major | **Finding C-1**: Strip shouting bold and exclamation marks from gating |
+| Stage 7 Finding 7 | `egm-style` | Major | **Finding C-4**: Replace "Causal Diagnosis" and "negative infinity" |
+| Stage 7 Finding 8 | `egm-structural` | Nit | **Finding C-9**: Normalize TeX formatting and percentage styles |
+| Stage 8 Finding 1 | `egm-zoom-out` | Blocker/Major | **Finding C-1**: Counterfactual reframe of Section 3 (anti-symptom-patching) |
+| Stage 8 Finding 2 | `egm-zoom-out` | Major | **Finding C-2**: Anti-bloat 4-bullet executive metadata box |
+| Stage 8 Finding 3 | `egm-zoom-out` | Major | **Finding C-3**: Consolidate null mechanisms without textbook bloat |
+| Stage 8 Finding 4 | `egm-zoom-out` | Major | **Finding C-4**: Statistical and epistemic de-escalation |
+| Stage 9 Finding 1 | `egm-readiness` | Major | **Finding C-5**: Seed PyTorch/NumPy RNG for deterministic displacement |
+| Stage 9 Finding 2 | `egm-readiness` / `codebase` | Major | **Finding C-6**: Anchor CLI default paths and include `exp019_dir` in `sys.path` |
+| Stage 9 Finding 3 | `egm-style` | Major | **Finding C-7**: Add docstring to `run_heterogeneity_audit` and CLI `--help` |
+| Stage 9 Finding 4 | `egm-readiness` / `codebase` | Nit | **Finding C-8**: Remove dead code, move `f1_score` to top import |
+| Stage 9 Finding 5 | `egm-codebase` | Nit | **Finding C-9**: Fix string-escape double braces in line 408 |
+| Stage 9 Finding 6 | `egm-readiness` / `codebase` | Nit | **Finding C-10**: Filter usable nights for population prior |
+
+---
+
+## 5. Concrete Action Plan & Implementation Guidance
+
+### A. Modifications to `experiments/EXP-019/audit_heterogeneity_mechanisms.py`
+1. **Paths & Imports:**
+   - Add `exp019_dir = os.path.abspath(os.path.dirname(__file__))` to the `sys.path` insertion list.
+   - Anchor all default CLI arguments to `os.path.join(repo_root, ...)`.
+   - Move `from sklearn.metrics import f1_score` to module-level imports.
+2. **Determinism:**
+   - Add `torch.manual_seed(42)`, `torch.cuda.manual_seed_all(42)`, and `np.random.seed(42)` at the entry point of `run_heterogeneity_audit()` and before each subject's adaptation.
+3. **Statistical Robustness:**
+   - Filter `df_inv[df_inv["usable"] == True]` for population prior calculation.
+   - Compute and log both Pearson $r$ and Spearman $\rho$ for Oldham's mean.
+   - Cast `cal_y_valid.astype(int)` defensively before `np.bincount`.
+4. **Code Quality & Docstrings:**
+   - Add NumPy/Google-style docstring to `run_heterogeneity_audit()` documenting inputs and outputs.
+   - Add descriptive `help=` strings to all `argparse` arguments.
+   - Delete dead lines 223–225 (`pd.Series(...).corr(...)`).
+   - Fix double curly-brace string formatting in markdown report emission.
+   - Reframe generated Section 3 markdown according to Finding C-1.
+
+### B. Modifications to `experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md`
+1. **Executive Context Box:** Insert the 4-bullet executive context box at the top of the report.
+2. **Table 1 Symmetry:** Sub-header Table 1 by Mechanism 1 through 6, displaying explicit hypothesis IDs.
+3. **Mechanism Discussion:**
+   - Section 2.A: Reclassify `*Causal Diagnosis*` to `**Forensic Case Interpretation (Bidslab34):**` and calibrate emission bias description.
+   - Section 2.B: Report Pearson $r$ alongside Spearman $\rho$ for Oldham's mean; clarify that baseline performance was non-significant both before and after adjustment.
+   - Section 2.C: Acknowledge fold-level hyperparameter budget confounding within `scope=all`.
+   - Section 2.D: Add compact summary of null findings for Mechanisms 2, 4, and 6.
+4. **Section 3 Refactoring:** Reframe "Deployment Gating Simulation" into "Stress-Testing Static Pre-Adaptation Gating (Counterfactual Analysis)", disclosing the rejection of responder `Bidslab15`, the $8.3\%$ sensitivity to non-responders, and motivating algorithmic regularization over static client exclusion.

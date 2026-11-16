@@ -95,9 +95,12 @@
 
 ## Next Concrete Tasks
 
-1. **Descriptive Exploratory Analyses (Authorized under Research Plan)**:
+1. **EGM Review & Heterogeneity Audit Remediation**:
+   - Complete EGM Goldfish Review Protocol (Stages 5–9) completed for `HETEROGENEITY_AUDIT_REPORT.md` and `audit_heterogeneity_mechanisms.py`.
+   - Refactor `audit_heterogeneity_mechanisms.py` (add RNG seeds for PyTorch dropout in param displacement, anchor CLI default paths to `repo_root`, add docstrings and `--help` strings, clean dead code, and filter usable nights).
+   - Refactor `HETEROGENEITY_AUDIT_REPORT.md` (add 4-bullet executive context box, sub-header Table 1 by Mechanism 1–6, calibrate Oldham's method with Pearson $r$, consolidate null mechanisms in Section 2.D, and reframe Section 3 into a diagnostic counterfactual stress-test of static gating).
+2. **Descriptive Exploratory Analyses (Authorized under Research Plan)**:
    - Calibration efficiency curve: evaluate gains across $k \in \{1, 2, 3, 4\}$ calibration nights for subjects with $\ge 5$ nights.
-   - Responders vs Non-Responders characterization: inspect why subjects like `Bidslab34`, `Bidslab65`, and `Bidslab10` degrade under adaptation (e.g., physiological variability, stage transition entropy, heart rate shift between calibration and evaluation nights).
    - Clinical sleep summary agreement (TST, SOL, WASO, sleep efficiency, REM%, Deep%) comparing $ZS$ and $FT\text{-}2$.
-2. **Continuous Git Synchronization**:
-   - Commit all final report and table artifacts and push to `origin main`.
+3. **Continuous Git Synchronization**:
+   - Commit all review reports and audit artifacts and push to `origin main`.
