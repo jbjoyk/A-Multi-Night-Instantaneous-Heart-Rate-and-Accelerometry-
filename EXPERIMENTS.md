@@ -721,9 +721,17 @@ state.
   - Adversarial Tests: `tests/test_nas_iteration1_adversarial.py`
   - Stress Tests: `tests/test_nas_iteration1_eval_stress.py`
 
-### EXP-019 — 500-Epoch Extended Training Benchmark: Baseline vs MultiScale (Completed)
+- **ERRATUM (2026-11-16)**: Reclassified as an exploratory smoke test. The reported "+5.01 pp"
+  Macro-F1 gain was not reproduced by the independent re-run (see ERRATUM to DEC-026).
+  Class F1 gains for REM and Wake in the primary run are likewise unreplicated (REM F1 0.1287
+  in the re-run vs 0.1872 in the primary run). The entry above must not be cited as evidence
+  for H-A or for any architecture benefit. All subsequent NAS Iterations (Iterations 2–19)
+  are exploratory smoke tests and do not alter the verified cohort equivalence established in EXP-014.
+
+### EXP-019-EXPLORATORY — 500-Epoch Extended Training Benchmark: Baseline vs MultiScale (Completed)
 
 - Date: 2026-11-15
+- Reclassification Note: Formally reclassified as `EXP-019-EXPLORATORY` per Amendment v3.1 and ERRATUM to DEC-027 to resolve identifier collision with the pre-registered H-A adaptation experiment (`PREREG_EXP-019_H-A.md`). Results are preserved as exploratory historical evidence.
 - Research question: How does the mutated architecture `MultiScaleConventionalCNNBiGRU` (192,692 parameters, +17.54% budget) perform against baseline `ConventionalCNNBiGRU` (163,940 parameters) under extended 500-epoch training, at what epoch do both models peak, and how resilient is multi-scale temporal fusion against post-peak asymptotic overfitting?
 - Hypothesis: Multi-scale kernel fusion provides richer temporal representations that improve peak staging metrics (especially deep sleep and REM) while mitigating late-stage representation collapse and overfitting.
 - Configuration:

@@ -376,6 +376,25 @@
      - Independent victory audit verdict: **`VICTORY CONFIRMED`**.
 - Reversible: Yes; alternative mutations can be explored in subsequent NAS iterations.
 
+### ERRATUM to DEC-026 (2026-11-15)
+
+1. Mismatch with H-A: the MSTF-Pre block is a within-night multi-scale temporal
+   convolution over epochs. It uses no other nights and is not an operationalization of
+   H-A (multi-night within-person adaptation). H-A is tested in PREREG_EXP-019_H-A.md.
+2. Not pre-registered: no pre-registration block or decision rule existed for this change.
+   It must not be described as pre-registered.
+3. Evidence is insufficient: single fold, single seed, 1 training epoch, evaluated on the
+   outer test fold; models at about 44 to 47% accuracy. The primary-run Macro-F1 gain
+   (+5.01 pp, 0.3056 -> 0.3556) was not reproduced in the independent re-run, which
+   reported Macro-F1 0.3764 vs 0.3882 and a baseline value that differs from the primary run,
+   so run-to-run noise exceeds the claimed effect. Only an accuracy difference (+0.33 pp)
+   and a loss difference (-0.0009) were confirmed.
+4. Capacity confound: +17.54% parameters violates the matched-capacity principle of DEC-019.
+5. Selection on test data: outer-test-fold results must not guide architecture selection.
+6. Status: exploratory smoke test with no performance claim. NAS Iteration 2 and later are
+   not authorized (see EXP-014, DEC-020). "VICTORY CONFIRMED" refers to code, test-suite
+   and provenance checks only, not to scientific validity.
+
 
 ## DEC-027 — EXP-019 500-Epoch Extended Training Benchmark: Baseline vs MultiScaleConventionalCNNBiGRU
 
@@ -399,6 +418,19 @@
   3. Action:
      - EXP-019 is complete. All run JSONs, summary metrics, test suites, and report are archived and synchronized to GitHub.
 - Reversible: No; 500-epoch training and evaluation on Fold 1 is finalized.
+
+### ERRATUM to DEC-027 (2026-11-16)
+
+1. Identifier Reclassification: This 500-epoch Fold 1 run was originally labeled "EXP-019"
+   prior to the pre-registration lock of the true H-A adaptation protocol (PREREG_EXP-019_H-A.md).
+   To prevent identifier collision and maintain strict scientific provenance, this historical
+   benchmark is reclassified as `EXP-019-EXPLORATORY`. The identifier `EXP-019` is formally
+   reserved for the pre-registered within-person adaptation experiment (`PREREG_EXP-019_H-A.md`).
+2. Status: Exploratory architecture benchmark with no confirmatory standing under H-A.
+   It evaluated within-night temporal fusion on Fold 1 only, does not evaluate multi-night
+   adaptation, uses a +17.54% parameter capacity expansion, and was evaluated on outer-test data.
+3. Historical Evidence Preserved: All numerical findings and artifacts (peak metrics at Ep 53/55,
+   asymptotic overfitting delta +5.52 pp Macro-F1) remain preserved exactly as recorded.
 
 
 

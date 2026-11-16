@@ -1,0 +1,137 @@
+{
+  "metadata": {
+    "git_commit": "6694c26ef172cb577678609ddfc3b7806117a73d",
+    "timestamp": "2026-11-16 16:58:57",
+    "device": "cuda:0",
+    "n_inner_val_subjects": 25,
+    "folds": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "empirical_s_delta": 2.2432,
+  "continuous_power_threshold": 0.9267,
+  "confirmed_threshold": 1.5,
+  "all_inner_val_deltas": [
+    5.2384,
+    2.6345,
+    2.071,
+    -1.2397,
+    1.5757,
+    1.0003,
+    2.9318,
+    1.871,
+    4.7648,
+    3.3905,
+    5.0111,
+    -0.2535,
+    -1.2418,
+    6.6731,
+    6.451,
+    -0.408,
+    0.7687,
+    0.8805,
+    1.4289,
+    1.0015,
+    1.5658,
+    3.8358,
+    3.8569,
+    1.2117,
+    4.7842
+  ],
+  "folds": {
+    "1": {
+      "FT-2": {
+        "lr": 0.0001,
+        "epochs": 5,
+        "scope": "all",
+        "val_macro_f1": 0.7133
+      },
+      "PS-2": {
+        "lr": 0.001,
+        "steps": 300,
+        "val_macro_f1": 0.4376
+      },
+      "UA-2": {
+        "lr": 1e-05,
+        "steps": 20,
+        "val_macro_f1": 0.6927
+      }
+    },
+    "2": {
+      "FT-2": {
+        "lr": 3e-05,
+        "epochs": 15,
+        "scope": "all",
+        "val_macro_f1": 0.7025
+      },
+      "PS-2": {
+        "lr": 0.001,
+        "steps": 500,
+        "val_macro_f1": 0.522
+      },
+      "UA-2": {
+        "lr": 1e-05,
+        "steps": 20,
+        "val_macro_f1": 0.6746
+      }
+    },
+    "3": {
+      "FT-2": {
+        "lr": 3e-05,
+        "epochs": 15,
+        "scope": "all",
+        "val_macro_f1": 0.6587
+      },
+      "PS-2": {
+        "lr": 0.001,
+        "steps": 300,
+        "val_macro_f1": 0.4652
+      },
+      "UA-2": {
+        "lr": 1e-05,
+        "steps": 20,
+        "val_macro_f1": 0.6254
+      }
+    },
+    "4": {
+      "FT-2": {
+        "lr": 3e-05,
+        "epochs": 5,
+        "scope": "head_gru",
+        "val_macro_f1": 0.6841
+      },
+      "PS-2": {
+        "lr": 0.001,
+        "steps": 300,
+        "val_macro_f1": 0.4118
+      },
+      "UA-2": {
+        "lr": 1e-05,
+        "steps": 20,
+        "val_macro_f1": 0.6768
+      }
+    },
+    "5": {
+      "FT-2": {
+        "lr": 3e-05,
+        "epochs": 5,
+        "scope": "all",
+        "val_macro_f1": 0.616
+      },
+      "PS-2": {
+        "lr": 0.001,
+        "steps": 300,
+        "val_macro_f1": 0.3733
+      },
+      "UA-2": {
+        "lr": 1e-05,
+        "steps": 20,
+        "val_macro_f1": 0.5855
+      }
+    }
+  }
+}
