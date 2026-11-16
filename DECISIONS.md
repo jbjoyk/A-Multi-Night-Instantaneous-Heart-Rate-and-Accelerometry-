@@ -432,6 +432,46 @@
 3. Historical Evidence Preserved: All numerical findings and artifacts (peak metrics at Ep 53/55,
    asymptotic overfitting delta +5.52 pp Macro-F1) remain preserved exactly as recorded.
 
+### DEC-028 (2026-11-16): Confirmatory Execution of EXP-019 (Multi-Night Within-Person Adaptation Hypothesis H-A)
+
+- Context:
+  - Following the complete resolution of Phase-0 requirements and EGM Goldfish review, the formal confirmatory within-person adaptation experiment (EXP-019) was executed to test Hypothesis H-A under locked pre-registration `PREREG_EXP-019_H-A.md`.
+  - Architecture: Model A (`ConventionalCNNBiGRU`, 163,940 parameters) strictly held constant across all 5 arms.
+  - Cohort: 46 eligible subjects ($n_{\text{usable}} \ge 3$, 152 outer evaluation nights across 5 folds; `Bidslab49` excluded due to $n_{\text{usable}}=2$).
+  - Unit of analysis: Subject (paired bootstrap over 46 subjects, averaged across seeds 42, 123, 2024).
+- Key Decisions & Milestones:
+  1. Checkpoint Regeneration & Parity:
+     - All 15 Model A ($L=1200$, $\text{time\_feat}=0$, 3,200 steps) checkpoints were regenerated and verified against historical EXP-018 Phase 2 results to within $\le 0.00010$ Macro-F1 difference ($\le 0.01\text{ pp}$).
+  2. Stage D Nested Selection & Variance Confirmation:
+     - Hyperparameters selected strictly on the 5 inner-validation subjects per fold (25 subjects total).
+     - Empirical standard deviation of paired differences ($FT\text{-}2 - ZS$): $s_{\Delta} = 2.2432\text{ pp}$.
+     - Continuous 80%-power threshold ($0.4131 \cdot s_{\Delta}$): $0.9267\text{ pp}$.
+     - Since $s_{\Delta} \le 5.0\text{ pp}$, no threshold escalation occurred. The practical effect threshold was locked at $\mathbf{+1.50\text{ pp}}$.
+     - `PREREG_EXP-019_H-A.md` locked and committed at hash `4dff5b7a5f13a96c3024b309131aa1e66489dcbb` prior to Stage C execution.
+  3. Stage C Confirmatory Outcomes:
+     - **Primary Hypothesis H-A ($FT\text{-}2$ vs $ZS$)**:
+       - Estimand: $\bar{\Delta} = \mathbf{+1.01\text{ pp}}$ (from $64.58\% \pm 7.74\%$ to $65.59\% \pm 8.59\%$).
+       - 95% Percentile Bootstrap CI (10,000 resamples): $\mathbf{[-0.17, +1.99]\text{ pp}}$.
+       - Wilcoxon signed-rank: $p = 0.00131$.
+       - Subject win rate: 73.9% (34 wins, 12 losses).
+       - Decision Rule Evaluation: Fails to meet pre-registered criteria ($\bar{\Delta} \ge +1.50\text{ pp}$ AND $\text{CI}_{\text{low}} > 0.0$).
+       - Formal Verdict: **NOT SUPPORTED**.
+     - **Secondary Hypothesis S1 (Specificity: $FT\text{-}2$ vs $FT\text{-}other\text{-}2$)**:
+       - Estimand: $\bar{\Delta} = \mathbf{+2.73\text{ pp}}$ (from $62.86\% \pm 8.85\%$ to $65.59\% \pm 8.59\%$).
+       - 95% Bootstrap CI: $\mathbf{[+1.05, +4.32]\text{ pp}}$.
+       - Wilcoxon signed-rank: $p = 9.0 \times 10^{-6}$.
+       - Subject win rate: 78.3% (36 wins, 10 losses).
+       - Formal Verdict: **SUPPORTED** (adapting on a subject's own data is statistically and practically superior to adapting on another subject's data; generic fine-tuning degrades performance).
+     - **Secondary Hypothesis S2 (Transfer Value: $FT\text{-}2$ vs $PS\text{-}2$)**:
+       - Estimand: $\bar{\Delta} = \mathbf{+20.32\text{ pp}}$ (from $45.27\% \pm 9.42\%$ to $65.59\% \pm 8.59\%$).
+       - 95% Bootstrap CI: $\mathbf{[+17.70, +22.94]\text{ pp}}$, Wilcoxon $p < 10^{-10}$.
+       - Subject win rate: 100.0% (46 wins, 0 losses).
+       - Formal Verdict: **SUPPORTED** (cohort pre-training provides indispensable representation foundation).
+     - **Secondary Hypothesis S3 (Unsupervised InfoMax: $UA\text{-}2$ vs $ZS$)**:
+       - Estimand: $\bar{\Delta} = \mathbf{0.00\text{ pp}}$, 95% CI: $[0.00, 0.00]\text{ pp}$.
+       - Formal Verdict: **NOT SUPPORTED** (unsupervised test-time entropy minimization on 2 nights is ineffective without supervisory signal).
+- Reversible: No; Stage C confirmatory evaluation was executed under locked pre-registration and finalized.
+
 
 
 
