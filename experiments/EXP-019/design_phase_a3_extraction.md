@@ -3,14 +3,15 @@
 **Document ID:** `EXP019-DES-A3-001`  
 **Author:** Antigravity Research Engineering  
 **Date:** 2026-11-17  
-**Status:** RESOLVED / SCOPE-LOCKED (Approved with Strict Scope Reduction)  
+**Status:** RESOLVED / SCOPE-LOCKED (Amended per Reproducibility Review Findings)  
 **Target Script:** `experiments/EXP-019/extract_exp019_phase_a3_outputs.py`  
 **Governing Documents:**  
 - `RESEARCH_DIRECTION_v4_FULL.md` (Authoritative Direction)  
 - `PREREG_EXP-019_H-A.md` (Locked at commit `4dff5b7`)  
-- `DECISIONS.md` (`DEC-029`, `DEC-030`)  
+- `DECISIONS.md` (`DEC-029`, `DEC-030`, `DEC-031`)  
 - `experiments/EXP-019/ROADMAP_V4_FULL_AUDIT_REPORT.md` (Master Roadmap Audit)  
 - `experiments/EXP-019/A3_EXTRACTION_GOVERNANCE_REVIEW_REPORT.md` (Governance Review Authority)  
+- `experiments/EXP-019/A3_REPRODUCIBILITY_REVIEW_REPORT.md` (Reproducibility Review Authority)  
 
 ---
 
@@ -18,17 +19,23 @@
 
 The objective of Phase A3 is to complete the descriptive diagnostic write-down for EXP-019 as preregistered in `PREREG_EXP-019_H-A.md` (Section 2, line 27). 
 
-Per the authoritative governance review ([`A3_EXTRACTION_GOVERNANCE_REVIEW_REPORT.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/A3_EXTRACTION_GOVERNANCE_REVIEW_REPORT.md)), Phase A3 is strictly limited to:
+Per the authoritative reviews ([`A3_EXTRACTION_GOVERNANCE_REVIEW_REPORT.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/A3_EXTRACTION_GOVERNANCE_REVIEW_REPORT.md) and [`A3_REPRODUCIBILITY_REVIEW_REPORT.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/A3_REPRODUCIBILITY_REVIEW_REPORT.md)), Phase A3 is strictly limited to:
 **$k=2$ diagnostic recovery + locked-artifact re-analysis.**
 
 Specifically, this specification defines the exact, auditable procedure to:
 1. Formally record the $k \in \{1, 2, 3, 4\}$ calibration learning curve status, distinguishing the executed $k=2$ confirmatory anchor from the unexecuted/unrecoverable $k \in \{1, 3, 4\}$ conditions;
-2. Execute a deterministic recovery pass for the unpersisted intermediate predictions of the already-executed $k=2$ Stage C models (`ZS`, `FT-2`, `FT-other-2`, `PS-2`);
+2. Execute an exact bitwise recovery pass for `ZS` and a protocol-faithful re-execution pass for the unpersisted intermediate predictions of the executed $k=2$ Stage C adapted models (`FT-2`, `FT-other-2`, `PS-2`);
 3. Generate four-class confusion matrices and per-stage F1 scores (Wake, Light, Deep, REM) for the valid executed $k=2$ model arms;
-4. Extract clinical sleep-summary agreement statistics (TST, SOL, WASO, SE, REM%, Deep%) and Bland-Altman limits of agreement against ground-truth polysomnographic/EEG labels for the executed $k=2$ models;
+4. Extract clinical sleep-summary agreement statistics (TST, SOL, WASO, SE, REM%, Deep%) and Bland-Altman limits of agreement against ground-truth polysomnographic/EEG labels, using primary subject-averaged analysis ($n=46$) with symmetric artifact masking;
 5. Stratify performance across outer evaluation-night index for the executed $k=2$ models.
 
-**Strict Governance Invariant:** No new adaptation, fine-tuning, or model training passes for $k \in \{1, 3, 4\}$ are authorized. Phase A3 does not conduct new experimentation.
+### Reconstruction-Status Disclosure Framework
+Every generated table and narrative report must explicitly classify outputs according to their evidentiary basis:
+- **`ZS` (Zero-Shot):** **Bitwise Recovered from Locked Artifacts.** Derived directly from frozen backbone checkpoints (`experiments/EXP-018/checkpoints/`) evaluated in deterministic `model.eval()` mode. Verified bitwise identical ($\le 0.0001$) to historical metrics across all 46 subjects.
+- **`FT-2`, `FT-other-2`, `PS-2`:** **Protocol-Faithful Stochastic Re-Execution.** Because intermediate adapted checkpoints, epoch predictions, and unseeded CUDA dropout states were not persisted in the historical run, re-execution produces minor stochastic variation ($\Delta \le \pm 0.012$ Macro-F1). Outputs represent a faithful execution of the frozen Stage C protocol, validated against historical distributions, not an exact numerical reproduction of discarded arrays.
+- **$k \in \{1, 3, 4\}$:** **`UNEXECUTED_IN_EXP019 / UNRECOVERABLE FROM LOCKED ARTIFACTS — REQUIRES NEW PROTOCOL`**. Never executed historically; prohibited from execution in Phase A.
+- **`UA-2`:** **Excluded / Invalidated.** Reclassified as an implementation no-op (`DEC-030`); scientifically uninformative.
+- **Locked Numerical Artifacts:** `exp019_stage_c_results.json`, `exp019_subject_metrics.csv`, `exp019_summary.csv`, and `PREREG_EXP-019_H-A.md` remain strictly immutable.
 
 ---
 
@@ -36,17 +43,23 @@ Specifically, this specification defines the exact, auditable procedure to:
 
 ### In-Scope
 - **Re-Analysis of Preserved Metrics:** Computing secondary statistics, bootstrap confidence intervals, and Wilcoxon signed-rank tests directly from locked CSV tables (`exp019_subject_metrics.csv`, `exp019_summary.csv`).
-- **Deterministic Reconstruction Pass ($k=2$ ONLY):** Re-running the exact frozen Stage C evaluation code (`run_exp019_stage_c.py`) with fixed seeds (`[42, 123, 2024]`) to recover discarded intermediate epoch predictions and whole-night hypnograms for `ZS`, `FT-2`, `FT-other-2`, and `PS-2` on evaluation nights $E$ ($N=152$).
-- **$k=2$ Diagnostic Outputs:** Generating $4 \times 4$ confusion matrices, stage-specific metrics with Benjamini-Hochberg False Discovery Rate (FDR at $q=0.05$) correction, Bland-Altman sleep-summary agreement statistics via [`ClinicalHypnogramEvaluator`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/evaluator.py), and night-index breakdown.
-- **Formal Status Documentation for $k \in \{1, 3, 4\}$:** Documenting the theoretical cohort census for $k \in \{1, 3, 4\}$ while formally marking performance metrics as `UNEXECUTED_IN_EXP019`.
+- **Deterministic Reconstruction & Re-Execution Pass ($k=2$ ONLY):**
+  - Bitwise recovery of `ZS` intermediate epoch predictions.
+  - Protocol-faithful re-execution of `FT-2`, `FT-other-2`, and `PS-2` on evaluation nights $E_2$ ($N=152$) using locked Stage C configs (`exp019_stage_d_selected_configs.json`) and fixed seeds (`[42, 123, 2024]`).
+- **$k=2$ Diagnostic Outputs:**
+  - $4 \times 4$ confusion matrices and per-stage F1 metrics with Benjamini-Hochberg False Discovery Rate (FDR at $q=0.05$) correction.
+  - Symmetrically masked clinical sleep-summary agreement statistics via [`ClinicalHypnogramEvaluator`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/evaluator.py).
+  - Primary subject-averaged Bland-Altman agreement analysis ($n=46$ independent clusters), with secondary pooled night-level analysis ($N=152$) labeled as unadjusted for clustering.
+  - Night-index breakdown across outer evaluation nights (indices 3–7).
+- **Formal Status Documentation for $k \in \{1, 3, 4\}$:** Documenting theoretical cohort censuses while formally marking performance metrics as `UNEXECUTED_IN_EXP019`.
 - **Materialization of Artifacts:** Exporting 5 structured CSV/JSON artifacts and generating the final synthesis report [`PHASE_A3_DIAGNOSTIC_REPORT.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/PHASE_A3_DIAGNOSTIC_REPORT.md).
 
 ### Out-of-Scope (Strictly Prohibited)
-- **NO new adaptation or fine-tuning runs for $k \in \{1, 3, 4\}$.** Running fine-tuning on $k \ne 2$ constitutes 414 new training jobs and violates the anti-premature training gate of `RESEARCH_DIRECTION_v4_FULL.md`.
-- **NO hyperparameter transfer or tuning for $k \ne 2$.** Stage D evaluated hyperparameters strictly for $k=2$; transferring them to $k \in \{1, 3, 4\}$ is un-preregistered training.
+- **NO new adaptation or fine-tuning runs for $k \in \{1, 3, 4\}$.** Running fine-tuning on $k \ne 2$ violates the anti-premature training gate of `RESEARCH_DIRECTION_v4_FULL.md`.
+- **NO hyperparameter transfer or tuning for $k \ne 2$.**
 - **NO alteration of locked confirmatory numerical artifacts** (`exp019_stage_c_results.json`, `exp019_subject_metrics.csv`, `exp019_summary.csv`).
 - **NO modification of the locked preregistration** (`PREREG_EXP-019_H-A.md`) or its decision rules.
-- **NO execution or reporting of `UA-2`** as valid adaptation evidence (locked as an invalidated implementation no-op per `DEC-030`).
+- **NO execution or reporting of `UA-2`** as valid adaptation evidence.
 - **NO post-hoc subject exclusion, threshold escalation, or subgroup pruning.**
 
 ---
@@ -88,7 +101,7 @@ The four calibration depths are officially classified per the governance review:
 | Calibration Depth $k$ | Usable Nights Required ($N \ge k+1$) | Eligible Subjects ($n$) | Total Evaluation Nights ($|E_k|$) | Official Governance Classification |
 | :---: | :---: | :---: | :---: | :--- |
 | **$k = 1$** | $N \ge 2$ | 46 | 198 | **UNEXECUTED_IN_EXP019 / UNRECOVERABLE FROM LOCKED ARTIFACTS — REQUIRES NEW PROTOCOL** |
-| **$k = 2$** | $N \ge 3$ | 46 | 152 | **EXECUTED IN EXP-019 (Confirmatory Stage C Benchmark; Deterministic Recovery Allowed)** |
+| **$k = 2$** | $N \ge 3$ | 46 | 152 | **EXECUTED IN EXP-019 (Confirmatory Stage C Benchmark; Recovery & Protocol Re-Execution Allowed)** |
 | **$k = 3$** | $N \ge 4$ | 42 | 106 | **UNEXECUTED_IN_EXP019 / UNRECOVERABLE FROM LOCKED ARTIFACTS — REQUIRES NEW PROTOCOL** |
 | **$k = 4$** | $N \ge 5$ | 33 | 64 | **UNEXECUTED_IN_EXP019 / UNRECOVERABLE FROM LOCKED ARTIFACTS — REQUIRES NEW PROTOCOL** |
 
@@ -108,28 +121,30 @@ flowchart TD
     subgraph S2 ["Stage 2: Deterministic Reconstruction Pass (k=2 ONLY)"]
         D[Iterate 5 Outer Folds] --> E[Load Locked Fold Config from Stage D]
         E --> F[Load Locked EXP-018 Backbone Checkpoints]
-        F --> G[Reconstruct Predictions for ZS, FT-2, FT-other-2, PS-2]
-        G --> H["Regression Gate: Verify Macro-F1 Match <= 0.0001"]
+        F --> G1[Bitwise Recover ZS Predictions]
+        F --> G2[Protocol-Faithful Re-Execute FT-2, FT-other-2, PS-2]
+        G1 --> H1["Tier 1 Gate: Verify ZS Match <= 0.0001 across all 46 subjects"]
+        G2 --> H2["Tier 2 Gate: Verify FT-2 Distributional Consistency (+-0.0050 pp, r >= 0.98)"]
     end
 
     subgraph S3 ["Stage 3: Diagnostic Metrics Computation"]
         I[Confusion Matrices & Per-Stage F1]
-        J[Clinical Sleep-Summary Agreement via ClinicalHypnogramEvaluator]
-        K[Bland-Altman Bias & 95% Limits of Agreement]
+        J[Symmetric Artifact Masking on Hypnograms]
+        J --> K1[Primary Subject-Averaged Bland-Altman: n=46]
+        J --> K2[Secondary Pooled Night-Level Bland-Altman: N=152 Unadjusted]
         L[Night-Index Stratified Aggregation]
         M[Populate k=1,3,4 Census Fields with UNEXECUTED Flags]
     end
 
     subgraph S4 ["Stage 4: Artifact Materialization & Report Generation"]
         N[Save CSV and JSON Diagnostic Tables]
-        O[Generate PHASE_A3_DIAGNOSTIC_REPORT.md]
+        O[Generate PHASE_A3_DIAGNOSTIC_REPORT.md with Disclosure Matrix]
     end
 
     S1 --> S2 --> S3 --> S4
 ```
 
 ### Deterministic Reconstruction Protocol ($k=2$ ONLY)
-To reproduce the intermediate predictions without altering results:
 - Seeds: `seeds = [42, 123, 2024]`
 - Outer folds: `folds = [1, 2, 3, 4, 5]`
 - For each subject and seed, backbone weights are loaded into a fresh `ConventionalCNNBiGRU` instance via `reset_model_weights(base_model, backbone_state)`.
@@ -137,15 +152,21 @@ To reproduce the intermediate predictions without altering results:
 - **Allowed Models:** `ZS`, `FT-2`, `FT-other-2`, and `PS-2`.
 - **Invalidated Arm:** `UA-2` is excluded from adaptation claims and marked as an invalidated implementation no-op.
 
-### Deterministic-Reconstruction Governance Gate
-Before accepting reconstructed $k=2$ predictions:
-1. Recompute subject-level Macro-F1 for all 46 subjects across all valid arms from the reconstructed predictions.
-2. Require exact agreement with the preserved `exp019_subject_metrics.csv` within absolute tolerance $\le 0.0001$.
-3. **Strict Stop Condition:** If the reconstruction cannot reproduce the locked result within tolerance:
+### Two-Tiered Reconstruction Governance Gate
+Before accepting reconstructed outputs:
+1. **Tier 1 (Zero-Shot Bitwise Invariant):**
+   - Recompute subject-level Macro-F1 for all 46 subjects for `ZS`.
+   - Must match `exp019_subject_metrics.csv` within absolute tolerance $\le 0.0001$ for every subject.
+2. **Tier 2 (Adapted Arms Distributional Invariant):**
+   - Recomputed cohort mean Macro-F1 for `FT-2` must fall within $\pm 0.0050\text{ pp}$ of historical $0.6559$ ($[0.6509, 0.6609]$).
+   - Recomputed primary paired delta ($\bar{\Delta}$) must fall within $\pm 0.0050\text{ pp}$ of historical $+1.01\text{ pp}$ ($[+0.96\text{ pp}, +1.06\text{ pp}]$).
+   - The qualitative confirmatory conclusion must remain preserved: $H_A$ evaluates to **INCONCLUSIVE** under the preregistered decision rule.
+   - Subject-level correlation between re-executed and locked Macro-F1 must satisfy $r \ge 0.98$.
+3. **Strict Stop Condition:** If either Tier 1 or Tier 2 fails:
    - **STOP IMMEDIATELY;**
    - **DO NOT** tune code, seeds, thresholds, preprocessing, or hyperparameters to force agreement;
    - Report the reconstruction as failed;
-   - **DO NOT** silently modify the locked result.
+   - **DO NOT** silently modify locked results.
 
 ---
 
@@ -198,13 +219,21 @@ For each stage $c$, compute the subject-level paired delta $\Delta \text{F1}_c =
 
 ---
 
-## 9. Clinical Sleep-Summary Agreement Methodology ($k=2$)
+## 9. Clinical Sleep-Summary Agreement and Bland-Altman Methodology ($k=2$)
 
-### 9.1 Evaluator Integration
+### 9.1 Evaluator Integration and Symmetric Artifact Masking
 Clinical sleep-summary metrics must be computed using [`ClinicalHypnogramEvaluator`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/evaluator.py) on full-night continuous hypnograms ($30\text{-second}$ epochs, $0.5\text{ min/epoch}$).
 
+**Critical Preprocessing Requirement (Symmetric Masking):**  
+In dataset records, movement artifacts and unscored epochs are marked as invalid (`y_true < 0` or `y_true >= 4`, commonly `-100`). In contrast, sliding-window model predictions emit stages in $\{0, 1, 2, 3\}$ for all epochs. To prevent artifact positions from being scored as sleep in model predictions (which severely biases Total Sleep Time and Sleep Efficiency), **the predicted hypnogram must be symmetrically masked to `-100` wherever the reference label is invalid** before invoking `ClinicalHypnogramEvaluator`:
+```python
+valid_mask = (y_true >= 0) & (y_true < 4)
+y_pred_masked = np.where(valid_mask, y_pred, -100)
+```
+Only `y_pred_masked` and `y_true` are passed to `ClinicalHypnogramEvaluator`. Neither locked labels nor cached dataset files are modified.
+
 ### 9.2 Extracted Sleep Summaries
-For each of the $N=152$ evaluation nights, compare model-predicted hypnogram $y_{\text{pred}}$ against reference EEG hypnogram $y_{\text{true}}$:
+For each evaluation night, evaluate the continuous hypnograms:
 1. **Total Sleep Time (TST, min):** Duration of Light + Deep + REM.
 2. **Sleep Onset Latency (SOL, min):** Time to first 3 consecutive sleep epochs ($1.5\text{ min}$). Defaults to TIB if no sleep onset occurs.
 3. **Wake After Sleep Onset (WASO, min):** Wake duration between sleep onset and final sleep epoch.
@@ -212,15 +241,20 @@ For each of the $N=152$ evaluation nights, compare model-predicted hypnogram $y_
 5. **Deep Sleep % (Deep%, %):** $\frac{\text{Deep Duration}}{\text{TST}} \times 100\%$.
 6. **REM Sleep % (REM%, %):** $\frac{\text{REM Duration}}{\text{TST}} \times 100\%$.
 
-### 9.3 Bland-Altman Agreement Statistics
-For each metric $m$ across the $N=152$ evaluation nights:
-- Error per night: $d_{i,m} = m^{\text{pred}}_i - m^{\text{ref}}_i$
-- Mean Bias ($\bar{d}_m$): $\frac{1}{N} \sum_{i=1}^N d_{i,m}$
-- Standard Deviation of differences ($s_{d,m}$): $\sqrt{\frac{1}{N-1} \sum_{i=1}^N (d_{i,m} - \bar{d}_m)^2}$
-- 95% Limits of Agreement (LoA): $[\bar{d}_m - 1.96 s_{d,m}, \; \bar{d}_m + 1.96 s_{d,m}]$
-- Mean Absolute Error (MAE): $\frac{1}{N} \sum_{i=1}^N |d_{i,m}|$
-- Root Mean Squared Error (RMSE): $\sqrt{\frac{1}{N} \sum_{i=1}^N d_{i,m}^2}$
-- Pearson Correlation Coefficient: $r(m^{\text{pred}}, m^{\text{ref}})$
+### 9.3 Bland-Altman Agreement Methodology (Clustering Correction)
+Because the $N=152$ evaluation nights are repeated measurements nested within $46$ subjects ($1$ to $5$ nights/subject), naive pooling violates observation independence.
+
+1. **Primary Reporting: Subject-Averaged Bland-Altman Analysis ($n=46$ Independent Clusters):**
+   For each subject $s \in \{1, \dots, 46\}$ and metric $m$:
+   $$\bar{m}^{\text{ref}}_s = \frac{1}{|E_s|} \sum_{i \in E_s} m^{\text{ref}}_{s,i}, \quad \bar{m}^{\text{pred}}_s = \frac{1}{|E_s|} \sum_{i \in E_s} m^{\text{pred}}_{s,i}$$
+   $$d_{s,m} = \bar{m}^{\text{pred}}_s - \bar{m}^{\text{ref}}_s$$
+   - Mean Bias ($\bar{d}_m$): $\frac{1}{46} \sum_{s=1}^{46} d_{s,m}$
+   - Standard Deviation of differences ($s_{d,m}$): $\sqrt{\frac{1}{45} \sum_{s=1}^{46} (d_{s,m} - \bar{d}_m)^2}$
+   - 95% Limits of Agreement (LoA): $[\bar{d}_m - 1.96 s_{d,m}, \; \bar{d}_m + 1.96 s_{d,m}]$
+   - Mean Absolute Error (MAE), RMSE, and Pearson correlation $r(\bar{m}^{\text{pred}}, \bar{m}^{\text{ref}})$.
+2. **Secondary Sensitivity Reporting: Night-Level Pooled Analysis ($N=152$ Nights):**
+   Pooled calculations over all 152 nights are reported for literature comparability, but **must be explicitly labeled**:
+   `"Pooled night-level analysis (N=152 nights, unadjusted for within-subject clustering)"`.
 
 **Mandatory Terminology:** Report strictly as "sleep-summary agreement" (surrogate tracking performance), never claiming clinical validity or diagnostic equivalence.
 
@@ -229,7 +263,7 @@ For each metric $m$ across the $N=152$ evaluation nights:
 ## 10. Night-Index Evaluation Methodology ($k=2$)
 
 ### 10.1 Stratification Scheme
-Evaluation nights for the 46 subjects under $k=2$ are stratified by chronological night index $j \in \{3, 4, 5, 6, 7\}$ (nights 1 and 2 are calibration).
+Evaluation nights for the 46 subjects under $k=2$ are stratified by chronological night index $j \in \{3, 4, 5, 6, 7\}$ (nights 1 and 2 are calibration). Within any single night index $j$, each subject contributes at most one night.
 
 ### 10.2 Metrics Reported per Night Index
 - Number of participating subjects $n_j$ and evaluation nights $|E_{2,j}|$.
@@ -259,7 +293,7 @@ Evaluation nights for the 46 subjects under $k=2$ are stratified by chronologica
 
 ## 13. Missing-Data and Edge-Case Handling
 
-1. **Epoch Artifacts:** Epochs with invalid labels (`target < 0` or `target >= 4`) are excluded from stage classification and hypnogram parsing.
+1. **Epoch Artifacts:** Epochs with invalid labels (`target < 0` or `target >= 4`) are excluded from stage classification and symmetrically masked in hypnograms.
 2. **Zero-Sleep Nights:** Handled via deterministic rules in `ClinicalHypnogramEvaluator`: $\text{TST}=0$, $\text{SE}=0$, $\text{SOL}=\text{TIB}$, $\text{WASO}=0$, $\text{Deep}\%=0$, $\text{REM}\%=0$.
 3. **Subject Attrition Across Night Index:** Natural attrition ($n=46 \to 42 \to 33 \to 23 \to 8$) is reported with exact counts; no imputation.
 
@@ -281,7 +315,18 @@ k,n_subjects,n_eval_nights,zs_macro_f1_mean,ft_macro_f1_mean,delta_mean,ci_low,c
 ### 14.2 `exp019_confusion_matrices.json`
 ```json
 {
-  "metadata": {"n_subjects": 46, "n_eval_nights": 152, "classes": ["Wake", "Light", "Deep", "REM"], "calibration_nights": 2},
+  "metadata": {
+    "n_subjects": 46,
+    "n_eval_nights": 152,
+    "classes": ["Wake", "Light", "Deep", "REM"],
+    "calibration_nights": 2,
+    "reconstruction_status": {
+      "ZS": "bitwise_recovered",
+      "FT-2": "protocol_faithful_reexecution",
+      "FT-other-2": "protocol_faithful_reexecution",
+      "PS-2": "protocol_faithful_reexecution"
+    }
+  },
   "arms": {
     "ZS": {"raw": [[...]], "row_normalized": [[...]], "col_normalized": [[...]]},
     "FT-2": {"raw": [[...]], "row_normalized": [[...]], "col_normalized": [[...]]},
@@ -293,7 +338,7 @@ k,n_subjects,n_eval_nights,zs_macro_f1_mean,ft_macro_f1_mean,delta_mean,ci_low,c
 
 ### 14.3 `exp019_per_stage_metrics.csv`
 ```csv
-arm,stage,precision,recall,specificity,f1,delta_vs_zs,ci_low,ci_high,wilcoxon_p,q_fdr
+arm,stage,precision,recall,specificity,f1,delta_vs_zs,ci_low,ci_high,wilcoxon_p,q_fdr,status
 ZS,Wake,...
 ZS,Light,...
 ZS,Deep,...
@@ -304,14 +349,16 @@ FT-2,Wake,...
 
 ### 14.4 `exp019_sleep_summary_agreement.csv`
 ```csv
-arm,metric,ref_mean,pred_mean,bias,sd_diff,loa_low,loa_high,mae,rmse,pearson_r
-ZS,tst_min,...
-ZS,sol_min,...
-ZS,waso_min,...
-ZS,sleep_efficiency_pct,...
-ZS,deep_pct_tst,...
-ZS,rem_pct_tst,...
-FT-2,tst_min,...
+arm,metric,aggregation_level,ref_mean,pred_mean,bias,sd_diff,loa_low,loa_high,mae,rmse,pearson_r,status
+ZS,tst_min,subject_averaged_n46,...
+ZS,sol_min,subject_averaged_n46,...
+ZS,waso_min,subject_averaged_n46,...
+ZS,sleep_efficiency_pct,subject_averaged_n46,...
+ZS,deep_pct_tst,subject_averaged_n46,...
+ZS,rem_pct_tst,subject_averaged_n46,...
+ZS,tst_min,night_level_pooled_n152_unadjusted,...
+...
+FT-2,tst_min,subject_averaged_n46,...
 ...
 ```
 
@@ -326,17 +373,22 @@ night_index,n_subjects,n_nights,zs_macro_f1_mean,ft2_macro_f1_mean,delta_mean,wi
 ```
 
 ### 14.6 `PHASE_A3_DIAGNOSTIC_REPORT.md`
-A comprehensive narrative synthesis documenting all tables, interpretation of stage-specific trade-offs, clinical agreement observations, and the final Phase A closure statement.
+A comprehensive narrative synthesis documenting all tables, interpretation of stage-specific trade-offs, clinical agreement observations, the Reconstruction-Status Disclosure Framework, and the final Phase A closure statement.
 
 ---
 
-## 15. Integrity Verification and Regression Gates
+## 15. Integrity Verification and Two-Tiered Regression Gates
 
 Before persisting any Phase A3 output, the extraction script must automatically execute regression checks:
-1. **$k=2$ Confirmatory Match:** The recomputed Macro-F1 values for all 46 subjects across arms `ZS`, `FT-2`, `FT-other-2`, and `PS-2` must match `exp019_subject_metrics.csv` within absolute tolerance $\le 0.0001$.
-2. **Primary Verdict Invariance:** The primary estimand $\bar{\Delta} = +1.01\text{ pp}$ and bootstrap CI $[-0.17, +1.99]\text{ pp}$ must be verified identical to `exp019_stage_c_results.json`.
+
+1. **Tier 1 (Zero-Shot Bitwise Match):** The recomputed Macro-F1 values for all 46 subjects for arm `ZS` must match `exp019_subject_metrics.csv` within absolute tolerance $\le 0.0001$.
+2. **Tier 2 (Adapted Arms Distributional Consistency):**
+   - Cohort mean Macro-F1 for `FT-2` must fall within $\pm 0.0050\text{ pp}$ of historical $0.6559$ ($[0.6509, 0.6609]$).
+   - Recomputed primary paired delta ($\bar{\Delta}$) must fall within $\pm 0.0050\text{ pp}$ of historical $+1.01\text{ pp}$ ($[+0.96\text{ pp}, +1.06\text{ pp}]$).
+   - The qualitative confirmatory conclusion must remain preserved: $H_A$ evaluates to **INCONCLUSIVE** under the preregistered decision rule.
+   - Subject-level correlation between re-executed and locked Macro-F1 must be $r \ge 0.98$.
 3. **Locked File Immutability:** SHA256 hashes of `exp019_stage_c_results.json`, `exp019_subject_metrics.csv`, `exp019_summary.csv`, and `PREREG_EXP-019_H-A.md` must be checked before and after script execution to ensure zero corruption.
-4. **Mandatory Halt on Failure:** If the reconstructed outputs deviate from locked metrics by $> 0.0001$, the script must immediately halt, output an error log, and exit with non-zero code without writing outputs.
+4. **Mandatory Halt on Failure:** If Tier 1 fails or Tier 2 deviates beyond the distributional bounds, the script must immediately halt, output an error log, and exit with non-zero code without writing outputs.
 
 ---
 
@@ -353,11 +405,11 @@ Before persisting any Phase A3 output, the extraction script must automatically 
 
 Phase A3 extraction is considered accepted and ready for Phase A closure if and only if:
 1. `exp019_k_learning_curve.csv` is populated with $k=2$ verified performance metrics and $k \in \{1, 3, 4\}$ explicitly marked as `UNEXECUTED_IN_EXP019`.
-2. `exp019_confusion_matrices.json` contains valid raw and normalized matrices for `ZS`, `FT-2`, `FT-other-2`, and `PS-2`.
+2. `exp019_confusion_matrices.json` contains valid raw and normalized matrices for `ZS`, `FT-2`, `FT-other-2`, and `PS-2` with metadata disclosure tags.
 3. `exp019_per_stage_metrics.csv` details precision, recall, specificity, and F1 per stage with FDR correction for $k=2$.
-4. `exp019_sleep_summary_agreement.csv` contains complete Bland-Altman statistics for all 6 clinical sleep summaries for $k=2$.
+4. `exp019_sleep_summary_agreement.csv` contains complete Bland-Altman statistics, reporting primary subject-averaged metrics ($n=46$) with symmetric artifact masking.
 5. `exp019_night_index_breakdown.csv` characterizes performance across night indices 3 through 7 for $k=2$.
-6. The regression check confirms exact numerical consistency with locked Stage C results within $\le 0.0001$.
+6. The two-tiered regression check confirms exact numerical consistency ($\le 0.0001$) for `ZS`, and protocol/distributional consistency for `FT-2` (mean within $\pm 0.0050\text{ pp}$, delta within $\pm 0.0050\text{ pp}$, $r \ge 0.98$).
 7. `PHASE_A3_DIAGNOSTIC_REPORT.md` is generated and committed to the repository.
 
 ---
