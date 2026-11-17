@@ -66,10 +66,10 @@ Observed EXP-019 result:
 - $\bar{\Delta} = \mathbf{0.00\text{ pp}}$ [95% CI: $\mathbf{0.00, 0.00\text{ pp}}$] identically across all 46 subjects to the last decimal place.
 
 ### Audit Findings:
-1. **Status Alignment:** `RESEARCH_STATE.md`, `HANDOFF.md`, `DECISIONS.md` (DEC-029), and `EXPERIMENTS.md` correctly classify S3 as **`UNRESOLVED`**, noting that the identical zero delta indicates an implementation fault or no-op (e.g. inference not loading adapted weights, or zero gradients).
-2. **Non-Evidence Rule:** All primary working documents explicitly state that S3 must NOT be cited as evidence against unsupervised adaptation until the Phase A2 audit is complete.
-3. **Residual Gaps:**
-   - In `research_knowledge/papers/P007_lorenzen2023_wearable_eeg_personalization.md` (lines 40 and 44), notes added during seed ingestion claim that EXP-019 S3 *"confirmed failure of unsupervised adaptation"* and *"aligns with a broader pattern... where unsupervised alignment fails."* This contradicts v4 governance and prematurely treats a suspected no-op as scientific evidence.
+1. **Status Alignment:** `RESEARCH_STATE.md`, `HANDOFF.md`, `DECISIONS.md` (DEC-029/DEC-030), and `EXPERIMENTS.md` classify S3 as **`UNRESOLVED / INVALIDATED (Implementation No-Op)`**.
+2. **Phase A2 Forensic Invalidation (DEC-030):** The forensic audit (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`) confirmed that `compute_wearable_quality_mask` checked raw BPM limits `30 <= IHR <= 180` on standardized z-score IHR. 0/82,762 epochs passed, causing an immediate step-0 break before loss, backward, or optimizer updates occurred (0/163,940 parameters changed). S3 is scientifically uninformative.
+3. **Non-Evidence Rule:** All primary working documents explicitly state that S3 must NOT be cited as evidence against unsupervised adaptation (nor that it works).
+4. **Residual Gaps Resolved:** All seed notes and draft files have been synchronized under DEC-030 to reflect the implementation no-op and remove premature negative conclusions.
 
 ---
 

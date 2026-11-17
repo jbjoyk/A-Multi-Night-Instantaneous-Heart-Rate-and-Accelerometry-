@@ -469,7 +469,7 @@
        - Formal Verdict: **SUPPORTED** (cohort pre-training provides indispensable representation foundation).
      - **Secondary Hypothesis S3 (Unsupervised InfoMax: $UA\text{-}2$ vs $ZS$)**:
        - Estimand: $\bar{\Delta} = \mathbf{0.00\text{ pp}}$, 95% CI: $[0.00, 0.00]\text{ pp}$.
-       - Formal Verdict: **NOT SUPPORTED** *(Reclassified to UNRESOLVED in DEC-029 pending no-op audit)* (unsupervised test-time entropy minimization on 2 nights is ineffective without supervisory signal).
+       - Formal Verdict: **NOT SUPPORTED** *(Reclassified to UNRESOLVED / INVALIDATED in DEC-029/DEC-030 per Phase A2 audit: implementation no-op via quality-mask unit mismatch; the original parenthetical claim that unsupervised entropy minimization is ineffective without supervisory signal is invalidated and scientifically uninformative)*.
 - Reversible: No; Stage C confirmatory evaluation was executed under locked pre-registration and finalized.
 
 
@@ -499,8 +499,9 @@
      - Because the observed 95% CI upper bound is $+1.99\text{ pp}$ (which is NOT $< +1.50\text{ pp}$), the exact preregistered rule evaluates to **INCONCLUSIVE**, whereas early reports labeled it "NOT SUPPORTED".
      - This governance discrepancy is resolved via formal documentation. The accurate scientific statement is: "Supervised two-night adaptation did not meet the pre-registered threshold (mean +1.01 pp, 95% CI -0.17 to +1.99; 34/46 improved), and the result is inconclusive for effects up to about 2 pp."
   4. **Reclassification of Secondary Hypothesis S3**:
-     - S3 ($UA\text{-}2$ vs $ZS = 0.00\text{ pp}$ identically across all 46 subjects) is reclassified as **UNRESOLVED** pending an implementation audit (Phase A2) checking whether $UA\text{-}2$ executed as an unintended no-op.
-     - Must not be interpreted as evidence against unsupervised adaptation until verified.
+     - S3 ($UA\text{-}2$ vs $ZS = 0.00\text{ pp}$ identically across all 46 subjects) is reclassified as **UNRESOLVED / INVALIDATED** per the completed Phase A2 forensic audit (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030).
+     - The audit proved that `compute_wearable_quality_mask` used raw BPM limits (`30 <= IHR <= 180`) on standardized z-score IHR. Zero out of 82,762 epochs passed the mask, terminating adaptation on step 0 (0 updates, 0/163,940 parameters changed, identical evaluation logits/predictions).
+     - S3 is scientifically uninformative and must not be cited as evidence that unsupervised adaptation fails (nor that it works).
   5. **Interpretation Nuance for S1**:
      - S1 ($FT\text{-}2$ vs $FT\text{-}other\text{-}2 = +2.73\text{ pp}$, Supported) is clarified: $FT\text{-}other\text{-}2$ active degradation ($-1.72\text{ pp}$ below $ZS$) accounts for the majority of the gap. Personalization is biologically specific, but cross-subject fine-tuning is harmful.
   6. **Retirement of SLAMSS-IFS Parity Framing & EXP-012 Test Set**:
@@ -510,3 +511,24 @@
      - Phased roadmap ratified: Phase A (Close EXP-019), Phase B (Evidence Base), Phase C (Data Search), Phase D (Experiments), Phase E (Synthesis).
      - Explicit Rule: Do NOT interpret v4 as permission to immediately run EXP-020. EXP-020 is gated behind Phase A, B, C and explicit preregistration.
 - Reversible: No; ratified working research direction.
+
+
+
+
+### DEC-030 (2026-11-17): Phase A2 S3 Forensic Diagnosis Ratification & Invalidation of Unsupervised Adaptation Negative Claim
+
+- Date: 2026-11-17
+- Authoritative Audit: `experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`
+- Context: Secondary Hypothesis S3 in EXP-019 yielded $\bar{\Delta} = 0.00\text{ pp}$, 95% CI $[0.00, 0.00]\text{ pp}$, across all 46 subjects. Early reporting claimed this proved "unsupervised test-time entropy minimization on 2 nights is ineffective without supervisory signal."
+- Findings of Phase A2 Diagnostic Audit:
+  1. `compute_wearable_quality_mask()` in `exp019_adaptation_core.py` checked physiological limits `30 <= IHR <= 180` expecting raw BPM, whereas the ingested cached dataset provided z-score standardized IHR ($[-3.95, +9.94]$).
+  2. Exactly 0 out of 82,762 calibration epochs across all 94 calibration nights for all 47 subjects passed the mask.
+  3. Inside `adapt_unsupervised_infomax()`, the check `if valid_probs.shape[0] == 0: break` caused an immediate exit on step 0 for every subject, every fold, and every random seed.
+  4. Optimization metrics verified: 0 optimizer steps, 0 backward passes, 0/163,940 parameters updated (displacement $\equiv 0.00000000$), 0 prediction differences on evaluation nights.
+  5. The returned `UA-2` model was bitwise identical to the unadapted zero-shot base model `ZS`.
+- Ratified Governance Decisions:
+  1. **Final Classification of S3:** **`UNRESOLVED / INVALIDATED (Implementation No-Op)`**.
+  2. **Scientific Interpretation:** S3 is scientifically uninformative. It provides zero empirical evidence regarding the viability or failure of unsupervised InfoMax adaptation, test-time adaptation, or entropy minimization for wearable sleep staging. Claims asserting that unsupervised adaptation "failed" or "requires supervision" are retracted.
+  3. **Immutability of Numerical Artifacts:** The historical experimental record ($0.00\text{ pp}$) remains locked in `exp019_stage_c_results.json` and `PREREG_EXP-019_H-A.md`. No historical numerical file is modified.
+  4. **Codebase Remediation Deferred:** Code changes to `exp019_adaptation_core.py` and rerunning of unsupervised adaptation are explicitly deferred to future dedicated protocols under Phase D.
+- Reversible: No; ratified forensic finding.

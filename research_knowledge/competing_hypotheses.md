@@ -31,7 +31,7 @@
 - **Status:** `Proposed explanation` (Literature-grounded, **not yet tested** in EXP-019)
 - **Literature Precedent:** [Phan et al. (2020)](https://lirias.kuleuven.be/retrieve/616969) explicitly found that subject-specific normalization caused poor personalization in subjects with large signal magnitude differences across nights, requiring **night-specific normalization**.
 
-### H-MECH-06: Unsupervised Adaptation Failure under Label Imbalance / Small Batch
-- **Status:** `Observed phenomenon` (`LOCKED` in EXP-019 S3; `Unresolved: implementation check pending`)
-- **Empirical Evidence:** `UA-2` (InfoMax) yielded $+0.00\text{ pp}$ (`CI [0.00, 0.00]`, all 46 subjects tied with `ZS`) in EXP-019, which resembles a no-op rather than label-shift degradation; verification of whether `UA-2` parameters or logits actually changed is pending.
-- **Contradictory / Nuanced Literature:** [Lorenzen et al. (2024)](https://pubmed.ncbi.nlm.nih.gov/38833404/) (`P007`) reported no beneficial personalization from unsupervised ADA and statistics alignment in wearable EEG (full-text re-extraction pending), whereas [Heremans et al. (2022)](https://pubmed.ncbi.nlm.nih.gov/35877770/) (`P054`) reported ~1–2% unsupervised adversarial personalization gains.
+### H-MECH-06: Unsupervised Adaptation Sensitivity under Small Calibration Batches
+- **Status:** `Invalidated Empirical Link (Implementation No-Op in EXP-019)`
+- **Forensic Status:** Phase A2 diagnostic audit (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030) confirmed that `UA-2` yielded $+0.00\text{ pp}$ because of an implementation no-op (physiological unit mismatch in `compute_wearable_quality_mask` where standardized z-score IHR failed raw BPM bounds, causing 0 valid epochs, step-0 abortion, and 0 parameter updates). S3 is scientifically uninformative and does not provide empirical evidence for H-MECH-06.
+- **Literature Context:** In external literature, [Lorenzen et al. (2024)](https://pubmed.ncbi.nlm.nih.gov/38833404/) (`P007`) reported no beneficial personalization from unsupervised ADA and statistics alignment in wearable EEG, whereas [Heremans et al. (2022)](https://pubmed.ncbi.nlm.nih.gov/35877770/) (`P054`) reported ~1–2% unsupervised adversarial personalization gains. Whether unsupervised adaptation is viable on wearable IHR+Accel remains an untested hypothesis in this codebase.

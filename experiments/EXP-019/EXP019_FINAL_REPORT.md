@@ -16,7 +16,7 @@
 | **H-A (Primary)** | $FT\text{-}2$ vs $ZS$ | **$+1.01\text{ pp}$** | **$[-0.17, +1.99]\text{ pp}$** | **$p = 0.00131$** | $\bar{\Delta} \ge +1.50\text{ pp}$ AND $\text{CI}_{\text{low}} > 0.0$ | **NOT SUPPORTED** |
 | **S1 (Secondary)** | $FT\text{-}2$ vs $FT\text{-}other\text{-}2$ | **$+2.73\text{ pp}$** | **$[+1.05, +4.32]\text{ pp}$** | **$p = 9.0 \times 10^{-6}$** | $\text{CI}_{\text{low}} > 0.0$ AND $p < 0.05$ | **SUPPORTED** |
 | **S2 (Secondary)** | $FT\text{-}2$ vs $PS\text{-}2$ | **$+20.32\text{ pp}$** | **$[+17.70, +22.94]\text{ pp}$** | **$p < 1.0 \times 10^{-10}$** | $\text{CI}_{\text{low}} > 0.0$ AND $p < 0.05$ | **SUPPORTED** |
-| **S3 (Secondary)** | $UA\text{-}2$ vs $ZS$ | **$+0.00\text{ pp}$** | **$[+0.00, +0.00]\text{ pp}$** | N/A ($\Delta = 0$) | $\text{CI}_{\text{low}} > 0.0$ AND $p < 0.05$ | **NOT SUPPORTED** |
+| **S3 (Secondary)** | $UA\text{-}2$ vs $ZS$ | **$+0.00\text{ pp}$** | **$[+0.00, +0.00]\text{ pp}$** | N/A ($\Delta = 0$) | $\text{CI}_{\text{low}} > 0.0$ AND $p < 0.05$ | **NOT SUPPORTED** *(Reclassified to UNRESOLVED / INVALIDATED in Erratum Section 6)* |
 
 ---
 
@@ -55,9 +55,10 @@ Performance pooled across all 152 evaluation nights and averaged over the 3 rand
 - Training a model from scratch exclusively on 2 nights ($PS\text{-}2$) yields an unviable Macro-F1 of $45.27\%$.
 - Pre-training on the cohort provides a massive $+20.32\text{ pp}$ advantage ($p < 10^{-10}$), demonstrating that population-level representation learning is essential before personal tuning can be effective.
 
-### 3.4 Unsupervised Test-Time Adaptation S3: InfoMax Insufficiency
-- Unsupervised InfoMax test-time adaptation with frozen CNN features and 20 gradient steps ($UA\text{-}2$) failed to alter predictions on future nights ($\Delta = 0.00\text{ pp}$).
-- Pure self-supervised entropy minimization on $k=2$ unlabeled wearable nights without labels is insufficient to recalibrate the model. Labeled calibration data is necessary for personalization.
+### 3.4 Unsupervised Test-Time Adaptation S3: InfoMax Evaluation (Historical Interpretation & Invalidation)
+- *Historical Report Interpretation:* Unsupervised InfoMax test-time adaptation with frozen CNN features and 20 gradient steps ($UA\text{-}2$) appeared to produce zero change on future nights ($\Delta = 0.00\text{ pp}$), initially interpreted as evidence that unlabeled entropy minimization on 2 nights is insufficient without supervisory signal.
+- *Phase A2 Forensic Invalidation (DEC-030):* Subsequent diagnostic audit (`S3_INFOMAX_NOOP_AUDIT_REPORT.md`) revealed this was an implementation no-op caused by a physiological unit mismatch in `compute_wearable_quality_mask` (`30 <= IHR <= 180` on standardized z-score IHR). Zero calibration epochs passed the mask, triggering an immediate step-0 break before any loss, backward pass, or parameter update occurred (0/163,940 parameters updated).
+- *Scientific Standing:* S3 is scientifically uninformative. The $0.00\text{ pp}$ result provides no empirical evidence regarding whether unsupervised adaptation succeeds or fails (see Erratum Section 6).
 
 ---
 
@@ -104,5 +105,8 @@ Performance pooled across all 152 evaluation nights and averaged over the 3 rand
 - **Immutability Statement:** The numerical results ($\bar{\Delta} = +1.01\text{ pp}$, CI $[-0.17, +1.99]\text{ pp}$, 34/46 improved) remain byte-for-byte unchanged. This is a formal governance-label reconciliation per `DEC-029` and `RESEARCH_DIRECTION_v4_FULL.md`, not a reanalysis or alteration of EXP-019 data.
 
 ### Status of Secondary Hypothesis S3
-- Observed result: $\bar{\Delta} = 0.00\text{ pp}$ identically across all 46 subjects.
-- Per `DEC-029` and Research Direction v4, S3 is reclassified as **`UNRESOLVED`** pending the Phase A2 implementation/no-op audit. It must not currently be cited as empirical evidence against unsupervised adaptation.
+- **Observed Result:** $\bar{\Delta} = 0.00\text{ pp}$ identically across all 46 subjects.
+- **Phase A2 Forensic Invalidation (DEC-030):** Per the completed Phase A2 forensic audit (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`), S3 is formally classified as **`UNRESOLVED / INVALIDATED (Implementation No-Op)`**.
+- **Root Cause:** `exp019_adaptation_core.py::compute_wearable_quality_mask` applied a physiological range filter expecting raw BPM values (`30 <= IHR <= 180`) on standardized z-score IHR ($[-3.95, +9.94]$). Exactly 0 out of 82,762 calibration epochs passed the mask, triggering a silent loop abortion on step 0 for all 46 subjects.
+- **Forensic Verification:** 0 optimizer steps, 0 backward passes, 0/163,940 parameters changed (displacement $\equiv 0.0$), identical evaluation logits and predictions down to floating-point precision.
+- **Scientific Implication:** S3 is scientifically uninformative. The $0.00\text{ pp}$ result must NOT be interpreted as empirical evidence that unsupervised InfoMax adaptation fails (nor that it works). The historical numerical outcome remains locked as the executed experimental record.

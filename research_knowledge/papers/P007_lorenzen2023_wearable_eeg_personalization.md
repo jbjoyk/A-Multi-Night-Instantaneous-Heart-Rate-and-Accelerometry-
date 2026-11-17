@@ -41,4 +41,4 @@
 
 ### Provenance Notes
 - **Paper reports:** Zero beneficial effect from unsupervised ADA and statistics alignment; +15% $\kappa$ for $\kappa < 0.70$ vs +2% for $\kappa > 0.80$; KL-reg lowers variance (TechRxiv abstract/excerpts).
-- **We infer:** EXP-019 S3 remains unresolved pending the Phase A2 implementation/no-op audit. The 0.00 pp result must not currently be treated as empirical evidence against unsupervised adaptation.
+- **We infer:** The completed Phase A2 forensic audit (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030) confirmed that EXP-019 S3 was an implementation no-op caused by a physiological unit mismatch in the wearable quality mask. S3 is scientifically uninformative and must not be treated as empirical evidence against unsupervised adaptation (nor that it works).

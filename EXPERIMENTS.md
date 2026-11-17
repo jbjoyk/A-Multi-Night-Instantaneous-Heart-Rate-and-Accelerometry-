@@ -795,7 +795,7 @@ state.
     - Verdict: **SUPPORTED** (cohort pre-training provides indispensable representation foundation; weak baseline).
   - **S3 (Secondary: Unsupervised InfoMax, $UA\text{-}2$ vs $ZS$)**:
     - Estimand: $\bar{\Delta} = \mathbf{0.00\text{ pp}}$, 95% CI: $[0.00, 0.00]\text{ pp}$.
-    - Governance Status: **UNRESOLVED** (Suspected implementation no-op. Must not be cited as evidence against unsupervised adaptation until Phase A2 parameter change audit is complete).
+    - Governance Status: **UNRESOLVED / INVALIDATED (Implementation No-Op)** (Phase A2 forensic audit `S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030, confirmed that `compute_wearable_quality_mask` checked raw BPM limits `30 <= IHR <= 180` on standardized z-score IHR. 0/82,762 calibration epochs passed, causing adaptation to abort on step 0 with 0 parameter changes. S3 is scientifically uninformative; not empirical evidence against unsupervised adaptation).
 - Summary by Arm:
   - $ZS$: Mean Macro-F1 = $0.6458 \pm 0.0774$
   - $FT\text{-}2$: Mean Macro-F1 = $0.6559 \pm 0.0859$
@@ -831,7 +831,7 @@ state.
    - Observed mean gain: $\bar{\Delta} = +1.01\text{ pp}$ [95% CI: $-0.17, +1.99\text{ pp}$] with 73.9% of subjects improving.
    - Reconciled decision rule status: INCONCLUSIVE (effect up to +2.0 pp cannot be ruled out).
    - Specificity control (S1) confirmed: fine-tuning on another subject degrades performance by $-1.72\text{ pp}$ below zero-shot baseline ($p = 9.0 \times 10^{-6}$).
-   - Unsupervised adaptation (S3) produced 0.00 pp across all 46 subjects (unresolved pending no-op audit).
+   - Unsupervised adaptation (S3) produced 0.00 pp across all 46 subjects due to an implementation no-op (invalidated in Phase A2 audit `S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030; scientifically uninformative).
 5. **Prior Art Realignment (Research Direction v4)**:
    - Withdrew "open lane" novelty claim following identification of van der Aar et al. 2025 (*Physiological Measurement*, DOI: 10.1088/1361-6579/ae0119; $n=59$ adults, wrist PPG + accelerometry, up to 7 home nights, 82.5% improved, significant at $\ge 3$ training nights).
    - Reframed research as pre-registered replication and extension in healthy adults using consumer-smartwatch IHR and accelerometry, with strict failure-mode heterogeneity analysis and clinical sleep-summary agreement.

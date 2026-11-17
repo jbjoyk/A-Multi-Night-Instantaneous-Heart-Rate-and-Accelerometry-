@@ -4,7 +4,7 @@
 * **Date:** 2026-11-17
 * **Status:** Synthesized & Adversarially Audited (Synchronized to Research Direction v4, DEC-029)
 * **Governing Direction:** `RESEARCH_DIRECTION_v4_FULL.md` (Replication and extension of multi-night supervised personalization in healthy adults with consumer IHR + accelerometry, contextualized by van der Aar et al. 2025 precedent)
-* **Governing Baseline:** EXP-019 Confirmatory Outcomes (H-A: Reconciled Inconclusive $\bar{\Delta} = +1.01\text{ pp}$, 95% CI $[-0.17, +1.99]\text{ pp}$; S1: Supported $\bar{\Delta} = +2.73\text{ pp}$; S2: Supported $\bar{\Delta} = +20.32\text{ pp}$; S3: Unresolved pending no-op audit $\bar{\Delta} = 0.00\text{ pp}$; 34 Responders [73.9%], 12 Non-Responders [26.1%])
+* **Governing Baseline:** EXP-019 Confirmatory Outcomes (H-A: Reconciled Inconclusive $\bar{\Delta} = +1.01\text{ pp}$, 95% CI $[-0.17, +1.99]\text{ pp}$; S1: Supported $\bar{\Delta} = +2.73\text{ pp}$; S2: Supported $\bar{\Delta} = +20.32\text{ pp}$; S3: Unresolved / Invalidated [Implementation No-Op, DEC-030] $\bar{\Delta} = 0.00\text{ pp}$; 34 Responders [73.9%], 12 Non-Responders [26.1%])
 
 ---
 
