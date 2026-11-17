@@ -95,12 +95,19 @@
 
 ## Next Concrete Tasks
 
-1. **EGM Review & Heterogeneity Audit Remediation**:
-   - Complete EGM Goldfish Review Protocol (Stages 5–9) completed for `HETEROGENEITY_AUDIT_REPORT.md` and `audit_heterogeneity_mechanisms.py`.
-   - Refactor `audit_heterogeneity_mechanisms.py` (add RNG seeds for PyTorch dropout in param displacement, anchor CLI default paths to `repo_root`, add docstrings and `--help` strings, clean dead code, and filter usable nights).
-   - Refactor `HETEROGENEITY_AUDIT_REPORT.md` (add 4-bullet executive context box, sub-header Table 1 by Mechanism 1–6, calibrate Oldham's method with Pearson $r$, consolidate null mechanisms in Section 2.D, and reframe Section 3 into a diagnostic counterfactual stress-test of static gating).
+1. **EGM Review & Heterogeneity Audit Remediation (COMPLETED)**:
+   - EGM Goldfish Review Protocol (Stages 5–9) completed for `HETEROGENEITY_AUDIT_REPORT.md` and `audit_heterogeneity_mechanisms.py`.
+   - Resolution executed via `goldfish_review_report.md` authority (Status: RESOLVED).
+   - Applied items C-1 through C-10:
+     - Section 3 reframed as an exploratory/counterfactual stress-test of static pre-screening, highlighting false positive responder rejection (`Bidslab15`, $+1.27\text{ pp}$) and low sensitivity ($8.3\%$). Future algorithmic regularization noted strictly as future hypotheses.
+     - 4-bullet executive metadata box added to `HETEROGENEITY_AUDIT_REPORT.md`.
+     - Table 1 grouped by Mechanism 1–6 with hypothesis IDs; Subsection 2.D added for null mechanisms M2, M4, M6.
+     - Pearson $r$ ($r = +0.2269, p = 0.1293$) reported alongside Spearman $\rho$ ($\rho = +0.0376, p = 0.8043$) for Oldham's mean, confirming that baseline Zero-Shot performance does not govern adaptation headroom. Causal language de-escalated to objective diagnostic phrasing.
+     - Deterministic PyTorch/NumPy RNG seeding added to `audit_heterogeneity_mechanisms.py` for bitwise reproducibility.
+     - CLI defaults anchored to `repo_root`, `exp019_dir` added to `sys.path`, function docstrings and `--help` strings added, dead code cleaned, and population prior filtered for usable nights.
+   - Item D-1 kept rejected with justification (1 Hz IHR constraint); Item D-2 kept deferred to future protocol design (zero retraining or model alterations).
 2. **Descriptive Exploratory Analyses (Authorized under Research Plan)**:
    - Calibration efficiency curve: evaluate gains across $k \in \{1, 2, 3, 4\}$ calibration nights for subjects with $\ge 5$ nights.
    - Clinical sleep summary agreement (TST, SOL, WASO, sleep efficiency, REM%, Deep%) comparing $ZS$ and $FT\text{-}2$.
 3. **Continuous Git Synchronization**:
-   - Commit all review reports and audit artifacts and push to `origin main`.
+   - Commit all resolved audit reports and scripts and push to `origin main`.
