@@ -65,6 +65,7 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
 
 1. **Phase A1**: Author and commit formal erratum documenting the H-A verdict reconciliation (INCONCLUSIVE under preregistration rule vs NOT SUPPORTED in early report).
 2. **Phase A2**: Completed forensic diagnosis of S3 (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030). Confirmed complete adaptation no-op due to quality-mask unit mismatch (0/82,762 epochs valid, 0 optimizer steps, 0 parameter updates). Status synchronized to UNRESOLVED / INVALIDATED across all workspace governance records.
-3. **Phase A3**: Extract the $k=1–4$ learning curve from existing EXP-019 artifacts / predictions across eligible subjects.
-4. **Phase B1**: Verify and apply pending Knowledge Base round-2 errata fixes.
-5. **Continuous Git Synchronization**: Commit all updated governance documents and push to GitHub (`origin main`).
+3. **DEC-031 Ratification**: Reformulated parameter-count governance across workspace. Removed arbitrary 196,728 ceiling; established 163,940 baseline reference size under Lightweight-First Principle.
+4. **Phase A3**: Complete the diagnostic write-down for EXP-019 (k=2 diagnostic recovery and locked-artifact re-analysis).
+5. **Phase B1**: Verify and apply pending Knowledge Base round-2 errata fixes.
+6. **Continuous Git Synchronization**: Commit all updated governance documents and push to GitHub (`origin main`).

@@ -38,7 +38,7 @@
 - **Signals:** Apple Watch instantaneous heart rate (IHR, ~0.2 Hz, HealthKit) and 3-axis wrist accelerometry, segmented into 30-second epochs.
 - **Staging Task:** 4-class classification: Wake (0), Light (1; N1+N2 combined), Deep (2; N3), REM (3). Unknown stages and padded positions mapped to `-100` (`ignore_index`).
 - **Context Horizon:** Full-night context ($L = 1200$, sliding-window inference with probability stitching). The historical 5-hour crop ($T = 600$) dropped ~28% of labeled epochs with REM heavily depleted (DEC-021). All cropped results must be reported as cropped.
-- **Model Backbone:** Model A (`ConventionalCNNBiGRU`, exactly 163,940 parameters). Architecture search is permanently closed.
+- **Model Backbone & Parameter Baseline:** Model A (`ConventionalCNNBiGRU`, exactly 163,940 parameters). Under DEC-031, 163,940 parameters is the baseline reference size. Future models should preferentially be lighter than this baseline. Larger models require explicit scientific justification and transparent reporting. Architecture search is permanently closed for completed experiments.
 - **Test Set Status:** The historical EXP-012 test set (11 subjects, 58 nights) is formally **SPENT** (used across prior benchmarks and folded into later CV splits). All final claims rest on 5-fold out-of-fold nested CV across all 47 subjects plus external validation.
 
 ---
@@ -92,3 +92,4 @@
 3. **No Architecture Search**: Model A (`ConventionalCNNBiGRU`, 163,940 params) is frozen. NAS is permanently terminated.
 4. **Leakage Protection**: All evaluations enforce strict subject-level disjointness and chronological calibration/evaluation splits.
 5. **Continuous Git Synchronization**: All documentation updates, errata, and audit scripts are committed and pushed to `origin main`.
+6. **Parameter-Count Governance (DEC-031)**: The historical +20% (196,728) cap is removed. 163,940 parameters is the baseline reference size. Future models should preferentially be lighter than this baseline; larger models require explicit scientific justification and transparent reporting.

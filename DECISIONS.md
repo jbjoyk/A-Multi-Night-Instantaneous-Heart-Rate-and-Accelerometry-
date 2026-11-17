@@ -362,7 +362,7 @@
 - Decision: Authorize and document Iteration 1 structural mutation `MultiScaleConventionalCNNBiGRU` under pre-registered Hypothesis H-A with a +20% parameter ceiling.
   1. Scope and Parameter Cap:
      - Baseline Model A: `ConventionalCNNBiGRU` (163,940 parameters).
-     - User-approved parameter cap: $\le +20\%$ ($163,940 \times 1.20 = 196,728$ parameters).
+     - Historical parameter cap: $\le +20\%$ ($163,940 \times 1.20 = 196,728$ parameters) [**SUPERSEDED** by DEC-031: arbitrary numerical caps removed workspace-wide in favor of the Lightweight-First Principle].
      - Mutated Model A: `MultiScaleConventionalCNNBiGRU` (192,692 parameters, $+17.54\%$ / $+28,752$ params).
      - Headroom: 4,036 parameters under the approved ceiling.
   2. Structural Mutation Mechanism:
@@ -532,3 +532,39 @@
   3. **Immutability of Numerical Artifacts:** The historical experimental record ($0.00\text{ pp}$) remains locked in `exp019_stage_c_results.json` and `PREREG_EXP-019_H-A.md`. No historical numerical file is modified.
   4. **Codebase Remediation Deferred:** Code changes to `exp019_adaptation_core.py` and rerunning of unsupervised adaptation are explicitly deferred to future dedicated protocols under Phase D.
 - Reversible: No; ratified forensic finding.
+
+
+### DEC-031 (2026-11-17): Parameter-Count Governance Reformulation — Adoption of Lightweight-First Principle and Removal of Arbitrary Numerical Ceiling
+
+- Date: 2026-11-17
+- Context: Historical NAS iterations and exploratory proposals referenced an arbitrary hard upper limit of $\le +20\%$ ($163,940 \times 1.20 = 196,728$ parameters) or a nominal "200k" ceiling. The research workspace is directed to remove all arbitrary numerical parameter ceilings and establish a scientifically grounded "lightweight-first" governing principle.
+- Ratified Governance Principles:
+  1. **Baseline Reference Model Size:**
+     - The current `ConventionalCNNBiGRU` Model A has exactly **163,940 parameters**.
+     - 163,940 is the **baseline reference size**, not a mandatory ceiling.
+  2. **Lightweight-First Principle:**
+     - Any new architecture or model variant should preferentially use **fewer parameters** than the 163,940-parameter baseline.
+     - Parameter reduction is treated as an active design preference and efficiency objective.
+     - Model capacity must never be increased simply because additional parameters might improve empirical performance.
+  3. **Conditions When a Larger Model Is Considered:**
+     - A model larger than 163,940 parameters is **not automatically prohibited**.
+     - Any proposal for a larger model requires explicit scientific justification demonstrating why additional capacity is necessary.
+     - Capacity expansion must be reported transparently as part of the experimental comparison. Silent architectural expansion is strictly forbidden.
+  4. **Removal of Arbitrary Numerical Ceilings:**
+     - The previous $+20\%$ ceiling ($196,728$ parameters) is formally removed.
+     - The notion that models $> 200\text{k}$ parameters are permanently prohibited is formally withdrawn.
+     - No replacement numerical ceiling is imposed unless independently justified by a future preregistered protocol.
+  5. **Integrity of Locked EXP-019 Artifacts:**
+     - The architecture (Model A, 163,940 params), checkpoints, results, and preregistration of EXP-019 remain locked and immutable.
+     - This governance update applies strictly to future architectural and design decisions.
+  6. **Future Research Reporting Requirements:**
+     For every future model comparison, reports must explicitly disclose:
+     - Total parameter count;
+     - Trainable parameter count;
+     - Relative parameter count compared to the 163,940 baseline (percentage delta $\Delta\%$);
+     - Performance metrics;
+     - Computational and resource implications where relevant.
+  7. **Standard Governance Language:**
+     The phrase "maximum allowed parameters" is permanently replaced across active governance documentation with:
+     > *"163,940 parameters is the baseline reference size. Future models should preferentially be lighter than this baseline. Larger models require explicit scientific justification and transparent reporting."*
+- Reversible: No; ratified governance policy.
