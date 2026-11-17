@@ -1,0 +1,44 @@
+# P007: Personalization of automatic sleep scoring: How best to adapt models to personal domains in wearable EEG
+
+- **paper_id:** `P007`
+- **title:** Personalization of automatic sleep scoring: How best to adapt models to personal domains in wearable EEG
+- **authors:** Kristian P. Lorenzen, Elisabeth R. M. Heremans, Maarten de Vos, Kaare B. Mikkelsen
+- **year:** 2024 (preprint 2023)
+- **venue:** IEEE J Biomed Health Inform 28(10):5804-5815
+- **doi_or_id:** `10.1109/JBHI.2024.3409165` (PMID: `38833404`)
+- **url:** https://pubmed.ncbi.nlm.nih.gov/38833404/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** How do supervised vs unsupervised domain adaptation methods compare for personalizing sleep scoring models to wearable EEG?
+- **hypothesis:** `UNKNOWN`
+- **dataset:** Large clinical PSG pretraining (8,444 recordings) + wearable EEG target cohorts
+- **number_of_subjects:** `UNKNOWN` in snippet (8,444 pretraining recordings)
+- **number_of_nights:** `UNKNOWN`
+- **sensors:** Wearable EEG (ear-EEG / C4-A1)
+- **labels:** PSG / EEG sleep scoring
+- **task_definition:** 5-class sleep staging
+- **preprocessing:** `UNKNOWN`
+- **architecture:** `SeqSleepNet` (compared against U-Sleep, SleepTransformer, L-SeqSleepNet)
+- **personalization_method:** Supervised fine-tuning (with and without KL regularization)
+- **adaptation_method:** Unsupervised Adversarial Domain Adaptation (ADA) & Statistics Alignment vs Supervised FT + KL-reg
+- **calibration_data:** Single night of target subject
+- **evaluation_protocol:** Pretrain -> single-night adapt -> test on held-out night of same subject
+- **subject_split:** Subject-disjoint
+- **temporal_split:** Single night -> separate test night
+- **external_validation:** Yes (cross-device / cross-cohort)
+- **metrics:** Supervised FT improved $\kappa$ by **+15%** for poor baseline subjects ($\kappa < 0.70$) and **~+2%** for high baseline subjects ($\kappa > 0.80$). KL-regularization reduced variance. **Unsupervised ADA & statistics alignment: NO beneficial personalization effect.**
+- **statistical_testing:** `UNKNOWN`
+- **uncertainty_reporting:** Variance reduction reported for KL-reg
+- **failure_cases:** **Unsupervised ADA and statistics alignment completely failed to improve personalization.**
+- **limitations:** Tested on wearable EEG, not wrist IHR+Accel.
+- **leakage_risks:** Low (separate test night).
+- **reproducibility:** `UNKNOWN`
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Contradicting` (contradicts unsupervised TTA/DA; `Supporting` for KL-reg supervised FT)
+- **transferable_method:** KL-regularized supervised personalization; baseline-stratified reporting.
+- **possible_research_gap:** Whether wearable IHR+Accel shows vulnerability in unsupervised adaptation or whether KL-reg reduces variance without harming outliers.
+
+### Provenance Notes
+- **Paper reports:** Zero beneficial effect from unsupervised ADA and statistics alignment; +15% $\kappa$ for $\kappa < 0.70$ vs +2% for $\kappa > 0.80$; KL-reg lowers variance (TechRxiv abstract/excerpts).
+- **We infer:** EXP-019 S3 remains unresolved pending the Phase A2 implementation/no-op audit. The 0.00 pp result must not currently be treated as empirical evidence against unsupervised adaptation.

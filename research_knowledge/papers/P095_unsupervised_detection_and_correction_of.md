@@ -1,0 +1,44 @@
+# P095: Unsupervised Detection and Correction of Model Calibration Shift at Target Hospitals (CaDC)
+
+- **paper_id:** `P095`
+- **title:** Unsupervised Detection and Correction of Model Calibration Shift at Target Hospitals (CaDC)
+- **authors:** Supreeth P. Shashikumar, Fatemeh Amrollahi, Shamim Nemati
+- **year:** 2024
+- **venue:** PMC
+- **doi_or_id:** `PMC10805329`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10805329/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Detecting & correcting calibration shift from prevalence/label shift
+- **hypothesis:** UNKNOWN
+- **dataset:** Multi-hospital clinical data
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Clinical EHR
+- **labels:** Clinical outcomes
+- **task_definition:** Detecting & correcting calibration shift from prevalence/label shift
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** CaDC (unlabeled target prevalence shift correction)
+- **adaptation_method:** CaDC (unlabeled target prevalence shift correction)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-hospital
+- **subject_split:** Cross-hospital
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Directly tackles prevalence/label-shift calibration drift in clinical deployment.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-hospital).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** CaDC (unlabeled target prevalence shift correction)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Directly tackles prevalence/label-shift calibration drift in clinical deployment. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10805329/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

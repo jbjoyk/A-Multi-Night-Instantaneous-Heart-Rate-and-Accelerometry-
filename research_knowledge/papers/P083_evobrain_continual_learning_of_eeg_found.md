@@ -1,0 +1,44 @@
+# P083: EvoBrain: Continual Learning of EEG Foundation Models Across Heterogeneous Tasks
+
+- **paper_id:** `P083`
+- **title:** EvoBrain: Continual Learning of EEG Foundation Models Across Heterogeneous Tasks
+- **authors:** Yangxuan Zhou, Sha Zhao, Jiquan Wang, Shijian Li, Gang Pan
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2606.01767v1`
+- **url:** https://arxiv.org/html/2606.01767v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Cross-task continual learning
+- **hypothesis:** UNKNOWN
+- **dataset:** 6 BCI/EEG tasks (incl. sleep staging)
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** Task labels
+- **task_definition:** Cross-task continual learning
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Neuro-Spectral Task Norm (NSN) + Response-Affinity Distillation (RAD)
+- **adaptation_method:** Neuro-Spectral Task Norm (NSN) + Response-Affinity Distillation (RAD)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Continual multi-task
+- **subject_split:** Continual multi-task
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Addresses plasticity-stability trade-off in continual physiological decoding.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Continual multi-task).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Neuro-Spectral Task Norm (NSN) + Response-Affinity Distillation (RAD)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Addresses plasticity-stability trade-off in continual physiological decoding. (Source: https://arxiv.org/html/2606.01767v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

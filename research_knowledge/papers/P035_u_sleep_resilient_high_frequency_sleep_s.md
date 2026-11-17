@@ -1,0 +1,44 @@
+# P035: U-Sleep: resilient high-frequency sleep staging
+
+- **paper_id:** `P035`
+- **title:** U-Sleep: resilient high-frequency sleep staging
+- **authors:** Perslev M, Darkner S, Kempfner L, Nikolic M, Jennum PJ, Igel C
+- **year:** 2021
+- **venue:** npj Digital Medicine
+- **doi_or_id:** `10.1038/s41746-021-00440-5`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC8050216/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 5-class resilient sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Multi-cohort PSG (15+ datasets)
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG/EOG
+- **labels:** PSG
+- **task_definition:** 5-class resilient sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None (domain-generalizable architecture)
+- **adaptation_method:** None (domain-generalizable architecture)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-dataset zero-shot
+- **subject_split:** Cross-dataset zero-shot
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Foundational fully-CNN sleep staging baseline used in Song et al. 2026.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-dataset zero-shot).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None (domain-generalizable architecture)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Foundational fully-CNN sleep staging baseline used in Song et al. 2026. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC8050216/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

@@ -1,0 +1,44 @@
+# P021: Deep learning enables sleep staging from photoplethysmogram for patients with suspected sleep apnea
+
+- **paper_id:** `P021`
+- **title:** Deep learning enables sleep staging from photoplethysmogram for patients with suspected sleep apnea
+- **authors:** Korkalainen H et al.
+- **year:** 2020
+- **venue:** Sleep
+- **doi_or_id:** `10.1093/sleep/zsaa098`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC7658638/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Sleep staging in suspected OSA
+- **hypothesis:** UNKNOWN
+- **dataset:** Clinical suspected OSA polygraphy/PSG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** PPG (pulse oximetry)
+- **labels:** Manual EEG-based PSG
+- **task_definition:** Sleep staging in suspected OSA
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Demonstrates PPG sleep staging in clinical OSA patients.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Demonstrates PPG sleep staging in clinical OSA patients. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC7658638/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

@@ -1,0 +1,44 @@
+# P062: Few-shot EEG sleep staging based on transductive prototype optimization network (TPON)
+
+- **paper_id:** `P062`
+- **title:** Few-shot EEG sleep staging based on transductive prototype optimization network (TPON)
+- **authors:** Frontiers in Neuroinformatics 2023
+- **year:** 2023
+- **venue:** Frontiers in Neuroinformatics
+- **doi_or_id:** `10.3389/fninf.2023.1297874`
+- **url:** https://www.frontiersin.org/journals/neuroinformatics/articles/10.3389/fninf.2023.1297874/full
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 5-way 15-shot cross-subject sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG sleep datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** PSG
+- **task_definition:** 5-way 15-shot cross-subject sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Transductive prototype optimization
+- **adaptation_method:** Transductive prototype optimization
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Few-shot cross-subject
+- **subject_split:** Few-shot cross-subject
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Prototype-based few-shot sleep staging (87.1% acc, 81.7 MF1).
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Few-shot cross-subject).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Transductive prototype optimization
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Prototype-based few-shot sleep staging (87.1% acc, 81.7 MF1). (Source: https://www.frontiersin.org/journals/neuroinformatics/articles/10.3389/fninf.2023.1297874/full, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

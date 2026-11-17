@@ -1,0 +1,44 @@
+# P064: A Few-Shot Learning-Based EEG and Stage Transition Sequence Generator for Sleep Staging (SleepGAN)
+
+- **paper_id:** `P064`
+- **title:** A Few-Shot Learning-Based EEG and Stage Transition Sequence Generator for Sleep Staging (SleepGAN)
+- **authors:** Yuyang You, Xiaoyu Guo, Xuyang Zhong, Zhihong Yang
+- **year:** 2022
+- **venue:** Biomedicines (MDPI)
+- **doi_or_id:** `10.3390/biomedicines10123006`
+- **url:** https://www.mdpi.com/2227-9059/10/12/3006
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Few-shot sleep staging via synthetic sequences
+- **hypothesis:** UNKNOWN
+- **dataset:** Sleep-EDF
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Single-channel EEG
+- **labels:** PSG
+- **task_definition:** Few-shot sleep staging via synthetic sequences
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** WGAN + relational memory generator
+- **adaptation_method:** WGAN + relational memory generator
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Sleep-EDF
+- **subject_split:** Sleep-EDF
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Synthetic augmentation (out of scope for EXP-019/locked rules, logged for completeness).
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Sleep-EDF).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `LOW`
+- **evidence_strength:** `WEAK`
+- **stance:** `Neutral`
+- **transferable_method:** WGAN + relational memory generator
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Synthetic augmentation (out of scope for EXP-019/locked rules, logged for completeness). (Source: https://www.mdpi.com/2227-9059/10/12/3006, retrieved 2026-11-17).
+- **We infer:** Relevance (`LOW`) and evidence tier (`WEAK`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

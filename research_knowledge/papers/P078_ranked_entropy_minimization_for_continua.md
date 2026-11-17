@@ -1,0 +1,44 @@
+# P078: Ranked Entropy Minimization for Continual Test-Time Adaptation
+
+- **paper_id:** `P078`
+- **title:** Ranked Entropy Minimization for Continual Test-Time Adaptation
+- **authors:** Jisu Han, Jaemin Na, Wonjun Hwang
+- **year:** 2025
+- **venue:** ICML 2025
+- **doi_or_id:** `ICML-2025-44208`
+- **url:** https://icml.cc/virtual/2025/poster/44208
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Preventing single-class collapse in continual TTA
+- **hypothesis:** UNKNOWN
+- **dataset:** CTTA benchmarks
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Vision
+- **labels:** Class labels
+- **task_definition:** Preventing single-class collapse in continual TTA
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Progressive masking + ranked entropy minimization
+- **adaptation_method:** Progressive masking + ranked entropy minimization
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Continual TTA
+- **subject_split:** Continual TTA
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Addresses trivial single-class collapse in entropy minimization.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Continual TTA).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Progressive masking + ranked entropy minimization
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Addresses trivial single-class collapse in entropy minimization. (Source: https://icml.cc/virtual/2025/poster/44208, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

@@ -1,0 +1,44 @@
+# P037: SleepTransformer: Automatic Sleep Staging with Interpretability and Uncertainty Quantification
+
+- **paper_id:** `P037`
+- **title:** SleepTransformer: Automatic Sleep Staging with Interpretability and Uncertainty Quantification
+- **authors:** Phan H, Mikkelsen K, Chén OY, Koch P, Mertins A, De Vos M
+- **year:** 2022
+- **venue:** IEEE TBME
+- **doi_or_id:** `arXiv:2105.11043`
+- **url:** https://arxiv.org/html/2105.11043v3
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 5-class sleep staging + entropy-based uncertainty
+- **hypothesis:** UNKNOWN
+- **dataset:** Sleep-EDF; SHHS
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Single-channel EEG
+- **labels:** PSG
+- **task_definition:** 5-class sleep staging + entropy-based uncertainty
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None (deferral of low-confidence epochs)
+- **adaptation_method:** None (deferral of low-confidence epochs)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Uses predictive entropy to defer uncertain sleep-stage epochs to human experts.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** None (deferral of low-confidence epochs)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Uses predictive entropy to defer uncertain sleep-stage epochs to human experts. (Source: https://arxiv.org/html/2105.11043v3, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

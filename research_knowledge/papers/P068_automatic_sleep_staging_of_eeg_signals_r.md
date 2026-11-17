@@ -1,0 +1,44 @@
+# P068: Automatic Sleep Staging of EEG Signals: Recent Development, Challenges, and Future Directions
+
+- **paper_id:** `P068`
+- **title:** Automatic Sleep Staging of EEG Signals: Recent Development, Challenges, and Future Directions
+- **authors:** Phan H, Mikkelsen K
+- **year:** 2022
+- **venue:** Physiological Measurement
+- **doi_or_id:** `arXiv:2111.08446`
+- **url:** https://arxiv.org/html/2111.08446v3
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Comprehensive sleep staging review
+- **hypothesis:** UNKNOWN
+- **dataset:** Review
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** EEG / PSG
+- **labels:** PSG
+- **task_definition:** Comprehensive sleep staging review
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Reviews personalization & transfer learning
+- **adaptation_method:** Reviews personalization & transfer learning
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Review
+- **subject_split:** Review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Key methodological review of sequence-to-sequence staging, ensemble context, and personalization.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** Reviews personalization & transfer learning
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Key methodological review of sequence-to-sequence staging, ensemble context, and personalization. (Source: https://arxiv.org/html/2111.08446v3, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

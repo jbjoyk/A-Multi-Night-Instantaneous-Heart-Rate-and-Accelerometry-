@@ -1,0 +1,44 @@
+# P089: Self-Supervised Contrastive Learning for Medical Time Series: A Survey
+
+- **paper_id:** `P089`
+- **title:** Self-Supervised Contrastive Learning for Medical Time Series: A Survey
+- **authors:** Ziyu Liu, Azadeh Alavi, Minyi Li, Xiang Zhang
+- **year:** 2023
+- **venue:** Sensors (MDPI)
+- **doi_or_id:** `10.3390/s23094221`
+- **url:** https://www.mdpi.com/1424-8220/23/9/4221
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Contrastive SSL taxonomy
+- **hypothesis:** UNKNOWN
+- **dataset:** Survey
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** ECG, EEG, wearable time series
+- **labels:** Various
+- **task_definition:** Contrastive SSL taxonomy
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Contrastive pretraining
+- **adaptation_method:** Contrastive pretraining
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Review
+- **subject_split:** Review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Surveys contrastive pretraining for ECG/EEG sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** Contrastive pretraining
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Surveys contrastive pretraining for ECG/EEG sleep staging. (Source: https://www.mdpi.com/1424-8220/23/9/4221, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

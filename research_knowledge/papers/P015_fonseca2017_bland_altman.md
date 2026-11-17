@@ -1,0 +1,44 @@
+# P015: Validation of Photoplethysmography-Based Sleep Staging Compared With Polysomnography in Healthy Middle-Aged Adults
+
+- **paper_id:** `P015`
+- **title:** Validation of Photoplethysmography-Based Sleep Staging Compared With Polysomnography in Healthy Middle-Aged Adults
+- **authors:** Fonseca P, Weysen T, Goelema MS, Møst EI, Radha M, Lunsingh Scheurleer C, van den Heuvel L, Aarts RM
+- **year:** 2017
+- **venue:** Sleep, 40(7):zsx097
+- **doi_or_id:** `10.1093/sleep/zsx097`
+- **url:** https://corsano.com/wp-content/uploads/2023/12/zsx097.pdf
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** How well do wrist-worn PPG + accelerometry sleep staging algorithms agree with PSG on clinical sleep-summary metrics (TST, SOL, WASO, SE)?
+- **hypothesis:** PPG-derived HRV + accelerometry achieves satisfactory clinical agreement within a priori margins ($\pm 30\text{ min}$ for TST/TWT/WASO, $\pm 5\%$ for SE).
+- **dataset:** Healthy middle-aged adults (`UNKNOWN` exact n in snippet; 80 recordings implied by 77.5% = 62, 81.2% = 65, 71.2% = 57)
+- **number_of_subjects:** `UNKNOWN` (80 recordings)
+- **number_of_nights:** 80
+- **sensors:** Wrist-worn PPG + accelerometry
+- **labels:** PSG
+- **task_definition:** 4-class sleep staging & clinical sleep-summary validation
+- **preprocessing:** `UNKNOWN`
+- **architecture:** HRV/PPG feature classifier (trained on SIESTA ECG, applied to wrist PPG)
+- **personalization_method:** None
+- **adaptation_method:** Cross-modality transfer (ECG -> wrist PPG)
+- **calibration_data:** N/A
+- **evaluation_protocol:** Bland-Altman agreement + a priori equivalence margins
+- **subject_split:** Subject-independent
+- **temporal_split:** N/A
+- **external_validation:** Yes (trained on SIESTA ECG, tested on wrist PPG)
+- **metrics:** 4-class $\kappa = 0.42$, Acc `59%` (per [Walch et al. 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6930135/)); Bland-Altman: SOL error SD `<10 min`, SE SD `<10%`, TST/TWT/WASO SD `~30 min`; 99.9% CI for TST `[-0.75, 21.00]` min, WASO `[-10.00, 8.00]` min, SE `[-0.13, 4.61]%` ($p < 0.001$).
+- **statistical_testing:** Bland-Altman 99.9% CI against a priori equivalence bounds
+- **uncertainty_reporting:** 99.9% CI and SD of error
+- **failure_cases:** **Systematically underestimates wake time when SOL and WASO exceed 15 minutes** (heteroscedastic bias).
+- **limitations:** Healthy middle-aged cohort; single-night PSG.
+- **leakage_risks:** Low
+- **reproducibility:** Proprietary/commercial algorithm components
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral` (benchmark for `EXP-028` Bland-Altman clinical validation)
+- **transferable_method:** Pre-specified Bland-Altman equivalence margins ($\pm 30\text{ min}$ TST/WASO, $\pm 5\%$ SE) and heteroscedasticity inspection.
+- **possible_research_gap:** Whether subject-adaptive personalization reduces Bland-Altman heteroscedastic bias for high-WASO/SOL nights.
+
+### Provenance Notes
+- **Paper reports:** 99.9% CIs for TST/TWT/WASO/SE, 77.5%–81.2% within 30-min margin, and underestimation of wake when SOL/WASO > 15 min (`zsx097.pdf` & `PMC6930135`).
+- **We infer:** Provides concrete, literature-grounded clinical equivalence margins for `EXP-028`.

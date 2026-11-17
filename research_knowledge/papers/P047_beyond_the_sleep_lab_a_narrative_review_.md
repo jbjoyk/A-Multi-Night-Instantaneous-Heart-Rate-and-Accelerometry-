@@ -1,0 +1,44 @@
+# P047: Beyond the Sleep Lab: A Narrative Review of Wearable Sleep Technologies
+
+- **paper_id:** `P047`
+- **title:** Beyond the Sleep Lab: A Narrative Review of Wearable Sleep Technologies
+- **authors:** Maria P. Mogavero, Giuseppe Lanza, Oliviero Bruni, Luigi Ferini-Strambi, Alessandro Silvani, Ugo Faraguna, Raffaele Ferri
+- **year:** 2025
+- **venue:** Bioengineering (MDPI)
+- **doi_or_id:** `PMC12649296`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC12649296/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Clinical utility vs PSG concordance
+- **hypothesis:** UNKNOWN
+- **dataset:** Review
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Wearables (PPG, accel, ring, headband)
+- **labels:** PSG
+- **task_definition:** Clinical utility vs PSG concordance
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Discussed
+- **adaptation_method:** Discussed
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Narrative review
+- **subject_split:** Narrative review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Frames wearable sleep utility beyond exact PSG concordance.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Narrative review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Discussed
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Frames wearable sleep utility beyond exact PSG concordance. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC12649296/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

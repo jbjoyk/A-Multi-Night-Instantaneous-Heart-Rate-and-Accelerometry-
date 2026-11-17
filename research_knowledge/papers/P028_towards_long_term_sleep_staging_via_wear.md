@@ -1,0 +1,44 @@
+# P028: Towards Long-Term Sleep Staging via Wearable Reflective Photoplethysmography
+
+- **paper_id:** `P028`
+- **title:** Towards Long-Term Sleep Staging via Wearable Reflective Photoplethysmography
+- **authors:** ResearchGate 394817628
+- **year:** 2025
+- **venue:** Preprint / Journal
+- **doi_or_id:** `RG:394817628`
+- **url:** https://www.researchgate.net/publication/394817628_Towards_Long-Term_Sleep_Staging_via_Wearable_Reflective_Photoplethysmography
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 4-class in-bed & 24h 2-class ambulatory
+- **hypothesis:** UNKNOWN
+- **dataset:** MESA; CFS; ambulatory wrist PPG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Reflective wrist PPG + 3D accel
+- **labels:** PSG
+- **task_definition:** 4-class in-bed & 24h 2-class ambulatory
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-dataset (CFS k=0.74, wrist k=0.68)
+- **subject_split:** Cross-dataset (CFS k=0.74, wrist k=0.68)
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Evaluates long-term ambulatory PPG sleep staging; N1 agreement low (k=0.24).
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-dataset (CFS k=0.74, wrist k=0.68)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Evaluates long-term ambulatory PPG sleep staging; N1 agreement low (k=0.24). (Source: https://www.researchgate.net/publication/394817628_Towards_Long-Term_Sleep_Staging_via_Wearable_Reflective_Photoplethysmography, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

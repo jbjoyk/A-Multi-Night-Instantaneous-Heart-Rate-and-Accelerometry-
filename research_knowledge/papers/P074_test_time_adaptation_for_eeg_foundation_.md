@@ -1,0 +1,44 @@
+# P074: Test-Time Adaptation for EEG Foundation Models: A Systematic Study under Real-World Distribution Shifts (NeuroAdapt-Bench)
+
+- **paper_id:** `P074`
+- **title:** Test-Time Adaptation for EEG Foundation Models: A Systematic Study under Real-World Distribution Shifts (NeuroAdapt-Bench)
+- **authors:** Lee GJ, Pradeepkumar J, Sun J
+- **year:** 2026
+- **venue:** MLHC 2026 / PMLR v340
+- **doi_or_id:** `arXiv:2604.16926`
+- **url:** https://arxiv.org/abs/2604.16926
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Systematic TTA benchmark for EEG
+- **hypothesis:** UNKNOWN
+- **dataset:** NeuroAdapt-Bench (incl. ear-EEG sleep EESM23)
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG (incl. ear-EEG sleep)
+- **labels:** Various
+- **task_definition:** Systematic TTA benchmark for EEG
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Multiple TTA methods
+- **adaptation_method:** Multiple TTA methods
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Real-world EEG distribution shifts
+- **subject_split:** Real-world EEG distribution shifts
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** First systematic TTA benchmark on EEG including ear-EEG sleep monitoring.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Real-world EEG distribution shifts).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** Multiple TTA methods
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** First systematic TTA benchmark on EEG including ear-EEG sleep monitoring. (Source: https://arxiv.org/abs/2604.16926, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

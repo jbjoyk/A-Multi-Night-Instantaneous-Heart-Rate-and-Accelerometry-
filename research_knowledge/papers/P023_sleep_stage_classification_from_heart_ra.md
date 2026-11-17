@@ -1,0 +1,44 @@
+# P023: Sleep stage classification from heart-rate variability using long short-term memory neural networks
+
+- **paper_id:** `P023`
+- **title:** Sleep stage classification from heart-rate variability using long short-term memory neural networks
+- **authors:** Radha M, Fonseca P, Moreau A, Ross M, Cerny A, Anderer P, Long X, Aarts RM
+- **year:** 2019
+- **venue:** Scientific Reports
+- **doi_or_id:** `10.1038/s41598-019-49703-y`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC6775145/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 4-class sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Siesta database
+- **number_of_subjects:** 292
+- **number_of_nights:** 584
+- **sensors:** ECG-derived HRV
+- **labels:** PSG (R&K 30s)
+- **task_definition:** 4-class sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Foundational HRV LSTM (k=0.61+/-0.15, acc 77.0+/-8.9%); reports performance decline in age >=50.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Foundational HRV LSTM (k=0.61+/-0.15, acc 77.0+/-8.9%); reports performance decline in age >=50. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC6775145/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

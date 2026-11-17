@@ -1,0 +1,44 @@
+# P017: SleepPPG-Net: A Deep Learning Algorithm for Robust Sleep Staging From Continuous Photoplethysmography
+
+- **paper_id:** `P017`
+- **title:** SleepPPG-Net: A Deep Learning Algorithm for Robust Sleep Staging From Continuous Photoplethysmography
+- **authors:** Kotzen K, Charlton PH, Salabi S, Amar L, Landesberg A, Behar JA
+- **year:** 2022
+- **venue:** IEEE J Biomed Health Inform
+- **doi_or_id:** `PMID:36446010`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/36446010/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 4-class sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** MESA; CFS
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Continuous PPG
+- **labels:** PSG (30s)
+- **task_definition:** 4-class sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None (subject-independent)
+- **adaptation_method:** None (subject-independent)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent + cross-dataset (CFS)
+- **subject_split:** Subject-independent + cross-dataset (CFS)
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes (CFS k=0.74)
+- **metrics:** Raw PPG deep learning benchmark; reports k=0.74 on CFS.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent + cross-dataset (CFS)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** None (subject-independent)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Raw PPG deep learning benchmark; reports k=0.74 on CFS. (Source: https://pubmed.ncbi.nlm.nih.gov/36446010/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

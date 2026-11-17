@@ -1,0 +1,44 @@
+# P025: Overnight Sleep Staging Using Chest-Worn Accelerometry
+
+- **paper_id:** `P025`
+- **title:** Overnight Sleep Staging Using Chest-Worn Accelerometry
+- **authors:** Schipper F, Grassi A, Ross M et al.
+- **year:** 2024
+- **venue:** Sensors (MDPI)
+- **doi_or_id:** `sensors24175717`
+- **url:** https://www.mdpi.com/1424-8220/24/17/5717
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Sleep staging from chest motion
+- **hypothesis:** UNKNOWN
+- **dataset:** Chest accelerometry cohort
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Chest-worn accelerometry
+- **labels:** PSG
+- **task_definition:** Sleep staging from chest motion
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Evaluates accelerometry-only respiratory/motion staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Evaluates accelerometry-only respiratory/motion staging. (Source: https://www.mdpi.com/1424-8220/24/17/5717, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

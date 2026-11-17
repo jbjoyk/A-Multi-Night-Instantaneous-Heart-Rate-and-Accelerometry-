@@ -1,0 +1,44 @@
+# P042: Evaluating reliability in wearable devices for sleep staging
+
+- **paper_id:** `P042`
+- **title:** Evaluating reliability in wearable devices for sleep staging
+- **authors:** Birrer V et al.
+- **year:** 2024
+- **venue:** npj Digital Medicine
+- **doi_or_id:** `PMC10948771`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10948771/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Multi-night wearable reliability
+- **hypothesis:** UNKNOWN
+- **dataset:** Wearable + smartphone external
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearable PPG/accel
+- **labels:** PSG
+- **task_definition:** Multi-night wearable reliability
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** External validation (68% epoch acc)
+- **subject_split:** External validation (68% epoch acc)
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Reviews wearable sleep staging reliability and multi-night ring validation.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (External validation (68% epoch acc)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Reviews wearable sleep staging reliability and multi-night ring validation. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10948771/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

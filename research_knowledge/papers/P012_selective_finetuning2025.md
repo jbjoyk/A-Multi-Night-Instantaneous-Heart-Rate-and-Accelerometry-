@@ -1,0 +1,44 @@
+# P012: SelectiveFinetuning: Enhancing Transfer Learning in Sleep Staging through Selective Domain Alignment
+
+- **paper_id:** `P012`
+- **title:** SelectiveFinetuning: Enhancing Transfer Learning in Sleep Staging through Selective Domain Alignment
+- **authors:** Siyuan Zhao, Chenyu Liu, Yi Ding, Xinliang Zhou
+- **year:** 2025
+- **venue:** arXiv preprint
+- **doi_or_id:** `arXiv:2501.03764v1`
+- **url:** https://arxiv.org/html/2501.03764v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Can selecting source-domain data that closely matches the target domain via Earth Mover's Distance (EMD) mitigate negative transfer in sleep staging?
+- **hypothesis:** Fine-tuning on EMD-selected compatible source samples prevents negative transfer caused by physiological/age/health domain shifts.
+- **dataset:** SHHS -> Sleep-EDF (20 and 78 subject subsets)
+- **number_of_subjects:** 20 and 78 (target Sleep-EDF subsets); SHHS count `UNKNOWN`
+- **number_of_nights:** `UNKNOWN`
+- **sensors:** EEG
+- **labels:** PSG
+- **task_definition:** 5-class sleep staging
+- **preprocessing:** `UNKNOWN`
+- **architecture:** Pre-trained Multi-Resolution CNN (MRCNN) + Domain Aligner
+- **personalization_method:** Transductive source-selection fine-tuning (no target labels used)
+- **adaptation_method:** Earth Mover's Distance (EMD) policy selects compatible source batches for fine-tuning
+- **calibration_data:** Unlabeled target-domain features
+- **evaluation_protocol:** Cross-dataset transfer (SHHS -> Sleep-EDF-20 and SHHS -> Sleep-EDF-78), compared against TENT, SAR, MSTGCN, MUDA, TTACS
+- **subject_split:** Cross-dataset disjoint
+- **temporal_split:** N/A
+- **external_validation:** Yes (SHHS -> Sleep-EDF)
+- **metrics:** Outperformed TENT, SAR, MSTGCN, MUDA, TTACS on accuracy and F1 (`UNKNOWN` exact percentages in retrieved snippet)
+- **statistical_testing:** `UNKNOWN`
+- **uncertainty_reporting:** `UNKNOWN`
+- **failure_cases:** Notes MUDA and TTACS struggle with imbalanced class distributions in sleep staging.
+- **limitations:** Transductive (requires unlabeled target batch + access to source data); tested on EEG, not wearable IHR+Accel.
+- **leakage_risks:** Low if target labels are unused.
+- **reproducibility:** `UNKNOWN`
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting` (for selective alignment / negative-transfer mitigation in sleep staging)
+- **transferable_method:** EMD-based domain similarity filtering before fine-tuning.
+- **possible_research_gap:** Adapting selective fine-tuning to **within-subject** calibration-night quality/representativeness gating when source data is unavailable at test time.
+
+### Provenance Notes
+- **Paper reports:** MRCNN + EMD Domain Aligner, SHHS -> Sleep-EDF-20/78 tasks, and failure of batch-level UDA under class imbalance (arXiv:2501.03764v1).
+- **We infer:** Reinforces that sleep staging's severe class imbalance breaks naive batch-level adaptation methods.

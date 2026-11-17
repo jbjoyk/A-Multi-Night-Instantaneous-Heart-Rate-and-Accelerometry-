@@ -1,0 +1,44 @@
+# P051: Wearable Sleep Staging: From Neurophysiology to Clinical Translation
+
+- **paper_id:** `P051`
+- **title:** Wearable Sleep Staging: From Neurophysiology to Clinical Translation
+- **authors:** Zohreh Abbasi, Maryam OstadSharif Memar, Ramtin Hamavar, Nadine Steingraeber, Reza Shahshahani, Joachim Gross, Omid Abbasi
+- **year:** 2026
+- **venue:** Preprints.org
+- **doi_or_id:** `preprints202606.0999`
+- **url:** https://www.preprints.org/manuscript/202606.0999
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Neurophysiology to clinical wearable staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Review
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** PPG, HRV, thermoregulatory, EDA
+- **labels:** PSG
+- **task_definition:** Neurophysiology to clinical wearable staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Review
+- **subject_split:** Review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Reviews PTT, PWA, and autonomic proxies across sleep stages.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Reviews PTT, PWA, and autonomic proxies across sleep stages. (Source: https://www.preprints.org/manuscript/202606.0999, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

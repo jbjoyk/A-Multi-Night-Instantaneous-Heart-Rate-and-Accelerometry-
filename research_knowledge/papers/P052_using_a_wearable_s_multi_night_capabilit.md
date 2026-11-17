@@ -1,0 +1,44 @@
+# P052: Using a Wearable's Multi-Night Capability to Mitigate Night-to-Night Variability
+
+- **paper_id:** `P052`
+- **title:** Using a Wearable's Multi-Night Capability to Mitigate Night-to-Night Variability
+- **authors:** Tsai CW, Palomo JM, Link B et al.
+- **year:** 2026
+- **venue:** J Dental Sleep Medicine
+- **doi_or_id:** `10.15331/jdsm.7416`
+- **url:** https://aadsm.org/journal/original_article_1_issue_131.php
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Night-to-night variability mitigation (>=3 nights)
+- **hypothesis:** UNKNOWN
+- **dataset:** Dental clinic cohort
+- **number_of_subjects:** 28
+- **number_of_nights:** 84
+- **sensors:** Wearable HSAT
+- **labels:** Multi-night HSAT
+- **task_definition:** Night-to-night variability mitigation (>=3 nights)
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Multi-night aggregation
+- **adaptation_method:** Multi-night aggregation
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Within-subject multi-night
+- **subject_split:** Within-subject multi-night
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Shows 3+ nights reduce night-to-night variability vs single-night testing.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Within-subject multi-night).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Multi-night aggregation
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Shows 3+ nights reduce night-to-night variability vs single-night testing. (Source: https://aadsm.org/journal/original_article_1_issue_131.php, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

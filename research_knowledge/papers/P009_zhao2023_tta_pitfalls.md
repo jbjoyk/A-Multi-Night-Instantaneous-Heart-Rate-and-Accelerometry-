@@ -1,0 +1,44 @@
+# P009: On Pitfalls of Test-Time Adaptation
+
+- **paper_id:** `P009`
+- **title:** On Pitfalls of Test-Time Adaptation
+- **authors:** Zhao H, Liu Y, Alahi A, Lin T
+- **year:** 2023
+- **venue:** ICML 2023 (PMLR v202)
+- **doi_or_id:** `arXiv:2306.03536`
+- **url:** https://arxiv.org/html/2306.03536
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Under what realistic distribution shifts, hyperparameter regimes, and pre-trained model properties do existing Test-Time Adaptation (TTA) methods succeed or fail?
+- **hypothesis:** Existing TTA evaluations rely on narrow, favorable settings and fail under batch dependency, suboptimal pre-trained models, and realistic label/correlation/non-stationary shifts.
+- **dataset:** TTAB benchmark (CIFAR10-C, CIFAR100-C, ImageNet-C, CIFAR10.1, OfficeHome, PACS, ColoredMNIST, Waterbirds)
+- **number_of_subjects:** N/A (vision benchmarks)
+- **number_of_nights:** N/A
+- **sensors:** N/A (image classification)
+- **labels:** Class labels
+- **task_definition:** Evaluation of 11 TTA algorithms (TTT, SHOT, BN_Adapt, TENT, TTT++, T3A, EATA, Conjugate PL, MEMO, NOTE, SAR)
+- **preprocessing:** Standard image pipelines
+- **architecture:** ResNet-26, WideResNet40-2, ResNet-50, ViT-Small/Base, CCT
+- **personalization_method:** N/A
+- **adaptation_method:** Episodic and online unsupervised TTA
+- **calibration_data:** Unlabeled test batches / streams
+- **evaluation_protocol:** Standardized TTAB benchmark; episodic vs online; with and without oracle model selection
+- **subject_split:** N/A
+- **temporal_split:** Tested temporally correlated non-stationary streams
+- **external_validation:** Multi-benchmark
+- **metrics:** Classification error (%)
+- **statistical_testing:** Mean $\pm$ SD across 3 seeds
+- **uncertainty_reporting:** SD across seeds
+- **failure_cases:** **Under strong label shift ($\alpha = 0.01$ on CIFAR10), all TTA methods except MEMO degraded error massively** (e.g., Baseline 7.8% -> BN_Adapt 77.8%, TENT 76.3%, SHOT-online 39.1%). Hyperparameter sensitivity caused up to 59.2%–64.4% drops.
+- **limitations:** Vision benchmarks rather than physiological time series.
+- **leakage_risks:** Explicitly exposes "oracle model selection" pitfall in prior TTA papers.
+- **reproducibility:** High (`github.com/lins-lab/ttab`).
+- **relevance_to_our_project:** `MEDIUM` (high theoretical transferability)
+- **evidence_strength:** `STRONG`
+- **stance:** `Contradicting` (exposes severe failure modes of adaptation under label shift & batch dependency)
+- **transferable_method:** Label-shift stress testing (Dirichlet $\alpha$); episodic vs online reset discipline.
+- **possible_research_gap:** Designing adaptation/gating protocols that explicitly detect or remain invariant to **label/prior shift** in multi-night sleep staging.
+
+### Provenance Notes
+- **Paper reports:** Table 3 error rates under Dirichlet label shift ($\alpha = 0.01$: Baseline 7.8%, BN_Adapt 77.8%, TENT 76.3%); Sections 4–6 on batch dependency and model quality bottlenecks (arXiv:2306.03536).
+- **We infer:** Provides direct theoretical and empirical precedent for why EXP-019's `UA-2` failed and why label shift between calibration and evaluation nights (`Bidslab34`) causes catastrophic adaptation failure.

@@ -2,112 +2,69 @@
 
 ## Current Task
 
-**EXP-019: MULTI-NIGHT WITHIN-PERSON ADAPTATION (CONFIRMATORY TEST OF HYPOTHESIS H-A) — FULLY COMPLETED (STAGES D AND C)**
+**EGM RESEARCH CONTEXT SYNCHRONIZATION: RESEARCH DIRECTION v4 & REVISED KNOWLEDGE BASE**
 
-1. **Pre-Registration & Protocol Governance**:
-   - `PREREG_EXP-019_H-A.md` locked, committed (`4dff5b7a5f13a96c3024b309131aa1e66489dcbb`), and synchronized to `origin main` prior to Stage C execution.
-   - Model A (`ConventionalCNNBiGRU`, 163,940 parameters, uncompressed) strictly frozen across all arms.
-   - 4-class staging: Wake (0), Light (1; N1+N2 combined), Deep (2; N3), REM (3). Full-night context horizon ($L=1200$, sliding-window probability stitching, `time_feat=0`). Unknown stages and padded positions mapped to `-100`.
-   - Cohort: 46 eligible subjects ($n_{\text{usable}} \ge 3$, 152 outer evaluation nights across 5 folds; `Bidslab49` excluded with $n_{\text{usable}}=2$).
-   - Unit of analysis: Subject (paired cluster bootstrap over 46 subjects, averaged across seeds 42, 123, 2024).
-
-2. **EXP-018 Model A Checkpoint Regeneration**:
-   - 15/15 checkpoints ($5\text{ folds} \times 3\text{ seeds}$) successfully regenerated and verified against historical EXP-018 Phase 2 results down to $\le 0.00010$ Macro-F1 difference ($\le 0.01\text{ pp}$).
-   - Stored locally at `experiments/EXP-018/checkpoints/modelA_L1200_fold{1..5}_seed{42,123,2024}.pt`.
-
-3. **Stage D: Nested Inner-Validation Selection**:
-   - Executed strictly on the 5 inner-validation subjects per fold (25 subjects total across 5 folds). Zero outer-test access.
-   - Evaluated candidate grids: 12 $FT\text{-}2$ configs, 4 $PS\text{-}2$ configs, 4 $UA\text{-}2$ configs.
-   - Winning configurations selected via 4-decimal rounded tie-breaker:
-     - Fold 1: $FT\text{-}2$ (lr=1e-4, epochs=5, scope=all) | $PS\text{-}2$ (lr=1e-3, steps=300) | $UA\text{-}2$ (lr=1e-5, steps=20)
-     - Fold 2: $FT\text{-}2$ (lr=3e-5, epochs=15, scope=all) | $PS\text{-}2$ (lr=1e-3, steps=500) | $UA\text{-}2$ (lr=1e-5, steps=20)
-     - Fold 3: $FT\text{-}2$ (lr=3e-5, epochs=15, scope=all) | $PS\text{-}2$ (lr=1e-3, steps=300) | $UA\text{-}2$ (lr=1e-5, steps=20)
-     - Fold 4: $FT\text{-}2$ (lr=3e-5, epochs=5, scope=head_gru) | $PS\text{-}2$ (lr=1e-3, steps=300) | $UA\text{-}2$ (lr=1e-5, steps=20)
-     - Fold 5: $FT\text{-}2$ (lr=3e-5, epochs=5, scope=all) | $PS\text{-}2$ (lr=1e-3, steps=300) | $UA\text{-}2$ (lr=1e-5, steps=20)
-   - Empirical standard deviation of paired differences ($FT\text{-}2 - ZS$): $s_{\Delta} = 2.2432\text{ pp}$.
-   - Continuous 80%-power threshold ($0.4131 \cdot s_{\Delta}$): $0.9267\text{ pp}$.
-   - Confirmed Practical Threshold: $\max(1.50, 0.9267) = \mathbf{+1.50\text{ pp}}$ (confirmed; no threshold escalation).
-   - Artifact: `experiments/EXP-019/exp019_stage_d_selected_configs.json`.
-
-4. **Stage C: Confirmatory Evaluation Across 46 Outer Test Subjects**:
-   - Single confirmatory execution evaluating 5 arms ($ZS$, $FT\text{-}2$, $FT\text{-}other\text{-}2$, $PS\text{-}2$, $UA\text{-}2$) over 3 seeds ($46 \times 5 \times 3 = 690$ runs total).
-   - In-memory deep copy weight restoration guarantees zero parameter or optimizer leakage across subjects.
-   - **Hypothesis Verdicts**:
-     - **H-A (Primary: $FT\text{-}2$ vs $ZS$)**:
-       - $\bar{\Delta} = \mathbf{+1.01\text{ pp}}$ ($64.58\% \to 65.59\%$).
-       - 95% Percentile Bootstrap CI (10,000 resamples): $\mathbf{[-0.17, +1.99]\text{ pp}}$.
-       - Wilcoxon signed-rank: $p = 0.00131$.
-       - Win rate: 73.9% (34 wins, 12 losses).
-       - Pre-registered Rule: Requires $\bar{\Delta} \ge +1.50\text{ pp}$ AND $\text{CI}_{\text{low}} > 0.0$.
-       - Verdict: **NOT SUPPORTED**.
-     - **S1 (Secondary: Specificity Control, $FT\text{-}2$ vs $FT\text{-}other\text{-}2$)**:
-       - $\bar{\Delta} = \mathbf{+2.73\text{ pp}}$ ($62.86\% \to 65.59\%$).
-       - 95% Bootstrap CI: $\mathbf{[+1.05, +4.32]\text{ pp}}$, Wilcoxon $p = 9.0 \times 10^{-6}$.
-       - Win rate: 78.3% (36 wins, 10 losses).
-       - Verdict: **SUPPORTED** (adaptation benefit is strictly person-specific; fine-tuning on another person actively degrades performance).
-     - **S2 (Secondary: Cohort Transfer Value, $FT\text{-}2$ vs $PS\text{-}2$)**:
-       - $\bar{\Delta} = \mathbf{+20.32\text{ pp}}$ ($45.27\% \to 65.59\%$).
-       - 95% Bootstrap CI: $\mathbf{[+17.70, +22.94]\text{ pp}}$, Wilcoxon $p < 10^{-10}$.
-       - Win rate: 100.0% (46 wins, 0 losses).
-       - Verdict: **SUPPORTED** (cohort pre-training provides indispensable representation foundation).
-     - **S3 (Secondary: Unsupervised InfoMax, $UA\text{-}2$ vs $ZS$)**:
-       - $\bar{\Delta} = \mathbf{0.00\text{ pp}}$, 95% CI: $[0.00, 0.00]\text{ pp}$.
-       - Verdict: **NOT SUPPORTED** (unsupervised entropy minimization on 2 nights fails to recalibrate).
+Following explicit user authorization per the KB Governance Rule, the workspace context is formally synchronized to **`RESEARCH_DIRECTION_v4_FULL.md`**, superseding `RESEARCH_DIRECTION_v3_FULL.md`, the v3.1 amendment, and `RESEARCH_DIRECTION_v4_AMENDMENT_PROPOSAL.md`.
 
 ---
 
-## Performance Summary by Arm
+## 1. Key Direction Changes (v4 Summary)
 
-| Arm | Description | Macro-F1 (Mean $\pm$ SD) | Cohen's $\kappa$ | Accuracy | Win Rate vs $ZS$ |
-|---|---|---|---|---|---|
-| **$ZS$** | Zero-Shot Outer-Fold Model A Backbone | $64.58\% \pm 7.74\%$ | 0.521 | 67.12% | — |
-| **$FT\text{-}2$** | Supervised Adaptation on Own $k=2$ Calibration Nights | $\mathbf{65.59\% \pm 8.59\%}$ | **0.534** | **68.04%** | **73.9%** (34/46) |
-| **$FT\text{-}other\text{-}2$** | Specificity Control (Donor from Same Fold) | $62.86\% \pm 8.85\%$ | 0.498 | 65.41% | 23.9% (11/46) |
-| **$PS\text{-}2$** | Per-Subject Model Trained from Scratch on $k=2$ Nights | $45.27\% \pm 9.42\%$ | 0.284 | 48.91% | 0.0% (0/46) |
-| **$UA\text{-}2$** | Unsupervised InfoMax Test-Time Adaptation | $64.58\% \pm 7.74\%$ | 0.521 | 67.12% | 0.0% (0/46, all ties) |
-
----
-
-## Key Scientific Conclusions
-
-1. **Personalization is Biologically Genuine (S1 Supported)**: Fine-tuning on an individual's own data produces a $+2.73\text{ pp}$ advantage over fine-tuning on another subject's data ($p = 9.0 \times 10^{-6}$). Generic optimization on another person degrades accuracy by $-1.72\text{ pp}$ below zero-shot baseline, disproving the critique that fine-tuning is merely non-specific parameter drift.
-2. **Population Transfer is Indispensable (S2 Supported)**: Training models per-subject from scratch on small calibration windows achieves only $45.27\%$ Macro-F1; population-level pre-training provides a $+20.32\text{ pp}$ advantage.
-3. **Primary Effect Falls Below Practical Threshold (H-A Not Supported)**: While 73.9% of subjects improve and the shift is statistically significant in direction ($p = 0.00131$), the average population gain $+1.01\text{ pp}$ is below the locked practical threshold ($+1.50\text{ pp}$) due to a small minority of subjects exhibiting severe calibration distribution mismatch (e.g. `Bidslab34` at $-16.34\text{ pp}$).
-4. **Self-Supervised Adaptation Fails at $k=2$ (S3 Not Supported)**: Unsupervised entropy minimization on 2 wearable nights cannot discover personal sleep structure without labels.
+1. **Reframed Research Position**:
+   - The prior assumption that "multi-night personalization is an open lane" is formally withdrawn following the identification of van der Aar et al. 2025 (*Physiological Measurement*, DOI: 10.1088/1361-6579/ae0119), which demonstrated multi-night wrist PPG + accelerometry personalization in $n=59$ adults across up to 7 home nights (82.5% improved; significant at $\ge 3$ nights).
+   - The research is now positioned as:
+     > A pre-registered, leakage-free replication and extension of multi-night supervised personalization using consumer-smartwatch instantaneous heart rate (IHR, ~0.2 Hz) and accelerometry in healthy adults, with chronological evaluation, specificity controls, calibration-night learning curves, heterogeneity/failure analysis, external validation, and clinical sleep-summary agreement.
+2. **Ratified Contribution Structure**:
+   - **C1 (Primary)**: Pre-registered, leakage-free replication and extension with consumer IHR + accelerometry in healthy adults (FT-other specificity control, $k=1–4$ learning curve, heterogeneity analysis).
+   - **C2 (Secondary, Exploratory)**: Calibration-night class coverage as a candidate failure mode, with nested evaluation of regularized or gated adaptation.
+   - **C3**: External zero-shot validation (EXP-027) and clinical sleep-summary agreement (EXP-028).
+3. **Primary Question**:
+   > How much do two or more labeled earlier nights help consumer-smartwatch IHR and accelerometry sleep staging in healthy adults, who is harmed, and why, under strict chronological, subject-level, leakage-free evaluation?
 
 ---
 
-## Artifact Inventory
+## 2. Experimental Status & Governance Reconciliation (EXP-019)
 
-- `PREREG_EXP-019_H-A.md` (Locked at `4dff5b7a5f13a96c3024b309131aa1e66489dcbb`)
-- `experiments/EXP-019/EXP019_FINAL_REPORT.md` (Comprehensive scientific evaluation report)
-- `experiments/EXP-019/exp019_stage_c_results.json` (Full metrics, CIs, p-values, per-subject summaries)
-- `experiments/EXP-019/exp019_stage_d_selected_configs.json` (Inner-val grid outputs and empirical variance)
-- `experiments/EXP-019/exp019_subject_metrics.csv` (Per-subject metrics table across 46 subjects)
-- `experiments/EXP-019/exp019_summary.csv` (Arm-level summary table)
-- `experiments/EXP-019/run_exp019_stage_c.py` (Confirmatory evaluation script)
-- `experiments/EXP-019/run_exp019_stage_d.py` (Nested inner-validation script)
-- `experiments/EXP-019/exp019_adaptation_core.py` (Shared PyTorch adaptation library)
-- `tests/test_exp019_invariants.py` (Unit and invariant test suite; 6/6 passed)
-- `experiments/EXP-018/checkpoints/modelA_L1200_fold{1..5}_seed{42,123,2024}.pt` (15 verified Model A backbones)
+All EXP-019 numerical results, split manifests, model checkpoints, and preregistration files remain strictly immutable.
+
+| Arm / Hypothesis | Estimand & Metric | Status & Reconciled Interpretation |
+|---|---|---|
+| **H-A ($FT\text{-}2$ vs $ZS$)** | $\bar{\Delta} = \mathbf{+1.01\text{ pp}}$ [95% CI: $\mathbf{-0.17, +1.99\text{ pp}}$], $p = 0.00131$, win rate 73.9% (34/46) | **LOCKED (Reconciled Governance Label: INCONCLUSIVE)**<br>• Section 6 of `git show 4dff5b7:PREREG_EXP-019_H-A.md` defines SUPPORTED ($\bar{\Delta} \ge +1.50$ & CI_low > 0), NOT SUPPORTED ($\text{CI}_{\text{high}} < +1.50$), and INCONCLUSIVE (otherwise).<br>• Because the 95% CI upper bound (+1.99 pp) is NOT $< +1.50\text{ pp}$, the preregistered rule evaluates strictly to **INCONCLUSIVE**, whereas the report labeled it NOT SUPPORTED.<br>• Reconciled via erratum. Safe summary: "Supervised 2-night adaptation did not reach the pre-registered practical threshold (+1.50 pp) and is inconclusive for effects up to ~2 pp." |
+| **S1 ($FT\text{-}2$ vs $FT\text{-}other\text{-}2$)** | $\bar{\Delta} = \mathbf{+2.73\text{ pp}}$ [95% CI: $\mathbf{+1.05, +4.32\text{ pp}}$], $p = 9.0 \times 10^{-6}$ | **SUPPORTED (Specificity Confirmed)**<br>• Fine-tuning on a person's own nights outperforms fine-tuning on another person's nights.<br>• *Critical nuance:* $FT\text{-}other\text{-}2$ degrades performance by $-1.72\text{ pp}$ below $ZS$ ($62.86\%$ vs $64.58\%$). Much of the $+2.73\text{ pp}$ gap reflects donor fine-tuning harm. |
+| **S2 ($FT\text{-}2$ vs $PS\text{-}2$)** | $\bar{\Delta} = \mathbf{+20.32\text{ pp}}$ [95% CI: $\mathbf{+17.70, +22.94\text{ pp}}$], $p < 10^{-10}$ | **SUPPORTED (Cohort Foundation Indispensable)**<br>• Per-subject scratch training achieves only $45.27\%$ Macro-F1. Treated as a baseline check. |
+| **S3 ($UA\text{-}2$ vs $ZS$)** | $\bar{\Delta} = \mathbf{0.00\text{ pp}}$ [95% CI: $\mathbf{0.00, 0.00\text{ pp}}$] identically across 46 subjects | **UNRESOLVED (Suspected Implementation No-Op)**<br>• Must not be cited as evidence against unsupervised adaptation until Phase A2 audit checks parameter updates and logit changes. |
+| **$k=1–4$ Learning Curve** | Gain vs number of calibration nights | **Pre-registered Descriptive Output (Pending Phase A3)**<br>• Critical for comparing with van der Aar et al. 2025's finding of significance at $\ge 3$ nights. |
 
 ---
 
-## Next Concrete Tasks
+## 3. Work Plan Phasing (v4)
 
-1. **EGM Review & Heterogeneity Audit Remediation (COMPLETED)**:
-   - EGM Goldfish Review Protocol (Stages 5–9) completed for `HETEROGENEITY_AUDIT_REPORT.md` and `audit_heterogeneity_mechanisms.py`.
-   - Resolution executed via `goldfish_review_report.md` authority (Status: RESOLVED).
-   - Applied items C-1 through C-10:
-     - Section 3 reframed as an exploratory/counterfactual stress-test of static pre-screening, highlighting false positive responder rejection (`Bidslab15`, $+1.27\text{ pp}$) and low sensitivity ($8.3\%$). Future algorithmic regularization noted strictly as future hypotheses.
-     - 4-bullet executive metadata box added to `HETEROGENEITY_AUDIT_REPORT.md`.
-     - Table 1 grouped by Mechanism 1–6 with hypothesis IDs; Subsection 2.D added for null mechanisms M2, M4, M6.
-     - Pearson $r$ ($r = +0.2269, p = 0.1293$) reported alongside Spearman $\rho$ ($\rho = +0.0376, p = 0.8043$) for Oldham's mean, confirming that baseline Zero-Shot performance does not govern adaptation headroom. Causal language de-escalated to objective diagnostic phrasing.
-     - Deterministic PyTorch/NumPy RNG seeding added to `audit_heterogeneity_mechanisms.py` for bitwise reproducibility.
-     - CLI defaults anchored to `repo_root`, `exp019_dir` added to `sys.path`, function docstrings and `--help` strings added, dead code cleaned, and population prior filtered for usable nights.
-   - Item D-1 kept rejected with justification (1 Hz IHR constraint); Item D-2 kept deferred to future protocol design (zero retraining or model alterations).
-2. **Descriptive Exploratory Analyses (Authorized under Research Plan)**:
-   - Calibration efficiency curve: evaluate gains across $k \in \{1, 2, 3, 4\}$ calibration nights for subjects with $\ge 5$ nights.
-   - Clinical sleep summary agreement (TST, SOL, WASO, sleep efficiency, REM%, Deep%) comparing $ZS$ and $FT\text{-}2$.
-3. **Continuous Git Synchronization**:
-   - Commit all resolved audit reports and scripts and push to `origin main`.
+- **Phase A: Close out EXP-019 (Immediate Priority)**
+  - A1: Settle H-A verdict label against locked preregistration decision rule via formal erratum.
+  - A2: S3 no-op audit (inspect weight drift, gradient flow, and inference checkpoint assignment).
+  - A3: Report missing preregistered outputs ($k=1–4$ curve, sleep-summary agreement, per-stage F1, confusion matrices, Holm correction).
+  - A4: Update S1 documentation with donor fine-tuning harm clarification.
+  - A5: Complete NAS Iteration 1 erratum (confirming architecture search is closed).
+- **Phase B: Evidence Base & Systematic Literature Search**
+  - B1: Apply KB round-2 corrections (Heremans PMID, P011/P009 grading, P101 text, Lorenzen DOI).
+  - B2: Conduct systematic search tracking forward citations of Song 2026, Phan 2020, Mikkelsen 2018, van der Aar 2025.
+  - B3: Full-text review of core papers; build "closest ten" comparison matrix and dated novelty statement.
+- **Phase C: Data Search**
+  - C1: Search for an independent, second multi-night labeled wearable dataset ($\ge 3$ nights/subject, wrist IHR/PPG + accelerometry, PSG/EEG labels). Strongest Q1 lever.
+- **Phase D: Experiments (Strictly Gated)**
+  - D1: EXP-020 (exploratory, design-informed regularized/gated adaptation) — strictly gated until Phases A–C and a committed preregistration block are completed.
+  - D2: EXP-019B heterogeneity hypothesis testing.
+  - D3: EXP-027 external zero-shot transfer (SleepAccel).
+  - D4: EXP-028 clinical sleep-summary agreement.
+  - D5: Replication on second dataset if found.
+- **Phase E: Synthesis & Writing**
+
+---
+
+## 4. Next Concrete Tasks
+
+1. **Phase A1**: Author and commit formal erratum documenting the H-A verdict reconciliation (INCONCLUSIVE under preregistration rule vs NOT SUPPORTED in early report).
+2. **Phase A2**: Execute diagnostic script auditing `UA-2` checkpoints and code to determine whether $UA\text{-}2$ executed as an unintended no-op.
+3. **Phase A3**: Extract the $k=1–4$ learning curve from existing EXP-019 artifacts / predictions across eligible subjects.
+4. **Phase B1**: Verify and apply pending Knowledge Base round-2 errata fixes.
+5. **Continuous Git Synchronization**: Commit all updated governance documents and push to GitHub (`origin main`).

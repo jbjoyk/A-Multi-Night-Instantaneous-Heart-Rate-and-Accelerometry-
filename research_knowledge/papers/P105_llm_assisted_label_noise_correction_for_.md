@@ -1,0 +1,44 @@
+# P105: LLM-Assisted Label Noise Correction for EEG-Based Sleep Stage Classification
+
+- **paper_id:** `P105`
+- **title:** LLM-Assisted Label Noise Correction for EEG-Based Sleep Stage Classification
+- **authors:** Elmira Salari, Shruti Kshirsagar
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2611.08311v1`
+- **url:** https://arxiv.org/html/2611.08311v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Mitigating 72-82% inter-rater label noise in sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG sleep datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** PSG (noisy rater labels)
+- **task_definition:** Mitigating 72-82% inter-rater label noise in sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Label noise correction
+- **adaptation_method:** Label noise correction
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Highlights 72-82% clinician inter-rater agreement ceiling, especially at N1 and N2/N3 boundaries.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM` (adjacent method/leakage evidence only; non-sleep/non-wearable)
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Label noise correction
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Highlights 72-82% clinician inter-rater agreement ceiling, especially at N1 and N2/N3 boundaries. (Source: https://arxiv.org/html/2611.08311v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

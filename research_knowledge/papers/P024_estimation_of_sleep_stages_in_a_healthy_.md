@@ -1,0 +1,44 @@
+# P024: Estimation of sleep stages in a healthy adult population from optical plethysmography and accelerometer signals
+
+- **paper_id:** `P024`
+- **title:** Estimation of sleep stages in a healthy adult population from optical plethysmography and accelerometer signals
+- **authors:** Beattie Z, Oyang Y, Statan A et al.
+- **year:** 2017
+- **venue:** Physiological Measurement
+- **doi_or_id:** `PMID:29087960`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/29087960/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 4-class (W/L/D/REM)
+- **hypothesis:** UNKNOWN
+- **dataset:** Fitbit Surge + Embletta
+- **number_of_subjects:** 60
+- **number_of_nights:** 60
+- **sensors:** Wrist PPG + 3D accel
+- **labels:** Type III home EEG/EOG/ECG (AASM)
+- **task_definition:** 4-class (W/L/D/REM)
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Leave-one-subject-out CV
+- **subject_split:** Leave-one-subject-out CV
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Foundational wrist PPG+accel benchmark: 69% acc, k=0.52+/-0.14.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Leave-one-subject-out CV).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Foundational wrist PPG+accel benchmark: 69% acc, k=0.52+/-0.14. (Source: https://pubmed.ncbi.nlm.nih.gov/29087960/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

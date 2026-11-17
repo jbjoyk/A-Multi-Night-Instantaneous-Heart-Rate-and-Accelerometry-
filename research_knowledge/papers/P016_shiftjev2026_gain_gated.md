@@ -1,0 +1,44 @@
+# P016: Shift-Jev: Certified Abstention and Gain-Gated Continual Adaptation
+
+- **paper_id:** `P016`
+- **title:** Shift-Jev: Certified Abstention and Gain-Gated Continual Adaptation
+- **authors:** Muhammad Atif Saeed, Azka Atiq, Adarsh Kumar, Akhtar Jamil, Uzair Iqbal, Roland Aydin
+- **year:** 2026
+- **venue:** arXiv preprint
+- **doi_or_id:** `arXiv:2610.34329v1`
+- **url:** https://arxiv.org/html/2610.34329v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** How can continual adaptation be gain-gated and paired with certified abstention under distribution shift?
+- **hypothesis:** Gain-gated continual adaptation with certified abstention controls selective risk below target $\alpha$ while preserving adaptation gains.
+- **dataset:** `UNKNOWN` (LLM/Qwen benchmarks in snippet)
+- **number_of_subjects:** N/A
+- **number_of_nights:** N/A
+- **sensors:** N/A
+- **labels:** Task labels
+- **task_definition:** Selective prediction (abstention) + gain-gated continual adaptation
+- **preprocessing:** N/A
+- **architecture:** Qwen backbones (3 seeds)
+- **personalization_method:** Gain-gated continual adaptation
+- **adaptation_method:** Gain-gated adapter updates + certified abstention
+- **calibration_data:** Streaming/sequential environments
+- **evaluation_protocol:** Paired bootstrap intervals for AURC (Area Under Risk-Coverage Curve); per-seed paired differences; two-sided exact sign test; coverage & realized selective risk violations
+- **subject_split:** N/A
+- **temporal_split:** Sequential stream
+- **external_validation:** Multi-environment
+- **metrics:** AURC, coverage, realized selective risk, per-seed accuracy delta
+- **statistical_testing:** Paired bootstrap CIs for AURC, exact sign test over unique items
+- **uncertainty_reporting:** Mean $\pm$ SD across 3 seeds + bootstrap CIs
+- **failure_cases:** Risk violations when realized risk exceeds $\alpha$.
+- **limitations:** Evaluated on LLMs rather than physiological time series.
+- **leakage_risks:** Explicitly separates per-seed paired evaluations without pooling seeds as independent samples.
+- **reproducibility:** High (3 seeds, hyperparameters in Appendix A)
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting` (methodological precedent for **gain-gated adaptation** and **AURC risk-coverage evaluation**)
+- **transferable_method:** Risk-coverage (AURC) evaluation for selective adaptation gating + non-pooled multi-seed statistical testing.
+- **possible_research_gap:** Applying risk-coverage (AURC) and gain-gated adaptation to subject-level sleep staging.
+
+### Provenance Notes
+- **Paper reports:** AURC paired bootstrap CIs, coverage vs realized selective risk, gain-gated continual adaptation, and 3-seed non-pooled sign test (arXiv:2610.34329v1).
+- **We infer:** AURC (risk-coverage curve) is an ideal evaluation metric for `FQ-2` (pre-adaptation calibration gating) to quantify the trade-off between abstention rate and worst-case subject protection.

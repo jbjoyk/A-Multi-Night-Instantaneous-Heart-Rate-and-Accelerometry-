@@ -1,0 +1,44 @@
+# P019: An automated heart rate-based algorithm for sleep stage classification: Validation using conventional polysomnography and an innovative wearable electrocardiogram device
+
+- **paper_id:** `P019`
+- **title:** An automated heart rate-based algorithm for sleep stage classification: Validation using conventional polysomnography and an innovative wearable electrocardiogram device
+- **authors:** Pini N, Ong JL, Yilmaz G, Chee NIYN, Siting Z, Awasthi A, Biju S, Kishan K, Patanaik A, Fifer WP, Lucchini M
+- **year:** 2022
+- **venue:** Frontiers in Neuroscience
+- **doi_or_id:** `PMC9584568`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC9584568/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 4-class sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** CinC / wearable ECG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearable ECG / HR
+- **labels:** PSG
+- **task_definition:** 4-class sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent validation
+- **subject_split:** Subject-independent validation
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Validates ECG-to-wearable HR transfer.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent validation).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Validates ECG-to-wearable HR transfer. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC9584568/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

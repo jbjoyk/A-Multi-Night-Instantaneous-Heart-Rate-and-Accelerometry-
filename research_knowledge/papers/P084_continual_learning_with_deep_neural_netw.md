@@ -1,0 +1,44 @@
+# P084: Continual Learning with Deep Neural Networks in Physiological Signal Data: A Survey
+
+- **paper_id:** `P084`
+- **title:** Continual Learning with Deep Neural Networks in Physiological Signal Data: A Survey
+- **authors:** Ao Li, Huayu Li, Geng Yuan
+- **year:** 2024
+- **venue:** PMC
+- **doi_or_id:** `PMC10815736`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10815736/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Continual learning survey for biosignals
+- **hypothesis:** UNKNOWN
+- **dataset:** Survey (ECG, EEG, PPG, EMG)
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Physiological signals
+- **labels:** Various
+- **task_definition:** Continual learning survey for biosignals
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Replay, regularization, architectural CL
+- **adaptation_method:** Replay, regularization, architectural CL
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Review
+- **subject_split:** Review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Warns that non-representative replay data introduces bias during continual adaptation.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** Replay, regularization, architectural CL
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Warns that non-representative replay data introduces bias during continual adaptation. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10815736/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

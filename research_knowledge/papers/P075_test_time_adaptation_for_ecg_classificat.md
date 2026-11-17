@@ -1,0 +1,44 @@
+# P075: Test-Time Adaptation for ECG Classification via SQI-Gated Self-Training (BeatRhythm-TTA)
+
+- **paper_id:** `P075`
+- **title:** Test-Time Adaptation for ECG Classification via SQI-Gated Self-Training (BeatRhythm-TTA)
+- **authors:** Wenhan Jiang, Zhipeng Deng et al.
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2608.23347`
+- **url:** https://arxiv.org/abs/2608.23347
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** SQI-gated TTA for cardiac time series
+- **hypothesis:** UNKNOWN
+- **dataset:** PTB-XL -> CPSC2018 / Georgia
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** ECG
+- **labels:** Multi-label cardiac diagnosis
+- **task_definition:** SQI-gated TTA for cardiac time series
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Signal Quality Index (SQI)-gated adaptation + dual-level consistency
+- **adaptation_method:** Signal Quality Index (SQI)-gated adaptation + dual-level consistency
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-cohort (+2.70% rel MF1)
+- **subject_split:** Cross-cohort (+2.70% rel MF1)
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Direct precedent for quality-gated adaptation on cardiac signals to prevent artifact-driven drift.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-cohort (+2.70% rel MF1)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Signal Quality Index (SQI)-gated adaptation + dual-level consistency
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Direct precedent for quality-gated adaptation on cardiac signals to prevent artifact-driven drift. (Source: https://arxiv.org/abs/2608.23347, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

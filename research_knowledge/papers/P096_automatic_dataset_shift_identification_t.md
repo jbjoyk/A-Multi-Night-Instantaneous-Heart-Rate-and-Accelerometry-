@@ -1,0 +1,44 @@
+# P096: Automatic dataset shift identification to support safe deployment of medical AI
+
+- **paper_id:** `P096`
+- **title:** Automatic dataset shift identification to support safe deployment of medical AI
+- **authors:** Mélanie Roschewitz, Raghav Mehta, Charles Jones, Ben Glocker
+- **year:** 2025
+- **venue:** MICCAI 2025
+- **doi_or_id:** `arXiv:2411.07940v3`
+- **url:** https://arxiv.org/html/2411.07940v3
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Automated shift identification (covariate vs label shift)
+- **hypothesis:** UNKNOWN
+- **dataset:** Medical imaging
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Medical images
+- **labels:** Clinical labels
+- **task_definition:** Automated shift identification (covariate vs label shift)
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Shift identification + label-shift calibration
+- **adaptation_method:** Shift identification + label-shift calibration
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-site
+- **subject_split:** Cross-site
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Separates covariate vs label shift for safe medical AI deployment.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-site).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Shift identification + label-shift calibration
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Separates covariate vs label shift for safe medical AI deployment. (Source: https://arxiv.org/html/2411.07940v3, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

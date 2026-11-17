@@ -1,0 +1,44 @@
+# P061: Automatic sleep staging of single-channel EEG based on domain adaptation (TDSAN)
+
+- **paper_id:** `P061`
+- **title:** Automatic sleep staging of single-channel EEG based on domain adaptation (TDSAN)
+- **authors:** Dong-Rui Gao, Jing Li, Man-Qing Wang, Lu-Tao Wang, Yong-Qing Zhang
+- **year:** 2023
+- **venue:** Frontiers / PMC
+- **doi_or_id:** `PMC10117677`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10117677/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Cross-dataset UDA
+- **hypothesis:** UNKNOWN
+- **dataset:** Cross-dataset EEG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Single-channel EEG
+- **labels:** PSG
+- **task_definition:** Cross-dataset UDA
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Domain-specific attention + augmentation for imbalance
+- **adaptation_method:** Domain-specific attention + augmentation for imbalance
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-dataset
+- **subject_split:** Cross-dataset
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Addresses class imbalance in sleep UDA.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-dataset).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Domain-specific attention + augmentation for imbalance
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Addresses class imbalance in sleep UDA. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10117677/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

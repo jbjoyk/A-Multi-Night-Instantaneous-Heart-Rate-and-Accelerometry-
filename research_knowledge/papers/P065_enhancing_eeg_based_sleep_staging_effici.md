@@ -1,0 +1,44 @@
+# P065: Enhancing EEG-based sleep staging efficiency with minimal channels through adversarial domain adaptation and active deep learning
+
+- **paper_id:** `P065`
+- **title:** Enhancing EEG-based sleep staging efficiency with minimal channels through adversarial domain adaptation and active deep learning
+- **authors:** PubMed 40645218
+- **year:** 2025
+- **venue:** J Neural Eng
+- **doi_or_id:** `PMID:40645218`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/40645218/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Active learning + adversarial DA
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG sleep datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Minimal-channel EEG
+- **labels:** PSG
+- **task_definition:** Active learning + adversarial DA
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** ADA + active label selection
+- **adaptation_method:** ADA + active label selection
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-domain
+- **subject_split:** Cross-domain
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Combines active querying with domain adaptation.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-domain).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** ADA + active label selection
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Combines active querying with domain adaptation. (Source: https://pubmed.ncbi.nlm.nih.gov/40645218/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

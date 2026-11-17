@@ -455,7 +455,7 @@
        - Wilcoxon signed-rank: $p = 0.00131$.
        - Subject win rate: 73.9% (34 wins, 12 losses).
        - Decision Rule Evaluation: Fails to meet pre-registered criteria ($\bar{\Delta} \ge +1.50\text{ pp}$ AND $\text{CI}_{\text{low}} > 0.0$).
-       - Formal Verdict: **NOT SUPPORTED**.
+       - Formal Verdict: **NOT SUPPORTED** *(Reconciled to INCONCLUSIVE in DEC-029 erratum per locked preregistration decision rule)*.
      - **Secondary Hypothesis S1 (Specificity: $FT\text{-}2$ vs $FT\text{-}other\text{-}2$)**:
        - Estimand: $\bar{\Delta} = \mathbf{+2.73\text{ pp}}$ (from $62.86\% \pm 8.85\%$ to $65.59\% \pm 8.59\%$).
        - 95% Bootstrap CI: $\mathbf{[+1.05, +4.32]\text{ pp}}$.
@@ -469,9 +469,44 @@
        - Formal Verdict: **SUPPORTED** (cohort pre-training provides indispensable representation foundation).
      - **Secondary Hypothesis S3 (Unsupervised InfoMax: $UA\text{-}2$ vs $ZS$)**:
        - Estimand: $\bar{\Delta} = \mathbf{0.00\text{ pp}}$, 95% CI: $[0.00, 0.00]\text{ pp}$.
-       - Formal Verdict: **NOT SUPPORTED** (unsupervised test-time entropy minimization on 2 nights is ineffective without supervisory signal).
+       - Formal Verdict: **NOT SUPPORTED** *(Reclassified to UNRESOLVED in DEC-029 pending no-op audit)* (unsupervised test-time entropy minimization on 2 nights is ineffective without supervisory signal).
 - Reversible: No; Stage C confirmatory evaluation was executed under locked pre-registration and finalized.
 
 
 
 
+
+
+### DEC-029 (2026-11-17): Formal Adoption of Research Direction v4, Prior Art Re-alignment, and EXP-019 Governance Reconciliation
+
+- Date: 2026-11-17
+- Authoritative Direction: `RESEARCH_DIRECTION_v4_FULL.md` is formally adopted as the working research direction for the project, superseding `RESEARCH_DIRECTION_v3_FULL.md`, the v3.1 amendment, and `RESEARCH_DIRECTION_v4_AMENDMENT_PROPOSAL.md`.
+- Key Policy Decisions & Governance Reconciliations:
+  1. **Withdrawal of Novelty "Open Lane" Claim**:
+     - Literature identification of van der Aar et al. 2025 (*Physiological Measurement*, DOI: 10.1088/1361-6579/ae0119) establishes direct precedent for multi-night personalization using wrist PPG + accelerometry in sleep-disordered adults (82.5% improved, significant at $\ge 3$ nights).
+     - The "open lane" novelty claim in v3 is formally withdrawn.
+     - Research is reframed as a pre-registered, leakage-free replication and extension using consumer-smartwatch instantaneous heart rate (IHR, ~0.2 Hz) and accelerometry in healthy adults, emphasizing specificity controls, calibration learning curves, failure-mode heterogeneity, external validation, and clinical sleep summaries.
+  2. **Ratification of Contribution Structure (C1–C3)**:
+     - **C1 (Primary)**: Pre-registered, leakage-free replication and extension of multi-night supervised personalization with consumer IHR + accelerometry in healthy adults (FT-other specificity control, $k=1–4$ learning curve, heterogeneity analysis).
+     - **C2 (Secondary, Exploratory)**: Calibration-night class coverage (stage absence) as a candidate failure mode, with nested evaluation of regularized or gated adaptation.
+     - **C3**: External zero-shot validation (EXP-027) and clinical sleep-summary agreement (EXP-028).
+  3. **Reconciliation of Hypothesis H-A Verdict Label (Erratum)**:
+     - The numerical result of H-A (+1.01 pp Macro-F1, 95% CI [-0.17, +1.99] pp, 34/46 improved) is immutable.
+     - Inspection of locked preregistration text (`git show 4dff5b7:PREREG_EXP-019_H-A.md` Section 6) establishes the decision rule:
+       - SUPPORTED: $\bar{\Delta} \ge +1.50\text{ pp}$ AND CI lower bound $> 0$.
+       - NOT SUPPORTED: CI upper bound $< +1.50\text{ pp}$.
+       - INCONCLUSIVE: anything else.
+     - Because the observed 95% CI upper bound is $+1.99\text{ pp}$ (which is NOT $< +1.50\text{ pp}$), the exact preregistered rule evaluates to **INCONCLUSIVE**, whereas early reports labeled it "NOT SUPPORTED".
+     - This governance discrepancy is resolved via formal documentation. The accurate scientific statement is: "Supervised two-night adaptation did not meet the pre-registered threshold (mean +1.01 pp, 95% CI -0.17 to +1.99; 34/46 improved), and the result is inconclusive for effects up to about 2 pp."
+  4. **Reclassification of Secondary Hypothesis S3**:
+     - S3 ($UA\text{-}2$ vs $ZS = 0.00\text{ pp}$ identically across all 46 subjects) is reclassified as **UNRESOLVED** pending an implementation audit (Phase A2) checking whether $UA\text{-}2$ executed as an unintended no-op.
+     - Must not be interpreted as evidence against unsupervised adaptation until verified.
+  5. **Interpretation Nuance for S1**:
+     - S1 ($FT\text{-}2$ vs $FT\text{-}other\text{-}2 = +2.73\text{ pp}$, Supported) is clarified: $FT\text{-}other\text{-}2$ active degradation ($-1.72\text{ pp}$ below $ZS$) accounts for the majority of the gap. Personalization is biologically specific, but cross-subject fine-tuning is harmful.
+  6. **Retirement of SLAMSS-IFS Parity Framing & EXP-012 Test Set**:
+     - The general "approximate parity" claim with SLAMSS-IFS is withdrawn. Out-of-fold accuracy is 66.2%–66.6% (4.4–4.9 pp below published 71.04% under unknown class granularity and split). Comparisons must state "lower accuracy than reported SLAMSS-IFS result under a different protocol."
+     - The historical EXP-012 test set (11 subjects, 58 nights) is formally classified as **SPENT**.
+  7. **Phase Phasing & Anti-Premature Training Gate**:
+     - Phased roadmap ratified: Phase A (Close EXP-019), Phase B (Evidence Base), Phase C (Data Search), Phase D (Experiments), Phase E (Synthesis).
+     - Explicit Rule: Do NOT interpret v4 as permission to immediately run EXP-020. EXP-020 is gated behind Phase A, B, C and explicit preregistration.
+- Reversible: No; ratified working research direction.

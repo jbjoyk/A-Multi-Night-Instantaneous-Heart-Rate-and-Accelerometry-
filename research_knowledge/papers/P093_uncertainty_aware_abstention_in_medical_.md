@@ -1,0 +1,44 @@
+# P093: Uncertainty-aware abstention in medical diagnosis based on medical texts
+
+- **paper_id:** `P093`
+- **title:** Uncertainty-aware abstention in medical diagnosis based on medical texts
+- **authors:** Artem Vazhentsev, Ivan Sviridov et al.
+- **year:** 2025
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2502.18050v1`
+- **url:** https://arxiv.org/html/2502.18050v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Uncertainty-aware selective prediction
+- **hypothesis:** UNKNOWN
+- **dataset:** Medical diagnosis
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Medical text
+- **labels:** Diagnosis
+- **task_definition:** Uncertainty-aware selective prediction
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Abstention under uncertainty
+- **adaptation_method:** Abstention under uncertainty
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Medical benchmarks
+- **subject_split:** Medical benchmarks
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Medical abstention methodology.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Medical benchmarks).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `LOW`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Abstention under uncertainty
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Medical abstention methodology. (Source: https://arxiv.org/html/2502.18050v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`LOW`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

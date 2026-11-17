@@ -1,0 +1,44 @@
+# P040: Accuracy of Three Commercial Wearable Devices for Sleep Tracking in Healthy Adults
+
+- **paper_id:** `P040`
+- **title:** Accuracy of Three Commercial Wearable Devices for Sleep Tracking in Healthy Adults
+- **authors:** Robbins R et al.
+- **year:** 2024
+- **venue:** Sensors (MDPI)
+- **doi_or_id:** `PMC11511193`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC11511193/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 4-stage sleep classification
+- **hypothesis:** UNKNOWN
+- **dataset:** Healthy adults
+- **number_of_subjects:** 35
+- **number_of_nights:** 35
+- **sensors:** Apple Watch 8, Fitbit Sense 2, Oura Ring Gen3
+- **labels:** PSG
+- **task_definition:** 4-stage sleep classification
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None (black-box)
+- **adaptation_method:** None (black-box)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Concurrent PSG
+- **subject_split:** Concurrent PSG
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** 4-stage kappa: Oura 0.65, Apple Watch 0.60, Fitbit 0.55; Apple Watch underestimated Deep by 43 min.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Concurrent PSG).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None (black-box)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** 4-stage kappa: Oura 0.65, Apple Watch 0.60, Fitbit 0.55; Apple Watch underestimated Deep by 43 min. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC11511193/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

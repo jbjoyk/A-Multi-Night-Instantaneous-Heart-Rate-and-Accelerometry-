@@ -1,0 +1,44 @@
+# P086: CLOCS: Contrastive Learning of Cardiac Signals Across Space, Time, and Patients
+
+- **paper_id:** `P086`
+- **title:** CLOCS: Contrastive Learning of Cardiac Signals Across Space, Time, and Patients
+- **authors:** Kiyasseh D, Zhu T, Clifton DA
+- **year:** 2021
+- **venue:** ICML 2021 (PMLR v139)
+- **doi_or_id:** `arXiv:2005.13249`
+- **url:** https://proceedings.mlr.press/v139/kiyasseh21a.html
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Patient-specific contrastive representation learning
+- **hypothesis:** UNKNOWN
+- **dataset:** Cardiac ECG benchmarks
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** ECG
+- **labels:** Cardiac labels
+- **task_definition:** Patient-specific contrastive representation learning
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** CLOCS (intra-patient positive pairs)
+- **adaptation_method:** CLOCS (intra-patient positive pairs)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Linear eval & 25%-label FT
+- **subject_split:** Linear eval & 25%-label FT
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Foundational patient-aware contrastive learning for cardiac signals; quantifies patient similarity.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Linear eval & 25%-label FT).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** CLOCS (intra-patient positive pairs)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Foundational patient-aware contrastive learning for cardiac signals; quantifies patient similarity. (Source: https://proceedings.mlr.press/v139/kiyasseh21a.html, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

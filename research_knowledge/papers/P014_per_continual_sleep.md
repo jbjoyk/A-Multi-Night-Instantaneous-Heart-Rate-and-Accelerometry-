@@ -1,0 +1,44 @@
+# P014: Prototype-Enhanced Experience Replay for Domain Incremental Sleep Stage Classification
+
+- **paper_id:** `P014`
+- **title:** Prototype-Enhanced Experience Replay for Domain Incremental Sleep Stage Classification
+- **authors:** Leyuan Huang, Zhiwei Deng, Xun Chen, Chang Li
+- **year:** 2026 (`UNKNOWN` exact pub date)
+- **venue:** `UNKNOWN`
+- **doi_or_id:** `RG:404390197`
+- **url:** https://www.researchgate.net/publication/404390197_Prototype-Enhanced_Experience_Replay_for_Domain_Incremental_Sleep_Stage_Classification
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Can prototype-enhanced experience replay (PER) + knowledge distillation prevent catastrophic forgetting when sleep-staging models adapt sequentially across subjects?
+- **hypothesis:** Summarizing class semantics into global prototypes and aligning features via replay + KD stabilizes cross-subject representations in continual sleep staging.
+- **dataset:** Sleep-EDF and SHHS
+- **number_of_subjects:** `UNKNOWN`
+- **number_of_nights:** `UNKNOWN`
+- **sensors:** EEG / PSG
+- **labels:** PSG
+- **task_definition:** Domain-incremental continual sleep stage classification
+- **preprocessing:** `UNKNOWN`
+- **architecture:** AttnSleep, TinySleepNet, DeepSleepNet
+- **personalization_method:** Continual domain-incremental adaptation
+- **adaptation_method:** Prototype-Enhanced Experience Replay (PER) + Knowledge Distillation (KD)
+- **calibration_data:** Sequential arriving subjects
+- **evaluation_protocol:** Continual learning across arriving subjects
+- **subject_split:** Subject-incremental
+- **temporal_split:** Sequential
+- **external_validation:** Evaluated on two datasets (Sleep-EDF, SHHS)
+- **metrics:** Raised $\kappa$ by `+4.3%` absolute and Macro-F1 by `+3.2%` over replay/regularization baselines; reduced average forgetting rate by `71%` relative.
+- **statistical_testing:** `UNKNOWN`
+- **uncertainty_reporting:** `UNKNOWN`
+- **failure_cases:** Standard sequential fine-tuning suffers catastrophic forgetting across subjects.
+- **limitations:** Tested on EEG (Sleep-EDF, SHHS) and cross-subject incremental learning rather than within-subject multi-night wearable IHR+Accel.
+- **leakage_risks:** Requires storing class prototypes (privacy-light compared to raw replay).
+- **reproducibility:** `UNKNOWN`
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting` (for prototype-anchored KD to prevent forgetting during adaptation)
+- **transferable_method:** Class-prototype anchoring + knowledge distillation during adaptation.
+- **possible_research_gap:** Testing whether population-level class prototypes (especially for Deep sleep) prevent emission-bias collapse when a subject's calibration nights lack Deep sleep.
+
+### Provenance Notes
+- **Paper reports:** +4.3% $\kappa$, +3.2% Macro-F1, -71% relative forgetting on Sleep-EDF & SHHS across AttnSleep/TinySleepNet/DeepSleepNet (ResearchGate abstract).
+- **We infer:** Prototype anchoring could complement KL-regularization (`P006`) for protecting underrepresented classes like Deep sleep during 2-night adaptation.

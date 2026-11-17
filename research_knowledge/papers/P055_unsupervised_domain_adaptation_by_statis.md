@@ -1,0 +1,44 @@
+# P055: Unsupervised Domain Adaptation by Statistics Alignment for Deep Sleep Staging Networks
+
+- **paper_id:** `P055`
+- **title:** Unsupervised Domain Adaptation by Statistics Alignment for Deep Sleep Staging Networks
+- **authors:** Fan JH, Zhu HY, Jiang XY
+- **year:** 2022
+- **venue:** IEEE TNSRE
+- **doi_or_id:** `PMID:35041607`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/35041607/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Cross-domain sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** PSG EEG datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** PSG
+- **task_definition:** Cross-domain sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Statistics alignment UDA
+- **adaptation_method:** Statistics alignment UDA
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-dataset
+- **subject_split:** Cross-dataset
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Statistics alignment UDA baseline; later tested & found ineffective for personalization by Lorenzen 2023.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-dataset).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Statistics alignment UDA
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Statistics alignment UDA baseline; later tested & found ineffective for personalization by Lorenzen 2023. (Source: https://pubmed.ncbi.nlm.nih.gov/35041607/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

@@ -1,0 +1,44 @@
+# P100: Calibration, Architecture, and Distribution Shift in Predictive Uncertainty Estimation
+
+- **paper_id:** `P100`
+- **title:** Calibration, Architecture, and Distribution Shift in Predictive Uncertainty Estimation
+- **authors:** Dina Šabanović, Tea Krčmar, Zdravko Krpić, Ivica Lukić
+- **year:** 2026
+- **venue:** Big Data Cogn. Comput. (MDPI)
+- **doi_or_id:** `bdcc8070179`
+- **url:** https://www.mdpi.com/2504-4990/8/7/179
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Calibration under distribution shift
+- **hypothesis:** UNKNOWN
+- **dataset:** Distribution shift benchmarks
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** General
+- **labels:** Class labels
+- **task_definition:** Calibration under distribution shift
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Uncertainty calibration
+- **adaptation_method:** Uncertainty calibration
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Benchmark
+- **subject_split:** Benchmark
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Evaluates architectural calibration under shift.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Benchmark).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `LOW`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Uncertainty calibration
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Evaluates architectural calibration under shift. (Source: https://www.mdpi.com/2504-4990/8/7/179, retrieved 2026-11-17).
+- **We infer:** Relevance (`LOW`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

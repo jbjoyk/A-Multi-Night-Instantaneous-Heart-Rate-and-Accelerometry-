@@ -1,0 +1,44 @@
+# P058: Towards Multi-Source Domain Generalization for Sleep Staging with Noisy Labels
+
+- **paper_id:** `P058`
+- **title:** Towards Multi-Source Domain Generalization for Sleep Staging with Noisy Labels
+- **authors:** Kening Wang, Di Wen, Kunyu Peng et al.
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2604.10009v1`
+- **url:** https://arxiv.org/html/2604.10009v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Multi-source DG under dataset-dependent label noise
+- **hypothesis:** UNKNOWN
+- **dataset:** Cross-dataset PSG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** PSG (with rater noise)
+- **task_definition:** Multi-source DG under dataset-dependent label noise
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Robust DGSS
+- **adaptation_method:** Robust DGSS
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-dataset
+- **subject_split:** Cross-dataset
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Highlights how rater disagreement/label noise misdirects invariance objectives.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-dataset).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Robust DGSS
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Highlights how rater disagreement/label noise misdirects invariance objectives. (Source: https://arxiv.org/html/2604.10009v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

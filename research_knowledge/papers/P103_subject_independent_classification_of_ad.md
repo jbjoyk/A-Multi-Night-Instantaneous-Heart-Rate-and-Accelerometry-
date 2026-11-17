@@ -1,0 +1,44 @@
+# P103: Subject-independent classification of ADHD from pediatric EEG
+
+- **paper_id:** `P103`
+- **title:** Subject-independent classification of ADHD from pediatric EEG
+- **authors:** M. Geethapriya, Kalyanaraman Pattabiraman
+- **year:** 2026
+- **venue:** PMC
+- **doi_or_id:** `PMC13680413`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC13680413/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Quantifying segment-wise vs subject-wise leakage across 6 model families
+- **hypothesis:** UNKNOWN
+- **dataset:** Pediatric EEG
+- **number_of_subjects:** 121
+- **number_of_nights:** 121
+- **sensors:** EEG
+- **labels:** ADHD vs HC
+- **task_definition:** Quantifying segment-wise vs subject-wise leakage across 6 model families
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Segment-wise vs Subject-wise
+- **subject_split:** Segment-wise vs Subject-wise
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Spectral pipelines dropped >24 pp when switching from segment-wise to subject-wise splits.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Segment-wise vs Subject-wise).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM` (adjacent method/leakage evidence only; non-sleep/non-wearable)
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Spectral pipelines dropped >24 pp when switching from segment-wise to subject-wise splits. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC13680413/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

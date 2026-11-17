@@ -1,8 +1,9 @@
 {
   "system_version": "1.0.0",
   "project_name": "Wearable Sleep Staging on PhysioNet BIDSLab",
-  "last_updated": "2026-11-13T22:10:00",
-  "active_governance_decision": "DEC-021",
+  "last_updated": "2026-11-17T13:40:00",
+  "active_governance_decision": "DEC-029",
+  "active_research_direction": "RESEARCH_DIRECTION_v4_FULL.md",
   "dataset_fingerprint": "8ae7a916a4cd5709",
   "experiments": [
     {

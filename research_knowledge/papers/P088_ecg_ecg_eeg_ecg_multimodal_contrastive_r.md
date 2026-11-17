@@ -1,0 +1,44 @@
+# P088: ECG-ECG / EEG-ECG Multimodal Contrastive Representation Learning for Sleep Stage Classification
+
+- **paper_id:** `P088`
+- **title:** ECG-ECG / EEG-ECG Multimodal Contrastive Representation Learning for Sleep Stage Classification
+- **authors:** RG 398013792
+- **year:** 2025
+- **venue:** J Phys Conf Ser 3147(1)
+- **doi_or_id:** `RG:398013792`
+- **url:** https://www.researchgate.net/publication/398013792_EEG-ECG-Based_Multimodal_Contrastive_Representation_Learning_for_Sleep_Stage_Classification
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Multimodal contrastive sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG+ECG sleep dataset
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG + ECG
+- **labels:** PSG
+- **task_definition:** Multimodal contrastive sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Contrastive learning
+- **adaptation_method:** Contrastive learning
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Contrastive alignment between EEG and ECG for sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `WEAK`
+- **stance:** `Neutral`
+- **transferable_method:** Contrastive learning
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Contrastive alignment between EEG and ECG for sleep staging. (Source: https://www.researchgate.net/publication/398013792_EEG-ECG-Based_Multimodal_Contrastive_Representation_Learning_for_Sleep_Stage_Classification, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`WEAK`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

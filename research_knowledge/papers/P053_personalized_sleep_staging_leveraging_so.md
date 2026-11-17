@@ -1,0 +1,44 @@
+# P053: Personalized Sleep Staging Leveraging Source-free Unsupervised Domain Adaptation (SF-UIDA)
+
+- **paper_id:** `P053`
+- **title:** Personalized Sleep Staging Leveraging Source-free Unsupervised Domain Adaptation (SF-UIDA)
+- **authors:** Zhou Y, Zhao S et al.
+- **year:** 2025
+- **venue:** AAAI 2025
+- **doi_or_id:** `arXiv:2412.12159`
+- **url:** https://ojs.aaai.org/index.php/AAAI/article/view/33592
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Subject-specific source-free UDA
+- **hypothesis:** UNKNOWN
+- **dataset:** 3 public PSG datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** PSG
+- **labels:** PSG
+- **task_definition:** Subject-specific source-free UDA
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** SF-UIDA (cross-view contrasting + pseudo-label FT)
+- **adaptation_method:** SF-UIDA (cross-view contrasting + pseudo-label FT)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Unseen subject adaptation
+- **subject_split:** Unseen subject adaptation
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes (3 datasets)
+- **metrics:** 2-step source-free individual adaptation on PSG; contrast with EXP-019 S3 on low-SNR wearable IHR.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Unseen subject adaptation).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** SF-UIDA (cross-view contrasting + pseudo-label FT)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** 2-step source-free individual adaptation on PSG; contrast with EXP-019 S3 on low-SNR wearable IHR. (Source: https://ojs.aaai.org/index.php/AAAI/article/view/33592, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

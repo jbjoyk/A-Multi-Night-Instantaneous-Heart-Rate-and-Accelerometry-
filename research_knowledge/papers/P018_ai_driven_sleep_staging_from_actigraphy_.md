@@ -1,0 +1,44 @@
+# P018: AI-Driven sleep staging from actigraphy and heart rate
+
+- **paper_id:** `P018`
+- **title:** AI-Driven sleep staging from actigraphy and heart rate
+- **authors:** Song TA, Chowdhury SR, Malekzadeh M, Harrison S, Hoge TB, Redline S, Stone KL, Saxena R, Purcell SM, Dutta J
+- **year:** 2023
+- **venue:** PLOS ONE
+- **doi_or_id:** `PMC10191307`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10191307/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 3-class and 4-class sleep staging (SLAMSS)
+- **hypothesis:** UNKNOWN
+- **dataset:** MESA; MrOS; Apple Watch
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Actigraphy + coarse HR (mean/SD)
+- **labels:** PSG (30s)
+- **task_definition:** 3-class and 4-class sleep staging (SLAMSS)
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None (subject-independent)
+- **adaptation_method:** None (subject-independent)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent + MrOS & Apple Watch external
+- **subject_split:** Subject-independent + MrOS & Apple Watch external
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes (MrOS; Apple Watch)
+- **metrics:** Original SLAMSS + Real-World weighting loss for N3 imbalance; 68-69% 4-class acc on MrOS.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent + MrOS & Apple Watch external).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** None (subject-independent)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Original SLAMSS + Real-World weighting loss for N3 imbalance; 68-69% 4-class acc on MrOS. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10191307/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

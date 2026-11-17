@@ -1,0 +1,44 @@
+# P045: Accuracy of Fitbit Charge 4, Garmin Vivosmart 4, and WHOOP 3.0 in Healthy Adults
+
+- **paper_id:** `P045`
+- **title:** Accuracy of Fitbit Charge 4, Garmin Vivosmart 4, and WHOOP 3.0 in Healthy Adults
+- **authors:** JMIR mHealth uHealth 2024
+- **year:** 2024
+- **venue:** JMIR mHealth and uHealth
+- **doi_or_id:** `10.2196/52192`
+- **url:** https://mhealth.jmir.org/2024/1/e52192
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Sleep/wake & 4-stage validation
+- **hypothesis:** UNKNOWN
+- **dataset:** Healthy adults
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Commercial wrist wearables
+- **labels:** PSG
+- **task_definition:** Sleep/wake & 4-stage validation
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Concurrent PSG
+- **subject_split:** Concurrent PSG
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Commercial tracker benchmark.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Concurrent PSG).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Commercial tracker benchmark. (Source: https://mhealth.jmir.org/2024/1/e52192, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

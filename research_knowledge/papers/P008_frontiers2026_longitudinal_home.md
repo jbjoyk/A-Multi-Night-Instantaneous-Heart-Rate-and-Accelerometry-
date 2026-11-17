@@ -1,0 +1,44 @@
+# P008: Longitudinal cardiorespiratory wearable sleep staging in the home
+
+- **paper_id:** `P008`
+- **title:** Longitudinal cardiorespiratory wearable sleep staging in the home
+- **authors:** Shaun Davidson, Jonathan F. Carter, Emily C. Stanyer, R. Rachel Sharman, Cristian Roman, Simon D. Kyle, Lionel Tarassenko
+- **year:** 2026
+- **venue:** Frontiers in Neuroscience
+- **doi_or_id:** `10.3389/fnins.2026.1693860`
+- **url:** https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2026.1693860/full
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** How accurately can chest-worn cardiorespiratory wearable waveforms perform 4-class longitudinal sleep staging in the home compared with wrist-worn PPG?
+- **hypothesis:** Chest-worn ECG + accelerometer-derived respiratory waveforms capture more respiratory information than wrist PPG, improving 4-class staging (especially N3/Deep).
+- **dataset:** Longitudinal home cohort (`UNKNOWN` exact n)
+- **number_of_subjects:** `UNKNOWN`
+- **number_of_nights:** `UNKNOWN`
+- **sensors:** Chest-worn ECG + accelerometer-derived respiratory waveform
+- **labels:** Home reference
+- **task_definition:** 4-class sleep staging (distinguishing N3 from N1/N2)
+- **preprocessing:** `UNKNOWN`
+- **architecture:** `UNKNOWN`
+- **personalization_method:** None reported in snippet
+- **adaptation_method:** None reported
+- **calibration_data:** N/A
+- **evaluation_protocol:** Longitudinal home evaluation
+- **subject_split:** Subject-independent
+- **temporal_split:** Longitudinal home nights
+- **external_validation:** No
+- **metrics:** Cohen's $\kappa = 0.679$ (4-class chest ECG+resp) vs $\kappa = 0.553$ (3-class wrist PPG in Wang et al. 2025).
+- **statistical_testing:** `UNKNOWN`
+- **uncertainty_reporting:** `UNKNOWN`
+- **failure_cases:** Wrist-worn PPG lacks respiratory modulation fidelity compared to chest ECG+accel, limiting N3 separation.
+- **limitations:** Chest-worn sensor has higher burden than wrist smartwatch.
+- **leakage_risks:** `UNKNOWN`
+- **reproducibility:** `UNKNOWN`
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral` (explains modality ceiling of wrist PPG/IHR vs chest ECG+resp)
+- **transferable_method:** Longitudinal home 4-class evaluation.
+- **possible_research_gap:** Quantifying how much of the wrist-PPG ceiling ($\kappa \approx 0.52–0.55$) can be closed via safe within-subject adaptation.
+
+### Provenance Notes
+- **Paper reports:** 4-class $\kappa = 0.679$ using chest ECG + accel respiratory waveform vs 3-class $\kappa = 0.553$ wrist PPG (Frontiers 2026 excerpt).
+- **We infer:** Our EXP-019 `ZS` ($\kappa = 0.521$) and `FT-2` ($\kappa = 0.534$) on wrist Apple Watch IHR+Accel sit right in line with the wrist-wearable modality range.

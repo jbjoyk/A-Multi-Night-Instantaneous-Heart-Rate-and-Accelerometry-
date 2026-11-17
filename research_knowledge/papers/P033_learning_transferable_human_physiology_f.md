@@ -1,0 +1,44 @@
+# P033: Learning transferable human physiology from two million hours of sleep recordings (SleepFM-2)
+
+- **paper_id:** `P033`
+- **title:** Learning transferable human physiology from two million hours of sleep recordings (SleepFM-2)
+- **authors:** Hyatt Moore et al.
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2609.06849v1`
+- **url:** https://arxiv.org/html/2609.06849v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 5-class transfer to wrist accelerometry
+- **hypothesis:** UNKNOWN
+- **dataset:** 2M hours + SleepAccel, DREAMT, STAGES, Newcastle, Amazfit, TBI
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Multimodal PSG -> wrist accelerometry transfer
+- **labels:** Expert PSG labels
+- **task_definition:** 5-class transfer to wrist accelerometry
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Frozen encoder + LSTMHead
+- **adaptation_method:** Frozen encoder + LSTMHead
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** 6-cohort accelerometry transfer
+- **subject_split:** 6-cohort accelerometry transfer
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes (6 cohorts)
+- **metrics:** Frozen SleepFM-2 + LSTMHead reaches 5-class AUROC 0.708-0.852 on SleepAccel & DREAMT.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (6-cohort accelerometry transfer).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Frozen encoder + LSTMHead
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Frozen SleepFM-2 + LSTMHead reaches 5-class AUROC 0.708-0.852 on SleepAccel & DREAMT. (Source: https://arxiv.org/html/2609.06849v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

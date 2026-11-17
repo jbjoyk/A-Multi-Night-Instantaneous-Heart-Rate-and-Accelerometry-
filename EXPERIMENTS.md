@@ -776,26 +776,26 @@ state.
   - Empirical standard deviation of paired differences ($FT\text{-}2 - ZS$): $s_{\Delta} = 2.2432\text{ pp}$.
   - Continuous 80%-power threshold ($0.4131 \cdot s_{\Delta}$): $0.9267\text{ pp}$.
   - Confirmed Practical Threshold: $\max(1.50, 0.9267) = \mathbf{+1.50\text{ pp}}$ (confirmed; no threshold escalation).
-- Confirmatory Outcomes (Stage C):
+- Confirmatory Outcomes (Stage C) & Governance Reconciliation:
   - **H-A (Primary: $FT\text{-}2$ vs $ZS$)**:
     - Estimand: $\bar{\Delta} = \mathbf{+1.01\text{ pp}}$ ($64.58\% \to 65.59\%$).
     - 95% Percentile Bootstrap CI (10,000 resamples): $\mathbf{[-0.17, +1.99]\text{ pp}}$.
     - Wilcoxon signed-rank: $p = 0.00131$.
     - Win rate: 73.9% (34 wins, 12 losses).
-    - Verdict: **NOT SUPPORTED** (practical threshold $+1.50\text{ pp}$ not reached, 95% CI crosses zero).
+    - **Governance Reconciled Label (DEC-029)**: Under the exact locked decision rule in `PREREG_EXP-019_H-A.md` Section 6, SUPPORTED requires $\bar{\Delta} \ge +1.50$ AND $\text{CI}_{\text{low}} > 0$; NOT SUPPORTED requires $\text{CI}_{\text{high}} < +1.50$; INCONCLUSIVE is anything else. Because $\text{CI}_{\text{high}} = +1.99\text{ pp}$ is NOT $< +1.50\text{ pp}$, the exact locked rule evaluates to **`INCONCLUSIVE`** (ruling out effect $\ge +2.0\text{ pp}$ is not possible with 46 subjects), while the initial report stated "NOT SUPPORTED". Reconciled via erratum. Numerical metrics immutable.
   - **S1 (Secondary: Specificity Control, $FT\text{-}2$ vs $FT\text{-}other\text{-}2$)**:
     - Estimand: $\bar{\Delta} = \mathbf{+2.73\text{ pp}}$ ($62.86\% \to 65.59\%$).
     - 95% Bootstrap CI: $\mathbf{[+1.05, +4.32]\text{ pp}}$, Wilcoxon $p = 9.0 \times 10^{-6}$.
     - Win rate: 78.3% (36 wins, 10 losses).
-    - Verdict: **SUPPORTED** (adaptation benefit is strictly person-specific; fine-tuning on another person actively degrades performance).
+    - Verdict: **SUPPORTED** (adaptation benefit is strictly person-specific; fine-tuning on another person actively degrades performance by $-1.72\text{ pp}$ below $ZS$).
   - **S2 (Secondary: Cohort Transfer Value, $FT\text{-}2$ vs $PS\text{-}2$)**:
     - Estimand: $\bar{\Delta} = \mathbf{+20.32\text{ pp}}$ ($45.27\% \to 65.59\%$).
     - 95% Bootstrap CI: $\mathbf{[+17.70, +22.94]\text{ pp}}$, Wilcoxon $p < 10^{-10}$.
     - Win rate: 100.0% (46 wins, 0 losses).
-    - Verdict: **SUPPORTED** (cohort pre-training provides indispensable representation foundation).
+    - Verdict: **SUPPORTED** (cohort pre-training provides indispensable representation foundation; weak baseline).
   - **S3 (Secondary: Unsupervised InfoMax, $UA\text{-}2$ vs $ZS$)**:
     - Estimand: $\bar{\Delta} = \mathbf{0.00\text{ pp}}$, 95% CI: $[0.00, 0.00]\text{ pp}$.
-    - Verdict: **NOT SUPPORTED** (unsupervised entropy minimization on 2 nights with frozen CNN fails to recalibrate).
+    - Governance Status: **UNRESOLVED** (Suspected implementation no-op. Must not be cited as evidence against unsupervised adaptation until Phase A2 parameter change audit is complete).
 - Summary by Arm:
   - $ZS$: Mean Macro-F1 = $0.6458 \pm 0.0774$
   - $FT\text{-}2$: Mean Macro-F1 = $0.6559 \pm 0.0859$
@@ -817,27 +817,22 @@ state.
   - Summary CSV: `experiments/EXP-019/exp019_summary.csv`
   - Checkpoints: `experiments/EXP-018/checkpoints/modelA_L1200_fold{1..5}_seed{42,123,2024}.pt` (15 total)
 
-## RESEARCH TRAJECTORY
+---
+
+## 9. Research Trajectory (v4 Working Direction)
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.
-2. **What problem we identified**: The SLAMSS-IFS paper omitted critical official-code details (5.47M parameter `cnn3` block, GRU cells instead of LSTM, composite RCCLoss with empirical $w_{\text{FP}}$ matrix), while wearable staging models struggle with inter-subject physiological variance, boundary errors, and noise in wrist-worn optical sensors.
-3. **What hypothesis we proposed**: Dynamic modality reliability gating + transition constraints + boundary supervision + subject-invariant representation learning via GRL will improve wearable staging without requiring bloated models.
-4. **What architecture we implemented**: `SleepAdaptiveNet` (A0–A5, 145k–165k parameters, ~33x smaller than official SLAMSS-IFS).
-5. **What experiments we conducted**:
-   - EXP-007: First controlled ablation study (A0 $\to$ A5, seed 42, 10 epochs).
-   - EXP-008: Boundary weight sweep ($\lambda \in \{0.0, 0.10, 0.20, 0.50\}$) and unconfounded GRL isolation.
-   - EXP-009: Multi-seed stability evaluation (seeds 42, 123, 2024, $N=3$) establishing `B0_GRL` as superior across seeds.
-   - EXP-010: Long-training convergence evaluation of `B0_GRL` (seed 42, 500 epochs), identifying peak at Epoch 78.
-   - EXP-011: Multi-seed convergence confirmation across seeds 42, 123, 2024 ($N=3$, 500 epochs each) and bitwise reproducibility resolution of EXP-009 vs EXP-010 seed-42 discrepancy.
-   - EXP-012: Final frozen test benchmark evaluation across 3 seeds on the untouched 11-subject held-out test set (58 usable nights, 34,241 valid evaluated windows).
-   - EXP-013: Rigorous component attribution OFAT factorial ablation against matched-capacity conventional CNN-BiGRU (Model A) and single-component ablations (Models B, C, D) using paired subject cluster bootstrapping ($B=1000$).
-   - EXP-014: Independent 75-run subject-level 5-fold cross-validation across all 47 subjects testing robustness and component attribution across diverse subject partitions.
-6. **What evidence we obtained**:
-   - On the historical 11-subject split (EXP-012/013), Model E outperformed Model A by +1.79 pp accuracy.
-   - However, under comprehensive 5-fold cross-validation across all 47 subjects (EXP-014, 75 runs), Model E achieved $66.06\% \pm 4.08\%$ accuracy versus $66.63\% \pm 3.33\%$ for Model A ($\Delta = -0.62\%$ [95% CI: $-1.90\%, +0.50\%$], spanning zero).
-   - Exactly 23 subjects favored Model E while 23 subjects favored Model A (1 tied).
-   - The transition module yielded virtually zero marginal difference across folds ($\Delta \approx -0.01\%$, 95% CI: $[-0.15\%, +0.12\%]$).
-7. **What we learned**:
-   - **Outcome B (Equivalence / Parity Across Cohort)**: Across diverse subject folds, conventional matched-capacity CNN-BiGRU sequence models perform comparably to architectures with specialized gating, transition matrices, and GRL.
-   - Inter-subject variability (Folds range from ~62.5% to ~72.3%) is the dominant source of performance variance, far exceeding architectural differences among ~160k parameter models.
-8. **Reopened Experimental Phase (DEC-021)**: Following the completion and archiving of EXP-012, EXP-013, and EXP-014, the experimental phase has been formally reopened under [DEC-021](./DECISIONS.md); the prior restriction specifying "no further training runs" no longer applies. Methodological investigations are underway (sequence truncation audit, window picking mechanics, metadata feature ablation, normalization integrity, and subject accuracy predictors). Any future training runs require explicit user authorization.
+2. **What problem we identified**: Wearable staging models struggle with inter-subject physiological variance, boundary errors, and noise in wrist-worn optical sensors, while published benchmarks used conflicting protocols.
+3. **What architecture experiments established**:
+   - EXP-014 (75 runs, 5 folds, 47 subjects): Model A (`ConventionalCNNBiGRU`, 163.9k params) achieves statistical parity ($66.63\%$ accuracy) with complex gated, GRL, and transition architectures ($66.06\%$, CI spans zero). Architecture search is permanently closed.
+   - EXP-018 Phase 1 & 2: Whole-night context ($L=1200$, sliding-window inference) significantly outperforms truncated 5-hour crops ($T=600$), restoring Wake and REM representation.
+4. **Within-Person Personalization (EXP-019)**:
+   - Evaluated 2-night supervised within-person adaptation ($FT\text{-}2$) on 46 subjects under strict chronological, subject-level pre-registration (`PREREG_EXP-019_H-A.md`).
+   - Observed mean gain: $\bar{\Delta} = +1.01\text{ pp}$ [95% CI: $-0.17, +1.99\text{ pp}$] with 73.9% of subjects improving.
+   - Reconciled decision rule status: INCONCLUSIVE (effect up to +2.0 pp cannot be ruled out).
+   - Specificity control (S1) confirmed: fine-tuning on another subject degrades performance by $-1.72\text{ pp}$ below zero-shot baseline ($p = 9.0 \times 10^{-6}$).
+   - Unsupervised adaptation (S3) produced 0.00 pp across all 46 subjects (unresolved pending no-op audit).
+5. **Prior Art Realignment (Research Direction v4)**:
+   - Withdrew "open lane" novelty claim following identification of van der Aar et al. 2025 (*Physiological Measurement*, DOI: 10.1088/1361-6579/ae0119; $n=59$ adults, wrist PPG + accelerometry, up to 7 home nights, 82.5% improved, significant at $\ge 3$ training nights).
+   - Reframed research as pre-registered replication and extension in healthy adults using consumer-smartwatch IHR and accelerometry, with strict failure-mode heterogeneity analysis and clinical sleep-summary agreement.
+   - Ratified Phase A–E execution plan under `RESEARCH_DIRECTION_v4_FULL.md` and `DEC-029`.

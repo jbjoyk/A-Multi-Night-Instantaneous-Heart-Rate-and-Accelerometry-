@@ -1,0 +1,44 @@
+# P004: SleepPPG-Net2: Deep learning generalization for sleep staging from continuous photoplethysmography
+
+- **paper_id:** `P004`
+- **title:** SleepPPG-Net2: Deep learning generalization for sleep staging from continuous photoplethysmography
+- **authors:** Kotzen K et al.
+- **year:** 2024
+- **venue:** arXiv preprint
+- **doi_or_id:** `arXiv:2404.06869v1`
+- **url:** https://arxiv.org/html/2404.06869v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** How well do deep learning PPG sleep-staging models generalize across independent external clinical and consumer cohorts?
+- **hypothesis:** `UNKNOWN`
+- **dataset:** MESA + multiple external PPG/PSG cohorts (`UNKNOWN` exact counts from retrieved snippet)
+- **number_of_subjects:** `UNKNOWN`
+- **number_of_nights:** `UNKNOWN`
+- **sensors:** Continuous PPG
+- **labels:** PSG (30-second epochs)
+- **task_definition:** 4-class sleep staging
+- **preprocessing:** `UNKNOWN`
+- **architecture:** `SleepPPG-Net2` (extension of SleepPPG-Net)
+- **personalization_method:** None (cross-dataset generalization focus)
+- **adaptation_method:** None
+- **calibration_data:** N/A
+- **evaluation_protocol:** Subject-independent cross-dataset generalization
+- **subject_split:** Subject-disjoint
+- **temporal_split:** N/A
+- **external_validation:** Yes (multi-cohort)
+- **metrics:** `UNKNOWN` (full results table not in retrieved snippet)
+- **statistical_testing:** `UNKNOWN`
+- **uncertainty_reporting:** `UNKNOWN`
+- **failure_cases:** Cross-dataset domain shift across PPG sensors and populations.
+- **limitations:** Preprint; full metrics not extracted in Phase 2 snippet.
+- **leakage_risks:** Low (cross-dataset evaluation).
+- **reproducibility:** `UNKNOWN`
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Multi-cohort external validation protocol for PPG.
+- **possible_research_gap:** Cross-dataset PPG/IHR generalization vs within-subject adaptation.
+
+### Provenance Notes
+- **Paper reports:** Title, year (2024), continuous PPG 4-class generalization focus (arXiv:2404.06869v1 snippet).
+- **We infer:** Relevant benchmark for `EXP-027` external validation framing; full metrics marked `UNKNOWN` pending dedicated PDF/HTML parse if needed later.

@@ -1,0 +1,44 @@
+# P069: Hierarchical Multimodal Sleep Staging with Optimized EEG, EOG, and PPG Features for Wearable Applications
+
+- **paper_id:** `P069`
+- **title:** Hierarchical Multimodal Sleep Staging with Optimized EEG, EOG, and PPG Features for Wearable Applications
+- **authors:** Roberto De Fazio, Matteo Paiano, Ramiro Velazquez, Carolina Del-Valle-Soto, Paolo Visconti
+- **year:** 2026
+- **venue:** Applied Sciences (MDPI)
+- **doi_or_id:** `app16168164`
+- **url:** https://www.mdpi.com/2076-3417/16/16/8164
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Wearable multimodal staging
+- **hypothesis:** UNKNOWN
+- **dataset:** 2 public external datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG, EOG, PPG
+- **labels:** Consensus PSG
+- **task_definition:** Wearable multimodal staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** External validation (86.64% wearable EEG)
+- **subject_split:** External validation (86.64% wearable EEG)
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Multimodal wearable validation.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (External validation (86.64% wearable EEG)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Multimodal wearable validation. (Source: https://www.mdpi.com/2076-3417/16/16/8164, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

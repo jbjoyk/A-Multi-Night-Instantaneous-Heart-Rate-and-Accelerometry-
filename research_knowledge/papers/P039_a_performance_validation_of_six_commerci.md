@@ -1,0 +1,44 @@
+# P039: A performance validation of six commercial wrist-worn wearable sleep tracking devices
+
+- **paper_id:** `P039`
+- **title:** A performance validation of six commercial wrist-worn wearable sleep tracking devices
+- **authors:** Schyvens et al.
+- **year:** 2025
+- **venue:** Sleep Advances
+- **doi_or_id:** `PMC12038347`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC12038347/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 4-class + TST/WASO/SOL/SE
+- **hypothesis:** UNKNOWN
+- **dataset:** In-lab PSG vs 6 wearables
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** 6 commercial wrist wearables
+- **labels:** PSG
+- **task_definition:** 4-class + TST/WASO/SOL/SE
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None (black-box)
+- **adaptation_method:** None (black-box)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Concurrent PSG validation
+- **subject_split:** Concurrent PSG validation
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Bland-Altman: wearables underestimated WASO by 12.38-47.94 min with wide LoA (e.g., -116.83 to 83.11 min).
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Concurrent PSG validation).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None (black-box)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Bland-Altman: wearables underestimated WASO by 12.38-47.94 min with wide LoA (e.g., -116.83 to 83.11 min). (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC12038347/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

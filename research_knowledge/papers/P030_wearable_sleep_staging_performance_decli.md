@@ -1,0 +1,44 @@
+# P030: Wearable sleep staging performance declines with sleep apnea severity
+
+- **paper_id:** `P030`
+- **title:** Wearable sleep staging performance declines with sleep apnea severity
+- **authors:** UNKNOWN
+- **year:** 2026
+- **venue:** medRxiv
+- **doi_or_id:** `10.64898/2026.04.09.26350266`
+- **url:** https://www.medrxiv.org/content/10.64898/2026.04.09.26350266v3.full-text
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Multi-night wearable sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Clinical OSA home/lab cohort
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearable PPG/accel
+- **labels:** PSG
+- **task_definition:** Multi-night wearable sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Stratified by OSA severity
+- **subject_split:** Stratified by OSA severity
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Shows wearable staging degrades with apnea severity; highlights need for multi-night home validation.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** Shows wearable staging degrades with apnea severity; highlights need for multi-night home validation.
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Stratified by OSA severity).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Contradicting`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Shows wearable staging degrades with apnea severity; highlights need for multi-night home validation. (Source: https://www.medrxiv.org/content/10.64898/2026.04.09.26350266v3.full-text, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

@@ -1,0 +1,44 @@
+# P026: Automating sleep stage classification using wireless, wearable sensors
+
+- **paper_id:** `P026`
+- **title:** Automating sleep stage classification using wireless, wearable sensors
+- **authors:** Boe AJ et al.
+- **year:** 2019
+- **venue:** npj Digital Medicine
+- **doi_or_id:** `PMC6925191`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC6925191/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 2/3/4-stage sleep classification
+- **hypothesis:** UNKNOWN
+- **dataset:** Healthy young adults
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Accelerometer + ECG + skin temp
+- **labels:** PSG
+- **task_definition:** 2/3/4-stage sleep classification
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Minimal sensor subset (accel + skin temp + ECG) achieves AUROC 0.88/0.77/0.65.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Minimal sensor subset (accel + skin temp + ECG) achieves AUROC 0.88/0.77/0.65. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC6925191/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

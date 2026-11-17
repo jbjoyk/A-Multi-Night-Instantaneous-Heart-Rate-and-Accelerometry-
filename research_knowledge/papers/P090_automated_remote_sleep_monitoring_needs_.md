@@ -1,0 +1,44 @@
+# P090: Automated remote sleep monitoring needs uncertainty quantification
+
+- **paper_id:** `P090`
+- **title:** Automated remote sleep monitoring needs uncertainty quantification
+- **authors:** PubMed 39112022
+- **year:** 2024
+- **venue:** PubMed / Sleep
+- **doi_or_id:** `PMID:39112022`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/39112022/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Uncertainty quantification for remote sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Wearable EEG + PSG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearable EEG
+- **labels:** PSG
+- **task_definition:** Uncertainty quantification for remote sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Uncertainty-guided deferral/filtering
+- **adaptation_method:** Uncertainty-guided deferral/filtering
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Improved 5-stage acc 63.9% -> 71.2%
+- **subject_split:** Improved 5-stage acc 63.9% -> 71.2%
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Proves uncertainty quantification substantially improves wearable sleep staging reliability and parameter correlation.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Improved 5-stage acc 63.9% -> 71.2%).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Uncertainty-guided deferral/filtering
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Proves uncertainty quantification substantially improves wearable sleep staging reliability and parameter correlation. (Source: https://pubmed.ncbi.nlm.nih.gov/39112022/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

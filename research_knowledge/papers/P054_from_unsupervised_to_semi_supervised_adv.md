@@ -1,0 +1,44 @@
+# P054: From unsupervised to semi-supervised adversarial domain adaptation in electroencephalography-based sleep staging
+
+- **paper_id:** `P054`
+- **title:** From unsupervised to semi-supervised adversarial domain adaptation in electroencephalography-based sleep staging
+- **authors:** Heremans ERM, Phan H, Borzée P, Buyse B, Testelmans D, De Vos M
+- **year:** 2022
+- **venue:** J Neural Eng
+- **doi_or_id:** `PMID:35508121`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/35508121/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Personalization & cross-domain staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Wearable EEG / clinical PSG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearable EEG
+- **labels:** PSG
+- **task_definition:** Personalization & cross-domain staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Unsupervised & semi-supervised ADA
+- **adaptation_method:** Unsupervised & semi-supervised ADA
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject adaptation
+- **subject_split:** Subject adaptation
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Reported 1-2% personalization gain with UDA in wearable EEG, but later Lorenzen 2023 (same group) found no UDA benefit.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject adaptation).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** Unsupervised & semi-supervised ADA
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Reported 1-2% personalization gain with UDA in wearable EEG, but later Lorenzen 2023 (same group) found no UDA benefit. (Source: https://pubmed.ncbi.nlm.nih.gov/35508121/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

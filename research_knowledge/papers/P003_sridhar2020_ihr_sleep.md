@@ -1,0 +1,44 @@
+# P003: Deep learning for automated sleep staging using instantaneous heart rate
+
+- **paper_id:** `P003`
+- **title:** Deep learning for automated sleep staging using instantaneous heart rate
+- **authors:** Sridhar N, Shoeb A, Stephens P, Kharbouch A, Shimol DB, Burkart J, Ghoreyshi A, Myers L
+- **year:** 2020
+- **venue:** npj Digital Medicine, 3:106
+- **doi_or_id:** `10.1038/s41746-020-00291-x`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC7441407/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Can a deep neural network using only ECG-derived instantaneous heart rate (IHR) accurately score 4-class sleep stages and generalize to an independent clinical cohort?
+- **hypothesis:** Dilated 1D CNNs capture long-range (6–90 min) cardiac sleep-cycle context with fewer parameters than RNNs.
+- **dataset:** SHHS (8,299 nights) + MESA (2,033 nights) for train/val/test; PhysioNet CinC 2018 (993 nights / 993 subjects) for external test
+- **number_of_subjects:** 561 subjects in SHHS test; 993 subjects in CinC external test; total train+val subject count `UNKNOWN`
+- **number_of_nights:** 10,332 train/val/test nights (SHHS+MESA) + 993 external nights (CinC)
+- **sensors:** ECG-derived IHR (Pan-Tompkins R-wave detection, resampled to 2 Hz); qualitative demo on wrist PPG
+- **labels:** Full PSG (R&K in SHHS mapped to AASM 4-class; AASM in MESA and CinC)
+- **task_definition:** 4-class sleep staging (Wake, Light, Deep, REM), 30-second epochs, `L = 1200` (10 h)
+- **preprocessing:** **Per-night z-score normalization** (subtract night mean, divide by night SD); 2 Hz resampling; zero-padding to 72,000 samples
+- **architecture:** Local 1D CNN (3 blocks) + 2 Dilated 1D CNN blocks (dilation 2, 4, 8, 16, 32)
+- **personalization_method:** None (subject-independent)
+- **adaptation_method:** None
+- **calibration_data:** N/A
+- **evaluation_protocol:** Subject-disjoint 80/10/10 split (SHHS+MESA) + independent external test (CinC)
+- **subject_split:** Subject-disjoint
+- **temporal_split:** N/A
+- **external_validation:** Yes (PhysioNet CinC 993 subjects)
+- **metrics:** SHHS test: Acc `77%`, $\kappa=0.66$ (Deep recall `0.49`, prec `0.68`). CinC external: Acc `72%`, $\kappa=0.55$ (Deep recall `0.48`, prec `0.67`).
+- **statistical_testing:** Wilcoxon rank test, Kruskal-Wallis, OLS multivariate regression (gender, age, apnea, hypertension)
+- **uncertainty_reporting:** Mean $\pm$ SD across nights (`77.3% +/- 8.8%` SHHS; `72.2% +/- 11.2%` CinC)
+- **failure_cases:** **10% of nights had accuracy < 0.60**, attributed to poor IBI/signal quality; Deep sleep recall is low (`0.48–0.49`); accuracy drops in older subjects.
+- **limitations:** ECG-derived IHR (cleaner than wrist PPG); requires full 10-h night; R&K vs AASM scoring mismatch across SHHS/MESA; no public code binary.
+- **leakage_risks:** Low (subject-disjoint + independent external CinC cohort).
+- **reproducibility:** Moderate (methods detailed, proprietary code dependencies).
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `STRONG`
+- **stance:** `Supporting` (validates IHR 4-class staging & `L=1200` full-night context; highlights Deep-sleep underestimation & 10% outlier nights)
+- **transferable_method:** Per-night z-score normalization; clinical covariate reproduction analysis.
+- **possible_research_gap:** Wrist PPG IHR has lower SNR than ECG IHR; subject-adaptive handling of outlier nights (<0.60 accuracy).
+
+### Provenance Notes
+- **Paper reports:** All cohort counts, SHHS/CinC accuracies, per-night normalization, Deep recall (0.48–0.49), and 10% <0.60 nights directly from PMC7441407.
+- **We infer:** Even with 10,000+ nights of clean ECG IHR, ~10% of nights fail (<60% acc) and Deep sleep recall remains ~0.49—supporting our view that wearable IHR outlier nights are a structural physiological/quality challenge.

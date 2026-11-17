@@ -1,0 +1,44 @@
+# P032: A multimodal sleep foundation model for disease prediction (SleepFM)
+
+- **paper_id:** `P032`
+- **title:** A multimodal sleep foundation model for disease prediction (SleepFM)
+- **authors:** Thapa R, Kjaer MR, He B, Covert IC, Moore H, Ganjoo G, Westover MB, Jennum PJ, Brink-Kjaer A, Mignot E, Zou J
+- **year:** 2026
+- **venue:** Nature Medicine / PMC
+- **doi_or_id:** `PMC12920147`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC12920147/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Sleep staging & disease prediction
+- **hypothesis:** UNKNOWN
+- **dataset:** SSC & multi-cohort PSG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Multimodal PSG (incl. ECG/PPG)
+- **labels:** PSG
+- **task_definition:** Sleep staging & disease prediction
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Foundation pretraining + linear/fine-tune
+- **adaptation_method:** Foundation pretraining + linear/fine-tune
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-cohort evaluation
+- **subject_split:** Cross-cohort evaluation
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Benchmarks SleepFM vs U-Sleep, YASA, GSSC, STAGES on sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-cohort evaluation).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** Foundation pretraining + linear/fine-tune
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Benchmarks SleepFM vs U-Sleep, YASA, GSSC, STAGES on sleep staging. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC12920147/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

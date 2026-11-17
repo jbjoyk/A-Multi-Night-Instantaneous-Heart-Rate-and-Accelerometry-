@@ -1,0 +1,44 @@
+# P097: Label Shift Estimation With Incremental Prior Update
+
+- **paper_id:** `P097`
+- **title:** Label Shift Estimation With Incremental Prior Update
+- **authors:** Yunrui Zhang, Gustavo Batista et al.
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2604.01651v1`
+- **url:** https://arxiv.org/html/2604.01651v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Post-hoc label shift estimation with weaker calibration
+- **hypothesis:** UNKNOWN
+- **dataset:** Label-shift benchmarks
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** General
+- **labels:** Class labels
+- **task_definition:** Post-hoc label shift estimation with weaker calibration
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Incremental prior update
+- **adaptation_method:** Incremental prior update
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Label-shift evaluation
+- **subject_split:** Label-shift evaluation
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Relevant to estimating shifted sleep-stage priors without full target labels.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Label-shift evaluation).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Incremental prior update
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Relevant to estimating shifted sleep-stage priors without full target labels. (Source: https://arxiv.org/html/2604.01651v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

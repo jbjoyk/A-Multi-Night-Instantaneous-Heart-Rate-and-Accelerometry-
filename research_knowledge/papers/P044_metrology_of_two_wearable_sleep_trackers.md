@@ -1,0 +1,44 @@
+# P044: Metrology of two wearable sleep trackers against polysomnography
+
+- **paper_id:** `P044`
+- **title:** Metrology of two wearable sleep trackers against polysomnography
+- **authors:** Justine Frija, Jimmy Mullaert, Laure Abensur Vuillaume, Mathieu Grajoszex, Ruben Wanono, Hélène Benzaquen, Fedja Kerzabi, Pierre Alexis Geoffroy, Boris Matrot, Théo Trioux, Thomas Penzel, Marie-Pia d'Ortho
+- **year:** 2025
+- **venue:** PMC
+- **doi_or_id:** `PMC11911034`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC11911034/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Bland-Altman TST, WASO, N1+2, N3
+- **hypothesis:** UNKNOWN
+- **dataset:** Wearable vs PSG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Fitbit Alta HR + wearable
+- **labels:** PSG
+- **task_definition:** Bland-Altman TST, WASO, N1+2, N3
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Concurrent PSG
+- **subject_split:** Concurrent PSG
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Bland-Altman metrology of wearable sleep stages.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Concurrent PSG).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Bland-Altman metrology of wearable sleep stages. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC11911034/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

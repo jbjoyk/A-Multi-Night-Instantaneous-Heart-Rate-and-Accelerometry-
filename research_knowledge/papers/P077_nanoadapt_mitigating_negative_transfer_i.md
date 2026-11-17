@@ -1,0 +1,44 @@
+# P077: NanoAdapt: Mitigating Negative Transfer in Test Time Adaptation with Extremely Small Batch Sizes
+
+- **paper_id:** `P077`
+- **title:** NanoAdapt: Mitigating Negative Transfer in Test Time Adaptation with Extremely Small Batch Sizes
+- **authors:** Shiji Zhao, Shao-Yuan Li, Sheng-Jun Huang
+- **year:** 2024
+- **venue:** IJCAI 2024
+- **doi_or_id:** `IJCAI-2024-616`
+- **url:** https://ijcai.org/proceedings/2024/616
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Preventing negative transfer at small batch size (N=1)
+- **hypothesis:** UNKNOWN
+- **dataset:** CIFAR10-C, ImageNet-C
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Vision
+- **labels:** Class labels
+- **task_definition:** Preventing negative transfer at small batch size (N=1)
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Dynamic BN calibration + Entropy-Weighted Gradient Accumulation
+- **adaptation_method:** Dynamic BN calibration + Entropy-Weighted Gradient Accumulation
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Small-batch TTA
+- **subject_split:** Small-batch TTA
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Explains why small-batch adaptation (like B=2 nights) produces noisy gradients and negative transfer.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Small-batch TTA).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Dynamic BN calibration + Entropy-Weighted Gradient Accumulation
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Explains why small-batch adaptation (like B=2 nights) produces noisy gradients and negative transfer. (Source: https://ijcai.org/proceedings/2024/616, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

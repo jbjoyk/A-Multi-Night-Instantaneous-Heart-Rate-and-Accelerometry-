@@ -1,0 +1,44 @@
+# P056: Personalizing deep learning models for automatic sleep staging
+
+- **paper_id:** `P056`
+- **title:** Personalizing deep learning models for automatic sleep staging
+- **authors:** Mikkelsen K, De Vos M
+- **year:** 2018
+- **venue:** arXiv:1801.02645
+- **doi_or_id:** `10.48550/arXiv.1801.02645`
+- **url:** https://www.researchgate.net/publication/322355188_Personalizing_deep_learning_models_for_automatic_sleep_staging
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Night 1 -> Night 2 personalization
+- **hypothesis:** UNKNOWN
+- **dataset:** Public EEG database
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** PSG
+- **task_definition:** Night 1 -> Night 2 personalization
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** CNN fine-tuning
+- **adaptation_method:** CNN fine-tuning
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Within-subject Night 1->2
+- **subject_split:** Within-subject Night 1->2
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Foundational personalization paper (+2 pp avg, stronger for <80% baseline subjects).
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Within-subject Night 1->2).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** CNN fine-tuning
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Foundational personalization paper (+2 pp avg, stronger for <80% baseline subjects). (Source: https://www.researchgate.net/publication/322355188_Personalizing_deep_learning_models_for_automatic_sleep_staging, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

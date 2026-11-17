@@ -1,0 +1,44 @@
+# P049: A systematic review of the performance of actigraphy in measuring sleep stages
+
+- **paper_id:** `P049`
+- **title:** A systematic review of the performance of actigraphy in measuring sleep stages
+- **authors:** Hang Yuan, Elizabeth A. Hill, Simon D. Kyle, Aiden Doherty
+- **year:** 2023
+- **venue:** Sleep Medicine Reviews / PMC
+- **doi_or_id:** `PMC7618292`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC7618292/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Sleep stage estimation from motion alone
+- **hypothesis:** UNKNOWN
+- **dataset:** 8 actigraphy staging studies
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Wrist actigraphy
+- **labels:** PSG
+- **task_definition:** Sleep stage estimation from motion alone
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Systematic review
+- **subject_split:** Systematic review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Establishes severe limits of actigraphy-only sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Systematic review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Establishes severe limits of actigraphy-only sleep staging. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC7618292/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

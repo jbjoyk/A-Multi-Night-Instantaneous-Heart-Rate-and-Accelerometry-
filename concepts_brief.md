@@ -2,8 +2,9 @@
 
 * **Author:** jbjoyk
 * **Date:** 2026-11-17
-* **Status:** Synthesized & Adversarially Audited (Post-EXP-019 Goldfish Review)
-* **Governing Baseline:** EXP-019 Confirmatory Outcomes (H-A: Not Supported $\bar{\Delta} = +1.01\text{ pp}$, 95% CI $[-0.17, +1.99]\text{ pp}$; S1: Supported $\bar{\Delta} = +2.73\text{ pp}$; S2: Supported $\bar{\Delta} = +20.32\text{ pp}$; S3: Not Supported $\bar{\Delta} = 0.00\text{ pp}$; 34 Responders [73.9%], 12 Non-Responders [26.1%])
+* **Status:** Synthesized & Adversarially Audited (Synchronized to Research Direction v4, DEC-029)
+* **Governing Direction:** `RESEARCH_DIRECTION_v4_FULL.md` (Replication and extension of multi-night supervised personalization in healthy adults with consumer IHR + accelerometry, contextualized by van der Aar et al. 2025 precedent)
+* **Governing Baseline:** EXP-019 Confirmatory Outcomes (H-A: Reconciled Inconclusive $\bar{\Delta} = +1.01\text{ pp}$, 95% CI $[-0.17, +1.99]\text{ pp}$; S1: Supported $\bar{\Delta} = +2.73\text{ pp}$; S2: Supported $\bar{\Delta} = +20.32\text{ pp}$; S3: Unresolved pending no-op audit $\bar{\Delta} = 0.00\text{ pp}$; 34 Responders [73.9%], 12 Non-Responders [26.1%])
 
 ---
 
@@ -12,7 +13,7 @@
 In EXP-019, within-person supervised adaptation ($FT\text{-}2$) demonstrated two major confirmatory successes alongside a primary threshold shortfall:
 1. **Biological Specificity (S1 Supported)**: Fine-tuning on an individual's own 2 calibration nights produces a $+2.73\text{ pp}$ advantage over fine-tuning on another individual's nights ($p = 9.0 \times 10^{-6}$). Fine-tuning on another person actively degrades performance by $-1.72\text{ pp}$ below the zero-shot baseline ($62.86\%$).
 2. **Cohort Transfer Value (S2 Supported)**: Training models per-subject from scratch yields an unviable $45.27\%$ Macro-F1 ($+20.32\text{ pp}$ advantage for cohort pre-training).
-3. **Primary Threshold Shortfall (H-A Not Supported)**: While 34 of 46 subjects (73.9%) improved with adaptation (Wilcoxon $p = 0.00131$), the mean population gain was $+1.01\text{ pp}$, falling short of the pre-registered $+1.50\text{ pp}$ practical effect threshold. The 95% bootstrap confidence interval ($[-0.17, +1.99]\text{ pp}$) crosses zero due to severe negative outliers:
+3. **Primary Threshold Shortfall (H-A Reconciled Inconclusive)**: While 34 of 46 subjects (73.9%) improved with adaptation (Wilcoxon $p = 0.00131$), the mean population gain was $+1.01\text{ pp}$, falling short of the pre-registered $+1.50\text{ pp}$ practical effect threshold. Under the exact preregistered decision rule (`4dff5b7`), because the 95% CI upper bound (+1.99 pp) is not below +1.50 pp, the verdict evaluates to Inconclusive rather than Not Supported. The 95% bootstrap confidence interval ($[-0.17, +1.99]\text{ pp}$) crosses zero due to severe negative outliers:
    - `Bidslab34`: $-16.34\text{ pp}$ ($60.06\% \to 43.72\%$)
    - `Bidslab65`: $-6.57\text{ pp}$ ($47.28\% \to 40.71\%$)
    - `Bidslab10`: $-6.47\text{ pp}$ ($71.53\% \to 65.06\%$)
@@ -191,7 +192,7 @@ flowchart TD
 - Validate whether pre-adaptation gating ($D_{\text{JS}}(P_C \parallel P_{\text{pop}})$, $N_{\text{valid}}$, $\mathcal{L}_{ZS}(C)$) reliably identifies non-responders using strictly calibration data.
 
 ### Out-of-Scope Non-Goals
-- **No modification of locked EXP-019 results**: H-A (Not Supported) remains permanent.
+- **No modification of locked EXP-019 results**: H-A (Reconciled Inconclusive under the preregistered decision rule) remains permanent.
 - **No NAS or capacity mutations**: Model A remains frozen at 163,940 parameters.
 - **No synthetic data generation**: All signals remain real wearable recordings.
 - **No post-hoc threshold manipulation**: The $+1.50\text{ pp}$ threshold cannot be altered.

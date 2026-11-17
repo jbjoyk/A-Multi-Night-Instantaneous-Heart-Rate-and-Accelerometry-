@@ -1,0 +1,44 @@
+# P092: Selective prediction for extracting unstructured clinical data
+
+- **paper_id:** `P092`
+- **title:** Selective prediction for extracting unstructured clinical data
+- **authors:** Swaminathan A et al.
+- **year:** 2023
+- **venue:** JAMIA
+- **doi_or_id:** `PMC10746316`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10746316/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Decision-theoretic utility-based selective prediction
+- **hypothesis:** UNKNOWN
+- **dataset:** Clinical unstructured data
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Clinical text
+- **labels:** Clinical labels
+- **task_definition:** Decision-theoretic utility-based selective prediction
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Asymmetric abstention thresholding
+- **adaptation_method:** Asymmetric abstention thresholding
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Clinical selective prediction
+- **subject_split:** Clinical selective prediction
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Provides utility-based asymmetric abstention framework for healthcare.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Clinical selective prediction).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Asymmetric abstention thresholding
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Provides utility-based asymmetric abstention framework for healthcare. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10746316/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

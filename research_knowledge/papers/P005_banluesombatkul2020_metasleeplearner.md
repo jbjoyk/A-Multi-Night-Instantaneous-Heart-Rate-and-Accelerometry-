@@ -1,0 +1,44 @@
+# P005: MetaSleepLearner: A Pilot Study on Fast Adaptation of Bio-Signals-Based Sleep Stage Classifier to New Individual Subject Using Meta-Learning
+
+- **paper_id:** `P005`
+- **title:** MetaSleepLearner: A Pilot Study on Fast Adaptation of Bio-Signals-Based Sleep Stage Classifier to New Individual Subject Using Meta-Learning
+- **authors:** Banluesombatkul K, Ouppaphan P, Leelaarporn P, Lakhan P, Chaitusaney B, Jaimchariyatam N, Chuangsuwanich E, Chen W, Phan H, Dilokthanakul N, Wilaiprasitporn T
+- **year:** 2020 (2021 IEEE JBHI)
+- **venue:** IEEE Journal of Biomedical and Health Informatics / arXiv:2004.04157
+- **doi_or_id:** `arXiv:2004.04157`
+- **url:** https://arxiv.org/abs/2004.04157
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Can Model-Agnostic Meta-Learning (MAML) enable fast adaptation of a sleep-staging classifier to a new individual using only a few labeled epochs?
+- **hypothesis:** MAML pre-training learns an initialization that adapts faster and more accurately to unseen subjects than conventional pre-training + fine-tuning.
+- **dataset:** MASS (200 subjects) + Sleep-EDF / clinical cohorts (`UNKNOWN` exact split counts)
+- **number_of_subjects:** 200 (MASS) + target subjects (`UNKNOWN`)
+- **number_of_nights:** `UNKNOWN`
+- **sensors:** EEG / bio-signals
+- **labels:** PSG 30-second epochs
+- **task_definition:** 5-class sleep staging
+- **preprocessing:** `UNKNOWN`
+- **architecture:** Simplified `DeepSleepNet` with MAML bi-level optimization
+- **personalization_method:** Few-shot MAML adaptation on a small number of labeled epochs from target subject
+- **adaptation_method:** Gradient-based MAML inner-loop updates
+- **calibration_data:** Few labeled epochs from target subject
+- **evaluation_protocol:** Subject-independent meta-training + few-shot adaptation on held-out subjects
+- **subject_split:** Subject-disjoint
+- **temporal_split:** `UNKNOWN`
+- **external_validation:** `UNKNOWN`
+- **metrics:** `5.4%` to `17.7%` relative improvement over conventional fine-tuning on few-shot epoch adaptation; however, [SimpleKANSleepNet (2026)](https://pmc.ncbi.nlm.nih.gov/articles/PMC12957274/) notes MetaSleepLearner shows lower baseline accuracy than full DeepSleepNet/SeqSleepNet.
+- **statistical_testing:** Statistical difference in mean reported
+- **uncertainty_reporting:** `UNKNOWN`
+- **failure_cases:** Simpler backbone limits absolute baseline accuracy; MAML stability on noisy/imbalanced wearable IHR is untested.
+- **limitations:** Uses EEG rather than wearable IHR+Accel; requires episodic meta-retraining (incompatible with frozen Model A checkpoints).
+- **leakage_risks:** Low if calibration epochs are chronologically prior; epoch-sampling within a single night can risk temporal correlation if not split chronologically.
+- **reproducibility:** High (`github.com/IoBT-VISTEC/MetaSleepLearner`).
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting` (for few-shot personalization potential; `Neutral` on absolute accuracy)
+- **transferable_method:** MAML episodic subject-level initialization.
+- **possible_research_gap:** Whether meta-learning helps under calibration-night label shift (e.g., missing Deep sleep).
+
+### Provenance Notes
+- **Paper reports:** MAML +5.4% to +17.7% improvement over conventional approach, MASS 200 subjects, LRP interpretability (arXiv:2004.04157 & PMC12957274).
+- **We infer:** Because Model A (`ConventionalCNNBiGRU`) is frozen for EXP-019 comparisons, MAML would require a separate preregistered pretraining phase.

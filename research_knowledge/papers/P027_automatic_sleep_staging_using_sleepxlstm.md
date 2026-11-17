@@ -1,0 +1,44 @@
+# P027: Automatic Sleep Staging Using SleepXLSTM Based on Heart Rate Signals
+
+- **paper_id:** `P027`
+- **title:** Automatic Sleep Staging Using SleepXLSTM Based on Heart Rate Signals
+- **authors:** Tianlong Wu, Zisen Mao, Luyang Shi, Huaren Zhou, Chaohua Xie, Bowen Ran
+- **year:** 2026
+- **venue:** Electronics (MDPI)
+- **doi_or_id:** `electronics15030505`
+- **url:** https://www.mdpi.com/2079-9292/15/3/505
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Heart-rate sleep staging (xLSTM)
+- **hypothesis:** UNKNOWN
+- **dataset:** Heart rate sleep dataset
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearable heart rate
+- **labels:** PSG
+- **task_definition:** Heart-rate sleep staging (xLSTM)
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Recent xLSTM architecture for wearable HR sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Recent xLSTM architecture for wearable HR sleep staging. (Source: https://www.mdpi.com/2079-9292/15/3/505, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

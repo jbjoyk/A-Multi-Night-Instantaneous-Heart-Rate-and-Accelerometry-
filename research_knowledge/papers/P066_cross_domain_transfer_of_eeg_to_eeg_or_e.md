@@ -1,0 +1,44 @@
+# P066: Cross-Domain Transfer of EEG to EEG or ECG Learning for CNN-Based Sleep Staging
+
+- **paper_id:** `P066`
+- **title:** Cross-Domain Transfer of EEG to EEG or ECG Learning for CNN-Based Sleep Staging
+- **authors:** Chia-Yen Yang, Pin-Chen Chen, Wen-Chen Huang
+- **year:** 2023
+- **venue:** PMC
+- **doi_or_id:** `PMC10007254`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10007254/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Cross-modality transfer learning
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG / ECG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG -> ECG
+- **labels:** PSG
+- **task_definition:** Cross-modality transfer learning
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** EEG->ECG CNN transfer
+- **adaptation_method:** EEG->ECG CNN transfer
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-signal
+- **subject_split:** Cross-signal
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** EEG->ECG transfer improved sleep staging by ~2.5% and cut training time >50%.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-signal).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** EEG->ECG CNN transfer
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** EEG->ECG transfer improved sleep staging by ~2.5% and cut training time >50%. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10007254/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

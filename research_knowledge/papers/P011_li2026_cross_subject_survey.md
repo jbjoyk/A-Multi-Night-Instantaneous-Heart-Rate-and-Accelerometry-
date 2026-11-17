@@ -1,0 +1,44 @@
+# P011: Cross-Subject Generalization for EEG Decoding: A Survey of Deep Learning Methods
+
+- **paper_id:** `P011`
+- **title:** Cross-Subject Generalization for EEG Decoding: A Survey of Deep Learning Methods
+- **authors:** Li T, Yan Y, Dou F, Song W, Zhang X
+- **year:** 2026
+- **venue:** arXiv Survey (`arXiv:2604.27033v1`)
+- **doi_or_id:** `arXiv:2604.27033v1`
+- **url:** https://arxiv.org/html/2604.27033v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** How should cross-subject physiological decoding methods be taxonomized, and what evaluation/leakage pitfalls invalidate prior claims?
+- **hypothesis:** Pooling heterogeneous source subjects into single-source DA causes negative transfer; subject-dependent splits cause severe identity leakage.
+- **dataset:** Multi-dataset EEG survey (including Sleep-EDF 78 subjects, MASS, motor imagery, emotion, seizure)
+- **number_of_subjects:** Survey (0 new subjects)
+- **number_of_nights:** Survey
+- **sensors:** EEG (survey)
+- **labels:** SCPS (Single-Class-Per-Subject) vs MCPS (Multi-Class-Per-Subject, e.g., sleep staging)
+- **task_definition:** Cross-subject generalization taxonomy (DA, SDA, DG, SSL, PEFT)
+- **preprocessing:** Various
+- **architecture:** Survey of 10 families (Feature Alignment, Adversarial, Disentanglement, Contrastive, Ensembling, Subject-wise Norm, Transfer/Fine-Tuning, Meta-Learning, Augmentation, Causal/IRM)
+- **personalization_method:** Supervised DA (fine-tuning, PEFT/LoRA, shared trunk + subject heads)
+- **adaptation_method:** Single-source DA vs Multi-source DA vs Domain Generalization
+- **calibration_data:** Taxonomy by data access (none for DG, unlabeled for DA, labeled for SDA)
+- **evaluation_protocol:** Contrasts Subject-Dependent (leaky) vs Subject-Independent (LOSO / group K-fold / disjoint holdout)
+- **subject_split:** Requires $S_{\text{train}} \cap S_{\text{test}} = \emptyset$
+- **temporal_split:** Discussed for cross-session / longitudinal shifts
+- **external_validation:** Discussed as essential benchmark standard
+- **metrics:** Survey
+- **statistical_testing:** Survey
+- **uncertainty_reporting:** Survey
+- **failure_cases:** Subject-dependent splits inflate accuracy (>95% dropping to ~60% on unseen subjects); single-source DA pooling causes negative transfer when subjects are heterogeneous.
+- **limitations:** Focuses on EEG rather than wrist PPG/IHR.
+- **leakage_risks:** Explicitly formalizes identity leakage and pipeline-dependent overfitting.
+- **reproducibility:** Survey
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `STRONG`
+- **stance:** `Neutral` (validates our strict subject-disjoint protocol and explains negative transfer in pooled DA)
+- **transferable_method:** Multi-source DA vs DG framing; Subject ID as structural metadata; PEFT/shared-trunk adaptation.
+- **possible_research_gap:** Lack of standardized wearable (non-EEG) multi-night adaptation benchmarks.
+
+### Provenance Notes
+- **Paper reports:** Sections 2.4 (Subject-Dependent vs Subject-Independent leakage), 2.5 (MCPS distribution shift), 4.2.1 (Misplacement of Single-Source DA causing negative transfer) from `arXiv:2604.27033v1`.
+- **We infer:** Adjacent domain-generalization survey; does not establish a causal mechanism for our `FT-other-2` result.

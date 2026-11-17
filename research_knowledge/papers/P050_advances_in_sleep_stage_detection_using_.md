@@ -1,0 +1,44 @@
+# P050: Advances in Sleep Stage Detection Using Wearable Physiological Signals
+
+- **paper_id:** `P050`
+- **title:** Advances in Sleep Stage Detection Using Wearable Physiological Signals
+- **authors:** Maryam Ostadsharif Memar, Reza Shahshahani, Ramtin Hamavar, Zohreh Abbasi, Nadine Steingraeber, Joachim Gross, Omid Abbasi
+- **year:** 2026
+- **venue:** Preprints.org
+- **doi_or_id:** `preprints202607.1006`
+- **url:** https://www.preprints.org/manuscript/202607.1006
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Benchmark synthesis & cross-dataset drops
+- **hypothesis:** UNKNOWN
+- **dataset:** Survey (MESA 2056 subj, SOMNIA, Henri 933)
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** PPG, ECG, ACC
+- **labels:** PSG
+- **task_definition:** Benchmark synthesis & cross-dataset drops
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Review
+- **subject_split:** Review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Concludes zero-shot transfer to structurally different wearables remains the principal unsolved problem; best MESA PPG k~0.74-0.78.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** Concludes zero-shot transfer to structurally different wearables remains the principal unsolved problem; best MESA PPG k~0.74-0.78.
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Contradicting`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Concludes zero-shot transfer to structurally different wearables remains the principal unsolved problem; best MESA PPG k~0.74-0.78. (Source: https://www.preprints.org/manuscript/202607.1006, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

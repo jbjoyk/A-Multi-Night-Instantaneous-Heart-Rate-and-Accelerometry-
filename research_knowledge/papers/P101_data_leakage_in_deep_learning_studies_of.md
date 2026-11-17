@@ -1,0 +1,44 @@
+# P101: Data leakage in deep learning studies of translational EEG
+
+- **paper_id:** `P101`
+- **title:** Data leakage in deep learning studies of translational EEG
+- **authors:** Brookshire G, Kasper J, Blauch NM, Wu YC, Glatt RM, Merrill DA, Gerrol S, Yoder KJ, Lucero C
+- **year:** 2024
+- **venue:** Frontiers in Neuroscience
+- **doi_or_id:** `10.3389/fnins.2024.1373515`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC11099244/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Quantifying segment-wise vs subject-wise leakage
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG benchmarks (cited in P011)
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** Clinical labels
+- **task_definition:** Quantifying segment-wise vs subject-wise leakage
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-dependent vs Subject-independent
+- **subject_split:** Subject-dependent vs Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** 17 of 63 (27.0%) translational DNN-EEG studies unambiguously avoided subject-level data leakage.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-dependent vs Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Out of 63 published translational DNN-EEG studies, only 17 (27.0%) unambiguously avoided subject-level data leakage; segment-based holdout dramatically overestimates accuracy in AD and seizure CNNs. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC11099244/, re-extracted 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

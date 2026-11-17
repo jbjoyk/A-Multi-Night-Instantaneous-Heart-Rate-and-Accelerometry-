@@ -1,0 +1,44 @@
+# P098: Shapelet-Guided Model Selection and Selective Prediction for Time Series Foundation Models
+
+- **paper_id:** `P098`
+- **title:** Shapelet-Guided Model Selection and Selective Prediction for Time Series Foundation Models
+- **authors:** TCD Thesis / Paper
+- **year:** 2025
+- **venue:** Trinity College Dublin
+- **doi_or_id:** `handle:2262/113833`
+- **url:** https://www.tara.tcd.ie/handle/2262/113833
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Training-free selective prediction to discard unreliable segments
+- **hypothesis:** UNKNOWN
+- **dataset:** Real-world time series
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Time series
+- **labels:** Forecasts
+- **task_definition:** Training-free selective prediction to discard unreliable segments
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Shapelet filtering
+- **adaptation_method:** Shapelet filtering
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Zero-shot & fine-tuned TSFMs
+- **subject_split:** Zero-shot & fine-tuned TSFMs
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Shows fine-tuned time-series models still fail on specific segments unless selectively filtered.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Zero-shot & fine-tuned TSFMs).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Shapelet filtering
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Shows fine-tuned time-series models still fail on specific segments unless selectively filtered. (Source: https://www.tara.tcd.ie/handle/2262/113833, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

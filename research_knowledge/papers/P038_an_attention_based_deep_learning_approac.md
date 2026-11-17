@@ -1,0 +1,44 @@
+# P038: An Attention-based Deep Learning Approach for Sleep Stage Classification With Single-Channel EEG (AttnSleep)
+
+- **paper_id:** `P038`
+- **title:** An Attention-based Deep Learning Approach for Sleep Stage Classification With Single-Channel EEG (AttnSleep)
+- **authors:** Eldele E, Chen Z, Liu C, Wu M, Kwoh CK, Li X, Guan C
+- **year:** 2021
+- **venue:** IEEE TNSRE
+- **doi_or_id:** `2021_Emad_IEEE_TNSRE`
+- **url:** https://personal.ntu.edu.sg/ctguan/Publications/2021_Emad_IEEE_TNSRE.pdf
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 5-class sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Sleep-EDF; SHHS
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Single-channel EEG
+- **labels:** PSG
+- **task_definition:** 5-class sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent CV
+- **subject_split:** Subject-independent CV
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Multi-resolution CNN + multi-head attention baseline.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent CV).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Multi-resolution CNN + multi-head attention baseline. (Source: https://personal.ntu.edu.sg/ctguan/Publications/2021_Emad_IEEE_TNSRE.pdf, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

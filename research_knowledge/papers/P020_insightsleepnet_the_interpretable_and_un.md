@@ -1,0 +1,44 @@
+# P020: InsightSleepNet: the interpretable and uncertainty-aware deep learning network for sleep staging using continuous Photoplethysmography
+
+- **paper_id:** `P020`
+- **title:** InsightSleepNet: the interpretable and uncertainty-aware deep learning network for sleep staging using continuous Photoplethysmography
+- **authors:** Borum Nam, Beomjun Bark, Jeyeon Lee, In Young Kim
+- **year:** 2024
+- **venue:** BMC Med Inform Decis Mak / PMC
+- **doi_or_id:** `PMC10865603`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10865603/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** 4-class sleep staging with uncertainty
+- **hypothesis:** UNKNOWN
+- **dataset:** PPG sleep datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Continuous PPG
+- **labels:** PSG
+- **task_definition:** 4-class sleep staging with uncertainty
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Combines PPG sleep staging with interpretability and uncertainty awareness.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Combines PPG sleep staging with interpretability and uncertainty awareness. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10865603/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

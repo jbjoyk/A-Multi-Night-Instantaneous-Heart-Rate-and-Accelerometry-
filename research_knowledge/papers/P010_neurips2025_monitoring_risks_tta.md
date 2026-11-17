@@ -1,0 +1,44 @@
+# P010: Monitoring Risks in Test-Time Adaptation
+
+- **paper_id:** `P010`
+- **title:** Monitoring Risks in Test-Time Adaptation
+- **authors:** Mona Schirmer, Metod Jazbec, Christian A. Naesseth, Eric Nalisnick
+- **year:** 2025
+- **venue:** Advances in Neural Information Processing Systems (NeurIPS 2025)
+- **doi_or_id:** `NeurIPS-2025-746960ad`
+- **url:** https://proceedings.neurips.cc/paper_files/paper/2025/file/746960ad49ddb47248970a0e1404230c-Paper-Conference.pdf
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** How can we detect silent performance degradations or adaptation collapse during test-time adaptation without excessive false alarms?
+- **hypothesis:** Sequential testing using time-uniform confidence sequences can monitor model risk over time and trigger alarms with rigorous false-alarm rate guarantees.
+- **dataset:** TTA risk monitoring benchmarks (`UNKNOWN` exact list from PDF snippet)
+- **number_of_subjects:** N/A
+- **number_of_nights:** N/A
+- **sensors:** N/A
+- **labels:** Class labels
+- **task_definition:** Online risk monitoring / collapse detection during adaptation
+- **preprocessing:** N/A
+- **architecture:** Model-agnostic
+- **personalization_method:** N/A
+- **adaptation_method:** Risk-monitored TTA with rollback/retraining trigger
+- **calibration_data:** Sequential test stream
+- **evaluation_protocol:** Sequential risk monitoring with time-uniform confidence sequences
+- **subject_split:** N/A
+- **temporal_split:** Sequential stream
+- **external_validation:** N/A
+- **metrics:** False alarm rate, detection delay
+- **statistical_testing:** Time-uniform confidence sequences
+- **uncertainty_reporting:** Formal false-alarm probability bounds
+- **failure_cases:** Unmonitored TTA suffers silent collapse to near-zero accuracy under severe shifts.
+- **limitations:** Designed for streaming online TTA rather than 2-night offline calibration.
+- **leakage_risks:** Low when thresholds are pre-specified via confidence sequences.
+- **reproducibility:** `UNKNOWN`
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting` (for governed adaptation & collapse detection)
+- **transferable_method:** Statistical risk monitoring & rollback triggers for adaptation safety.
+- **possible_research_gap:** Adapting risk-monitoring / abstention guarantees to finite $k=2$ calibration nights in wearable sleep staging.
+
+### Provenance Notes
+- **Paper reports:** Silent TTA collapse and time-uniform confidence sequences for false-alarm-bounded risk monitoring (NeurIPS 2025 abstract/intro).
+- **We infer:** Provides a formal statistical framing for gating/rollback in multi-night sleep adaptation.

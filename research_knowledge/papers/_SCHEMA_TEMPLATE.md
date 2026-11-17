@@ -1,0 +1,41 @@
+# Paper Extraction Schema Template (33 Fields)
+
+- **paper_id:** `PXXX`
+- **title:**
+- **authors:**
+- **year:**
+- **venue:**
+- **doi_or_id:**
+- **url:**
+- **extraction_date:** `YYYY-MM-DD`
+- **retrieval_depth:** `full-text | abstract-only`
+- **provenance_notes:** Distinguish `Paper reports:` from `We infer:`. Never fabricate missing fields; use `UNKNOWN`.
+- **research_question:**
+- **hypothesis:**
+- **dataset:**
+- **number_of_subjects:**
+- **number_of_nights:**
+- **sensors:**
+- **labels:**
+- **task_definition:**
+- **preprocessing:**
+- **architecture:**
+- **personalization_method:**
+- **adaptation_method:**
+- **calibration_data:**
+- **evaluation_protocol:**
+- **subject_split:**
+- **temporal_split:**
+- **external_validation:**
+- **metrics:**
+- **statistical_testing:**
+- **uncertainty_reporting:**
+- **failure_cases:**
+- **limitations:**
+- **leakage_risks:**
+- **reproducibility:**
+- **relevance_to_our_project:** `HIGH | MEDIUM | LOW | OUT-OF-SCOPE`
+- **evidence_strength:** `STRONG | MODERATE | WEAK | SPECULATIVE`
+- **stance:** `Supporting | Contradicting | Neutral`
+- **transferable_method:**
+- **possible_research_gap:**

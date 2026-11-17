@@ -1,0 +1,44 @@
+# P048: A Systematic Review of Sensing Technologies for Wearable Sleep Staging
+
+- **paper_id:** `P048`
+- **title:** A Systematic Review of Sensing Technologies for Wearable Sleep Staging
+- **authors:** Imtiaz SA
+- **year:** 2021
+- **venue:** Sensors (MDPI)
+- **doi_or_id:** `PMC7956647`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC7956647/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Wearable sleep staging review
+- **hypothesis:** UNKNOWN
+- **dataset:** Systematic review
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** ACC, PPG, ECG, EEG
+- **labels:** PSG
+- **task_definition:** Wearable sleep staging review
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Systematic review
+- **subject_split:** Systematic review
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Foundational review of ACC and PPG wearable sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Systematic review).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Foundational review of ACC and PPG wearable sleep staging. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC7956647/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

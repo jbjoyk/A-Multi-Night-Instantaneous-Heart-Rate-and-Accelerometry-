@@ -1,0 +1,44 @@
+# P022: Multi-stage sleep classification using photoplethysmographic sensor
+
+- **paper_id:** `P022`
+- **title:** Multi-stage sleep classification using photoplethysmographic sensor
+- **authors:** Royal Society Open Science (2023)
+- **year:** 2023
+- **venue:** Royal Society Open Science
+- **doi_or_id:** `PMC10090868`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC10090868/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Multi-stage sleep classification
+- **hypothesis:** UNKNOWN
+- **dataset:** PPG cohort
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** PPG sensor
+- **labels:** PSG
+- **task_definition:** Multi-stage sleep classification
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Multi-stage PPG classification benchmark.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Multi-stage PPG classification benchmark. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC10090868/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

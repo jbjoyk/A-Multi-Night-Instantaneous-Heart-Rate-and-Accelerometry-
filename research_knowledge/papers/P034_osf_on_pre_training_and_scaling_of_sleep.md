@@ -1,0 +1,44 @@
+# P034: OSF: On Pre-training and Scaling of Sleep Foundation Models
+
+- **paper_id:** `P034`
+- **title:** OSF: On Pre-training and Scaling of Sleep Foundation Models
+- **authors:** Zitao Shuai, Zongzhe Xu, David Yang, Wei Wang, Yuzhe Yang
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2603.00190v2`
+- **url:** https://arxiv.org/html/2603.00190v2
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Few-shot K in {1, 5, 50} adaptation on MrOS
+- **hypothesis:** UNKNOWN
+- **dataset:** SleepBench; MrOS (out-of-domain)
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** PSG / physiological signals
+- **labels:** PSG
+- **task_definition:** Few-shot K in {1, 5, 50} adaptation on MrOS
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Linear probing / few-shot adaptation
+- **adaptation_method:** Linear probing / few-shot adaptation
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Out-of-domain MrOS few-shot
+- **subject_split:** Out-of-domain MrOS few-shot
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes (MrOS)
+- **metrics:** Evaluates K-shot adaptation under domain shift on MrOS.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Out-of-domain MrOS few-shot).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Linear probing / few-shot adaptation
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Evaluates K-shot adaptation under domain shift on MrOS. (Source: https://arxiv.org/html/2603.00190v2, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

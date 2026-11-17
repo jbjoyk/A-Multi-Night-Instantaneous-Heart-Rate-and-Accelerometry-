@@ -1,0 +1,44 @@
+# P073: Towards Stable Test-Time Adaptation in Dynamic Wild World (SAR)
+
+- **paper_id:** `P073`
+- **title:** Towards Stable Test-Time Adaptation in Dynamic Wild World (SAR)
+- **authors:** Niu S, Wu J, Zhang Y, Wen Z, Chen Y, Zhao P, Tan M
+- **year:** 2023
+- **venue:** ICLR 2023
+- **doi_or_id:** `arXiv:2302.12400`
+- **url:** https://arxiv.org/abs/2302.12400
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Stabilizing TTA against collapse
+- **hypothesis:** UNKNOWN
+- **dataset:** ImageNet-C under wild shifts
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Vision
+- **labels:** Class labels
+- **task_definition:** Stabilizing TTA against collapse
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Sharpness-aware + gradient-filtered entropy min + GN/LN
+- **adaptation_method:** Sharpness-aware + gradient-filtered entropy min + GN/LN
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Wild TTA (small batch, label shift, mixed)
+- **subject_split:** Wild TTA (small batch, label shift, mixed)
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Proves BN causes TTA instability and noisy high-gradient samples cause single-class collapse.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Wild TTA (small batch, label shift, mixed)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Sharpness-aware + gradient-filtered entropy min + GN/LN
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Proves BN causes TTA instability and noisy high-gradient samples cause single-class collapse. (Source: https://arxiv.org/abs/2302.12400, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

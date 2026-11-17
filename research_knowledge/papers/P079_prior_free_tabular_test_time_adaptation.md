@@ -1,0 +1,44 @@
+# P079: Prior-Free Tabular Test-Time Adaptation
+
+- **paper_id:** `P079`
+- **title:** Prior-Free Tabular Test-Time Adaptation
+- **authors:** Rundong He, Jieming Shi
+- **year:** 2026
+- **venue:** ICLR 2026
+- **doi_or_id:** `ICLR-2026-718dd6fa`
+- **url:** https://proceedings.iclr.cc/paper_files/paper/2026/file/718dd6fa696c6303ca13ad81836014ee-Paper-Conference.pdf
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** TTA under feature and label shift without prior assumptions
+- **hypothesis:** UNKNOWN
+- **dataset:** Tabular benchmarks
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Tabular
+- **labels:** Class labels
+- **task_definition:** TTA under feature and label shift without prior assumptions
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Prior-free TTA
+- **adaptation_method:** Prior-free TTA
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Feature + label shift
+- **subject_split:** Feature + label shift
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Shows vision TTA fails on non-vision feature+label shifts.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Feature + label shift).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Prior-free TTA
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Shows vision TTA fails on non-vision feature+label shifts. (Source: https://proceedings.iclr.cc/paper_files/paper/2026/file/718dd6fa696c6303ca13ad81836014ee-Paper-Conference.pdf, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

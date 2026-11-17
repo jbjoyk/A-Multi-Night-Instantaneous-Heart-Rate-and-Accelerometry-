@@ -1,0 +1,44 @@
+# P002: Sleep stage prediction with raw acceleration and photoplethysmography heart rate data derived from a consumer wearable device
+
+- **paper_id:** `P002`
+- **title:** Sleep stage prediction with raw acceleration and photoplethysmography heart rate data derived from a consumer wearable device
+- **authors:** Walch O, Huang Y, Forger D, Goldstein C
+- **year:** 2019
+- **venue:** Sleep, 42(12):zsz180
+- **doi_or_id:** `10.1093/sleep/zsz180`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC6930135/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Can raw acceleration and PPG-derived heart rate from an Apple Watch, combined with a circadian clock proxy, classify sleep/wake and 3-class sleep stages against PSG and generalize to MESA?
+- **hypothesis:** Combining motion, heart rate variability proxy, and a personalized circadian clock proxy improves wearable sleep staging over motion-only actigraphy.
+- **dataset:** SleepAccel (Apple Watch + PSG) and MESA (external validation)
+- **number_of_subjects:** 31 healthy adults (SleepAccel, mean age 29.42 $\pm$ 8.52); 188 subjects (MESA external, mean age 68.82 $\pm$ 8.81)
+- **number_of_nights:** 31 PSG nights (1 per subject) + 7–14 days ambulatory steps (SleepAccel); 188 PSG nights (MESA)
+- **sensors:** Apple Watch Series 2/3 (50 Hz triaxial MEMS accel, PPG HR); MESA actigraphy + finger pulse oximetry PPG
+- **labels:** Attended laboratory PSG (AASM 30-second epochs)
+- **task_definition:** 2-class (Sleep/Wake) and 3-class (Wake/NREM/REM)
+- **preprocessing:** Activity counts conversion; HR interpolated to 1 Hz + Difference-of-Gaussians filter + subject-level 90th-percentile normalization; 10-min local windows
+- **architecture:** Logistic Regression, k-NN, Random Forest, Multilayer Perceptron (MLP)
+- **personalization_method:** Circadian "clock proxy" estimated from 7–14 days of each subject's ambulatory steps
+- **adaptation_method:** None (subject-independent classifiers)
+- **calibration_data:** 7–14 days ambulatory steps for circadian phase estimation (unlabeled)
+- **evaluation_protocol:** Monte Carlo CV (50x for 2-class, 20x for 3-class, 70/30 subject split) + Leave-One-Subject-Out CV + external MESA test
+- **subject_split:** Strictly subject-disjoint
+- **temporal_split:** N/A (single PSG night per subject)
+- **external_validation:** Yes (MESA $n=188$)
+- **metrics:** SleepAccel MLP 2-class: Acc `90.1%`, Spec `59.6%` at `93%` Sens, $\kappa=0.449$, AUC `0.878`; 3-class: Best Acc `72.3%`, $\kappa=0.277$. MESA 3-class: Best Acc `68.6%`, $\kappa=0.403$.
+- **statistical_testing:** Bland-Altman plots for TST, SOL, WASO, SE, REM, NREM
+- **uncertainty_reporting:** Histograms across LOOCV subjects (Figures 6–7)
+- **failure_cases:** HR-only wake specificity was only `24%–33%` at 90% sleep sensitivity; Bland-Altman errors widened with larger WASO/SOL; 3-class $\kappa$ on Apple Watch was low (`0.277`).
+- **limitations:** Young healthy cohort (mean age 29.4); 1 PSG night per subject (cannot test multi-night adaptation); single RPSGT scorer; steps-to-light proxy relies on Apple proprietary steps.
+- **leakage_risks:** Low (subject-disjoint splits), though 3-class threshold search used ground-truth balance exploration.
+- **reproducibility:** High (`github.com/ojwalch/sleep_accel`, `github.com/ojwalch/sleep_classifiers`, PhysioNet data).
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `STRONG`
+- **stance:** `Neutral` (primary external-validation dataset `EXP-027`; establishes wearable wake-specificity limits)
+- **transferable_method:** Bland-Altman clinical summary evaluation; circadian clock proxy.
+- **possible_research_gap:** Multi-night adaptation cannot be tested on SleepAccel (1 PSG night/subject).
+
+### Provenance Notes
+- **Paper reports:** All cohort sizes, metrics (Tables 1–9), and Bland-Altman limitations directly from PMC6930135.
+- **We infer:** Confirms why `EXP-027` on SleepAccel is strictly limited to zero-shot external validation.

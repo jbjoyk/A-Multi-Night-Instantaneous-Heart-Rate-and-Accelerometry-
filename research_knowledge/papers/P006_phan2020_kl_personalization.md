@@ -1,0 +1,44 @@
+# P006: Personalized automatic sleep staging with single-night data
+
+- **paper_id:** `P006`
+- **title:** Personalized automatic sleep staging with single-night data
+- **authors:** Phan H, Mikkelsen K, Chén OY, Koch P, Mertins A, Kidmose P, De Vos M
+- **year:** 2020
+- **venue:** Physiological Measurement 41(6):064004
+- **doi_or_id:** `10.1088/1361-6579/ab921e`
+- **url:** https://lirias.kuleuven.be/retrieve/616969
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Can a subject-independent sleep staging model pretrained on an unknown source cohort be personalized to a new individual using only a single labeled night without overfitting?
+- **hypothesis:** Adding KL-divergence regularization between the subject-independent (SI) model output and the personalized model output prevents overfitting to single-night data.
+- **dataset:** MASS (source pretraining) -> Sleep-EDF Expanded Sleep Cassette (target personalization)
+- **number_of_subjects:** 75 subjects (with 2 nights each) in target; MASS count `UNKNOWN` in snippet
+- **number_of_nights:** 150 target nights (2 per subject)
+- **sensors:** Single-channel EEG
+- **labels:** PSG 30-second epochs (5-class)
+- **task_definition:** 5-class sleep staging
+- **preprocessing:** 256-point FFT log-amplitude spectrum; **night-specific normalization** (zero mean, unit SD per night)
+- **architecture:** `SeqSleepNet`
+- **personalization_method:** Supervised fine-tuning on Night 1 with KL-divergence regularization toward SI model predictions
+- **adaptation_method:** Supervised fine-tuning + KL-divergence loss
+- **calibration_data:** 1st night of target subject (labeled)
+- **evaluation_protocol:** Cross-dataset pretraining (MASS) -> Night 1 fine-tune -> Night 2 test
+- **subject_split:** Subject-disjoint (target subjects unseen during MASS pretraining)
+- **temporal_split:** Chronological (Night 1 -> Night 2)
+- **external_validation:** Yes (MASS -> Sleep-EDF Expanded)
+- **metrics:** Accuracy `79.6%`, Cohen's $\kappa = 0.706$, Macro-F1 `73.0%` (+4.5 pp over non-personalized, +2.2 pp over unregularized fine-tuning)
+- **statistical_testing:** `UNKNOWN`
+- **uncertainty_reporting:** `UNKNOWN`
+- **failure_cases:** **Subject-specific normalization failed** in subjects with substantial signal magnitude differences between Night 1 and Night 2; unregularized fine-tuning overfitted single-night data.
+- **limitations:** Evaluated on EEG (high SNR) rather than low-SNR wrist IHR+Accel; only 2 nights per subject (cannot assess longer-term drift).
+- **leakage_risks:** Low (chronological Night 1 -> Night 2; unknown source cohort).
+- **reproducibility:** `UNKNOWN`
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting` (for KL-regularized supervised FT and night-specific normalization; `Contradicting` naive unregularized FT)
+- **transferable_method:** KL-divergence regularization toward SI model; night-specific normalization.
+- **possible_research_gap:** Testing whether KL-divergence regularization prevents label-shift collapse (e.g., `Bidslab34` $-16.34\text{ pp}$) on wearable IHR+Accel.
+
+### Provenance Notes
+- **Paper reports:** 75 subjects on Sleep-EDF, MASS pretraining, +4.5 pp vs non-personalized, +2.2 pp vs unregularized FT, and failure of subject-specific normalization under inter-night magnitude differences (Lirias abstract/excerpts).
+- **We infer:** KL-divergence regularization acts as a prior-preserving anchor that could mitigate emission-bias collapse when a calibration night lacks Deep sleep.

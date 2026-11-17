@@ -1,0 +1,44 @@
+# P031: A Comparative Deep Learning Study of Motion and Heart-Rate Inputs for Sleep Staging
+
+- **paper_id:** `P031`
+- **title:** A Comparative Deep Learning Study of Motion and Heart-Rate Inputs for Sleep Staging
+- **authors:** Amey Pawar, Nayana Mahajan, Devdatta Talele, Affan Ansari
+- **year:** 2026
+- **venue:** Preprints.org
+- **doi_or_id:** `preprints202610.1861`
+- **url:** https://www.preprints.org/manuscript/202610.1861
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Modality ablation for sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Wearable HR + motion
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Motion + Heart Rate
+- **labels:** PSG
+- **task_definition:** Modality ablation for sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-independent
+- **subject_split:** Subject-independent
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Compares motion vs HR deep learning inputs.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-independent).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Compares motion vs HR deep learning inputs. (Source: https://www.preprints.org/manuscript/202610.1861, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

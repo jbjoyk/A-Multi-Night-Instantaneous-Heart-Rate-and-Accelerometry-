@@ -1,0 +1,44 @@
+# P059: ADG-RANet: A sleep staging model based on adversarial domain generalized residual attention network
+
+- **paper_id:** `P059`
+- **title:** ADG-RANet: A sleep staging model based on adversarial domain generalized residual attention network
+- **authors:** UNKNOWN
+- **year:** 2025
+- **venue:** Frontiers in Neuroscience
+- **doi_or_id:** `PMC12098520`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC12098520/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** 5-class DG sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** ISRUC-S3
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Multimodal PSG
+- **labels:** PSG
+- **task_definition:** 5-class DG sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** GRL + residual attention + Bi-GRU
+- **adaptation_method:** GRL + residual attention + Bi-GRU
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-disjoint CV (acc 82.51%, mF1 0.8100)
+- **subject_split:** Subject-disjoint CV (acc 82.51%, mF1 0.8100)
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Adversarial DG sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-disjoint CV (acc 82.51%, mF1 0.8100)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** GRL + residual attention + Bi-GRU
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Adversarial DG sleep staging. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC12098520/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

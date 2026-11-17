@@ -1,0 +1,44 @@
+# P057: Generalizable Sleep Staging via Multi-Level Domain Alignment
+
+- **paper_id:** `P057`
+- **title:** Generalizable Sleep Staging via Multi-Level Domain Alignment
+- **authors:** Jiquan Wang, Sha Zhao, Haiteng Jiang, Shijian Li, Tao Li, Gang Pan
+- **year:** 2024
+- **venue:** AAAI 2024
+- **doi_or_id:** `arXiv:2401.05363v2`
+- **url:** https://arxiv.org/html/2401.05363v2
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Domain generalization for unseen databases
+- **hypothesis:** UNKNOWN
+- **dataset:** Multi-database PSG
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** PSG
+- **task_definition:** Domain generalization for unseen databases
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Multi-level domain alignment (DG)
+- **adaptation_method:** Multi-level domain alignment (DG)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Leave-one-dataset-out
+- **subject_split:** Leave-one-dataset-out
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Formalizes DG for unseen sleep databases.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Leave-one-dataset-out).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Multi-level domain alignment (DG)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Formalizes DG for unseen sleep databases. (Source: https://arxiv.org/html/2401.05363v2, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

@@ -1,0 +1,44 @@
+# P036: SeqSleepNet: End-to-End Hierarchical Recurrent Neural Network for Sequence-to-Sequence Automatic Sleep Staging
+
+- **paper_id:** `P036`
+- **title:** SeqSleepNet: End-to-End Hierarchical Recurrent Neural Network for Sequence-to-Sequence Automatic Sleep Staging
+- **authors:** Phan H, Andreotti F, Cooray N, Chén OY, De Vos M
+- **year:** 2019
+- **venue:** IEEE TNSRE
+- **doi_or_id:** `RG:330772741`
+- **url:** https://www.researchgate.net/publication/330772741_SeqSleepNet_End-to-End_Hierarchical_Recurrent_Neural_Network_for_Sequence-to-Sequence_Automatic_Sleep_Staging
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Sequence-to-sequence 5-class sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** MASS
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG/EOG/EMG
+- **labels:** PSG
+- **task_definition:** Sequence-to-sequence 5-class sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None (backbone for P006/P007 personalization)
+- **adaptation_method:** None (backbone for P006/P007 personalization)
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Subject-disjoint CV
+- **subject_split:** Subject-disjoint CV
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Core hierarchical sequence architecture adapted in Phan 2020 & Lorenzen 2023.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Subject-disjoint CV).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Neutral`
+- **transferable_method:** None (backbone for P006/P007 personalization)
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Core hierarchical sequence architecture adapted in Phan 2020 & Lorenzen 2023. (Source: https://www.researchgate.net/publication/330772741_SeqSleepNet_End-to-End_Hierarchical_Recurrent_Neural_Network_for_Sequence-to-Sequence_Automatic_Sleep_Staging, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

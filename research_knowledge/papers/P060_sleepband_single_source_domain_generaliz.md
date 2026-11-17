@@ -1,0 +1,44 @@
+# P060: SleepBand: Single-Source Domain Generalization for Sleep Staging
+
+- **paper_id:** `P060`
+- **title:** SleepBand: Single-Source Domain Generalization for Sleep Staging
+- **authors:** Yan Chen et al.
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2607.04851v1`
+- **url:** https://arxiv.org/html/2607.04851v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Single-source DG
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG/EOG sleep datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG/EOG
+- **labels:** PSG
+- **task_definition:** Single-source DG
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Gabor filter bank + temporal encoder
+- **adaptation_method:** Gabor filter bank + temporal encoder
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-domain
+- **subject_split:** Cross-domain
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Spectral sub-band decomposition for DG.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-domain).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Gabor filter bank + temporal encoder
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Spectral sub-band decomposition for DG. (Source: https://arxiv.org/html/2607.04851v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

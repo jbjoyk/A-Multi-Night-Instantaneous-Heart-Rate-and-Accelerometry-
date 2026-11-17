@@ -1,0 +1,44 @@
+# P106: Learning individual autonomic representations of sleep stages to improve photoplethysmography based sleep monitoring
+
+- **paper_id:** `P106`
+- **title:** Learning individual autonomic representations of sleep stages to improve photoplethysmography based sleep monitoring
+- **authors:** Jaap F. van der Aar, Merel M. van Gilst, Daan A. van den Ende, Sebastiaan Overeem, Elisabetta Peri, Pedro Fonseca
+- **year:** 2025
+- **venue:** Physiological Measurement (2025 Sep 30;46(9))
+- **doi_or_id:** `10.1088/1361-6579/ae0119` (PMID: `40882681`)
+- **url:** https://pubmed.ncbi.nlm.nih.gov/40882681/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Can partial retraining (fine-tuning) of a general PPG-based sleep staging model using multiple home nights of concurrent wearable EEG labels learn individual autonomic representations and improve performance against clinical PSG?
+- **hypothesis:** `TO FILL` (abstract-only; partial retraining captures subject-specific autonomic sleep signatures)
+- **dataset:** Clinical PSG + up to 7 home nights cohort (`TO FILL` dataset name)
+- **number_of_subjects:** 59 (heterogeneous sleep-disordered patients)
+- **number_of_nights:** Up to 7 home nights per subject + clinical PSG
+- **sensors:** Wrist-worn PPG + accelerometry
+- **labels:** Concurrent wearable EEG labels (for home fine-tuning); clinical PSG (for evaluation)
+- **task_definition:** 4-class sleep staging (Wake / N1+N2 / N3 / REM)
+- **preprocessing:** `TO FILL`
+- **architecture:** General PPG+accelerometry sleep staging model (`TO FILL` exact layers)
+- **personalization_method:** Supervised fine-tuning (partial retraining per subject)
+- **adaptation_method:** Partial retraining on 1 to 7 home nights
+- **calibration_data:** Up to 7 home nights with concurrent wearable EEG
+- **evaluation_protocol:** Evaluated against clinical PSG
+- **subject_split:** `TO FILL`
+- **temporal_split:** `TO FILL`
+- **external_validation:** `TO FILL`
+- **metrics:** Overall performance increased in 82.5% of subjects; significant improvement reached at >= 3 training nights (wake beta=0.005, p<0.001; N1+N2 beta=0.003, p<0.001; N3 beta=0.004, p<0.001; REM beta=0.005, p<0.001; stronger in younger beta=0.009, p<0.001 and insomnia beta=0.011, p<0.001). Effect sizes in kappa: `TO FILL`.
+- **statistical_testing:** `TO FILL` (abstract reports p<0.001 on slope betas; full test details pending full text)
+- **uncertainty_reporting:** `TO FILL`
+- **failure_cases:** 17.5% of subjects did not improve (details `TO FILL`)
+- **limitations:** Abstract-only extraction; exact kappa effect sizes, split details, and failure-mode breakdown require full-text retrieval.
+- **leakage_risks:** `TO FILL`
+- **reproducibility:** `TO FILL`
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (until full text is read)
+- **stance:** `Contradicting` (contradicts any "first multi-night wearable personalization" novelty claim; `Supporting` that multi-night supervised personalization works on average and has non-responders)
+- **transferable_method:** Multi-night partial retraining of a general wearable PPG+accelerometry model.
+- **possible_research_gap:** Safety/abstention gating under extreme label-shift outliers in 2-night wearable IHR+Accel (`EXP-019` H-A not supported; `Bidslab34` -16.34 pp) remains unaddressed.
+
+### Provenance Notes
+- **Paper reports:** Abstract (PMID `40882681`, `https://pubmed.ncbi.nlm.nih.gov/40882681/`): n=59 heterogeneous sleep-disordered patients with wrist PPG+accelerometry and concurrent wearable EEG over up to 7 home nights, evaluated vs clinical PSG (4-class Wake/N1+N2/N3/REM); partial retraining improved overall performance in 82.5% of subjects, reaching statistical significance at >= 3 training nights.
+- **We infer:** Closest direct precedent to our locked research direction; removes any novelty claim for "first multi-night wearable personalization" and shifts our distinct contribution to safe/selective adaptation under 2-night calibration label shift and strict preregistered IHR+Accel evaluation.

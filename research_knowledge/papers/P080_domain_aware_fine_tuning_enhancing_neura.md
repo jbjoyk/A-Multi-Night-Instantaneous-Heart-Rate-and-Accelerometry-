@@ -1,0 +1,44 @@
+# P080: Domain-Aware Fine-Tuning: Enhancing Neural Network Adaptability
+
+- **paper_id:** `P080`
+- **title:** Domain-Aware Fine-Tuning: Enhancing Neural Network Adaptability
+- **authors:** Seokhyeon Ha, Sunbeom Jeong, Jungwoo Lee
+- **year:** 2024
+- **venue:** AAAI 2024
+- **doi_or_id:** `AAAI-29116`
+- **url:** https://ojs.aaai.org/index.php/AAAI/article/view/29116/30110
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Preventing BN feature distortion during fine-tuning
+- **hypothesis:** UNKNOWN
+- **dataset:** Transfer benchmarks
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Various
+- **labels:** Class labels
+- **task_definition:** Preventing BN feature distortion during fine-tuning
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Domain-aware BN / head alignment
+- **adaptation_method:** Domain-aware BN / head alignment
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Transfer learning
+- **subject_split:** Transfer learning
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Explains how moving BN statistics during fine-tuning distorts pretrained features.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Transfer learning).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Domain-aware BN / head alignment
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Explains how moving BN statistics during fine-tuning distorts pretrained features. (Source: https://ojs.aaai.org/index.php/AAAI/article/view/29116/30110, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

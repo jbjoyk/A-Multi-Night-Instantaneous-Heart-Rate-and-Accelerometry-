@@ -1,0 +1,44 @@
+# P082: Overcoming Negative Transfer by Online Selection (OSAA)
+
+- **paper_id:** `P082`
+- **title:** Overcoming Negative Transfer by Online Selection (OSAA)
+- **authors:** Ziyan Wang, Mohamed Ragab, Wenmian Yang, Min Wu, Jia Zhang, Zhenghua Chen
+- **year:** 2024
+- **venue:** CUHK Publication
+- **doi_or_id:** `CUHK-OSAA`
+- **url:** https://research.cuhk.edu.hk/en/publications/overcoming-negative-transfer-by-online-selection-distant-domain-a/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Online gradient masking of distant samples + class-conditional alignment
+- **hypothesis:** UNKNOWN
+- **dataset:** Distant domain benchmarks
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Various
+- **labels:** Class labels
+- **task_definition:** Online gradient masking of distant samples + class-conditional alignment
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** OSAA
+- **adaptation_method:** OSAA
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Distant UDA with label disparity
+- **subject_split:** Distant UDA with label disparity
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Combines sample selection with class-conditional alignment for label-disparity domains.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Distant UDA with label disparity).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** OSAA
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Combines sample selection with class-conditional alignment for label-disparity domains. (Source: https://research.cuhk.edu.hk/en/publications/overcoming-negative-transfer-by-online-selection-distant-domain-a/, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

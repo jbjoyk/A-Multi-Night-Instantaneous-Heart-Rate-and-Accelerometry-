@@ -1,0 +1,44 @@
+# P104: Quantifying Subject-Identity Leakage in EEGMAT Stress Classification
+
+- **paper_id:** `P104`
+- **title:** Quantifying Subject-Identity Leakage in EEGMAT Stress Classification
+- **authors:** Remus Sibisanu, Monica Leba, Andreea Ionica
+- **year:** 2026
+- **venue:** Preprints.org
+- **doi_or_id:** `preprints202609.1327`
+- **url:** https://www.preprints.org/manuscript/202609.1327
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Contrasting epoch-level vs subject-grouped splits
+- **hypothesis:** UNKNOWN
+- **dataset:** EEGMAT
+- **number_of_subjects:** 36
+- **number_of_nights:** 36
+- **sensors:** EEG
+- **labels:** Stress/relax
+- **task_definition:** Contrasting epoch-level vs subject-grouped splits
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** 14-model leakage audit
+- **subject_split:** 14-model leakage audit
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Leaky split: 88.2-99.2% acc (k=0.664-0.977); honest subject-grouped: unbalanced regimes collapsed to k<=0.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (14-model leakage audit).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM` (adjacent method/leakage evidence only; non-sleep/non-wearable)
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Leaky split: 88.2-99.2% acc (k=0.664-0.977); honest subject-grouped: unbalanced regimes collapsed to k<=0. (Source: https://www.preprints.org/manuscript/202609.1327, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

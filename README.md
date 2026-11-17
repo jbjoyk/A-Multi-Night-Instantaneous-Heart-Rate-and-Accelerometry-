@@ -1,83 +1,38 @@
-# Wearable Sleep Staging Research Project
+# Wearable Sleep Staging Research Project Blueprint
 
-This repository contains reproducible research code, experimental benchmarks, cross-validation studies, and scientific reports for wearable four-class sleep staging (Wake, Light, Deep, REM) using instantaneous heart rate and accelerometry against EEG-derived polysomnography labels.
+## System Overview
+This repository contains reproducible research code, experimental benchmarks, cross-validation studies, and scientific reports for wearable four-class sleep staging (Wake, Light, Deep, REM) using instantaneous heart rate and accelerometry against EEG-derived polysomnography labels on the *Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels* (47 subjects, 253 recorded nights, 246 usable nights, ~145k valid 30-second windows).
 
-## Research Overview
+Key architectural milestones include:
+- **SLAMSS-IFS Baseline Reproduction (EXP-005)**: Independent reproduction audit of the official IEEE TBME 2026 architecture (`BIDSLabUMass/SLAMSS-IFS`).
+- **SleepAdaptiveNet (EXP-006 to EXP-012)**: Compact dual-branch architecture (~162k parameters, 33.7x compression) incorporating reliability gating, BiGRU temporal context, domain-adversarial subject alignment (GRL), and boundary-aware loss.
+- **Factorial Component Attribution (EXP-013)**: Rigorous single-component ablation across 34,241 held-out test windows.
+- **75-Run 5-Fold Cross-Validation & NAS (EXP-014)**: Definitive subject-level cross-validation across all 47 subjects and continuous Neural Architecture Search.
+- **Within-Person Adaptation Protocol (EXP-018)**: Multi-night longitudinal personalization under compute schedule invariance.
+- **Extended Convergence Benchmark (EXP-019)**: 500-epoch asymptotic training comparing baseline and multi-scale temporal fusion.
 
-The project investigates wearable-based sleep staging on the *Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels* (47 subjects, 253 recorded nights, 246 usable nights, ~145k valid 30-second windows).
+## Local Interface & Invariants
+- `DatasetGate` (`dataset_gate.py`): Enforces dataset verification, split disjointness, cache checksums, and strict zero-test-set-leakage gates (`verify_dataset_structure`, `verify_split`, `assert_no_test_leakage`).
+- `SleepEvaluator` (`evaluator.py`): Hierarchical metric evaluator computing primary Macro-F1, secondary Accuracy, Cohen's Kappa, stage-specific F1, and expected calibration error (`evaluate_predictions`, `evaluate_model`, `compute_ece`).
+- `ClinicalHypnogramEvaluator` (`evaluator.py`): Computes clinical hypnogram statistics including total sleep time, sleep efficiency, sleep onset latency, and WASO (`compute_night_metrics`, `evaluate_cohort`).
+- `ResearchGovernor` (`governor.py`): Autonomy controller enforcing multi-level safety barriers, token-based execution authorization, and epoch budgets (`generate_governance_token`, `verify_governance_token`, `check_experiment_safety`).
+- `run_data_sanity_check` (`data_sanity_check.py`): Validates physical signal ranges, NaN absence, and sampling alignment.
+- `run_all_ablations_seed42` (`run_controlled_experiment.py`): Controlled ablation driver executing model variants A0 through A5 on Seed 42.
 
-### Key Architectures & Milestones
-- **SLAMSS-IFS Baseline Reproduction (EXP-005)**: Independent scientific reproduction audit of the official IEEE TBME 2026 SLAMSS-IFS architecture (`BIDSLabUMass/SLAMSS-IFS`).
-- **SleepAdaptiveNet (EXP-006 to EXP-012)**: Compact dual-branch architecture (~162k parameters, 33.7x smaller than official SLAMSS-IFS) incorporating dynamic reliability gating between HR and accelerometry, BiGRU temporal context, domain-adversarial subject alignment (GRL), and boundary-aware loss.
-- **Factorial Component Attribution (EXP-013)**: Rigorous single-component ablation on 34,241 held-out test windows demonstrating the contribution of GRL and adaptive gating.
-- **75-Run 5-Fold Cross-Validation (EXP-014)**: Definitive subject-level 5-fold cross-validation across all 47 subjects (5 models x 5 folds x 3 seeds = 75 runs) demonstrating equivalence/parity between matched-capacity conventional CNN-BiGRU and specialized architectures, and highlighting that inter-subject physiological variance dominates staging error.
+## Subdirectories & System Boundaries
+- [experiments](./experiments/README.md) - Complete suite of experimental investigations (EXP-001 through EXP-019), model definitions, and proxy evaluation suites.
+- [research_engine](./research_engine/README.md) - Governed autonomous research engine including state-machine lifecycle enforcement, hypothesis generation, dual-GPU resource management, and peer-review gates.
 
----
+## Global Invariants
+- **Subject-Level Disjointness**: All train/val/test splits must be strictly partitioned by Subject ID; no subject's nights may appear across multiple partitions (`dataset_gate.py`).
+- **Frozen Test Set Protection**: Test partitions are strictly evaluated using validation-selected checkpoints; test data is never exposed during training or hyperparameter search (`evaluator.py`).
+- **Standardized Classification Space**: Fixed 4-class target domain across all models: Wake (0), Light (1), Deep (2), REM (3).
+- **GPU Resource Isolation**: Multi-GPU execution on dual RTX 3060 GPUs (`cuda:0`, `cuda:1`) requires active non-expired lease tokens (`research_engine/resource_manager.py`).
 
-## Repository Structure
+## Global Side Effects
+- Reads raw sensor recordings and preprocessed cache arrays from the PhysioNet dataset directory.
+- Updates persistent research governance and experiment logs in `research_memory.json`.
+- Manages lockfiles for CUDA hardware allocation in system temporary paths.
 
-```
-├── README.md                              # This file
-├── RESEARCH_STATE.md                      # Current research facts, objectives, and verified findings
-├── EXPERIMENTS.md                         # Complete registry of all experiments (EXP-001 through EXP-017)
-├── DECISIONS.md                           # Architectural and experimental decisions (DEC-001 through DEC-022)
-├── HANDOFF.md                             # Continuity handoff notes and active task state
-├── NOTEBOOK_STATE.md                      # Notebook execution and environment audit state
-│
-├── experiments/                           # Isolated directory per experiment (EXP-001 through EXP-017)
-│   ├── EXP-001/                           # Baseline SleepChannelNet, notebooks, problem context
-│   ├── EXP-002/                           # SleepJEPA pretraining & fine-tuning
-│   ├── EXP-003/                           # Hyperparameter & optimization search
-│   ├── EXP-004/                           # Frozen test set baseline evaluation
-│   ├── EXP-005/                           # SLAMSS-IFS reproduction, tests, official repo
-│   ├── EXP-006/                           # SleepAdaptiveNet modular implementation
-│   ├── EXP-007/                           # Controlled ablation (A0–A5, Seed 42)
-│   ├── EXP-008/                           # Boundary weight sweep & GRL disentanglement
-│   ├── EXP-009/                           # Multi-seed stability (B0_GRL vs B2)
-│   ├── EXP-010/                           # Long-training convergence (500 epochs)
-│   ├── EXP-011/                           # Multi-seed long-training convergence audit
-│   ├── EXP-012/                           # Frozen test benchmark, reports, audit dossiers
-│   ├── EXP-013/                           # Component attribution (Models A–E)
-│   ├── EXP-014/                           # 75-run 5-fold cross-validation suite
-│   ├── EXP-015/                           # Clock feature pruning simulation
-│   ├── EXP-016/                           # Governed live execution smoke test
-│   └── EXP-017/                           # Sequence horizon evaluation (T=600 vs T<=1200)
-│
-├── research/experiments/                  # Symlink layer resolving to experiments/EXP-XXX
-├── research_engine/                       # Autonomous governed research engine
-├── tests/                                 # Automated test suite (79/79 passing)
-├── sleep_adaptive_net.py                  # Core PyTorch model: SleepAdaptiveNet (A0–A5)
-├── exp013_models.py                       # Factorial ablation model variants (Models A–E)
-├── dataset_gate.py                        # Strict dataset split & leakage protection gate
-├── evaluator.py                           # Governed evaluation & metrics engine
-├── governor.py                            # Research governor and safety controller
-└── requirements.txt                       # Python dependencies
-```
-
----
-
-## AI Agent & Claude Collaboration Guide
-
-If you are an AI assistant (such as Claude or Antigravity) reviewing this repository to check experiment findings and suggest the next experiment:
-
-1. **Check Research State & Trajectory**:
-   - Read [RESEARCH_STATE.md](./RESEARCH_STATE.md) for current facts, metrics, and data parameters.
-   - Read [EXPERIMENTS.md](./EXPERIMENTS.md) for full details, hypotheses, and results of EXP-001 through EXP-014.
-   - Read [DECISIONS.md](./DECISIONS.md) to understand why specific design choices were locked.
-2. **Review Recent Empirical Findings**:
-   - Consult [EXP014_FINAL_REPORT.md](./EXP014_FINAL_REPORT.md): Note that the empirical training phase across all 47 subjects is **concluded and frozen**.
-   - Note that across all 47 subjects, conventional matched-capacity CNN-BiGRU achieved parity ($66.63\%$ accuracy) with specialized gating and GRL ($66.06\%$, bootstrap CI spans zero).
-3. **Formulating Next Recommendations**:
-   - Since model architecture modifications under ~160k parameters have reached saturation/equivalence, future research avenues should focus on:
-     - Multi-night longitudinal personalization (adapting per-subject over successive recording nights).
-     - Signal quality index (SQI) filtering for noisy PPG/optical wrist readings.
-     - Synthetic data augmentation for under-represented REM/Deep stages.
-     - Manuscript drafting and synthesis of the comprehensive 75-run findings for journal submission.
-
----
-
-## Dataset & Environment
-
-- Dataset: PhysioNet *A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels* (v1.0.0).
-- Raw recordings (`Bidslab*`, ~28 GB) are excluded from Git commits via `.gitignore`.
-- Python 3.10+ / PyTorch 2.x with CUDA support. Run `pip install -r requirements.txt`.
+## System Verification
+- Run: `PYTHONPATH=. ./.venv/bin/pytest tests/`

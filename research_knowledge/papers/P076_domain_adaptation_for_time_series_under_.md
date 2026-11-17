@@ -1,0 +1,44 @@
+# P076: Domain Adaptation for Time Series Under Feature and Label Shifts (RAINCOAT)
+
+- **paper_id:** `P076`
+- **title:** Domain Adaptation for Time Series Under Feature and Label Shifts (RAINCOAT)
+- **authors:** He H, Queen O, Koker T, Cuevas C, Tsiligkaridis T, Zitnik M
+- **year:** 2023
+- **venue:** ICML 2023 (PMLR v202)
+- **doi_or_id:** `PMLR-v202-he23b`
+- **url:** https://proceedings.mlr.press/v202/he23b/he23b.pdf
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Time-series DA under feature + label shift
+- **hypothesis:** UNKNOWN
+- **dataset:** 5 time-series datasets (HAR, EEG, fault)
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Time series (incl. EEG)
+- **labels:** Class labels
+- **task_definition:** Time-series DA under feature + label shift
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Time-freq encoders + Sinkhorn + align-then-correct
+- **adaptation_method:** Time-freq encoders + Sinkhorn + align-then-correct
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Closed-set & universal DA (+9.0% / +16.33%)
+- **subject_split:** Closed-set & universal DA (+9.0% / +16.33%)
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Directly addresses simultaneous feature and label shifts in time series including EEG.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Closed-set & universal DA (+9.0% / +16.33%)).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Time-freq encoders + Sinkhorn + align-then-correct
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Directly addresses simultaneous feature and label shifts in time series including EEG. (Source: https://proceedings.mlr.press/v202/he23b/he23b.pdf, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

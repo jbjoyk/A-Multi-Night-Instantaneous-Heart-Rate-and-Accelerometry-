@@ -86,3 +86,23 @@ Performance pooled across all 152 evaluation nights and averaged over the 3 rand
 - **Pre-Registration Specification:** `PREREG_EXP-019_H-A.md` (Locked at `4dff5b7a5f13a96c3024b309131aa1e66489dcbb`)
 - **Regenerated Backbone Checkpoints:** `experiments/EXP-018/checkpoints/modelA_L1200_fold{1..5}_seed{42,123,2024}.pt`
 - **Execution Hardware:** NVIDIA GeForce RTX 3060 (12 GB VRAM, Driver 595.99.02, CUDA 13.2)
+
+
+---
+
+## 6. Governance Reconciliation Erratum (2026-11-17, DEC-029)
+
+### Reconciled Verdict for Primary Hypothesis H-A
+- **Original Report Label:** NOT SUPPORTED.
+- **Locked Preregistration Protocol:** Commit `4dff5b7` (`PREREG_EXP-019_H-A.md` Section 6).
+- **Locked Decision Rule Formulation:**
+  - **SUPPORTED:** $\bar{\Delta} \ge +1.50\text{ pp}$ AND bootstrap 95% CI lower bound $> 0$.
+  - **NOT SUPPORTED:** bootstrap 95% CI upper bound $< +1.50\text{ pp}$ (ruling out an effect of practical size).
+  - **INCONCLUSIVE:** Anything else.
+- **Observed Empirical Result:** $\bar{\Delta} = \mathbf{+1.01\text{ pp}}$, 95% bootstrap CI: $\mathbf{[-0.17, +1.99]\text{ pp}}$, Wilcoxon $p = 0.00131$, win rate 73.9% (34/46).
+- **Evaluation against Locked Rule:** Because the observed 95% CI upper bound ($+1.99\text{ pp}$) is NOT $< +1.50\text{ pp}$, the preregistered rule evaluates strictly to **`INCONCLUSIVE`**. Ruling out an effect of practical size ($\ge +1.50\text{ pp}$) was not statistically achieved with $N=46$ subjects.
+- **Immutability Statement:** The numerical results ($\bar{\Delta} = +1.01\text{ pp}$, CI $[-0.17, +1.99]\text{ pp}$, 34/46 improved) remain byte-for-byte unchanged. This is a formal governance-label reconciliation per `DEC-029` and `RESEARCH_DIRECTION_v4_FULL.md`, not a reanalysis or alteration of EXP-019 data.
+
+### Status of Secondary Hypothesis S3
+- Observed result: $\bar{\Delta} = 0.00\text{ pp}$ identically across all 46 subjects.
+- Per `DEC-029` and Research Direction v4, S3 is reclassified as **`UNRESOLVED`** pending the Phase A2 implementation/no-op audit. It must not currently be cited as empirical evidence against unsupervised adaptation.

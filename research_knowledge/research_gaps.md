@@ -1,0 +1,38 @@
+# Research Gaps & Evidence-Grounded Future Questions
+
+**Governance:** Gaps are derived from cross-referencing EXP-019 (`LOCKED` + `EXPLORATORY`) against primary literature—never copied from "future work" sections. No future hypothesis is selected autonomously.
+
+---
+
+## 1. Classified Research Gaps
+
+| Gap ID | Exact Gap | Classification | Establishing & Attempting Papers | Why Existing Solutions Are Insufficient | Feasibility / Risk |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `G001` | **Safe / Selective Supervised Adaptation & Outlier Protection in 2-Night Wearable IHR+Accel** | **Potentially meaningful** | EXP-019 (`LOCKED` H-A, `EXPLORATORY` Bidslab34); [van der Aar et al. (2025)](https://pubmed.ncbi.nlm.nih.gov/40882681/) (`P106`); [Zhao et al. (2023)](https://arxiv.org/html/2306.03536); [Schirmer et al. (2025)](https://proceedings.neurips.cc/paper_files/paper/2025/file/746960ad49ddb47248970a0e1404230c-Paper-Conference.pdf) | While [van der Aar et al. (2025)](https://pubmed.ncbi.nlm.nih.gov/40882681/) showed multi-night supervised personalization improves wearable PPG+Accel in 82.5% of subjects (significant at >=3 nights), 17.5% still did not improve, and in EXP-019 unregularized 2-night `FT-2` harmed outliers (up to $-16.34\text{ pp}$). No validated pre-adaptation gating or collapse-prevention rule exists for 2-night wearable IHR+Accel. | **High feasibility / Moderate risk** (testable via nested CV on BIDSleep) |
+| `G002` | **KL-Regularized / Prior-Preserving 2-Night Adaptation on Wearable IHR+Accel** | **Potentially meaningful** (Incremental relative to `P106`/`P006`, Meaningful if tested on 2-night IHR+Accel label-shift outliers) | [Phan et al. (2020)](https://lirias.kuleuven.be/retrieve/616969); [Lorenzen et al. (2024)](https://pubmed.ncbi.nlm.nih.gov/38833404/); [van der Aar et al. (2025)](https://pubmed.ncbi.nlm.nih.gov/40882681/) | Supervised partial retraining exists for wearable PPG+Accel ([van der Aar et al. 2025](https://pubmed.ncbi.nlm.nih.gov/40882681/)) and KL-reg exists for EEG ([Phan et al. 2020](https://lirias.kuleuven.be/retrieve/616969)), but KL-reg has not been tested on 2-night wrist IHR+Accel where calibration nights may completely lack Deep sleep. | **High feasibility / Low risk** |
+| `G003` | **External Zero-Shot Validation of BIDSleep-Trained IHR+Accel Models on PSG Cohorts (SleepAccel / MESA)** | **Potentially meaningful** (Required by locked roadmap Phase 5) | [Walch et al. (2019)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6930135/); [Kotzen et al. (2024)](https://arxiv.org/html/2404.06869v1) | BIDSleep uses Dreem 2 EEG labels in 47 healthy adults; transfer to attended PSG (SleepAccel) and older/clinical cohorts (MESA) is untested. | **High feasibility / Moderate risk** |
+| `G004` | **Clinical Sleep-Summary Agreement (Bland-Altman) Before vs After Adaptation** | **Potentially meaningful** (Required by locked roadmap Phase 6) | [Walch et al. (2019)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6930135/); [Song et al. (2026)](https://pmc.ncbi.nlm.nih.gov/articles/PMC12931632/) | Epoch-level Macro-F1 (+1.01 pp) may mask or amplify clinical bias in TST, SOL, WASO, SE, and Deep%. | **High feasibility / Low risk** |
+| `G005` | **Inter-Night Normalization Sensitivity in Multi-Night Wearable Adaptation** | **Incremental** (unless shown to explain severe outliers) | [Phan et al. (2020)](https://lirias.kuleuven.be/retrieve/616969) | Phan et al. already showed night-specific normalization beats subject-specific normalization when inter-night magnitude differs. | **High feasibility / Low risk** |
+| `G006` | **Unsupervised InfoMax / Entropy Minimization TTA for 2-Night Wearable IHR** | **Unresolved: implementation check pending** | EXP-019 S3 (`0.00 pp` exact tie); [Heremans et al. (2022)](https://pubmed.ncbi.nlm.nih.gov/35877770/) (`P054`); [Lorenzen et al. (2024)](https://pubmed.ncbi.nlm.nih.gov/38833404/) (`P007`) | EXP-019 S3 matched `ZS` identically (`[0.00, 0.00]`, all 46 subjects tied), which resembles a no-op rather than label-shift degradation; parameter/logit update verification is pending. Meanwhile `P054` reported ~1–2% UDA gains while `P007` reported no UDA benefit (full text pending). | **Verification needed before ruling out** |
+| `G007` | **New Neural Architecture Search (NAS) on BIDSleep to Beat 71.04% Single-Split Baseline** | **Already solved / Out-of-scope** | Locked `RESEARCH_DIRECTION_v3.1_AMENDMENT.md` | Architecture search is closed; single-split vs OOF CV gap (~3–4 pp) is an evaluation-protocol artifact, not an architectural deficit. | **Out of scope** |
+
+---
+
+## 2. Evidence-Grounded Future Questions (`FUTURE` Layer)
+
+### FQ-1: Does KL-Divergence Regularization Prevent Label-Shift Collapse in 2-Night IHR+Accel Adaptation?
+- **Supporting Evidence:** [Phan et al. (2020)](https://lirias.kuleuven.be/retrieve/616969) (+2.2 pp over unregularized FT) and [Lorenzen et al. (2024)](https://pubmed.ncbi.nlm.nih.gov/38833404/) (lower variance, prevents drift from SI model).
+- **Contradictory / Cautionary Evidence:** Wearable IHR+Accel has much lower SNR than EEG; KL regularization might overly constrain genuine subject adaptation, reducing gains on responders. Also, [van der Aar et al. (2025)](https://pubmed.ncbi.nlm.nih.gov/40882681/) achieved 82.5% responder rate on PPG+Accel using partial retraining at >=3 nights without KL-reg.
+- **Novelty Uncertainty:** Moderate (method exists in EEG; partial retraining exists in PPG+Accel; untested specifically on 2-night IHR+Accel label-shift outliers).
+- **Required Experiment & Falsification Criterion:** Nested 5-fold CV on BIDSleep comparing `FT-2 + KL-reg` vs `FT-2` and `ZS` using preregistered paired bootstrap CI. Falsified if `FT-2 + KL-reg` fails to eliminate catastrophic outliers ($\Delta < -5\text{ pp}$) or degrades mean gain below `FT-2` without improving worst-decile CVaR.
+
+### FQ-2: Can Strictly Pre-Adaptation Calibration Gating (Abstention to `ZS`) Outperform Unconditional `FT-2`?
+- **Supporting Evidence:** EXP-019 exploratory simulation ($\min_c P_C(y=c) \ge 3.0\%$ & $D_{\text{JS}} < 0.35$: $+1.39\text{ pp}$ vs $+1.01\text{ pp}$); [Zhao et al. (2023)](https://arxiv.org/html/2306.03536) (adaptation harms under severe label shift in vision TTA).
+- **Contradictory / Cautionary Evidence:** Post-hoc thresholds ($3.0\%$, $0.35$) were tuned on the same 46-subject audit; only 2/46 subjects were rejected, so out-of-sample generalization of a hard threshold is uncertain.
+- **Novelty Uncertainty:** Unassessed (no wearable IHR pre-adaptation gating precedent found in search, though epoch-level selective prediction exists in EEG `P020`).
+- **Required Experiment & Falsification Criterion:** Nested inner-fold selection of gating rule (zero evaluation-label leakage) evaluated on outer test folds, or leave-one-subject-out nested threshold validation. Falsified if nested-selected gating does not improve worst-case subject delta / CVaR over unconditional `FT-2` or fails the preregistered mean threshold.
+
+### FQ-3: How Does Subject-Independent Model A Generalize Externally to SleepAccel (EXP-027) and Agree Clinically (EXP-028)?
+- **Supporting Evidence:** [Walch et al. (2019)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6930135/) showed cross-dataset Apple Watch -> MESA transfer is feasible ($\kappa = 0.403$ 3-class).
+- **Contradictory Evidence:** [Ostadsharif Memar et al. (2026)](https://www.preprints.org/manuscript/202607.1006) notes zero-shot transfer across different wearables/protocols remains a primary failure point.
+- **Required Experiment & Falsification Criterion:** Preregistered EXP-027 (zero-shot Model A on SleepAccel 31 subjects) and EXP-028 (Bland-Altman TST, SOL, WASO, SE, REM%, Deep% on BIDSleep).

@@ -1,0 +1,44 @@
+# P063: MetaSTH-Sleep: Towards Effective Few-Shot Sleep Stage Classification with Spatial-Temporal Hypergraph Enhanced Meta-Learning
+
+- **paper_id:** `P063`
+- **title:** MetaSTH-Sleep: Towards Effective Few-Shot Sleep Stage Classification with Spatial-Temporal Hypergraph Enhanced Meta-Learning
+- **authors:** Jingyu Li, Tiehua Zhang, Jinze Wang, Y. Zhang, Y. Li, Y. Zhao, Z. Shen, L. Wu, Jiannan Liu
+- **year:** 2025
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2505.17142v1`
+- **url:** https://fugumt.com/fugumt/paper_check/2505.17142v1_enmode
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Few-shot subject adaptation
+- **hypothesis:** UNKNOWN
+- **dataset:** EEG sleep datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG
+- **labels:** PSG
+- **task_definition:** Few-shot subject adaptation
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Spatial-temporal hypergraph meta-learning
+- **adaptation_method:** Spatial-temporal hypergraph meta-learning
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Few-shot cross-subject
+- **subject_split:** Few-shot cross-subject
+- **temporal_split:** UNKNOWN
+- **external_validation:** UNKNOWN
+- **metrics:** Recent hypergraph meta-learning for few-shot sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Few-shot cross-subject).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Spatial-temporal hypergraph meta-learning
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Recent hypergraph meta-learning for few-shot sleep staging. (Source: https://fugumt.com/fugumt/paper_check/2505.17142v1_enmode, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

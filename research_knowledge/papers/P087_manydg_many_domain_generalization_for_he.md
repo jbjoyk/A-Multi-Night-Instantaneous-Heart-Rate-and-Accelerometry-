@@ -1,0 +1,44 @@
+# P087: ManyDG: Many-Domain Generalization for Healthcare Applications
+
+- **paper_id:** `P087`
+- **title:** ManyDG: Many-Domain Generalization for Healthcare Applications
+- **authors:** Yang C, Westover MB, Sun J
+- **year:** 2023
+- **venue:** ICLR 2023
+- **doi_or_id:** `arXiv:2301.08834`
+- **url:** https://arxiv.org/abs/2301.08834
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Treating each patient as a distinct domain
+- **hypothesis:** UNKNOWN
+- **dataset:** Healthcare cohorts (incl. Sleep-EDF)
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** EEG / EHR
+- **labels:** Clinical / sleep labels
+- **task_definition:** Treating each patient as a distinct domain
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Mutual reconstruction + orthogonal projection of patient covariates
+- **adaptation_method:** Mutual reconstruction + orthogonal projection of patient covariates
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Many-domain generalization
+- **subject_split:** Many-domain generalization
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Formalizes one-patient-equals-one-domain generalization.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Many-domain generalization).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Mutual reconstruction + orthogonal projection of patient covariates
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Formalizes one-patient-equals-one-domain generalization. (Source: https://arxiv.org/abs/2301.08834, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

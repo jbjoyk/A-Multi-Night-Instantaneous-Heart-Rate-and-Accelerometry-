@@ -1,0 +1,44 @@
+# P001: AI-Driven Sleep Staging Using Instantaneous Heart Rate and Accelerometry: Insights from an Apple Watch Study
+
+- **paper_id:** `P001`
+- **title:** AI-Driven Sleep Staging Using Instantaneous Heart Rate and Accelerometry: Insights from an Apple Watch Study
+- **authors:** Song TA, Zhang Y, Zhou Z, Hou L, Malekzadeh M, Behzad A, Dutta J
+- **year:** 2026
+- **venue:** IEEE Transactions on Biomedical Engineering (TBME), 73(4):1596–1608
+- **doi_or_id:** `10.1109/TBME.2025.3612158`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC12931632/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Can instantaneous heart rate (IHR) and instantaneous 3-axis accelerometry from a consumer Apple Watch accurately perform 4-class sleep staging across multiple nights?
+- **hypothesis:** Incorporating intra-epoch LSTM, IHR sampling frequency, and skip connections into SLAMSS (`SLAMSS-IFS`) improves 4-class staging over coarse-feature and competing baselines.
+- **dataset:** BIDSleep (PhysioNet, DOI `10.13026/a0sy-7t69`)
+- **number_of_subjects:** 47 healthy adults
+- **number_of_nights:** 253 (3–7 nights per subject)
+- **sensors:** Apple Watch Series 6 (IHR ~0.2 Hz via HealthKit, 3-axis accelerometry via custom WatchOS app)
+- **labels:** Dreem 2 EEG headband (automated + single-expert reviewed, AASM 30-second epochs)
+- **task_definition:** 4-class sleep staging (Wake, Light [N1+N2], Deep [N3], REM)
+- **preprocessing:** Timestamp alignment via common iPhone reference (`k = floor((t - recStart)/30) + 1`)
+- **architecture:** `SLAMSS-IFS` (CNN + intra-epoch LSTM + frequency variable + skip connections + seq2seq LSTM with attention)
+- **personalization_method:** None (subject-independent training)
+- **adaptation_method:** None (explicitly noted as future work in Usage Notes)
+- **calibration_data:** N/A
+- **evaluation_protocol:** Subject-wise train/val/test split; 500 epochs, Adam (lr=0.00015), Real-World (RW) weighting loss
+- **subject_split:** 31 train / 5 validation / 11 test (subject-disjoint)
+- **temporal_split:** N/A (per-night training/evaluation)
+- **external_validation:** No (within-cohort 11-subject test set only)
+- **metrics:** Overall accuracy `71.04%`, weighted F1 `0.7079`, sensitivity `69.98%`, Deep recall `76.4%`, REM recall `70.4%`, Wake accuracy `~60%`
+- **statistical_testing:** `UNKNOWN` (no multi-fold bootstrap CIs reported in retrieved chunks)
+- **uncertainty_reporting:** `UNKNOWN`
+- **failure_cases:** Wake detection accuracy ~60% due to class imbalance and limited motion/IHR separation during quiet wakefulness; light-sleep over-prediction.
+- **limitations:** Single 31/5/11 split (higher variance than 5-fold OOF CV); Dreem 2 EEG rather than full PSG; single scorer; healthy adult cohort only; no external dataset validation.
+- **leakage_risks:** Low within split (subject-disjoint), but single fixed 11-subject test split can sit ~3–4 pp above 5-fold OOF CV (observed in our EXP-019).
+- **reproducibility:** High (public code at `github.com/BIDSLabUMass/SLAMSS-IFS`, public dataset on PhysioNet).
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting` (establishes dataset & subject-independent baseline; explicitly leaves multi-night within-person modeling open)
+- **transferable_method:** RW weighting loss; intra-epoch + frequency + skip-connection baseline.
+- **possible_research_gap:** Multi-night within-person adaptation and external validation (`SleepAccel`, `MESA`).
+
+### Provenance Notes
+- **Paper reports:** Dataset size (47 subjects, 253 nights), 31/5/11 split, `SLAMSS-IFS` accuracy 71.04%, weighted F1 0.7079, Wake ~60% (Sections II, III-I, IV-A, V of PMC12931632 and NotebookLM `Sleep_research`).
+- **We infer:** The ~3–4 pp gap between published 71.04% and our 5-fold OOF `ZS` accuracy (67.12%) reflects single-split variance vs full out-of-fold evaluation, consistent with locked `RESEARCH_DIRECTION_v3.1_AMENDMENT.md`.

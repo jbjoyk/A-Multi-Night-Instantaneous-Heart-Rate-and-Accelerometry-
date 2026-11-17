@@ -1,0 +1,44 @@
+# P081: Reducing Negative Transfer in Domain Adaptation for Vibration-Based Fault Diagnosis
+
+- **paper_id:** `P081`
+- **title:** Reducing Negative Transfer in Domain Adaptation for Vibration-Based Fault Diagnosis
+- **authors:** UNKNOWN
+- **year:** 2026
+- **venue:** PHME 2026
+- **doi_or_id:** `PHME-4926`
+- **url:** https://papers.phmsociety.org/index.php/phme/article/view/4926
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Safeguard layer pausing UDA & rolling back to safer checkpoint
+- **hypothesis:** UNKNOWN
+- **dataset:** CWRU; Paderborn bearing datasets
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Time-series vibration
+- **labels:** Fault classes
+- **task_definition:** Safeguard layer pausing UDA & rolling back to safer checkpoint
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Rollback safeguard on unstable adaptation
+- **adaptation_method:** Rollback safeguard on unstable adaptation
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-condition transfer
+- **subject_split:** Cross-condition transfer
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Negative result nuance: rollback safeguard helped in some cases but did not prevent degradation in all scenarios.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-condition transfer).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Rollback safeguard on unstable adaptation
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Negative result nuance: rollback safeguard helped in some cases but did not prevent degradation in all scenarios. (Source: https://papers.phmsociety.org/index.php/phme/article/view/4926, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

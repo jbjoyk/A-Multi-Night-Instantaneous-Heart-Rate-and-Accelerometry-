@@ -1,0 +1,44 @@
+# P071: Cross-Dataset Wearable Sleep Staging under Source-Only and Target-Normalized Conditions
+
+- **paper_id:** `P071`
+- **title:** Cross-Dataset Wearable Sleep Staging under Source-Only and Target-Normalized Conditions
+- **authors:** Fei Y et al.
+- **year:** 2026
+- **venue:** ResearchGate 415647057
+- **doi_or_id:** `RG:415647057`
+- **url:** https://www.researchgate.net/publication/415647057_Cross-Dataset_Wearable_Sleep_Staging_under_Source-Only_and_Target-Normalized_Conditions
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Source-only vs target-normalized cross-dataset transfer
+- **hypothesis:** UNKNOWN
+- **dataset:** Wearable sleep datasets
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearable sensors
+- **labels:** PSG
+- **task_definition:** Source-only vs target-normalized cross-dataset transfer
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Target normalization
+- **adaptation_method:** Target normalization
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Cross-dataset
+- **subject_split:** Cross-dataset
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Directly examines target normalization in cross-dataset wearable sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Cross-dataset).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Target normalization
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Directly examines target normalization in cross-dataset wearable sleep staging. (Source: https://www.researchgate.net/publication/415647057_Cross-Dataset_Wearable_Sleep_Staging_under_Source-Only_and_Target-Normalized_Conditions, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

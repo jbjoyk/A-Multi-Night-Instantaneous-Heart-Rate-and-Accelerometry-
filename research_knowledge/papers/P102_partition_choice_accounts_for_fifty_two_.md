@@ -1,0 +1,44 @@
+# P102: Partition Choice Accounts for Fifty-Two Accuracy Points in Wearable Driving Context Classification
+
+- **paper_id:** `P102`
+- **title:** Partition Choice Accounts for Fifty-Two Accuracy Points in Wearable Driving Context Classification
+- **authors:** Poh Ping Em, Tai Shie Teoh
+- **year:** 2026
+- **venue:** MDPI
+- **doi_or_id:** `bdcc8110379`
+- **url:** https://www.mdpi.com/2504-4990/8/11/379
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `full-text`
+- **research_question:** Quantifying partition/leakage inflation in wearables
+- **hypothesis:** UNKNOWN
+- **dataset:** Wearable time series
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Wearables
+- **labels:** Activity/sleep
+- **task_definition:** Quantifying partition/leakage inflation in wearables
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** N/A
+- **adaptation_method:** N/A
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Leaky vs subject-grouped splits
+- **subject_split:** Leaky vs subject-grouped splits
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Shows partition choice alone accounts for 52 percentage points in wearable ML.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Leaky vs subject-grouped splits).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM` (adjacent wearable driving context; leakage methodology only)
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** N/A
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Shows partition choice alone accounts for 52 percentage points in wearable ML. (Source: https://www.mdpi.com/2504-4990/8/11/379, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

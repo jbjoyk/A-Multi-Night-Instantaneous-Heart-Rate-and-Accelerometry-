@@ -1,0 +1,44 @@
+# P099: Uncertainty-Driven Anomaly Detection for Psychotic Relapse Using Wearables
+
+- **paper_id:** `P099`
+- **title:** Uncertainty-Driven Anomaly Detection for Psychotic Relapse Using Wearables
+- **authors:** Nikolaos Tsalkitzis, Panagiotis P. Filntisis, Petros Maragos et al.
+- **year:** 2026
+- **venue:** arXiv
+- **doi_or_id:** `arXiv:2605.13816v1`
+- **url:** https://arxiv.org/html/2605.13816v1
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Day-level uncertainty fusion on wearable sleep/cardiac data
+- **hypothesis:** UNKNOWN
+- **dataset:** Longitudinal wearable monitoring
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** Cardiac + inertial + steps + sleep
+- **labels:** Relapse
+- **task_definition:** Day-level uncertainty fusion on wearable sleep/cardiac data
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Multi-task uncertainty variance fusion
+- **adaptation_method:** Multi-task uncertainty variance fusion
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Longitudinal patient-specific
+- **subject_split:** Longitudinal patient-specific
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Models patient-specific healthy uncertainty baseline from wearable cardiac+sleep streams.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Longitudinal patient-specific).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** Multi-task uncertainty variance fusion
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Models patient-specific healthy uncertainty baseline from wearable cardiac+sleep streams. (Source: https://arxiv.org/html/2605.13816v1, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

@@ -1,0 +1,44 @@
+# P013: From Biosignals to Bedside: A Review of Real-Time Edge Machine Learning
+
+- **paper_id:** `P013`
+- **title:** From Biosignals to Bedside: A Review of Real-Time Edge Machine Learning
+- **authors:** Mustapha Oloko-Oba, Ebenezer Esenogho, Kehinde Aruleba
+- **year:** 2026 (`UNKNOWN` exact pub date in snippet)
+- **venue:** PubMed Central (`PMC13203100`)
+- **doi_or_id:** `PMC13203100`
+- **url:** https://pmc.ncbi.nlm.nih.gov/articles/PMC13203100/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** What are the operational, safety, and governance constraints of on-device personalization and continual adaptation for real-time biosignal ML?
+- **hypothesis:** On-device personalization must be treated as a **governed process** with explicit update rules, quality gating, and rollback mechanisms.
+- **dataset:** Review
+- **number_of_subjects:** Review
+- **number_of_nights:** Review
+- **sensors:** Wearable / edge biosignals
+- **labels:** Various
+- **task_definition:** Real-time edge biosignal ML & personalization
+- **preprocessing:** Signal quality gating discussed
+- **architecture:** Review
+- **personalization_method:** Governed on-device fine-tuning with regularization, replay, or distillation
+- **adaptation_method:** Gated adaptation + rollback on performance degradation
+- **calibration_data:** Recent individual data
+- **evaluation_protocol:** Review
+- **subject_split:** N/A
+- **temporal_split:** N/A
+- **external_validation:** N/A
+- **metrics:** N/A
+- **statistical_testing:** N/A
+- **uncertainty_reporting:** N/A
+- **failure_cases:** Explicitly warns that **repeated fine-tuning creates drift when recent individual data are non-representative of future data**, or when adaptation is triggered during **poor signal quality**, and causes catastrophic forgetting.
+- **limitations:** High-level review rather than empirical sleep-staging benchmark.
+- **leakage_risks:** Highlights privacy leakage from telemetry/gradients.
+- **reproducibility:** N/A
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting` (directly articulates why un-gated fine-tuning on non-representative nights fails and why governed gating + rollback are required)
+- **transferable_method:** Governed personalization protocol: (1) what is updated, (2) quality/representativeness gating, (3) rollback to baseline.
+- **possible_research_gap:** Formalizing and empirically validating a governed gating + rollback rule for multi-night wearable sleep staging.
+
+### Provenance Notes
+- **Paper reports:** Drift from non-representative recent individual data, poor-signal-quality triggers, catastrophic forgetting, and governed personalization with rollback (PMC13203100).
+- **We infer:** Directly supports `G001` (pre-adaptation gating / abstention to `ZS`) as a principled engineering and scientific solution to EXP-019's `Bidslab34` failure.

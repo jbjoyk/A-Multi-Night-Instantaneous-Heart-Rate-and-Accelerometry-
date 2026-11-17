@@ -1,0 +1,44 @@
+# P029: Clinical Evaluation of PPG-Based Deep Learning Models for Sleep Staging in Patients with Suspected Sleep Apnea
+
+- **paper_id:** `P029`
+- **title:** Clinical Evaluation of PPG-Based Deep Learning Models for Sleep Staging in Patients with Suspected Sleep Apnea
+- **authors:** PubMed 41336967
+- **year:** 2025
+- **venue:** PubMed
+- **doi_or_id:** `PMID:41336967`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/41336967/
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Clinical PPG sleep staging
+- **hypothesis:** UNKNOWN
+- **dataset:** Clinical OSA cohort
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** PPG
+- **labels:** PSG
+- **task_definition:** Clinical PPG sleep staging
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Clinical external evaluation
+- **subject_split:** Clinical external evaluation
+- **temporal_split:** UNKNOWN
+- **external_validation:** Yes
+- **metrics:** Tests PPG sleep staging robustness in suspected OSA.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Clinical external evaluation).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Tests PPG sleep staging robustness in suspected OSA. (Source: https://pubmed.ncbi.nlm.nih.gov/41336967/, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

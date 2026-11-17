@@ -1,0 +1,44 @@
+# P046: Evaluating Accuracy in Five Commercial Sleep-Tracking Devices
+
+- **paper_id:** `P046`
+- **title:** Evaluating Accuracy in Five Commercial Sleep-Tracking Devices
+- **authors:** Kyle A. Kainec, Jamie Caccavaro, Morgan Barnes, Chloe Hoff, Annika Berlin, Rebecca M. C. Spencer
+- **year:** 2024
+- **venue:** Sensors (MDPI)
+- **doi_or_id:** `sensors24020635`
+- **url:** https://www.mdpi.com/1424-8220/24/2/635
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Reproducibility & accuracy
+- **hypothesis:** UNKNOWN
+- **dataset:** Commercial validation
+- **number_of_subjects:** UNKNOWN
+- **number_of_nights:** UNKNOWN
+- **sensors:** 5 consumer devices
+- **labels:** PSG
+- **task_definition:** Reproducibility & accuracy
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** None
+- **adaptation_method:** None
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Concurrent PSG
+- **subject_split:** Concurrent PSG
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Highlights firmware/algorithm reproducibility issues.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Concurrent PSG).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Neutral`
+- **transferable_method:** None
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Highlights firmware/algorithm reproducibility issues. (Source: https://www.mdpi.com/1424-8220/24/2/635, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

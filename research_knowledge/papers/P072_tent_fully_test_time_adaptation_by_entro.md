@@ -1,0 +1,44 @@
+# P072: Tent: Fully Test-Time Adaptation by Entropy Minimization
+
+- **paper_id:** `P072`
+- **title:** Tent: Fully Test-Time Adaptation by Entropy Minimization
+- **authors:** Wang D, Shelhamer E, Liu S, Olshausen B, Darrell T
+- **year:** 2021
+- **venue:** ICLR 2021 (Spotlight)
+- **doi_or_id:** `arXiv:2006.10726`
+- **url:** https://arxiv.org/abs/2006.10726
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Fully test-time adaptation
+- **hypothesis:** UNKNOWN
+- **dataset:** CIFAR-10/100-C, ImageNet-C
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Vision
+- **labels:** Class labels
+- **task_definition:** Fully test-time adaptation
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Entropy minimization + BN affine updates
+- **adaptation_method:** Entropy minimization + BN affine updates
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Online TTA
+- **subject_split:** Online TTA
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Foundational TTA baseline; later shown by Zhao 2023 & Niu 2023 to collapse under label shift & small batches.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** Foundational TTA baseline; later shown by Zhao 2023 & Niu 2023 to collapse under label shift & small batches.
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Online TTA).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Contradicting`
+- **transferable_method:** Entropy minimization + BN affine updates
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Foundational TTA baseline; later shown by Zhao 2023 & Niu 2023 to collapse under label shift & small batches. (Source: https://arxiv.org/abs/2006.10726, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

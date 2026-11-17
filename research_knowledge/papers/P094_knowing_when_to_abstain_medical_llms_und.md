@@ -1,0 +1,44 @@
+# P094: Knowing When to Abstain: Medical LLMs Under Clinical Uncertainty (MedAbstain)
+
+- **paper_id:** `P094`
+- **title:** Knowing When to Abstain: Medical LLMs Under Clinical Uncertainty (MedAbstain)
+- **authors:** Machcha et al.
+- **year:** 2026
+- **venue:** EACL 2026 / arXiv
+- **doi_or_id:** `arXiv:2601.12471v2`
+- **url:** https://arxiv.org/html/2601.12471v2
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Abstention evaluation protocol
+- **hypothesis:** UNKNOWN
+- **dataset:** MedAbstain
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** Clinical QA
+- **labels:** MCQA
+- **task_definition:** Abstention evaluation protocol
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Explicit abstention
+- **adaptation_method:** Explicit abstention
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Benchmark
+- **subject_split:** Benchmark
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Shows high predictive accuracy does not imply safe abstention behavior.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** Shows high predictive accuracy does not imply safe abstention behavior.
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Benchmark).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `LOW`
+- **evidence_strength:** `MODERATE`
+- **stance:** `Contradicting`
+- **transferable_method:** Explicit abstention
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Shows high predictive accuracy does not imply safe abstention behavior. (Source: https://arxiv.org/html/2601.12471v2, retrieved 2026-11-17).
+- **We infer:** Relevance (`LOW`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

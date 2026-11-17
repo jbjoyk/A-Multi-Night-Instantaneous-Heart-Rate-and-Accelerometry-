@@ -1,0 +1,44 @@
+# P085: Personalizing brain stimulation: continual learning for sleep spindle detection
+
+- **paper_id:** `P085`
+- **title:** Personalizing brain stimulation: continual learning for sleep spindle detection
+- **authors:** Milo Sobral, H. R. Jourde, S. Ehsan M. Bajestani, E. B. J. Coffey, G. Beltrame
+- **year:** 2025
+- **venue:** J Neural Eng / RG
+- **doi_or_id:** `RG:393376067`
+- **url:** https://www.researchgate.net/publication/393376067_Personalizing_brain_stimulation_continual_learning_for_sleep_spindle_detection
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Night-after-night online continual personalization
+- **hypothesis:** UNKNOWN
+- **dataset:** 200 nights / 200 subjects
+- **number_of_subjects:** 200
+- **number_of_nights:** 200
+- **sensors:** Sleep EEG
+- **labels:** Sleep spindles
+- **task_definition:** Night-after-night online continual personalization
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Online continual learning
+- **adaptation_method:** Online continual learning
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Multi-night
+- **subject_split:** Multi-night
+- **temporal_split:** UNKNOWN
+- **external_validation:** No
+- **metrics:** Demonstrates continual night-after-night personalization mitigating forgetting.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Multi-night).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `MEDIUM` (adjacent method/leakage evidence only; non-sleep/non-wearable)
+- **evidence_strength:** `MODERATE`
+- **stance:** `Supporting`
+- **transferable_method:** Online continual learning
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Demonstrates continual night-after-night personalization mitigating forgetting. (Source: https://www.researchgate.net/publication/393376067_Personalizing_brain_stimulation_continual_learning_for_sleep_spindle_detection, retrieved 2026-11-17).
+- **We infer:** Relevance (`MEDIUM`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.

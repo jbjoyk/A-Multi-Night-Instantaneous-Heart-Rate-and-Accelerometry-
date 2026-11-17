@@ -1,0 +1,44 @@
+# P091: Certainty about uncertainty in sleep staging: a theoretical framework
+
+- **paper_id:** `P091`
+- **title:** Certainty about uncertainty in sleep staging: a theoretical framework
+- **authors:** van Gorp H et al.
+- **year:** 2022
+- **venue:** Sleep / ResearchGate
+- **doi_or_id:** `RG:361180445`
+- **url:** https://www.researchgate.net/publication/361180445_Certainty_about_uncertainty_in_sleep_staging_a_theoretical_framework
+- **extraction_date:** 2026-11-17
+- **retrieval_depth:** `abstract-only`
+- **research_question:** Aleatoric (82.6% inter-scorer ceiling) vs epistemic uncertainty
+- **hypothesis:** UNKNOWN
+- **dataset:** Theoretical framework
+- **number_of_subjects:** 0
+- **number_of_nights:** 0
+- **sensors:** PSG / Wearable
+- **labels:** Sleep stages
+- **task_definition:** Aleatoric (82.6% inter-scorer ceiling) vs epistemic uncertainty
+- **preprocessing:** UNKNOWN
+- **architecture:** UNKNOWN
+- **personalization_method:** Uncertainty decomposition
+- **adaptation_method:** Uncertainty decomposition
+- **calibration_data:** UNKNOWN
+- **evaluation_protocol:** Theoretical
+- **subject_split:** Theoretical
+- **temporal_split:** UNKNOWN
+- **external_validation:** N/A
+- **metrics:** Distinguishes irreducible aleatoric label noise from reducible epistemic uncertainty in sleep staging.
+- **statistical_testing:** UNKNOWN
+- **uncertainty_reporting:** UNKNOWN
+- **failure_cases:** UNKNOWN
+- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
+- **leakage_risks:** Evaluated per reported protocol (Theoretical).
+- **reproducibility:** UNKNOWN
+- **relevance_to_our_project:** `HIGH`
+- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
+- **stance:** `Supporting`
+- **transferable_method:** Uncertainty decomposition
+- **possible_research_gap:** See `research_gaps.md`
+
+### Provenance Notes
+- **Paper reports:** Distinguishes irreducible aleatoric label noise from reducible epistemic uncertainty in sleep staging. (Source: https://www.researchgate.net/publication/361180445_Certainty_about_uncertainty_in_sleep_staging_a_theoretical_framework, retrieved 2026-11-17).
+- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.
