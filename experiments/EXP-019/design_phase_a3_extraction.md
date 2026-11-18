@@ -124,7 +124,7 @@ flowchart TD
         F --> G1[Bitwise Recover ZS Predictions]
         F --> G2[Protocol-Faithful Re-Execute FT-2, FT-other-2, PS-2]
         G1 --> H1["Tier 1 Gate: Verify ZS Match <= 0.0001 across all 46 subjects"]
-        G2 --> H2["Tier 2 Gate: Verify FT-2 Distributional Consistency (+-0.0050 pp, r >= 0.98)"]
+        G2 --> H2["Tier 2 Gate: Verify FT-2 Distributional Consistency (+-0.0050 Macro-F1, r >= 0.98, Inconclusive Verdict)"]
     end
 
     subgraph S3 ["Stage 3: Diagnostic Metrics Computation"]
@@ -158,10 +158,11 @@ Before accepting reconstructed outputs:
    - Recompute subject-level Macro-F1 for all 46 subjects for `ZS`.
    - Must match `exp019_subject_metrics.csv` within absolute tolerance $\le 0.0001$ for every subject.
 2. **Tier 2 (Adapted Arms Distributional Invariant):**
-   - Recomputed cohort mean Macro-F1 for `FT-2` must fall within $\pm 0.0050\text{ pp}$ of historical $0.6559$ ($[0.6509, 0.6609]$).
-   - Recomputed primary paired delta ($\bar{\Delta}$) must fall within $\pm 0.0050\text{ pp}$ of historical $+1.01\text{ pp}$ ($[+0.96\text{ pp}, +1.06\text{ pp}]$).
-   - The qualitative confirmatory conclusion must remain preserved: $H_A$ evaluates to **INCONCLUSIVE** under the preregistered decision rule.
+   - Recomputed cohort mean Macro-F1 for `FT-2` must fall within $\pm 0.0050$ of historical $0.6559$ ($[0.6509, 0.6609]$).
+   - Recomputed primary paired delta ($\bar{\Delta}$) must fall within $\pm 0.50\text{ pp}$ of historical $+1.01\text{ pp}$ ($[+0.51\text{ pp}, +1.49\text{ pp}]$), propagating the locked $\pm 0.0050$ Macro-F1 tolerance ($100 \times \pm 0.0050 = \pm 0.50\text{ pp}$) alongside bitwise-exact ZS baseline.
+   - The qualitative confirmatory conclusion must remain strictly preserved: $H_A$ evaluates to **INCONCLUSIVE** under the preregistered decision rule ($\bar{\Delta} < 1.50\text{ pp}$ and $95\%\text{ CI}$ covers zero).
    - Subject-level correlation between re-executed and locked Macro-F1 must satisfy $r \ge 0.98$.
+   - **Confirmatory Result Immutability:** Final deliverables (`exp019_k_learning_curve.csv`, `PHASE_A3_DIAGNOSTIC_REPORT.md`) must publish the locked historical confirmatory metrics ($\bar{\Delta} = +1.01\text{ pp}$, $95\%\text{ CI } [-0.17, +1.99]\text{ pp}$, Wilcoxon $p = 0.00131$, $H_A = \text{INCONCLUSIVE}$). The recomputed stochastic values serve strictly as gate validation for accepting extracted hypnograms and must never overwrite the locked confirmatory estimand.
 3. **Strict Stop Condition:** If either Tier 1 or Tier 2 fails:
    - **STOP IMMEDIATELY;**
    - **DO NOT** tune code, seeds, thresholds, preprocessing, or hyperparameters to force agreement;
@@ -383,10 +384,11 @@ Before persisting any Phase A3 output, the extraction script must automatically 
 
 1. **Tier 1 (Zero-Shot Bitwise Match):** The recomputed Macro-F1 values for all 46 subjects for arm `ZS` must match `exp019_subject_metrics.csv` within absolute tolerance $\le 0.0001$.
 2. **Tier 2 (Adapted Arms Distributional Consistency):**
-   - Cohort mean Macro-F1 for `FT-2` must fall within $\pm 0.0050\text{ pp}$ of historical $0.6559$ ($[0.6509, 0.6609]$).
-   - Recomputed primary paired delta ($\bar{\Delta}$) must fall within $\pm 0.0050\text{ pp}$ of historical $+1.01\text{ pp}$ ($[+0.96\text{ pp}, +1.06\text{ pp}]$).
-   - The qualitative confirmatory conclusion must remain preserved: $H_A$ evaluates to **INCONCLUSIVE** under the preregistered decision rule.
+   - Cohort mean Macro-F1 for `FT-2` must fall within $\pm 0.0050$ of historical $0.6559$ ($[0.6509, 0.6609]$).
+   - Recomputed primary paired delta ($\bar{\Delta}$) must fall within $\pm 0.50\text{ pp}$ of historical $+1.01\text{ pp}$ ($[+0.51\text{ pp}, +1.49\text{ pp}]$), propagating the locked $\pm 0.0050$ Macro-F1 tolerance ($100 \times \pm 0.0050 = \pm 0.50\text{ pp}$) alongside bitwise-exact ZS baseline.
+   - The qualitative confirmatory conclusion must remain strictly preserved: $H_A$ evaluates to **INCONCLUSIVE** under the preregistered decision rule ($\bar{\Delta} < 1.50\text{ pp}$ and $95\%\text{ CI}$ covers zero).
    - Subject-level correlation between re-executed and locked Macro-F1 must be $r \ge 0.98$.
+   - **Confirmatory Result Immutability:** Final deliverables (`exp019_k_learning_curve.csv`, `PHASE_A3_DIAGNOSTIC_REPORT.md`) must publish the locked historical confirmatory metrics ($\bar{\Delta} = +1.01\text{ pp}$, $95\%\text{ CI } [-0.17, +1.99]\text{ pp}$, Wilcoxon $p = 0.00131$, $H_A = \text{INCONCLUSIVE}$). Recomputed stochastic values serve strictly as gate validation for extracted hypnograms and must never overwrite the locked confirmatory estimand.
 3. **Locked File Immutability:** SHA256 hashes of `exp019_stage_c_results.json`, `exp019_subject_metrics.csv`, `exp019_summary.csv`, and `PREREG_EXP-019_H-A.md` must be checked before and after script execution to ensure zero corruption.
 4. **Mandatory Halt on Failure:** If Tier 1 fails or Tier 2 deviates beyond the distributional bounds, the script must immediately halt, output an error log, and exit with non-zero code without writing outputs.
 
@@ -409,7 +411,7 @@ Phase A3 extraction is considered accepted and ready for Phase A closure if and 
 3. `exp019_per_stage_metrics.csv` details precision, recall, specificity, and F1 per stage with FDR correction for $k=2$.
 4. `exp019_sleep_summary_agreement.csv` contains complete Bland-Altman statistics, reporting primary subject-averaged metrics ($n=46$) with symmetric artifact masking.
 5. `exp019_night_index_breakdown.csv` characterizes performance across night indices 3 through 7 for $k=2$.
-6. The two-tiered regression check confirms exact numerical consistency ($\le 0.0001$) for `ZS`, and protocol/distributional consistency for `FT-2` (mean within $\pm 0.0050\text{ pp}$, delta within $\pm 0.0050\text{ pp}$, $r \ge 0.98$).
+6. The two-tiered regression check confirms exact numerical consistency ($\le 0.0001$) for `ZS`, and protocol/distributional consistency for `FT-2` (mean within $\pm 0.0050$, delta within $\pm 0.50\text{ pp}$ preserving Inconclusive verdict, $r \ge 0.98$).
 7. `PHASE_A3_DIAGNOSTIC_REPORT.md` is generated and committed to the repository.
 
 ---
