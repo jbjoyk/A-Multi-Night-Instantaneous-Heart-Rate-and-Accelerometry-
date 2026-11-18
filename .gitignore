@@ -23,3 +23,9 @@ runs/
 Thumbs.db
 *.pkl
 predictions/
+
+# Agent framework scratch state
+.agents/
+
+# Local preprocessing caches
+cache/
