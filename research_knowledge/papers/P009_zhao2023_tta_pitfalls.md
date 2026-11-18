@@ -34,7 +34,7 @@
 - **leakage_risks:** Explicitly exposes "oracle model selection" pitfall in prior TTA papers.
 - **reproducibility:** High (`github.com/lins-lab/ttab`).
 - **relevance_to_our_project:** `MEDIUM` (high theoretical transferability)
-- **evidence_strength:** `STRONG`
+- **evidence_strength:** `MODERATE` (capped from STRONG: computer vision benchmark, adjacent theoretical evidence for TTA failure modes)
 - **stance:** `Contradicting` (exposes severe failure modes of adaptation under label shift & batch dependency)
 - **transferable_method:** Label-shift stress testing (Dirichlet $\alpha$); episodic vs online reset discipline.
 - **possible_research_gap:** Designing adaptation/gating protocols that explicitly detect or remain invariant to **label/prior shift** in multi-night sleep staging.

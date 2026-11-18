@@ -34,7 +34,7 @@
 - **leakage_risks:** Explicitly formalizes identity leakage and pipeline-dependent overfitting.
 - **reproducibility:** Survey
 - **relevance_to_our_project:** `MEDIUM`
-- **evidence_strength:** `STRONG`
+- **evidence_strength:** `MODERATE` (capped from STRONG: survey without primary subject-split empirical statistical testing on sleep)
 - **stance:** `Neutral` (validates our strict subject-disjoint protocol and explains negative transfer in pooled DA)
 - **transferable_method:** Multi-source DA vs DG framing; Subject ID as structural metadata; PEFT/shared-trunk adaptation.
 - **possible_research_gap:** Lack of standardized wearable (non-EEG) multi-night adaptation benchmarks.

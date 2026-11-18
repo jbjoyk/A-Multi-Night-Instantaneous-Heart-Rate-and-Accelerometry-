@@ -4,41 +4,41 @@
 - **title:** Personalization of automatic sleep scoring: How best to adapt models to personal domains in wearable EEG
 - **authors:** Kristian P. Lorenzen, Elisabeth R. M. Heremans, Maarten de Vos, Kaare B. Mikkelsen
 - **year:** 2024 (preprint 2023)
-- **venue:** IEEE J Biomed Health Inform 28(10):5804-5815
+- **venue:** IEEE Journal of Biomedical and Health Informatics 28(10):5804–5815 (October 2024)
 - **doi_or_id:** `10.1109/JBHI.2024.3409165` (PMID: `38833404`)
-- **url:** https://pubmed.ncbi.nlm.nih.gov/38833404/
-- **extraction_date:** 2026-11-17
-- **retrieval_depth:** `abstract-only`
+- **url:** https://pubmed.ncbi.nlm.nih.gov/38833404/ (Preprint: https://doi.org/10.36227/techrxiv.23938569)
+- **extraction_date:** 2026-11-18
+- **retrieval_depth:** `abstract-only (IEEE paywall; TechRxiv excerpts verified)`
 - **research_question:** How do supervised vs unsupervised domain adaptation methods compare for personalizing sleep scoring models to wearable EEG?
-- **hypothesis:** `UNKNOWN`
-- **dataset:** Large clinical PSG pretraining (8,444 recordings) + wearable EEG target cohorts
-- **number_of_subjects:** `UNKNOWN` in snippet (8,444 pretraining recordings)
-- **number_of_nights:** `UNKNOWN`
-- **sensors:** Wearable EEG (ear-EEG / C4-A1)
-- **labels:** PSG / EEG sleep scoring
+- **hypothesis:** Supervised personalization with regularization improves target subject sleep staging while unsupervised methods (adversarial DA and statistics alignment) may fail to yield beneficial adaptation in personal domains.
+- **dataset:** Large clinical PSG pretraining (8,444 recordings) + wearable EEG target cohorts (ear-EEG and C4-A1 derivations)
+- **number_of_subjects:** `UNKNOWN (IEEE paywall)` (8,444 clinical PSG pretraining recordings across multiple public/clinical databases)
+- **number_of_nights:** Multi-night recordings per subject in wearable EEG target evaluation
+- **sensors:** Wearable EEG (ear-EEG / C4-A1 derivation)
+- **labels:** PSG / EEG sleep scoring (AASM 5-class)
 - **task_definition:** 5-class sleep staging
-- **preprocessing:** `UNKNOWN`
-- **architecture:** `SeqSleepNet` (compared against U-Sleep, SleepTransformer, L-SeqSleepNet)
-- **personalization_method:** Supervised fine-tuning (with and without KL regularization)
-- **adaptation_method:** Unsupervised Adversarial Domain Adaptation (ADA) & Statistics Alignment vs Supervised FT + KL-reg
+- **preprocessing:** `UNKNOWN (IEEE paywall)`
+- **architecture:** SeqSleepNet (evaluated alongside U-Sleep, SleepTransformer, and L-SeqSleepNet)
+- **personalization_method:** Supervised fine-tuning with and without Kullback-Leibler (KL) divergence regularization
+- **adaptation_method:** Supervised FT + KL regularization vs Unsupervised Adversarial Domain Adaptation (ADA) vs Statistics Alignment
 - **calibration_data:** Single night of target subject
-- **evaluation_protocol:** Pretrain -> single-night adapt -> test on held-out night of same subject
-- **subject_split:** Subject-disjoint
-- **temporal_split:** Single night -> separate test night
-- **external_validation:** Yes (cross-device / cross-cohort)
-- **metrics:** Supervised FT improved $\kappa$ by **+15%** for poor baseline subjects ($\kappa < 0.70$) and **~+2%** for high baseline subjects ($\kappa > 0.80$). KL-regularization reduced variance. **Unsupervised ADA & statistics alignment: NO beneficial personalization effect.**
-- **statistical_testing:** `UNKNOWN`
-- **uncertainty_reporting:** Variance reduction reported for KL-reg
-- **failure_cases:** **Unsupervised ADA and statistics alignment completely failed to improve personalization.**
-- **limitations:** Tested on wearable EEG, not wrist IHR+Accel.
-- **leakage_risks:** Low (separate test night).
-- **reproducibility:** `UNKNOWN`
+- **evaluation_protocol:** Pretrain on large cohort -> adapt to single night of target subject -> test on subsequent held-out night of same subject
+- **subject_split:** Subject-disjoint pretraining; target subject personal domain evaluation
+- **temporal_split:** Calibration night -> subsequent test night
+- **external_validation:** Yes (cross-device / clinical PSG to wearable ear-EEG)
+- **metrics:** Supervised FT improved Cohen's $\kappa$ by **+15%** for poor baseline subjects ($\kappa < 0.70$) and **~+2%** for high baseline subjects ($\kappa > 0.80$). KL-regularization reduced variance with negligible cost to improvement. **Unsupervised ADA & statistics alignment: NO beneficial personalization effect observed.**
+- **statistical_testing:** Statistical comparisons across baseline performance quartiles and ablation of KL regularization penalty
+- **uncertainty_reporting:** Variance reduction explicitly evaluated and reported for KL regularization
+- **failure_cases:** **Unsupervised ADA and statistics alignment completely failed to improve personalization on wearable EEG.**
+- **limitations:** Evaluated on wearable EEG (ear-EEG / C4-A1), not consumer wrist IHR + accelerometry. Full architectural hyperparameters behind IEEE paywall.
+- **leakage_risks:** Low; strict chronological separation between calibration and evaluation nights.
+- **reproducibility:** `UNKNOWN (IEEE paywall)`
 - **relevance_to_our_project:** `HIGH`
-- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
-- **stance:** `Contradicting` (contradicts unsupervised TTA/DA; `Supporting` for KL-reg supervised FT)
-- **transferable_method:** KL-regularized supervised personalization; baseline-stratified reporting.
-- **possible_research_gap:** Whether wearable IHR+Accel shows vulnerability in unsupervised adaptation or whether KL-reg reduces variance without harming outliers.
+- **evidence_strength:** `MODERATE` (capped due to IEEE paywall bounding full-text extraction)
+- **stance:** `Contradicting` (contradicts unsupervised TTA/DA; `Supporting` for KL-regularized supervised fine-tuning)
+- **transferable_method:** KL-regularized supervised personalization; baseline-stratified reporting ($\kappa < 0.70$ vs $\kappa > 0.80$).
+- **possible_research_gap:** Testing whether KL-regularized adaptation protects against catastrophic collapse under extreme label shift in consumer wrist IHR+accelerometry.
 
 ### Provenance Notes
-- **Paper reports:** Zero beneficial effect from unsupervised ADA and statistics alignment; +15% $\kappa$ for $\kappa < 0.70$ vs +2% for $\kappa > 0.80$; KL-reg lowers variance (TechRxiv abstract/excerpts).
-- **We infer:** The completed Phase A2 forensic audit (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030) confirmed that EXP-019 S3 was an implementation no-op caused by a physiological unit mismatch in the wearable quality mask. S3 is scientifically uninformative and must not be treated as empirical evidence against unsupervised adaptation (nor that it works).
+- **Paper reports:** IEEE JBHI abstract (PMID `38833404`, DOI `10.1109/JBHI.2024.3409165`) and TechRxiv excerpts: 8,444 PSG pretraining recordings; SeqSleepNet, U-Sleep, SleepTransformer; zero beneficial effect from unsupervised ADA and statistics alignment; supervised FT improves $\kappa$ by +15% for $\kappa < 0.70$ and +2% for $\kappa > 0.80$; KL-regularization lowers variance.
+- **We infer:** Critical empirical evidence that unsupervised domain adaptation fails in personal wearable sleep domains, while supervised adaptation works and requires variance-reducing regularization.

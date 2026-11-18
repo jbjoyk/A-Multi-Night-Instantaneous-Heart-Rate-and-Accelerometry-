@@ -4,41 +4,41 @@
 - **title:** Learning individual autonomic representations of sleep stages to improve photoplethysmography based sleep monitoring
 - **authors:** Jaap F. van der Aar, Merel M. van Gilst, Daan A. van den Ende, Sebastiaan Overeem, Elisabetta Peri, Pedro Fonseca
 - **year:** 2025
-- **venue:** Physiological Measurement (2025 Sep 30;46(9))
+- **venue:** Physiological Measurement 46(9):095012 (2025 Sep 30) [Open Access CC BY 4.0]
 - **doi_or_id:** `10.1088/1361-6579/ae0119` (PMID: `40882681`)
-- **url:** https://pubmed.ncbi.nlm.nih.gov/40882681/
-- **extraction_date:** 2026-11-17
-- **retrieval_depth:** `abstract-only`
+- **url:** https://iopscience.iop.org/article/10.1088/1361-6579/ae0119/pdf
+- **extraction_date:** 2026-11-18
+- **retrieval_depth:** `full-text`
 - **research_question:** Can partial retraining (fine-tuning) of a general PPG-based sleep staging model using multiple home nights of concurrent wearable EEG labels learn individual autonomic representations and improve performance against clinical PSG?
-- **hypothesis:** `TO FILL` (abstract-only; partial retraining captures subject-specific autonomic sleep signatures)
-- **dataset:** Clinical PSG + up to 7 home nights cohort (`TO FILL` dataset name)
-- **number_of_subjects:** 59 (heterogeneous sleep-disordered patients)
-- **number_of_nights:** Up to 7 home nights per subject + clinical PSG
-- **sensors:** Wrist-worn PPG + accelerometry
-- **labels:** Concurrent wearable EEG labels (for home fine-tuning); clinical PSG (for evaluation)
-- **task_definition:** 4-class sleep staging (Wake / N1+N2 / N3 / REM)
-- **preprocessing:** `TO FILL`
-- **architecture:** General PPG+accelerometry sleep staging model (`TO FILL` exact layers)
-- **personalization_method:** Supervised fine-tuning (partial retraining per subject)
-- **adaptation_method:** Partial retraining on 1 to 7 home nights
-- **calibration_data:** Up to 7 home nights with concurrent wearable EEG
-- **evaluation_protocol:** Evaluated against clinical PSG
-- **subject_split:** `TO FILL`
-- **temporal_split:** `TO FILL`
-- **external_validation:** `TO FILL`
-- **metrics:** Overall performance increased in 82.5% of subjects; significant improvement reached at >= 3 training nights (wake beta=0.005, p<0.001; N1+N2 beta=0.003, p<0.001; N3 beta=0.004, p<0.001; REM beta=0.005, p<0.001; stronger in younger beta=0.009, p<0.001 and insomnia beta=0.011, p<0.001). Effect sizes in kappa: `TO FILL`.
-- **statistical_testing:** `TO FILL` (abstract reports p<0.001 on slope betas; full test details pending full text)
-- **uncertainty_reporting:** `TO FILL`
-- **failure_cases:** 17.5% of subjects did not improve (details `TO FILL`)
-- **limitations:** Abstract-only extraction; exact kappa effect sizes, split details, and failure-mode breakdown require full-text retrieval.
-- **leakage_risks:** `TO FILL`
-- **reproducibility:** `TO FILL`
+- **hypothesis:** Partial retraining of input and output layers of a general PPG-based sleep staging model using home nights of wearable EEG stage classifications captures individual autonomic representations and significantly improves sleep staging agreement with clinical PSG.
+- **dataset:** PRISM (Prolonged in-home sleep monitoring study, Kempenhaeghe Center for Sleep Medicine, Heeze, The Netherlands)
+- **number_of_subjects:** 59 heterogeneous sleep-disordered adult patients (30 females, age 50.1 ± 14.5 years; insomnia, OSA, etc.)
+- **number_of_nights:** Up to 7 home nights per subject (mean 5.7 ± 1.6) + 1 clinical in-lab PSG night
+- **sensors:** Wrist-worn reflective PPG + triaxial accelerometry (prototype of Philips Healthband)
+- **labels:** Wearable EEG headband (Philips SmartSleep Deep Sleep Headband, frontopolar dry EEG referenced to M2 mastoid, scored via fine-tuned TinySleepNet) for home training; clinical PSG (manually scored per AASM guidelines) for evaluation
+- **task_definition:** 4-class sleep staging (Wake / N1+N2 / N3 / REM, 30s epochs)
+- **preprocessing:** Segments with long artifacts (>30 min) removed; minimum 4.5 h concurrent data required; epoch-level features derived per Fonseca et al. 2023.
+- **architecture:** Pretrained PPG+accelerometry model (Fonseca et al. 2023). Fine-tuned components: input PPG layer (IHR extraction + batch norm + 1st conv), input accelerometry layer (activity counts + batch norm), output layers (3 bidirectional GRUs and 5 dense layers). Frozen components: intermediate residual blocks (each with 3 conv layers intertwined with dense layers).
+- **personalization_method:** Supervised fine-tuning / partial retraining of input layers and output BiGRU/dense layers.
+- **adaptation_method:** Chronological fine-tuning on 1 to 7 home nights (Adam optimizer, lr=0.0001, early stopping).
+- **calibration_data:** 1 to 7 home nights with concurrent wearable EEG pseudo-labels.
+- **evaluation_protocol:** Pretrained model personalized chronologically on k=1..7 home nights; evaluated on independent in-lab clinical PSG night scored by trained clinicians.
+- **subject_split:** One-third of subjects used for hyperparameter/layer tuning; tested across all 59 subjects with 10-fold CV on TinySleepNet home labels.
+- **temporal_split:** Chronological home monitoring nights (k=1..7) -> clinical PSG night.
+- **external_validation:** Yes, evaluated against gold-standard clinical PSG.
+- **metrics:** 82.5% of subjects improved overall in Cohen's kappa. Significant improvement reached at ≥ 3 training nights (wake β=0.005, p<0.001; N1+N2 β=0.003, p<0.001; N3 β=0.004, p<0.001; REM β=0.005, p<0.001). Stronger in younger individuals (β=0.009, p<0.001) and insomnia patients (β=0.011, p<0.001). Macrostructural sleep parameters (N3 sleep, REM fragmentation) substantially improved.
+- **statistical_testing:** Linear Mixed Models (LMM) with random subject intercepts and fixed effects for training nights, age, sex, and primary diagnosis; Bland-Altman plots; Wilcoxon signed-rank tests.
+- **uncertainty_reporting:** 95% confidence intervals and standard errors on beta estimates; standard deviation across subjects reported.
+- **failure_cases:** 17.5% of subjects did not improve (non-responders); attributed to poor wearable EEG label quality, severe autonomic neuropathy, or high night-to-night autonomic variability.
+- **limitations:** Clinical cohort (not healthy young adults); requires home EEG headband to personalize PPG; PRISM dataset is restricted/proprietary under Kempenhaeghe/Philips governance.
+- **leakage_risks:** Low; TinySleepNet home labels generated with 10-fold CV (target subject excluded); evaluation performed on separate clinical PSG night.
+- **reproducibility:** Full architectural and experimental details reported in paper; dataset and proprietary code are restricted by Kempenhaeghe/Philips institutional governance.
 - **relevance_to_our_project:** `HIGH`
-- **evidence_strength:** `MODERATE` (until full text is read)
-- **stance:** `Contradicting` (contradicts any "first multi-night wearable personalization" novelty claim; `Supporting` that multi-night supervised personalization works on average and has non-responders)
-- **transferable_method:** Multi-night partial retraining of a general wearable PPG+accelerometry model.
+- **evidence_strength:** `STRONG`
+- **stance:** `Contradicting` (strictly refutes any "first multi-night wearable personalization" novelty claim; `Supporting` that multi-night supervised personalization works on average but produces ~17.5% non-responders)
+- **transferable_method:** Multi-night partial retraining of input conv and output recurrent/dense layers with frozen feature backbone; LMM analysis of k-night scaling.
 - **possible_research_gap:** Safety/abstention gating under extreme label-shift outliers in 2-night wearable IHR+Accel (`EXP-019` H-A not supported; `Bidslab34` -16.34 pp) remains unaddressed.
 
 ### Provenance Notes
-- **Paper reports:** Abstract (PMID `40882681`, `https://pubmed.ncbi.nlm.nih.gov/40882681/`): n=59 heterogeneous sleep-disordered patients with wrist PPG+accelerometry and concurrent wearable EEG over up to 7 home nights, evaluated vs clinical PSG (4-class Wake/N1+N2/N3/REM); partial retraining improved overall performance in 82.5% of subjects, reaching statistical significance at >= 3 training nights.
-- **We infer:** Closest direct precedent to our locked research direction; removes any novelty claim for "first multi-night wearable personalization" and shifts our distinct contribution to safe/selective adaptation under 2-night calibration label shift and strict preregistered IHR+Accel evaluation.
+- **Paper reports:** Full text (Physiol. Meas. 46(9):095012, DOI: 10.1088/1361-6579/ae0119, CC BY 4.0): Sections 2.1–2.5 describe PRISM dataset (n=59, Kempenhaeghe), SmartSleep Deep Sleep Headband (TinySleepNet), wrist PPG/accel prototype, layer fine-tuning (Figure 1: Box 1 input conv, Box 2 accel, Box 3 BiGRU/dense layers, frozen residual blocks). Section 3.1–3.4 report 82.5% responder rate, LMM beta slopes (p<0.001 at ≥3 nights), Bland-Altman plots, and non-responder characteristics.
+- **We infer:** Closest direct precedent to our locked research direction; eliminates any claim of being "first" to study multi-night wearable sleep personalization. Directs our primary contribution to pre-registered replication, failure-mode isolation (severe calibration label shift), and safe/selective adaptation under sparse 2-night calibration in consumer wearables.

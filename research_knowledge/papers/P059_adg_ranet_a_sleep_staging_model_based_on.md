@@ -2,7 +2,7 @@
 
 - **paper_id:** `P059`
 - **title:** ADG-RANet: A sleep staging model based on adversarial domain generalized residual attention network
-- **authors:** UNKNOWN
+- **authors:** Zhang P, Xiang S, Hu K, He J, Chen J
 - **year:** 2025
 - **venue:** Frontiers in Neuroscience
 - **doi_or_id:** `PMC12098520`

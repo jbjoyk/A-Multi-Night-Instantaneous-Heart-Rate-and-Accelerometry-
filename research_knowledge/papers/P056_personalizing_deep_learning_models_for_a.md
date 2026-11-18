@@ -2,43 +2,43 @@
 
 - **paper_id:** `P056`
 - **title:** Personalizing deep learning models for automatic sleep staging
-- **authors:** Mikkelsen K, De Vos M
+- **authors:** Kaare Mikkelsen, Maarten De Vos
 - **year:** 2018
-- **venue:** arXiv:1801.02645
+- **venue:** arXiv:1801.02645 [cs.LG / stat.ML]
 - **doi_or_id:** `10.48550/arXiv.1801.02645`
-- **url:** https://www.researchgate.net/publication/322355188_Personalizing_deep_learning_models_for_automatic_sleep_staging
-- **extraction_date:** 2026-11-17
-- **retrieval_depth:** `abstract-only`
-- **research_question:** Night 1 -> Night 2 personalization
-- **hypothesis:** UNKNOWN
-- **dataset:** Public EEG database
-- **number_of_subjects:** UNKNOWN
-- **number_of_nights:** UNKNOWN
-- **sensors:** EEG
-- **labels:** PSG
-- **task_definition:** Night 1 -> Night 2 personalization
-- **preprocessing:** UNKNOWN
-- **architecture:** UNKNOWN
-- **personalization_method:** CNN fine-tuning
-- **adaptation_method:** CNN fine-tuning
-- **calibration_data:** UNKNOWN
-- **evaluation_protocol:** Within-subject Night 1->2
-- **subject_split:** Within-subject Night 1->2
-- **temporal_split:** UNKNOWN
-- **external_validation:** No
-- **metrics:** Foundational personalization paper (+2 pp avg, stronger for <80% baseline subjects).
-- **statistical_testing:** UNKNOWN
-- **uncertainty_reporting:** UNKNOWN
-- **failure_cases:** UNKNOWN
-- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
-- **leakage_risks:** Evaluated per reported protocol (Within-subject Night 1->2).
-- **reproducibility:** UNKNOWN
+- **url:** https://arxiv.org/abs/1801.02645 (PDF: https://arxiv.org/pdf/1801.02645.pdf)
+- **extraction_date:** 2026-11-18
+- **retrieval_depth:** `full-text`
+- **research_question:** Can a general convolutional neural network trained across multiple subjects be personalized using individual characteristics from Night 1 to improve automatic sleep staging performance on Night 2?
+- **hypothesis:** Combining general population knowledge of sleep staging with subject-specific fine-tuning on a single night will improve second-night classification, especially for difficult subjects where baseline general models underperform.
+- **dataset:** Sleep-EDF Database (PhysioNet)
+- **number_of_subjects:** 19 subjects with 2 nights (38 nights total) + 1 additional single-night subject
+- **number_of_nights:** 39 nights total
+- **sensors:** Single-channel EEG (Fpz-Cz derivation) and horizontal EOG derivation
+- **labels:** Expert visual sleep stage scoring (R&K / AASM standard 30s epochs: W, REM, N1, N2, N3/N4)
+- **task_definition:** 5-class sleep staging
+- **preprocessing:** Epochs standardized to std=1; standard deviations passed separately as explicit scalar features into the dense layer F1; 3-epoch (90s) temporal context window per input stream.
+- **architecture:** 2-stream 1D-CNN (20 filters per stream for EEG and EOG), fully connected layers (F1, F2), softmax output.
+- **personalization_method:** Supervised fine-tuning of the neural network on Night 1 of the target subject.
+- **adaptation_method:** Full and partial retraining of convolutional filter banks and dense layer F1 on Night 1 data.
+- **calibration_data:** Night 1 recording of the target subject (with ground-truth labels).
+- **evaluation_protocol:** Leave-one-subject-out baseline training (on 18 subjects / 36 nights) -> supervised fine-tuning on target subject's Night 1 -> evaluation on target subject's Night 2.
+- **subject_split:** Subject-disjoint cross-validation across 19 subjects.
+- **temporal_split:** Night 1 (calibration / fine-tuning) -> Night 2 (test).
+- **external_validation:** No (evaluated strictly within Sleep-EDF cohort).
+- **metrics:** Average accuracy improvement of ~2 percentage points across all subjects; substantial gains (up to 10–15 percentage points) in subjects with low baseline accuracy (<80%); paired t-test p < 0.001.
+- **statistical_testing:** Paired t-tests on 311 fine-tuning evaluations comparing personalized vs baseline model accuracy.
+- **uncertainty_reporting:** Scatter plots of delta vs baseline accuracy across subjects; mean and standard deviation reported.
+- **failure_cases:** High-baseline subjects (>85% baseline accuracy) showed ceiling effects with minor or negligible improvements (~0 to +1 pp). Purely subject-specific neural network trained only on Night 1 without population pre-training performed very poorly.
+- **limitations:** Evaluated on clean PSG EEG/EOG channels rather than noisy wearable wrist sensors; small cohort (n=19 2-night subjects); only 2 nights per subject (k=1 calibration night).
+- **leakage_risks:** Low; strict subject-disjoint baseline pre-training and chronological night-split (Night 1 -> Night 2).
+- **reproducibility:** High; code publicly available at https://github.com/kaare-mikkelsen/sleepFineTuning and data on PhysioNet.
 - **relevance_to_our_project:** `HIGH`
-- **evidence_strength:** `MODERATE`
-- **stance:** `Supporting`
-- **transferable_method:** CNN fine-tuning
-- **possible_research_gap:** See `research_gaps.md`
+- **evidence_strength:** `STRONG`
+- **stance:** `Supporting` (establishes the fundamental principle that supervised Night 1 fine-tuning improves Night 2 staging, with largest gains on low-baseline subjects)
+- **transferable_method:** Supervised single-night fine-tuning; epoch standardization with separate std feed; baseline-stratified evaluation.
+- **possible_research_gap:** Extension from 2 nights to multi-night ($k \ge 3$) calibration trajectories, and validation on consumer wrist sensors (IHR + accelerometry) under real-world label shift.
 
 ### Provenance Notes
-- **Paper reports:** Foundational personalization paper (+2 pp avg, stronger for <80% baseline subjects). (Source: https://www.researchgate.net/publication/322355188_Personalizing_deep_learning_models_for_automatic_sleep_staging, retrieved 2026-11-17).
-- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.
+- **Paper reports:** Full text (arXiv:1801.02645): Section II describes Sleep-EDF (19 subjects, 38 nights, Fpz-Cz + horizontal EOG); Section III-A describes 2-stream CNN (Figure 1, Table I, 90s context); Section III-B describes fine-tuning protocol; Section IV-A & IV-B describe baseline performance and fine-tuning results (Figure 5: +2 pp average, larger improvements for baseline <80%, paired t-test p < 0.001). Code released at `github.com/kaare-mikkelsen/sleepFineTuning`.
+- **We infer:** Foundational reference proving that supervised fine-tuning is effective for sleep staging personalization, but limited to EEG and k=1 calibration night.

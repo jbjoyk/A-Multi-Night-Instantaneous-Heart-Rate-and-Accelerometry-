@@ -1,6 +1,6 @@
 # Research State
 
-**Last updated:** 2026-11-17 (Governance Milestone: Synchronized to Research Direction v4 and Revised Research Knowledge Base)
+**Last updated:** 2026-11-18 (Governance Milestone: Master Execution of Research Candidates 1–5 Completed under DEC-029)
 
 ---
 
@@ -39,7 +39,7 @@
 - **Staging Task:** 4-class classification: Wake (0), Light (1; N1+N2 combined), Deep (2; N3), REM (3). Unknown stages and padded positions mapped to `-100` (`ignore_index`).
 - **Context Horizon:** Full-night context ($L = 1200$, sliding-window inference with probability stitching). The historical 5-hour crop ($T = 600$) dropped ~28% of labeled epochs with REM heavily depleted (DEC-021). All cropped results must be reported as cropped.
 - **Model Backbone & Parameter Baseline:** Model A (`ConventionalCNNBiGRU`, exactly 163,940 parameters). Under DEC-031, 163,940 parameters is the baseline reference size. Future models should preferentially be lighter than this baseline. Larger models require explicit scientific justification and transparent reporting. Architecture search is permanently closed for completed experiments.
-- **Test Set Status:** The historical EXP-012 test set (11 subjects, 58 nights) is formally **SPENT** (used across prior benchmarks and folded into later CV splits). All final claims rest on 5-fold out-of-fold nested CV across all 47 subjects plus external validation.
+- **Test Set Status:** The historical EXP-012 test set (11 subjects, 58 nights) and early EXP-001/004 test set (7 subjects, 38 nights) are formally **SPENT** (`EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`, DEC-029 Section 6). The two test splits represent disjoint cohorts rotated across training and test roles. All final claims rest on 5-fold out-of-fold nested CV across all 47 subjects plus external validation.
 
 ---
 
@@ -51,36 +51,41 @@
 | **S1** | $FT\text{-}2$ outperforms donor control $FT\text{-}other\text{-}2$ (Specificity Control) | **LOCKED (EXP-019)** | **SUPPORTED:** $\bar{\Delta} = \mathbf{+2.73\text{ pp}}$ [95% CI: $+1.05, +4.32\text{ pp}$], $p = 9.0 \times 10^{-6}$. *Nuance:* $FT\text{-}other\text{-}2$ is $-1.72\text{ pp}$ below $ZS$ (harmful), proving fine-tuning on another subject degrades performance and adaptation is subject-specific. |
 | **S2** | $FT\text{-}2$ outperforms per-subject model trained from scratch ($PS\text{-}2$) | **LOCKED (EXP-019)** | **SUPPORTED:** $\bar{\Delta} = \mathbf{+20.32\text{ pp}}$ [95% CI: $+17.70, +22.94\text{ pp}$], $p < 10^{-10}$. Cohort pre-training is indispensable. Treated as a weak baseline check, not a major claim. |
 | **S3** | Label-free unsupervised InfoMax adaptation ($UA\text{-}2$) outperforms $ZS$ | **LOCKED (EXP-019)** | $\bar{\Delta} = \mathbf{0.00\text{ pp}}$ identically across all 46 subjects. **UNRESOLVED / INVALIDATED (Implementation No-Op):** Phase A2 forensic audit (`S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030) confirmed that `compute_wearable_quality_mask` checked `30 <= IHR <= 180` (raw BPM) on standardized z-score IHR ($[-3.95, +9.94]$). Exactly 0 out of 82,762 calibration epochs passed the mask, terminating adaptation on step 0 (0 optimizer steps, 0/163,940 parameters changed, identical evaluation logits/predictions). S3 is scientifically uninformative; it must NOT be interpreted as evidence that unsupervised adaptation fails (nor that it works). |
-| **K** | Learning curve over calibration nights $k = 1, 2, 3, 4$ | **Pre-registered descriptive** | High priority for Phase A3 close-out. Directly connects with van der Aar et al. 2025 finding of significance at $\ge 3$ nights. |
+| **K** | Learning curve over calibration nights $k = 1, 2, 3, 4$ | **Pre-registered descriptive** | Phase A3 completed (`experiments/EXP-019/exp019_k_learning_curve.csv`). $k=2$ populated with confirmatory metrics ($\bar{\Delta} = +1.01\text{ pp}$); $k \in \{1, 3, 4\}$ explicitly marked `UNEXECUTED_IN_EXP019` ($n \in \{46, 42, 33\}$, $|E_k| \in \{198, 106, 64\}$) requiring Phase D protocol. |
 | **H-C** | Context scaling: $L=600$ beats $L=60$ | **EXP-018 Phase 2** | $+5.33\text{ pp}$ Macro-F1 [95% CI: $+4.28, +6.39\text{ pp}$], 46/47 subjects. Counts as confirmatory if pre-decision commit verified (`TO VERIFY`); exploratory otherwise. |
 | **EXP-019B** | Heterogeneity and Failure Mechanisms | **Exploratory** | Diagnostic audit completed (`HETEROGENEITY_AUDIT_REPORT.md`). Causal DAG separates root causes (M1: stage absence, M2: autonomic drift) from mediators (M3: calibration loss, M5: parameter drift). Bidslab34 identified with 0.00% deep sleep on Night 2. |
 | **EXP-020** | Regularized / Gated Adaptation | **Exploratory (Gated)** | Strictly gated under Phase D1. Requires Phase A, B, C prerequisites and committed preregistration before launch. |
 | **EXP-027** | External Zero-Shot Validation (SleepAccel) | **Pre-registered** | Planned under Phase D3. |
-| **EXP-028** | Clinical Sleep-Summary Agreement | **Pre-registered** | Planned under Phase D4 (and Phase A3 descriptive analysis). |
+| **EXP-028** | Clinical Sleep-Summary Agreement | **Pre-registered** | Phase A3 extracted baseline agreement (`exp019_sleep_summary_agreement.csv`) with symmetric artifact masking. Planned under Phase D4 for external validation. |
 
 ---
 
 ## 5. Work Plan & Phase Execution Structure (v4)
 
-- **Phase A — Close out EXP-019 (Mandatory Prerequisite, No Numerical Alterations):**
-  - **A1:** Reconcile H-A verdict label against locked preregistration decision rule via erratum.
-  - **A2:** S3 no-op audit completed (confirmed implementation no-op via quality-mask standardized unit mismatch; S3 invalidated as scientifically uninformative; `experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030).
-  - **A3:** Extract and report missing pre-registered outputs: $k=1–4$ learning curve, sleep-summary agreement, per-stage F1, confusion matrices, and Holm-adjusted p-values.
+- **Phase A — Close out EXP-019 (COMPLETED):**
+  - **A1:** Reconcile H-A verdict label against locked preregistration decision rule via erratum (`INCONCLUSIVE`).
+  - **A2:** S3 no-op audit completed (`S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030).
+  - **A3:** Extract and report missing pre-registered outputs: 6 artifacts materialized and verified in `experiments/EXP-019/` (`PHASE_A3_DIAGNOSTIC_REPORT.md`, $k$-curve, confusion matrices, per-stage F1, Bland-Altman agreement, night index breakdown).
   - **A4:** Update S1 documentation to clarify donor-night fine-tuning harm.
   - **A5:** Complete NAS Iteration 1 erratum (confirming architecture search is closed).
-- **Phase B — Evidence Base & Literature Intelligence:**
-  - **B1:** Apply KB round-2 corrections (Heremans PMID, P011/P009 grading, P101 text, Lorenzen DOI).
-  - **B2:** Execute systematic search across PubMed, IEEE Xplore, Scopus, arXiv, medRxiv (2018–present) tracking forward citations of Song 2026, Phan 2020, Mikkelsen 2018, and van der Aar 2025.
-  - **B3:** Read core papers in full text; construct "closest ten" comparison matrix and dated novelty statement.
-- **Phase C — Data Search:**
-  - **C1:** Systematically search for a second multi-night labeled wearable dataset ($\ge 3$ labeled nights/subject, wrist PPG/IHR + accelerometry, EEG/PSG ground truth). This constitutes the strongest Q1 lever.
+- **Phase B — Evidence Base & Literature Intelligence (PARTIALLY COMPLETE / AUDITED):**
+  - **B1 (COMPLETE):** Apply KB round-2 corrections (Heremans PMID `35508121` across 6 files, P011/P009 downgraded to MODERATE, P101 author Colin Quirk and text fixed, gating labels clarified, Lorenzen verified; `updates/2026-11-18_phase_b_and_c_execution.md`).
+  - **B2 (PARTIALLY COMPLETE):** Systematic search executed and logged across PubMed, Europe PMC, arXiv, and medRxiv/bioRxiv tracking 4 query blocks and forward citations of Song 2026, Phan 2020, Mikkelsen 2018, and van der Aar 2025 (`search_log.md`). IEEE Xplore and Scopus/Web of Science coverage bounded by institutional subscription credentials.
+  - **B3 & Exit (PARTIALLY COMPLETE):** Assessed 7 core papers; full text verified for 5 papers (`P001`, `P002`, `P006`, `P056`, `P106`), while `P007` (IEEE) and `P054` (IOP) remain abstract-verified due to paywall boundaries. "Closest ten" comparison matrix and dated novelty statement produced without priority claims, retaining the C1/C2/C3 hierarchy (`updates/2026-11-18_phase_b_and_c_execution.md`).
+- **Phase C — Data Search (BOUNDED COMPLETE / DECISION GATE ENFORCED):**
+  - **C1 (BOUNDED COMPLETE):** Systematic search for a second multi-night labeled wearable dataset ($\ge 3$ labeled nights/subject, wrist PPG/IHR + accelerometry, EEG/PSG ground truth). Census across PhysioNet, NSRR, OpenNeuro, and literature confirmed no qualifying second dataset exists among surveyed sources (van der Aar 2025 cohort is restricted/private; SleepAccel and DREAMT are 1 night/subject). Decision gate enforced: single-dataset paper framed as replication, extension, and failure analysis; limitation reported openly.
 - **Phase D — Experiments (Strictly Gated):**
   - **D1:** EXP-020 (exploratory, design-informed regularized/gated adaptation) — only after Phase A–C completion and committed preregistration.
   - **D2:** EXP-019B formal heterogeneity test protocol.
   - **D3:** EXP-027 external zero-shot transfer to SleepAccel.
   - **D4:** EXP-028 clinical sleep-summary agreement with Bland-Altman analysis.
   - **D5:** If a second dataset is found, pre-register and execute confirmatory replication.
-- **Phase E — Synthesis & Paper Writing:**
+- **Phase E — Synthesis & Paper Writing (IN PROGRESS):**
+  - **Candidate 1 (COMPLETE):** Historical split and data leakage audit across EXP-001 to EXP-004 (`EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`); test access events TA-01 to TA-06 formally recorded in `EXPERIMENTS.md`.
+  - **Candidate 2 (COMPLETE):** SLAMSS-IFS scientific baseline audit (`SLAMSS_IFS_BASELINE_PROTOCOL_AUDIT.md`); resolved 10-dimension comparison matrix, parameter discrepancy (666k paper-text vs 5.47M repo vs 163.9k Model A), and holdout variance vs 5-fold CV.
+  - **Candidate 3 (COMPLETE):** Design-informed exploratory preregistration drafts authored with prior-access disclosures: EXP-019B (`EXP019B_PREREGISTRATION_DRAFT.md`, SHA-256: `30ca80f1...`) and EXP-020 (`EXP020_PREREGISTRATION_DRAFT.md`, SHA-256: `c226cc41...`).
+  - **Candidate 4 (COMPLETE / AUDITED):** BIDSleep cohort data and signal integrity audit (`BIDSLEEP_COHORT_DATA_INTEGRITY_AUDIT.md`); reconciled 47 vs 46 subject denominators, 7 excluded nights across 6 subjects, HealthKit IHR effective sampling rate (median 0.197 Hz, IQR 0.073 Hz), `Bidslab34` calibration Deep sleep scarcity (0.68%, 15 epochs), and evaluable cohort denominators across $k=1..4$ ($47, 46, 42, 33$).
+  - **Candidate 5 (COMPLETE):** Manuscript draft Sections 1–5 authored (`MANUSCRIPT_DRAFT_v0.1.md`) with evidence-to-claim matrix (`MANUSCRIPT_EVIDENCE_TO_CLAIM_MATRIX.csv`) and open unresolved evidence register (`MANUSCRIPT_UNRESOLVED_EVIDENCE.md`).
   - Write manuscript adhering strictly to pre-registered rules and honest negative/inconclusive reporting.
 
 ---

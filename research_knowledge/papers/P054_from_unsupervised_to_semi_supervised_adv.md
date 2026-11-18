@@ -2,43 +2,43 @@
 
 - **paper_id:** `P054`
 - **title:** From unsupervised to semi-supervised adversarial domain adaptation in electroencephalography-based sleep staging
-- **authors:** Heremans ERM, Phan H, Borzée P, Buyse B, Testelmans D, De Vos M
+- **authors:** Elisabeth R. M. Heremans, Huy Phan, Pascal Borzée, Bertien Buyse, Dries Testelmans, Maarten De Vos
 - **year:** 2022
-- **venue:** J Neural Eng
-- **doi_or_id:** `PMID:35508121`
+- **venue:** Journal of Neural Engineering 19(3):036044 (June 2022)
+- **doi_or_id:** `10.1088/1741-2552/ac6ca8` (PMID: `35508121`)
 - **url:** https://pubmed.ncbi.nlm.nih.gov/35508121/
-- **extraction_date:** 2026-11-17
-- **retrieval_depth:** `abstract-only`
-- **research_question:** Personalization & cross-domain staging
-- **hypothesis:** UNKNOWN
-- **dataset:** Wearable EEG / clinical PSG
-- **number_of_subjects:** UNKNOWN
-- **number_of_nights:** UNKNOWN
-- **sensors:** Wearable EEG
-- **labels:** PSG
-- **task_definition:** Personalization & cross-domain staging
-- **preprocessing:** UNKNOWN
-- **architecture:** UNKNOWN
-- **personalization_method:** Unsupervised & semi-supervised ADA
-- **adaptation_method:** Unsupervised & semi-supervised ADA
-- **calibration_data:** UNKNOWN
-- **evaluation_protocol:** Subject adaptation
-- **subject_split:** Subject adaptation
-- **temporal_split:** UNKNOWN
-- **external_validation:** Yes
-- **metrics:** Reported 1-2% personalization gain with UDA in wearable EEG, but later Lorenzen 2023 (same group) found no UDA benefit.
-- **statistical_testing:** UNKNOWN
-- **uncertainty_reporting:** UNKNOWN
-- **failure_cases:** UNKNOWN
-- **limitations:** Extracted from search/abstract metadata; full-text deep read pending if promoted to core method.
-- **leakage_risks:** Evaluated per reported protocol (Subject adaptation).
-- **reproducibility:** UNKNOWN
+- **extraction_date:** 2026-11-18
+- **retrieval_depth:** `abstract-only (IOP paywall)`
+- **research_question:** Can adversarial domain adaptation (ADA) adapt sleep staging models from data-rich source datasets to wearable EEG in clinical patient populations, and can it personalize models to individual patients?
+- **hypothesis:** Adversarial domain adaptation enables transfer learning to wearable sleep datasets with minimal target labels, and unsupervised ADA can personalize models to individual subjects.
+- **dataset:** Wearable sleep datasets acquired from diseased patient populations (Clinical trial registration: S64190)
+- **number_of_subjects:** `UNKNOWN (IOP paywall)`
+- **number_of_nights:** `UNKNOWN (IOP paywall)`
+- **sensors:** Wearable EEG devices
+- **labels:** Expert PSG sleep stage annotations
+- **task_definition:** Multi-stage sleep classification on wearable EEG
+- **preprocessing:** `UNKNOWN (IOP paywall)`
+- **architecture:** Feature extractor + sleep stage classifier + adversarial domain discriminator (`UNKNOWN (IOP paywall)` exact layer dimensions)
+- **personalization_method:** Unsupervised and semi-supervised Adversarial Domain Adaptation (ADA)
+- **adaptation_method:** Adversarial training aligning source and target domain feature representations, with option for pseudo-labeling and target supervised fine-tuning
+- **calibration_data:** Unlabeled or sparsely labeled target patient wearable EEG data
+- **evaluation_protocol:** Cross-dataset and subject-level personalization evaluation against unadapted baseline models
+- **subject_split:** Subject-disjoint cross-domain and patient-specific adaptation
+- **temporal_split:** `UNKNOWN (IOP paywall)`
+- **external_validation:** Yes (cross-domain application to clinical wearable EEG)
+- **metrics:** Cross-domain ADA achieved 7% to 27% relative accuracy gains over unadapted baseline; pseudo-labels and target labels provided additional boosts; unsupervised ADA patient personalization improved accuracy by 1% to 2% over non-personalized models.
+- **statistical_testing:** `UNKNOWN (IOP paywall)`
+- **uncertainty_reporting:** `UNKNOWN (IOP paywall)`
+- **failure_cases:** Modest (1–2%) gain for unsupervised personalization, which was subsequently challenged by Lorenzen et al. 2024 (from the same laboratory), who observed 0% beneficial effect when evaluated on larger cohorts.
+- **limitations:** Full text behind IOP Publishing paywall; evaluated on wearable EEG rather than wrist-worn PPG/accelerometry.
+- **leakage_risks:** Evaluated per reported protocol.
+- **reproducibility:** `UNKNOWN (IOP paywall)`
 - **relevance_to_our_project:** `HIGH`
-- **evidence_strength:** `MODERATE` (capped from STRONG per C: requires full-text + verified subject_split + statistical_testing)
-- **stance:** `Neutral`
-- **transferable_method:** Unsupervised & semi-supervised ADA
-- **possible_research_gap:** See `research_gaps.md`
+- **evidence_strength:** `MODERATE` (capped due to IOP paywall bounding full-text extraction)
+- **stance:** `Neutral` (reports modest 1–2% UDA gain, but subsequent 2024 work from same authors showed zero benefit)
+- **transferable_method:** Adversarial Domain Adaptation framework; comparison of unsupervised vs semi-supervised adaptation.
+- **possible_research_gap:** Resolving the discrepancy between modest UDA gains (Heremans 2022) and zero UDA gains (Lorenzen 2024) in personal wearable domains.
 
 ### Provenance Notes
-- **Paper reports:** Reported 1-2% personalization gain with UDA in wearable EEG, but later Lorenzen 2023 (same group) found no UDA benefit. (Source: https://pubmed.ncbi.nlm.nih.gov/35508121/, retrieved 2026-11-17).
-- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.
+- **Paper reports:** PubMed abstract (PMID `35508121`, DOI `10.1088/1741-2552/ac6ca8`): Clinical trial registration S64190; cross-domain ADA yields 7%–27% relative accuracy gain; pseudo-labeling adds value; unsupervised ADA yields 1%–2% personalization gain.
+- **We infer:** Initial proof-of-concept for unsupervised ADA in wearable EEG sleep staging, though effect size is small (1–2%) and later shown by Lorenzen 2024 to disappear under rigorous multi-subject testing.

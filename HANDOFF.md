@@ -39,33 +39,39 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
 
 ## 3. Work Plan Phasing (v4)
 
-- **Phase A: Close out EXP-019 (Immediate Priority)**
-  - A1: Settle H-A verdict label against locked preregistration decision rule via formal erratum.
-  - A2: S3 no-op audit (inspect weight drift, gradient flow, and inference checkpoint assignment).
-  - A3: Report missing preregistered outputs ($k=1–4$ curve, sleep-summary agreement, per-stage F1, confusion matrices, Holm correction).
-  - A4: Update S1 documentation with donor fine-tuning harm clarification.
-  - A5: Complete NAS Iteration 1 erratum (confirming architecture search is closed).
-- **Phase B: Evidence Base & Systematic Literature Search**
-  - B1: Apply KB round-2 corrections (Heremans PMID, P011/P009 grading, P101 text, Lorenzen DOI).
-  - B2: Conduct systematic search tracking forward citations of Song 2026, Phan 2020, Mikkelsen 2018, van der Aar 2025.
-  - B3: Full-text review of core papers; build "closest ten" comparison matrix and dated novelty statement.
-- **Phase C: Data Search**
-  - C1: Search for an independent, second multi-night labeled wearable dataset ($\ge 3$ nights/subject, wrist IHR/PPG + accelerometry, PSG/EEG labels). Strongest Q1 lever.
+- **Phase A: Close out EXP-019 (COMPLETED)**
+  - A1: Settle H-A verdict label against locked preregistration decision rule via formal erratum (`INCONCLUSIVE`).
+  - A2: S3 no-op audit completed (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030).
+  - A3: Diagnostic extraction completed (`experiments/EXP-019/PHASE_A3_DIAGNOSTIC_REPORT.md` + 5 CSV/JSON deliverables).
+  - A4: S1 documentation updated with donor fine-tuning harm clarification.
+  - A5: NAS Iteration 1 erratum completed (architecture search permanently closed).
+- **Phase B: Evidence Base & Systematic Literature Search (PARTIALLY COMPLETE / AUDITED)**
+  - B1: KB round-2 corrections applied and verified (Heremans PMID `35508121` across 6 files, P011/P009 downgraded to MODERATE, P101 author Colin Quirk and text fixed, gating labels clarified, Lorenzen verified). **Status: COMPLETE.**
+  - B2: Systematic search executed and logged across PubMed, Europe PMC, arXiv, and medRxiv/bioRxiv tracking 4 query blocks and forward citations (`search_log.md`). IEEE Xplore and Scopus/WoS bounded by institutional access. **Status: PARTIALLY COMPLETE.**
+  - B3 & Exit: Core papers assessed; 5 verified via full text (`P001`, `P002`, `P006`, `P056`, `P106`), 2 verified via abstract/excerpts under paywalls (`P007`, `P054`). "Closest ten" comparison matrix and dated novelty statement produced without priority claims (`research_knowledge/updates/2026-11-18_phase_b_and_c_execution.md`). **Status: PARTIALLY COMPLETE.**
+- **Phase C: Data Search (BOUNDED COMPLETE / DECISION GATE ENFORCED)**
+  - C1: Systematic search for second multi-night labeled wearable dataset completed. Survey across public repositories (PhysioNet, NSRR, OpenNeuro) and literature confirmed no qualifying second dataset exists (van der Aar 2025 cohort is restricted/private; SleepAccel and DREAMT are 1 night/subject). Decision gate enforced: single-dataset paper framed as replication, extension, and failure analysis; limitation reported openly. **Status: BOUNDED COMPLETE.**
 - **Phase D: Experiments (Strictly Gated)**
-  - D1: EXP-020 (exploratory, design-informed regularized/gated adaptation) — strictly gated until Phases A–C and a committed preregistration block are completed.
+  - D1: EXP-020 (exploratory, design-informed regularized/gated adaptation) — strictly gated until committed preregistration block is approved.
   - D2: EXP-019B heterogeneity hypothesis testing.
   - D3: EXP-027 external zero-shot transfer (SleepAccel).
   - D4: EXP-028 clinical sleep-summary agreement.
-  - D5: Replication on second dataset if found.
-- **Phase E: Synthesis & Writing**
+- **Phase E: Synthesis & Writing (IN PROGRESS)**
+  - Candidate 1 (COMPLETE): Historical split & data leakage audit across EXP-001 to EXP-004 (`EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`, `EXPERIMENTS.md` TA-01 to TA-06).
+  - Candidate 2 (COMPLETE / AUDITED): SLAMSS-IFS scientific baseline audit (`SLAMSS_IFS_BASELINE_PROTOCOL_AUDIT.md`; EXP-012 3-seed mean 68.44% ± 1.35% verified; 33.3x repo vs 4.06x paper text distinguished).
+  - Candidate 3 (COMPLETE / GATED): EXP-019B and EXP-020 preregistration drafts authored with prior-access disclosures (`EXP019B_PREREGISTRATION_DRAFT.md`, `EXP020_PREREGISTRATION_DRAFT.md`; hashes preserved). Strictly unapproved for execution.
+  - Candidate 4 (COMPLETE / AUDITED): BIDSleep cohort data and signal integrity audit (`BIDSLEEP_COHORT_DATA_INTEGRITY_AUDIT.md`, 3 CSVs; 7 nights across 6 subjects; Bidslab34 15 Deep epochs [0.68%]; evaluable denominators $k=1..4$: $47, 46, 42, 33$).
+  - Candidate 5 (COMPLETE / SYNCHRONIZED): Manuscript draft v0.1 Sections 1–5 authored and synchronized (`MANUSCRIPT_DRAFT_v0.1.md`, `MANUSCRIPT_EVIDENCE_TO_CLAIM_MATRIX.csv`, `MANUSCRIPT_UNRESOLVED_EVIDENCE.md`).
 
 ---
 
 ## 4. Next Concrete Tasks
 
-1. **Phase A1**: Author and commit formal erratum documenting the H-A verdict reconciliation (INCONCLUSIVE under preregistration rule vs NOT SUPPORTED in early report).
-2. **Phase A2**: Completed forensic diagnosis of S3 (`experiments/EXP-019/S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030). Confirmed complete adaptation no-op due to quality-mask unit mismatch (0/82,762 epochs valid, 0 optimizer steps, 0 parameter updates). Status synchronized to UNRESOLVED / INVALIDATED across all workspace governance records.
-3. **DEC-031 Ratification**: Reformulated parameter-count governance across workspace. Removed arbitrary 196,728 ceiling; established 163,940 baseline reference size under Lightweight-First Principle.
-4. **Phase A3**: Complete the diagnostic write-down for EXP-019 (k=2 diagnostic recovery and locked-artifact re-analysis).
-5. **Phase B1**: Verify and apply pending Knowledge Base round-2 errata fixes.
-6. **Continuous Git Synchronization**: Commit all updated governance documents and push to GitHub (`origin main`).
+1. **Independent Verification (`/egm-review`)**:
+   - Perform an independent `/egm-review` of the completed Candidate 2, 4, and 5 resolutions to confirm all corrections prior to any Git commit considerations.
+2. **Phase D Experimental Gating (Strictly Gated)**:
+   - EXP-019B and EXP-020 remain strictly unauthorized.
+   - Do NOT launch or schedule any training or adaptation jobs without explicit written user approval.
+   - Execute EXP-028 (formal Bland-Altman clinical sleep-summary analysis from `exp019_sleep_summary_agreement.csv`).
+3. **Continuous Git Synchronization**:
+   - Ready to commit and push all newly generated audit, preregistration, diagnostic, and manuscript deliverables upon user instruction.

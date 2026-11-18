@@ -91,7 +91,7 @@ state.
 - Date: 2026-10-24 (artifacts saved in `sleepchannelnet_v8_preprocessing_audit_work_REAL`)
 - Research question: Recorded four-class supervised baseline performance and whether timestamp evidence supports a preprocessing shift.
 - Hypothesis: NOT TESTED; this records existing results and a limited read-only QC audit.
-- Dataset and split: Real data, 253 discovered nights, 246 eligible nights, 47 subjects. Split seed 0, 33/7/7 subjects, current split hash `a6b569f63126`. An older memory entry has hash `459693836b56`; the older manifest was not found in the searched project tree, so prior subject assignments cannot be directly compared. Split hashing includes dataset and preprocessing identity as well as subject assignments; differing hashes alone do not establish different subject membership.
+- Dataset and split: Real data, 253 discovered nights, 246 eligible nights, 47 subjects. Split seed 0, 33/7/7 subjects, current split hash `a6b569f63126`. An older memory entry has hash `459693836b56`; the older manifest was not found in the searched project tree, so prior subject assignments cannot be directly compared. Split hashing includes dataset and preprocessing identity as well as subject assignments; differing hashes alone do not establish different subject membership. (Forensic Audit Update: `EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md` verified that `make_subject_split` is purely deterministic on `seed=0` and subject IDs; subject membership was 100% identical between hashes `459693836b56` and `a6b569f63126`, differing only in preprocessing configuration strings.)
 - Model architecture: `channel_attn`, complete graph, original ten input nodes; no SE, HR-motion interaction channels, transition penalty, Viterbi decoding, or personalization. Config and output are in `summary.json` and `model_comparison.csv`.
 - Configuration: seed 42; fixed subject split seed 0; 70/15/15; expert labels; `transition_lambda=0`; `use_viterbi_decoding=false`; one training seed.
 - Random seed: training 42; split 0.
@@ -836,3 +836,28 @@ state.
    - Withdrew "open lane" novelty claim following identification of van der Aar et al. 2025 (*Physiological Measurement*, DOI: 10.1088/1361-6579/ae0119; $n=59$ adults, wrist PPG + accelerometry, up to 7 home nights, 82.5% improved, significant at $\ge 3$ training nights).
    - Reframed research as pre-registered replication and extension in healthy adults using consumer-smartwatch IHR and accelerometry, with strict failure-mode heterogeneity analysis and clinical sleep-summary agreement.
    - Ratified Phase A–E execution plan under `RESEARCH_DIRECTION_v4_FULL.md` and `DEC-029`.
+
+---
+
+## 10. Formal Test-Access Log (EXP-001 through EXP-019)
+
+As required by `RESEARCH_DIRECTION_v4_FULL.md` (DEC-029) Section 6 and Section 11 (Q1 Readiness Checklist Item 8), all test-set access events across the project's history are systematically logged below. Full forensic derivation, code citations, and manifest audits are documented in `EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`.
+
+| Access ID | Date | Experiment | Partition Evaluated | Subjects ($n$) | Purpose of Access | Decisional Influence on Subsequent Pipeline |
+| :---: | :---: | :---: | :---: | :---: | :--- | :--- |
+| **TA-01** | 2026-10-23 | **EXP-001** | Cohort Alpha (Seed 0 Test) | 7 subjects (38 nights) | Comparative evaluation of 5 architectures (Complete Graph, No-Graph, CNN-GRU, GBM, SleepJEPA) | Complete graph chosen as primary backbone; SleepJEPA pretraining abandoned due to poor test performance. |
+| **TA-02** | 2026-10-23 | **EXP-001** | Cohort Alpha (Seed 0 Test) | 7 subjects (38 nights) | Exploratory multi-night personalization ($k=1, 2$) and permutation feature importance | Demonstrated that naive fine-tuning had mixed effects; identified HR-motion coupling as top permutation feature. |
+| **TA-03** | 2026-10-24 | **EXP-002** | *None* | 0 subjects | Implementation scaffold only | Zero test access on Oct 24. |
+| **TA-03B** | 2026-10-28 | **EXP-002 / Cell 48 Ablation Suite** | Cohort Alpha (Seed 0 Test) | 7 subjects (38 nights, 33,126 epochs) | Post-hoc test evaluation of SE-Net, HR-motion interaction features, transition penalty, Viterbi decoding, and personalization ($k=1,2$) | Confirmed that SE-Net, transition penalty, and personalization yielded marginal test gains (<0.01 Macro-F1) on Cohort Alpha; contributed to shifting focus to official SLAMSS-IFS benchmark and new model design in EXP-005/006. |
+| **TA-04** | 2026-10-24 | **EXP-003** | Cohort Alpha (Saved outputs) | 7 subjects (38 nights) | Read-only audit of EXP-001 saved test outputs and QC lag correlation | Established that complete graph was not statistically superior to no-graph ($p=0.8125$); froze test permutation feature selection. |
+| **TA-05** | 2026-10-24 | **EXP-004** | Cohort Alpha (Seed 0 Test) | 7 subjects (38 nights, 33,126 epochs) | Frozen final test evaluation following validation-only optimizer selection | Confirmed validation-selected AdamW settings (Macro-F1 0.6648); demonstrated baseline plateau. |
+| **TA-06** | 2026-11-09 | **EXP-005** | Cohort Beta (Official 11 Test) | 11 subjects (58 nights) | Official repository reproduction and smoke benchmarking | Established official paper partition (31/5/11); test set locked. |
+| **TA-07** | 2026-11-10 | **EXP-012** | Cohort Beta (Official 11 Test) | 11 subjects (58 nights) | Benchmark evaluation of Model A vs. published SLAMSS-IFS | Evaluated final trained Model A; test set formally marked SPENT (DEC-018). |
+| **TA-08** | 2026-11-11 | **EXP-014** | 5-Fold Nested CV | 47 subjects (246 nights) | Subject-disjoint 5-fold cross-validation of Model A | Replaced single-split testing with full out-of-fold evaluation across all subjects. |
+| **TA-09** | 2026-11-15 | **EXP-019** | 5-Fold Nested CV | 46 subjects (152 eval nights) | Preregistered confirmatory evaluation of $H_A$ ($FT\text{-}2$ vs $ZS$) | Confirmatory test concluded as INCONCLUSIVE (+1.0054 pp Macro-F1, 95% CI [-0.17, +1.99] pp). |
+
+### Governance Summary & Leakage Status
+- **Split Disjointness:** EMPIRICALLY ESTABLISHED. EXP-001 through EXP-004 were strictly subject-disjoint (33 train, 7 val, 7 test subjects; 0 nights or epochs shared across splits).
+- **Preprocessing Leakage:** ZERO. Normalization (`robust_scale`) was strictly per-night local scaling.
+- **Model-Selection Leakage & Repeated Test Access:** Test partition was accessed for multi-architecture selection in EXP-001, for post-hoc ablation and personalization tests on Oct 28 (TA-03B), and for final evaluation in EXP-004.
+- **Cohort Rotation:** Cohort Alpha (7 subjects) and Cohort Beta (11 subjects) are disjoint. Switching to Cohort Beta in EXP-005 rotated Cohort Alpha into training, and Cohort Beta had been training data in EXP-001/004. Consequently, under v4 Section 6, both fixed test splits are formally **spent**. Authoritative evidence rests on 5-fold nested cross-validation (EXP-014, EXP-018, EXP-019) and external validation.

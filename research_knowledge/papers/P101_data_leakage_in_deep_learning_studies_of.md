@@ -2,7 +2,7 @@
 
 - **paper_id:** `P101`
 - **title:** Data leakage in deep learning studies of translational EEG
-- **authors:** Brookshire G, Kasper J, Blauch NM, Wu YC, Glatt RM, Merrill DA, Gerrol S, Yoder KJ, Lucero C
+- **authors:** Brookshire G, Kasper J, Blauch NM, Wu YC, Glatt R, Merrill DA, Gerrol S, Yoder KJ, Quirk C, Lucero C
 - **year:** 2024
 - **venue:** Frontiers in Neuroscience
 - **doi_or_id:** `10.3389/fnins.2024.1373515`
@@ -41,4 +41,4 @@
 
 ### Provenance Notes
 - **Paper reports:** Out of 63 published translational DNN-EEG studies, only 17 (27.0%) unambiguously avoided subject-level data leakage; segment-based holdout dramatically overestimates accuracy in AD and seizure CNNs. (Source: https://pmc.ncbi.nlm.nih.gov/articles/PMC11099244/, re-extracted 2026-11-17).
-- **We infer:** Relevance (`HIGH`) and evidence tier (`STRONG`) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.
+- **We infer:** Relevance (`HIGH`) and evidence tier (`MODERATE`, capped from STRONG) assigned per `README.md` criteria; unretrieved fields strictly marked `UNKNOWN`.
