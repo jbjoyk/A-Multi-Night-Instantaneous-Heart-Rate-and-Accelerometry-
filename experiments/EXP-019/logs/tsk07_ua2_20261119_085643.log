@@ -1,0 +1,14 @@
+================================================================================
+EXP-019-S3: UA-2 UNSUPERVISED ADAPTATION RE-RUN DRIVER (TSK-07)
+Device: cuda:0 | Seeds: [42, 123, 2024] | Dry Run: True
+Target Cache: /home/rj2826/ai-research/sleep/sleepchannelnet_v8_preprocessing_audit_work_REAL/cache/prep_57738d534b
+================================================================================
+Total Eligible Subjects: 46
+Pre-flight quality gate log written to: /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-019/ua2_quality_gate_audit.log
+Gate Verdict: PASSED
+
+>>> PROCESSING OUTER FOLD 1 (10 subjects) <<<
+Dry-run check passed for subject Bidslab08
+
+Completed execution across 1 subject-seed instances.
+Dry run completed successfully. Zero production artifacts modified.

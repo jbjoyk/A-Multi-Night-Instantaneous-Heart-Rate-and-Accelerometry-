@@ -1,0 +1,37 @@
+================================================================================
+EXP-019-K: CALIBRATION-DEPTH LEARNING CURVE DRIVER (TSK-06)
+Device: cuda:1 | Seeds: [42, 123, 2024] | Dry Run: False
+Target Cache: /home/rj2826/ai-research/sleep/sleepchannelnet_v8_preprocessing_audit_work_REAL/cache/prep_57738d534b
+================================================================================
+Loading preprocessed dataset records...
+Total Eligible Subjects: 46
+Common-Cohort Subjects (n_usable >= 5): 33
+Available Subjects: k=1: 46, k=2: 46, k=3: 42, k=4: 33
+Loaded Stage D Configurations per fold.
+Executing Outer Folds: [1, 2, 3, 4, 5]
+
+>>> PROCESSING OUTER FOLD 1 (10 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 2 (10 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 3 (9 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 4 (9 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 5 (8 subjects) <<<
+
+Completed execution across 501 subject-seed-depth instances.
+Saved subject metrics to /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-019/exp019_k_curve_subject_metrics.csv
+
+Serialized executed learning curve summary to /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-019/exp019_k_learning_curve_executed.csv
+
+================================================================================
+PRIMARY STATISTICAL INFERENCE & DECISION CATEGORIZATION
+================================================================================
+Page's L-Trend Test: L = 863.0 (mu = 825.0, sig = 16.58), z = 2.261, p = 1.1869e-02 (Holm Sig: True)
+k=3 Gain vs ZS: Delta = +3.54 pp [95% CI: +1.56, +5.68 pp], p = 3.0116e-04 (Holm Sig: True)
+Marginal Step delta_{4-3}: +0.42 pp [95% CI: +0.08, +0.78 pp], p_sat = 2.6249e-01 (Holm Sig: False)
+
+Dimension 1 (van der Aar Replication): REPLICATION CONFIRMED (van der Aar Replicated)
+Dimension 2 (Depth Scaling Trajectory):  INCONCLUSIVE SCALING
+================================================================================

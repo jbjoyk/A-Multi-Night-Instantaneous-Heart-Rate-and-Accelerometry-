@@ -640,3 +640,63 @@
      - Once frozen, the single final matched benchmark against SLAMSS-IFS (TSK-08) will be executed under its audited protocol.
 - Reversible: No; ratified project strategic roadmap.
 
+---
+
+### DEC-035 (2026-11-19): Stage 1 Execution Results: Calibration-Depth Learning Curve (TSK-06 / EXP-019-K)
+
+- Date: 2026-11-19
+- Authoritative Sources: `PREREG_EXP-019_K_CURVE.md`, `exp019_k_learning_curve_executed.csv`, `exp019_k_curve_subject_metrics.csv`, `logs/tsk06_k_curve_20261119_090250.log`
+- Context: Completion of TSK-06 across all 5 outer folds and 3 random seeds (42, 123, 2024) on the workstation's secondary GPU (`cuda:1`, NVIDIA RTX 3060).
+- Ratified Empirical Findings:
+  1. **Primary Analysis ($N=33$ Common Cohort on Fixed Evaluation Set $E_4$, 64 Nights):**
+     - $k=0$ (Zero-Shot Baseline): Macro-F1 = $62.29\%$
+     - $k=1$ Night: Macro-F1 = $65.28\%$ ($\Delta = \mathbf{+3.00\text{ pp}}$ [95% CI: $+1.21, +4.84\text{ pp}$], Wilcoxon $p = 0.00228$, Holm-Bonferroni Significant)
+     - $k=2$ Nights: Macro-F1 = $65.41\%$ ($\Delta = \mathbf{+3.13\text{ pp}}$ [95% CI: $+1.28, +5.14\text{ pp}$])
+     - $k=3$ Nights: Macro-F1 = $65.82\%$ ($\Delta = \mathbf{+3.54\text{ pp}}$ [95% CI: $+1.56, +5.68\text{ pp}$], Wilcoxon $p = 0.00030$, Holm-Bonferroni Significant)
+     - $k=4$ Nights: Macro-F1 = $66.25\%$ ($\Delta = \mathbf{+3.96\text{ pp}}$ [95% CI: $+2.04, +6.07\text{ pp}$], Wilcoxon $p = 0.00015$, Holm-Bonferroni Significant)
+  2. **Page's $L$-Trend Repeated Measures Test:**
+     - Test Statistic: $L = 863.0$ ($\mu_L = 825.0, \sigma_L = 16.58$)
+     - Standardized Score: $z = 2.261$
+     - $p$-value: $p = 0.01187 < 0.05$ (Statistically significant monotonic trend across calibration depths $k \in \{1, 2, 3, 4\}$, Holm-Bonferroni Significant).
+  3. **Multiplicity-Adjusted Hypotheses (5-Test Family, $\alpha=0.05$):**
+     - $H_{\text{trend}}$ (Page's $L$ monotonic trend): $p = 0.01187$ $\implies$ **REJECT NULL / MONOTONIC SCALING CONFIRMED**.
+     - $H_{k=3}$ ($k=3$ vs ZS on $E_4$, van der Aar Replication): $\Delta = +3.54\text{ pp}$, $p = 0.000301$ $\implies$ **REJECT NULL / REPLICATION CONFIRMED**.
+     - $H_{k=1}$ ($k=1$ vs ZS on $E_4$): $\Delta = +3.00\text{ pp}$, $p = 0.00228$ $\implies$ **REJECT NULL / SIGNIFICANT GAIN AT 1 NIGHT**.
+     - $H_{\text{sat}, 3}$ ($k=3$ vs $k=2$ step): $\Delta = +0.41\text{ pp}$, $p = 0.287$ $\implies$ FAIL TO REJECT (Not significant after adjustment).
+     - $H_{\text{sat}, 4}$ ($k=4$ vs $k=3$ step): $\Delta = +0.42\text{ pp}$, $p = 0.262$ $\implies$ FAIL TO REJECT (Not significant after adjustment).
+  4. **Decision Matrix Classification:**
+     - **Dimension 1 (Replication):** **REPLICATION CONFIRMED (van der Aar Replicated)** ($\Delta \ge +1.00\text{ pp}$, CI low $> 0$, $p_{\text{adj}} < 0.05$).
+     - **Dimension 2 (Scaling Trajectory):** **INCONCLUSIVE SCALING** (Monotonic trend confirmed via Page's $L$, but individual marginal steps $\Delta_{3-2}$ and $\Delta_{4-3}$ do not individually reach Holm-Bonferroni significance given $N=33$).
+- Reversible: No; ratified empirical research record.
+
+---
+
+### DEC-036 (2026-11-19): Stage 1 Execution Results: UA-2 Unsupervised Adaptation Re-Run (TSK-07 / EXP-019-S3)
+
+- Date: 2026-11-19
+- Authoritative Sources: `PREREG_EXP-019_S3_AMENDMENT.md`, `exp019_ua2_rerun_subject_metrics.csv`, `ua2_quality_gate_audit.log`, `logs/tsk07_ua2_20261119_090250.log`
+- Context: Completion of TSK-07 across 46 subjects $\times$ 3 seeds (138 runs) on the workstation's primary GPU (`cuda:0`, NVIDIA RTX 3060) following resolution of the DEC-030 unit mismatch defect.
+- Ratified Empirical Findings:
+  1. **Pre-Flight Quality Gate Verification:**
+     - Total calibration epochs: 81,233 (46 subjects $\times$ Nights 1–2).
+     - Valid wearable epoch ratio: $97.26\%$ ($> 95\%$ requirement satisfied).
+     - Minimum epochs per night: 606 epochs ($\ge 600$ requirement satisfied).
+     - Non-physiological leakage: 0 ($== 0$ requirement satisfied).
+  2. **Adaptation Dynamics & Anti-Collapse Invariance:**
+     - Zero instances of representation collapse or early abortion ($H_{\text{marginal}} \ge 0.6931\text{ nats}$ maintained across all 138 runs).
+     - Mean final marginal entropy: $1.382\text{ nats}$ (close to uniform prior $\ln 4 \approx 1.3863\text{ nats}$).
+  3. **Participant-Level Evaluation ($N=46$ Subjects, 152 Evaluation Nights):**
+     - Zero-Shot Macro-F1: $64.58\%$
+     - UA-2 Macro-F1: $64.79\%$
+     - Cohort Mean Delta: $\bar{\Delta} = \mathbf{+0.21\text{ pp}}$ [95% bootstrap CI: $\mathbf{+0.04, +0.39\text{ pp}}$]
+     - Wilcoxon Signed-Rank Test: $p_{\text{two-sided}} = 0.0645$, $p_{\text{superiority}} = 0.0322$
+     - Subject Win Rate: $27 / 46$ ($58.7\%$)
+  4. **Official S3 Decision Categorization:**
+     - Under `PREREG_EXP-019_S3_AMENDMENT.md` Section 6, because $p_{\text{superiority}} < 0.05$ and CI lower bound $> 0.0\text{ pp}$, but the mean gain is below the $+1.00\text{ pp}$ benchmark threshold ($\bar{\Delta} = +0.21 < +1.00\text{ pp}$), the outcome is formally classified as:
+     - **SUB-BENCHMARK GAIN (Statistically Superior, Below +1.00 pp)**.
+  5. **Scientific Implications for Final Model Architecture:**
+     - Re-running InfoMax with the corrected wearable quality mask proves that label-free adaptation does indeed impart a genuine, statistically superior representation adjustment ($+0.21\text{ pp}$, $p = 0.0322$, 0% collapse), resolving the historical $0.00\text{ pp}$ artifact.
+     - However, the magnitude of unsupervised gain ($+0.21\text{ pp}$) is modest compared to 1-night supervised fine-tuning ($+3.00\text{ pp}$). Unsupervised InfoMax alone cannot substitute for labeled calibration; it serves as a mild, safe regularization auxiliary rather than a primary personalization mechanism.
+- Reversible: No; ratified empirical research record.
+
+

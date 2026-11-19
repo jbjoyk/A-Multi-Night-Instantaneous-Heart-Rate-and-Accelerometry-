@@ -1,0 +1,17 @@
+================================================================================
+EXP-019-K: CALIBRATION-DEPTH LEARNING CURVE DRIVER (TSK-06)
+Device: cuda:1 | Seeds: [42, 123, 2024] | Dry Run: True
+Target Cache: /home/rj2826/ai-research/sleep/sleepchannelnet_v8_preprocessing_audit_work_REAL/cache/prep_57738d534b
+================================================================================
+Loading preprocessed dataset records...
+Total Eligible Subjects: 46
+Common-Cohort Subjects (n_usable >= 5): 33
+Available Subjects: k=1: 46, k=2: 46, k=3: 42, k=4: 33
+Loaded Stage D Configurations per fold.
+Executing Outer Folds: [1, 2, 3, 4, 5]
+
+>>> PROCESSING OUTER FOLD 1 (10 subjects) <<<
+Dry-run check passed for subject Bidslab08
+
+Completed execution across 4 subject-seed-depth instances.
+Dry run completed successfully. Zero production artifacts modified.

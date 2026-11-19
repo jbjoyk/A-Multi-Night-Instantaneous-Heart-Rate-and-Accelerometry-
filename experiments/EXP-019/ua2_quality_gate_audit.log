@@ -1,0 +1,15 @@
+================================================================================
+UA-2 MANDATORY PRE-FLIGHT WEARABLE QUALITY GATE AUDIT
+Timestamp: 2026-11-19T03:13:22Z
+Cohort: 1 subjects (Nights 1 & 2)
+================================================================================
+Subject Bidslab01 Night 1: 859/860 valid epochs (99.88%)
+Subject Bidslab01 Night 2: 879/880 valid epochs (99.89%)
+--------------------------------------------------------------------------------
+Cohort Total Calibration Epochs:  1,740
+Cohort Valid Epochs:              1,738 (99.8851%)
+Cohort Minimum Epochs Per Night:  859
+Non-Physiological Leakage Count:  0
+--------------------------------------------------------------------------------
+PRE-FLIGHT GATE STATUS: PASSED (All 3 mandatory assertions satisfied)
+================================================================================

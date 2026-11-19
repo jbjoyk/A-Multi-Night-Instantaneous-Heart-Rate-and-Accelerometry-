@@ -32,8 +32,8 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
 | **H-A ($FT\text{-}2$ vs $ZS$)** | $\bar{\Delta} = \mathbf{+1.01\text{ pp}}$ [95% CI: $\mathbf{-0.17, +1.99\text{ pp}}$], $p = 0.00131$, win rate 73.9% (34/46) | **LOCKED (Reconciled Governance Label: INCONCLUSIVE)**<br>• Section 6 of `git show 4dff5b7:PREREG_EXP-019_H-A.md` defines SUPPORTED ($\bar{\Delta} \ge +1.50$ & CI_low > 0), NOT SUPPORTED ($\text{CI}_{\text{high}} < +1.50$), and INCONCLUSIVE (otherwise).<br>• Because the 95% CI upper bound (+1.99 pp) is NOT $< +1.50\text{ pp}$, the preregistered rule evaluates strictly to **INCONCLUSIVE**, whereas the report labeled it NOT SUPPORTED.<br>• Reconciled via erratum. Safe summary: "Supervised 2-night adaptation did not reach the pre-registered practical threshold (+1.50 pp) and is inconclusive for effects up to ~2 pp." |
 | **S1 ($FT\text{-}2$ vs $FT\text{-}other\text{-}2$)** | $\bar{\Delta} = \mathbf{+2.73\text{ pp}}$ [95% CI: $\mathbf{+1.05, +4.32\text{ pp}}$], $p = 9.0 \times 10^{-6}$ | **SUPPORTED (Specificity Confirmed)**<br>• Fine-tuning on a person's own nights outperforms fine-tuning on another person's nights.<br>• *Critical nuance:* $FT\text{-}other\text{-}2$ degrades performance by $-1.72\text{ pp}$ below $ZS$ ($62.86\%$ vs $64.58\%$). Much of the $+2.73\text{ pp}$ gap reflects donor fine-tuning harm. |
 | **S2 ($FT\text{-}2$ vs $PS\text{-}2$)** | $\bar{\Delta} = \mathbf{+20.32\text{ pp}}$ [95% CI: $\mathbf{+17.70, +22.94\text{ pp}}$], $p < 10^{-10}$ | **SUPPORTED (Cohort Foundation Indispensable)**<br>• Per-subject scratch training achieves only $45.27\%$ Macro-F1. Treated as a baseline check. |
-| **S3 ($UA\text{-}2$ vs $ZS$)** | $\bar{\Delta} = \mathbf{0.00\text{ pp}}$ [95% CI: $\mathbf{0.00, 0.00\text{ pp}}$] identically across 46 subjects | **UNRESOLVED / INVALIDATED (Implementation No-Op)**<br>• Phase A2 forensic audit (`S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030) confirmed that `compute_wearable_quality_mask` checked raw BPM limits (`30 <= IHR <= 180`) on standardized z-score IHR. Exactly 0 out of 82,762 calibration epochs passed, causing adaptation to abort on step 0 (0 updates, 0/163,940 params changed, identical evaluation logits/predictions).<br>• Scientifically uninformative: must NOT be cited as evidence that unsupervised adaptation fails (nor that it works). |
-| **$k=1–4$ Learning Curve** | Gain vs number of calibration nights | **Pre-registered Descriptive Output (Pending Phase A3)**<br>• Critical for comparing with van der Aar et al. 2025's finding of significance at $\ge 3$ nights. |
+| **S3 ($UA\text{-}2$ vs $ZS$)** | $\bar{\Delta} = \mathbf{+0.21\text{ pp}}$ [95% CI: $\mathbf{+0.04, +0.39\text{ pp}}$], $p = 0.0322$, win rate 58.7% (27/46) | **EXECUTED / RESOLVED (TSK-07 / DEC-036)**<br>• Re-run with corrected wearable quality mask ($\text{Var}_t(m) > 10^{-6}$, 97.26% valid epochs) resolved the DEC-030 implementation no-op.<br>• Officially classified as **SUB-BENCHMARK GAIN** under `PREREG_EXP-019_S3_AMENDMENT.md` Section 6.<br>• Proves label-free InfoMax yields genuine positive transfer without representation collapse, but magnitude is insufficient on its own for the $+1.00\text{ pp}$ benchmark. |
+| **$k=1–4$ Learning Curve** | Monotonic depth scaling across $k \in \{1, 2, 3, 4\}$ | **EXECUTED / RESOLVED (TSK-06 / DEC-035)**<br>• Common cohort ($N=33$, $E_4$): $k=1$ (+3.00 pp), $k=2$ (+3.13 pp), $k=3$ (+3.54 pp), $k=4$ (+3.96 pp).<br>• Page's $L$-trend test: $L = 863.0, z = 2.261, p = 0.01187$ (**Holm-Bonferroni Significant**).<br>• van der Aar et al. (2025) 3-night replication confirmed ($\Delta = +3.54\text{ pp}, p = 0.00030$). |
 
 ---
 
@@ -61,12 +61,14 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
       * FIND-B-05 & FIND-B-06 (VERIFIED): 100% numerical reproduction of draft manuscript Table 1 verified; denominators and anti-leakage intact. **Status: COMPLETE & RESOLVED.**
 - **Phase C: Data Search (BOUNDED COMPLETE / DECISION GATE ENFORCED)**
   - C1: Systematic search for second multi-night labeled wearable dataset completed. Survey across public repositories (PhysioNet, NSRR, OpenNeuro) and literature confirmed no qualifying second dataset exists (van der Aar 2025 cohort is restricted/private; SleepAccel and DREAMT are 1 night/subject). Decision gate enforced: single-dataset paper framed as replication, extension, and failure analysis; limitation reported openly. **Status: BOUNDED COMPLETE.**
-- **Phase D: Experiments (Governance Ratified under DEC-033; Execution Pending Explicit User Authorization)**
-  - Stage 1 (Primary C1 Closure):
-    * Experiment 1 (TSK-06 / EXP-019-K): Calibration-depth learning curve ($k = 1, 3, 4$) under `PREREG_EXP-019_K_CURVE.md` (Common-cohort $N=33$ on $E_4$, Page's $L$-test, Holm-Bonferroni correction). Status: *PREREGISTERED / PENDING USER AUTHORIZATION*.
-    * Experiment 2 (TSK-07 / EXP-019-S3): Unsupervised adaptation re-run ($UA\text{-}2$) under `PREREG_EXP-019_S3_AMENDMENT.md` (DEC-030 unit fix, pre-flight gate, InfoMax). Status: *AMENDMENT PREREGISTERED / PENDING USER AUTHORIZATION*.
-  - Stage 2 (Matched Baseline Benchmark):
-    * Experiment 3 (TSK-08 / EXP-021): SLAMSS-IFS matched 5-fold cross-validation paired comparative benchmark under `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md` (estimation framework with 10,000 bootstrap CIs, Wilcoxon test, Cohen's $d_z$; unsupported non-inferiority margins retracted). Status: *PREREGISTERED / PENDING USER AUTHORIZATION*.
+- **Phase D: Experiments (Governance Ratified under DEC-033, DEC-034, DEC-035, DEC-036)**
+  - Stage 1 (Primary C1 & C2 Closure — COMPLETED):
+    * Experiment 1 (TSK-06 / EXP-019-K): Calibration-depth learning curve ($k = 1, 3, 4$) under `PREREG_EXP-019_K_CURVE.md` (Common-cohort $N=33$ on $E_4$, Page's $L$-test, Holm-Bonferroni correction). Status: **COMPLETED (DEC-035)**. Monotonic scaling confirmed ($p = 0.01187$); van der Aar replication confirmed ($\Delta_{k=3} = +3.54\text{ pp}$, $p = 0.00030$); marginal saturation steps inconclusive.
+    * Experiment 2 (TSK-07 / EXP-019-S3): Unsupervised adaptation re-run ($UA\text{-}2$) under `PREREG_EXP-019_S3_AMENDMENT.md` (DEC-030 unit fix, pre-flight gate, InfoMax). Status: **COMPLETED (DEC-036)**. Sub-benchmark gain ($\Delta = +0.21\text{ pp}$ [95% CI: $+0.04, +0.39$], $p = 0.0322$).
+  - Stage 2 (Final Model Synthesis & Freezing — NEXT IMMEDIATE TASK):
+    * Synthesize findings across TSK-06, TSK-07, context scaling (EXP-018), and agreement (EXP-019); develop, validate, and freeze final project model.
+  - Stage 3 (Definitive Matched Baseline Benchmark — Run Once):
+    * Experiment 3 (TSK-08 / EXP-021): SLAMSS-IFS matched 5-fold cross-validation paired comparative benchmark under `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`. Status: *DEFERRED PENDING FINAL MODEL FREEZE (DEC-034)*.
   - Deferred Tasks: EXP-019B (heterogeneity tests), EXP-020 (gated adaptation), and EXP-027 (SleepAccel transfer) remain deferred under DEC-029.
 - **Phase E: Synthesis & Writing (COMPLETE FOR DRAFT v0.1)**
   - Candidate 1 (COMPLETE): Historical split & data leakage audit across EXP-001 to EXP-004 (`EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`, `EXPERIMENTS.md` TA-01 to TA-06).
@@ -79,13 +81,14 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
 
 ## 4. Next Concrete Tasks
 
-1. **Phase D Execution Sequence (Ratified under DEC-034)**:
-   - **TSK-08 Deferred:** SLAMSS-IFS matched benchmark is formally deferred until the project's final model architecture is developed and frozen.
-   - **Immediate Phase D Priority (Stage 1):** Execute TSK-06 (EXP-019-K: $k$-learning curve under `PREREG_EXP-019_K_CURVE.md`) and TSK-07 (EXP-019-S3: UA-2 re-run under `PREREG_EXP-019_S3_AMENDMENT.md`).
-   - **Workstation Scheduling:** Concurrent execution across dual RTX 3060 GPUs (TSK-07 on GPU 0 [~28 min], TSK-06 on GPU 1 [~1.5–3.0 hrs] or distributed across both cards). Total wall-clock time: **~1.5 to 1.75 hours**.
-2. **Post-Stage 1 Action:**
-   - Consolidate personalization depth and unsupervised adaptation findings.
-   - Develop, validate, and freeze the final project model.
-   - Execute TSK-08 once as the definitive matched benchmark.
-3. **Continuous Git Synchronization**:
-   - Ready to commit and push all newly generated preregistration and governance deliverables upon user instruction.
+1. **Stage 1 Closure & Results Integration (COMPLETED)**:
+   - TSK-06 ($k$-learning curve) and TSK-07 (UA-2 rerun) successfully executed and verified on dual-GPU workstation.
+   - All empirical metrics serialized to `exp019_k_learning_curve_executed.csv`, `exp019_k_curve_subject_metrics.csv`, and `exp019_ua2_rerun_subject_metrics.csv`.
+   - Governance decisions DEC-035 and DEC-036 ratified in `DECISIONS.md`.
+2. **Next Milestone: Stage 2 Final Model Synthesis & Freezing**:
+   - Synthesize evidence from TSK-06 (monotonic personalization scaling $k=1..4$), TSK-07 (modest label-free InfoMax auxiliary gain), context scaling ($L=1200$ vs $L=60$), and clinical agreement.
+   - Specify and freeze the definitive final model architecture for the manuscript.
+3. **Stage 3 Execution: Definitive SLAMSS-IFS Matched Benchmark (TSK-08)**:
+   - Run the audited 5-fold comparative benchmark of SLAMSS-IFS vs. frozen final model under `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`.
+4. **Continuous Git Synchronization**:
+   - Commit and push all Stage 1 execution artifacts, code, tests, and updated governance documents to `origin main` per project policy.

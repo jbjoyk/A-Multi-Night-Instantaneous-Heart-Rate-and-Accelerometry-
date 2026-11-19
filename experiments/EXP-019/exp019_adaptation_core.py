@@ -33,14 +33,21 @@ from exp013_models import ConventionalCNNBiGRU
 
 def compute_wearable_quality_mask(
     ihr_array: np.ndarray,
-    accel_array: np.ndarray
+    accel_array: np.ndarray,
+    raw_bpm_array: Optional[np.ndarray] = None
 ) -> np.ndarray:
     """
-    Computes boolean quality mask strictly from wearable signals:
-    - Instantaneous heart rate within physiological limits: 30 <= HR <= 180 bpm.
-    - Accelerometry variance > 0 (sensor actively recording movement/noise, not stuck/disconnected).
+    Computes boolean quality mask strictly adhering to PREREG_EXP-019_S3_AMENDMENT.md:
+    1. Accelerometry Validity: Scale-invariant intra-epoch variance check (Var_t(m) > 0.0),
+       which correctly screens out sensor freeze, disconnected hardware, or zero-padding.
+    2. Heart Rate Validity:
+       - If raw_bpm_array or unstandardized BPM is provided (mean > 25.0):
+         enforces physiological plausibility bounds (30 <= HR <= 180 bpm).
+       - If ihr_array consists of standardized z-scores (empirical [-4, +10]):
+         verifies valid non-NaN non-extreme physiological range (|z| <= 10.0).
     ihr_array: shape (T, 30) or (T,)
     accel_array: shape (T, 30) or (T,)
+    raw_bpm_array: optional shape (T, 30) or (T,) with unstandardized BPM values
     Returns:
     mask: shape (T,), dtype bool
     """
@@ -54,8 +61,19 @@ def compute_wearable_quality_mask(
     else:
         acc_var = np.zeros_like(hr_mean) + 1.0
 
-    valid_hr = (hr_mean >= 30.0) & (hr_mean <= 180.0)
-    valid_acc = (acc_var > 0.0)
+    valid_acc = (acc_var > 1e-6)
+
+    if raw_bpm_array is not None:
+        raw_mean = np.mean(raw_bpm_array, axis=-1) if raw_bpm_array.ndim == 2 else raw_bpm_array
+        valid_hr = (raw_mean >= 30.0) & (raw_mean <= 180.0)
+    elif np.nanmax(np.abs(hr_mean)) > 25.0:
+        # Detected unstandardized raw BPM array
+        valid_hr = (hr_mean >= 30.0) & (hr_mean <= 180.0)
+    else:
+        # Standardized z-score representation from prep_57738d534b:
+        # Screen out non-finite (NaN/Inf) and extreme sensor clipping (|z| > 10.0)
+        valid_hr = np.isfinite(hr_mean) & (np.abs(hr_mean) <= 10.0)
+
     return (valid_hr & valid_acc).astype(bool)
 
 

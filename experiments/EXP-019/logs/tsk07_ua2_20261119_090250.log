@@ -1,0 +1,30 @@
+================================================================================
+EXP-019-S3: UA-2 UNSUPERVISED ADAPTATION RE-RUN DRIVER (TSK-07)
+Device: cuda:0 | Seeds: [42, 123, 2024] | Dry Run: False
+Target Cache: /home/rj2826/ai-research/sleep/sleepchannelnet_v8_preprocessing_audit_work_REAL/cache/prep_57738d534b
+================================================================================
+Total Eligible Subjects: 46
+Pre-flight quality gate log written to: /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-019/ua2_quality_gate_audit.log
+Gate Verdict: PASSED
+
+>>> PROCESSING OUTER FOLD 1 (10 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 2 (10 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 3 (9 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 4 (9 subjects) <<<
+
+>>> PROCESSING OUTER FOLD 5 (8 subjects) <<<
+
+Completed execution across 138 subject-seed instances.
+Saved UA-2 rerun metrics to /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-019/exp019_ua2_rerun_subject_metrics.csv
+
+================================================================================
+UA-2 STATISTICAL INFERENCE & DECISION CATEGORIZATION
+================================================================================
+Cohort Mean Delta:  +0.21 pp [95% CI: +0.04, +0.39 pp]
+Wilcoxon p-value:   p (two-sided) = 6.4469e-02 | p (superiority) = 3.2235e-02
+Win Rate:           27 / 46 (58.7%)
+Official S3 Decision Verdict: SUB-BENCHMARK GAIN (Statistically Superior, Below +1.00 pp)
+================================================================================
