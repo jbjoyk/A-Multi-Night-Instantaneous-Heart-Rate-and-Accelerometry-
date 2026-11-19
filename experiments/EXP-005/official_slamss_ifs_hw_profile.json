@@ -1,0 +1,50 @@
+{
+  "B_1": {
+    "batch_size": 1,
+    "sequence_length": 1200,
+    "peak_allocated_mb": 1416.32,
+    "peak_allocated_gib": 1.383,
+    "peak_reserved_mb": 1674.0,
+    "peak_reserved_gib": 1.635,
+    "model_params_mb": 20.85,
+    "optimizer_state_mb": 41.7,
+    "mean_fwd_ms": 1248.4,
+    "mean_bwd_ms": 1963.63,
+    "mean_step_ms": 3222.75,
+    "throughput_nights_per_sec": 0.31,
+    "loss_mean": 1.2095,
+    "numerical_stability": "STABLE (No NaNs/Infs)"
+  },
+  "B_2": {
+    "batch_size": 2,
+    "sequence_length": 1200,
+    "peak_allocated_mb": 2510.5,
+    "peak_allocated_gib": 2.452,
+    "peak_reserved_mb": 3020.0,
+    "peak_reserved_gib": 2.949,
+    "model_params_mb": 20.85,
+    "optimizer_state_mb": 41.7,
+    "mean_fwd_ms": 1267.23,
+    "mean_bwd_ms": 2042.87,
+    "mean_step_ms": 3321.53,
+    "throughput_nights_per_sec": 0.602,
+    "loss_mean": 1.2316,
+    "numerical_stability": "STABLE (No NaNs/Infs)"
+  },
+  "B_4": {
+    "batch_size": 4,
+    "sequence_length": 1200,
+    "peak_allocated_mb": 4737.44,
+    "peak_allocated_gib": 4.626,
+    "peak_reserved_mb": 5242.0,
+    "peak_reserved_gib": 5.119,
+    "model_params_mb": 20.85,
+    "optimizer_state_mb": 41.7,
+    "mean_fwd_ms": 1258.81,
+    "mean_bwd_ms": 1980.93,
+    "mean_step_ms": 3250.51,
+    "throughput_nights_per_sec": 1.231,
+    "loss_mean": 1.2344,
+    "numerical_stability": "STABLE (No NaNs/Infs)"
+  }
+}

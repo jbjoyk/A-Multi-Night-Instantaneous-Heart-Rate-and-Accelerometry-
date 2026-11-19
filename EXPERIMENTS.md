@@ -819,6 +819,72 @@ state.
 
 ---
 
+## 8.1 EXP-019-K — Calibration-Depth Learning Curve (k = 1, 3, 4)
+
+- Date: 2026-11-19 (Preregistered; pending execution authorization)
+- Status: **PREREGISTERED / PENDING USER EXECUTION AUTHORIZATION** (Task TSK-06, Priority 1 under DEC-033)
+- Preregistration Authority: [`PREREG_EXP-019_K_CURVE.md`](./PREREG_EXP-019_K_CURVE.md) (Audited in `PHASE_D_PREREGISTRATIONS_INDEPENDENT_REVIEW.md`)
+- Research Question: Does personalization benefit scale monotonically with calibration depth ($k = 1, 2, 3, 4$ nights), and does 3-night calibration replicate the van der Aar et al. (2025) clinical finding ($\bar{\Delta}_{k=3} \ge +1.50\text{ pp}$ with lower bound $> 0.0\text{ pp}$)?
+- Cohort Stratification:
+  - *Primary Analysis:* Common cohort of $N = 33$ fixed participants ($n_{\text{usable}} \ge 5$) evaluated on identical late-night evaluation sets $E_4$ (64 total nights; 1 night from 5-night subjects, 2 from 6-night, 3 from 7-night; equal-weight participant pooling). Holds both participants and evaluation nights strictly constant across $k$.
+  - *Sensitivity Analysis:* Available cohort ($N_1 = 46, N_2 = 46, N_3 = 42, N_4 = 33$) evaluated on all subsequent nights $E_k$.
+- Model Architecture & Checkpoints: Model A (`ConventionalCNNBiGRU`, 163,940 parameters). Inherits frozen population backbones from locked EXP-018 Phase 2 (15 checkpoints, 5 folds $\times$ 3 seeds). Circadian features neutralized (`time_feat = 0`).
+- Hyperparameter Inheritance: Inherits locked EXP-019 Stage D winning configurations per outer fold (zero post-hoc tuning on outer test subjects).
+- Random Seeds: 42, 123, 2024.
+- Statistical Protocol:
+  - Page's $L$-trend test for monotonic repeated measures across $k \in \{1, 2, 3, 4\}$.
+  - Superiority test for $k = 3$ vs. $ZS$ ($H_0: \bar{\Delta}_{k=3} \le 0\text{ pp}$ vs. $H_1: \bar{\Delta}_{k=3} > 0\text{ pp}$) alongside $+1.50\text{ pp}$ clinical relevance benchmark.
+  - Saturation test for marginal step increment $\delta_{4-3} < +0.50\text{ pp}$.
+  - Multiplicity control via 5-test Holm-Bonferroni step-down family ($\alpha = 0.05$).
+  - Two-dimensional decision framework.
+- Historical Invariant: Locked $k = 2$ predictions in `exp019_subject_metrics.csv` remain immutable; $k = 2$ on $E_4$ is derived by epoch filtering without re-running models.
+- Execution Budget: 363 fine-tuning runs (~3.0 GPU hours serial on RTX 3060; ~1.5–1.75 wall-clock hours distributed across dual RTX 3060 GPUs; peak VRAM 486 MiB at $B=4$).
+- Output Artifacts: `experiments/EXP-019/exp019_k_learning_curve_executed.csv` and `experiments/EXP-019/exp019_k_curve_subject_metrics.csv`.
+
+---
+
+## 8.2 EXP-019-S3 — UA-2 Unsupervised Test-Time Adaptation Re-Run
+
+- Date: 2026-11-19 (Preregistered; pending execution authorization)
+- Status: **AMENDMENT PREREGISTERED / PENDING USER EXECUTION AUTHORIZATION** (Task TSK-07, Priority 3 under DEC-033)
+- Preregistration Authority: [`PREREG_EXP-019_S3_AMENDMENT.md`](./PREREG_EXP-019_S3_AMENDMENT.md) (Audited in `PHASE_D_PREREGISTRATIONS_INDEPENDENT_REVIEW.md`)
+- Research Question: Does label-free test-time adaptation via Information Maximization (Shannon entropy minimization with marginal diversity penalty) improve sequence staging on low-rate cardiac vitals, or does it trigger representation collapse?
+- Implementation Remediation (DEC-030 Resolution):
+  - Physical unit separation: Raw BPM limits ($30 \le \text{BPM} \le 180$) evaluated on reconstructed physical values ($\text{IHR}_{\text{raw}} = z \cdot \text{IQR} + \text{median}$) rather than standardized z-scores.
+  - Accelerometer masking: Scale-invariant intra-epoch variance check ($\text{Var}_t(m) > 0.0$) on standardized Channel 6 (`acc_mag`), avoiding unit-mismatch errors.
+  - Mandatory pre-flight quality gate: $> 95\%$ valid epoch ratio; $\ge 600$ valid epochs/night; 0 non-physiological epochs in loss tensors.
+  - Documented limitation: Uniform marginal entropy maximization inherently penalizes the biological class imbalance of sleep (~50% Light sleep).
+- Model Architecture & Scope: Model A (`ConventionalCNNBiGRU`, 163,940 parameters). Trainable scope restricted to prediction head and last recurrent layer (`head_gru`), convolutional filters frozen.
+- Hyperparameters: Stage D selected configuration: $\eta = 1 \times 10^{-5}$, 20 optimization steps, AdamW ($wd = 10^{-2}$).
+- Cohort: $N = 46$ eligible test participants (152 evaluation nights, identical to $FT\text{-}2$).
+- Random Seeds: 42, 123, 2024.
+- Statistical Protocol: 10,000-resample participant-level percentile bootstrap CI and two-sided Wilcoxon signed-rank test. Exhaustive five-tier decision matrix.
+- Historical Invariant: Original Stage C no-op record ($0.00\text{ pp}$) remains permanently locked in `exp019_subject_metrics.csv`. Re-run results will serialize to a distinct artifact `experiments/EXP-019/exp019_ua2_rerun_subject_metrics.csv`.
+- Execution Budget: 138 adaptation runs (~28 minutes GPU time on RTX 3060; runs concurrently on GPU 0 while TSK-06 executes on GPU 1; peak VRAM 460 MiB at $B=4$).
+
+---
+
+## 8.3 EXP-021 — SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Benchmark
+
+- Date: 2026-11-19 (Preregistered; pending execution authorization)
+- Status: **DEFERRED PENDING FINAL MODEL FREEZE (DEC-034)** (Task TSK-08; to be executed once as final matched benchmark against frozen final model)
+- Preregistration Authority: [`PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`](./PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md) (Audited in `PHASE_D_PREREGISTRATIONS_INDEPENDENT_REVIEW.md`)
+- Research Question: How does lightweight Model A (163,940 parameters) compare to the official SLAMSS-IFS baseline under strictly matched 5-fold cross-validation, full-night sequence context ($L = 1200$), and identical preprocessing?
+- Baseline Disambiguation & Parameter Context:
+  - Published paper text (Song et al. 2026, *IEEE TBME*): 666,060 parameters (Model A achieves a **4.06-fold parameter compression**).
+  - Official author repository codebase (`SLAMSS_IFS_Model.py`): 5,465,768 parameters (Model A achieves a **33.34-fold parameter compression**).
+  - Hardware feasibility: Model A occupies ~164 KB in INT8, running in wearable SoC internal SRAM without external DRAM.
+- Protocol Alignment: Evaluated on identical 5 outer folds (all 47 participants, 246 usable nights), 3 random seeds (42, 123, 2024), full-night context ($L = 1200$), identical 4-class mapping, Real-World (RW) weighting loss.
+- Methodological Framework: Estimation and paired comparative evaluation with confidence intervals (unsupported non-inferiority margins retracted under DEC-033).
+- Statistical Protocol:
+  - Estimand: Cohort mean paired difference $\bar{d} = \frac{1}{47} \sum_{i=1}^{47} (\text{Macro-F1}_i(\text{Model A}) - \text{Macro-F1}_i(\text{SLAMSS-IFS}))$.
+  - Inference: 10,000-resample participant-level bootstrap 95% confidence intervals, two-sided Wilcoxon signed-rank test, Cohen's $d_z$ effect size.
+  - Three-tier interpretation framework (Model A advantage, SLAMSS-IFS advantage, performance indistinguishable).
+- Execution Budget: 15 training runs (5 folds $\times$ 3 seeds) $\implies$ ~33.75 total GPU hours on RTX 3060 with AMP; ~16 to 18 wall-clock hours distributed across dual RTX 3060 GPUs (7 runs on GPU 0, 8 runs on GPU 1; official 5.47M repository architecture measured peak VRAM 5.12 GiB reserved with AMP at $B=4$, fitting comfortably within 12 GB VRAM).
+- Output Artifacts: `experiments/EXP-021/slamss_ifs_matched_subject_metrics.csv` and `experiments/EXP-021/slamss_ifs_paired_comparative_report.md`.
+
+---
+
 ## 9. Research Trajectory (v4 Working Direction)
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

@@ -45,33 +45,47 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
   - A3: Diagnostic extraction completed (`experiments/EXP-019/PHASE_A3_DIAGNOSTIC_REPORT.md` + 5 CSV/JSON deliverables).
   - A4: S1 documentation updated with donor fine-tuning harm clarification.
   - A5: NAS Iteration 1 erratum completed (architecture search permanently closed).
-- **Phase B: Evidence Base & Systematic Literature Search (PARTIALLY COMPLETE / AUDITED)**
+- **Phase B: Evidence Base, Literature Intelligence & EXP-019 Sleep-Summary Agreement (RESOLVED & RATIFIED under DEC-032)**
   - B1: KB round-2 corrections applied and verified (Heremans PMID `35508121` across 6 files, P011/P009 downgraded to MODERATE, P101 author Colin Quirk and text fixed, gating labels clarified, Lorenzen verified). **Status: COMPLETE.**
   - B2: Systematic search executed and logged across PubMed, Europe PMC, arXiv, and medRxiv/bioRxiv tracking 4 query blocks and forward citations (`search_log.md`). IEEE Xplore and Scopus/WoS bounded by institutional access. **Status: PARTIALLY COMPLETE.**
   - B3 & Exit: Core papers assessed; 5 verified via full text (`P001`, `P002`, `P006`, `P056`, `P106`), 2 verified via abstract/excerpts under paywalls (`P007`, `P054`). "Closest ten" comparison matrix and dated novelty statement produced without priority claims (`research_knowledge/updates/2026-11-18_phase_b_and_c_execution.md`). **Status: PARTIALLY COMPLETE.**
+  - B4: EXP-019 Sleep-Summary Agreement Analysis & Methodological Evaluation (`EXP019_WITHIN_COHORT_SLEEP_SUMMARY_AGREEMENT_REPORT.md`, `research_engine/bidsleep_within_cohort_agreement_analysis.py`).
+    - Subject-averaging resolved repeated-measures clustering by construction ($N=46$ independent participants, $df=45$).
+    - Independent audit completed: `PHASE_B_INDEPENDENT_AUDIT_REPORT.md` (Verdict: PASS WITH CORRECTIONS; CLEARED FOR PHASE 3).
+    - All audit findings formally resolved and ratified under DEC-032:
+      * FIND-B-01 (RESOLVED): Explicitly distinguished multi-night participant-average limits of agreement from single-night agreement.
+      * FIND-B-02 (RESOLVED): Documented the inventory of five analyses blocked without subject-night microdata.
+      * FIND-B-03 (RESOLVED IN PHASE 3): LoA standard errors and 95% confidence intervals added to manuscript Table 1 in Section 6.2 per Bland & Altman (1999).
+      * FIND-B-04 (RESOLVED): Retracted unsupported causal sensor claims regarding WASO underestimation; confirmed empirical model underestimation.
+      * Additional Methodological Correction (RESOLVED): Prohibited conflating unadjusted pooled nights ($N=152$) with single-night prediction intervals.
+      * FIND-B-05 & FIND-B-06 (VERIFIED): 100% numerical reproduction of draft manuscript Table 1 verified; denominators and anti-leakage intact. **Status: COMPLETE & RESOLVED.**
 - **Phase C: Data Search (BOUNDED COMPLETE / DECISION GATE ENFORCED)**
   - C1: Systematic search for second multi-night labeled wearable dataset completed. Survey across public repositories (PhysioNet, NSRR, OpenNeuro) and literature confirmed no qualifying second dataset exists (van der Aar 2025 cohort is restricted/private; SleepAccel and DREAMT are 1 night/subject). Decision gate enforced: single-dataset paper framed as replication, extension, and failure analysis; limitation reported openly. **Status: BOUNDED COMPLETE.**
-- **Phase D: Experiments (Strictly Gated)**
-  - D1: EXP-020 (exploratory, design-informed regularized/gated adaptation) — strictly gated until committed preregistration block is approved.
-  - D2: EXP-019B heterogeneity hypothesis testing.
-  - D3: EXP-027 external zero-shot transfer (SleepAccel).
-  - D4: EXP-028 clinical sleep-summary agreement.
-- **Phase E: Synthesis & Writing (IN PROGRESS)**
+- **Phase D: Experiments (Governance Ratified under DEC-033; Execution Pending Explicit User Authorization)**
+  - Stage 1 (Primary C1 Closure):
+    * Experiment 1 (TSK-06 / EXP-019-K): Calibration-depth learning curve ($k = 1, 3, 4$) under `PREREG_EXP-019_K_CURVE.md` (Common-cohort $N=33$ on $E_4$, Page's $L$-test, Holm-Bonferroni correction). Status: *PREREGISTERED / PENDING USER AUTHORIZATION*.
+    * Experiment 2 (TSK-07 / EXP-019-S3): Unsupervised adaptation re-run ($UA\text{-}2$) under `PREREG_EXP-019_S3_AMENDMENT.md` (DEC-030 unit fix, pre-flight gate, InfoMax). Status: *AMENDMENT PREREGISTERED / PENDING USER AUTHORIZATION*.
+  - Stage 2 (Matched Baseline Benchmark):
+    * Experiment 3 (TSK-08 / EXP-021): SLAMSS-IFS matched 5-fold cross-validation paired comparative benchmark under `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md` (estimation framework with 10,000 bootstrap CIs, Wilcoxon test, Cohen's $d_z$; unsupported non-inferiority margins retracted). Status: *PREREGISTERED / PENDING USER AUTHORIZATION*.
+  - Deferred Tasks: EXP-019B (heterogeneity tests), EXP-020 (gated adaptation), and EXP-027 (SleepAccel transfer) remain deferred under DEC-029.
+- **Phase E: Synthesis & Writing (COMPLETE FOR DRAFT v0.1)**
   - Candidate 1 (COMPLETE): Historical split & data leakage audit across EXP-001 to EXP-004 (`EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`, `EXPERIMENTS.md` TA-01 to TA-06).
   - Candidate 2 (COMPLETE / AUDITED): SLAMSS-IFS scientific baseline audit (`SLAMSS_IFS_BASELINE_PROTOCOL_AUDIT.md`; EXP-012 3-seed mean 68.44% ± 1.35% verified; 33.3x repo vs 4.06x paper text distinguished).
   - Candidate 3 (COMPLETE / GATED): EXP-019B and EXP-020 preregistration drafts authored with prior-access disclosures (`EXP019B_PREREGISTRATION_DRAFT.md`, `EXP020_PREREGISTRATION_DRAFT.md`; hashes preserved). Strictly unapproved for execution.
   - Candidate 4 (COMPLETE / AUDITED): BIDSleep cohort data and signal integrity audit (`BIDSLEEP_COHORT_DATA_INTEGRITY_AUDIT.md`, 3 CSVs; 7 nights across 6 subjects; Bidslab34 15 Deep epochs [0.68%]; evaluable denominators $k=1..4$: $47, 46, 42, 33$).
-  - Candidate 5 (COMPLETE / SYNCHRONIZED): Manuscript draft v0.1 Sections 1–5 authored and synchronized (`MANUSCRIPT_DRAFT_v0.1.md`, `MANUSCRIPT_EVIDENCE_TO_CLAIM_MATRIX.csv`, `MANUSCRIPT_UNRESOLVED_EVIDENCE.md`).
+  - Candidate 5 / Phase 3 Polish (COMPLETE): Full working manuscript draft Sections 1–8 authored (`MANUSCRIPT_DRAFT_v0.1.md`), Table 1 enhanced with verified LoA bounds standard errors and 95% CIs (`FIND-B-03`), multi-night agreement distinguished from single-night spot bounds (`FIND-B-01`), aggregate micro-data loss cataloged (`FIND-B-02`), WASO underestimation empirically framed (`FIND-B-04`), and claim matrix synchronized across all 40 claims (`MANUSCRIPT_EVIDENCE_TO_CLAIM_MATRIX.csv`).
 
 ---
 
 ## 4. Next Concrete Tasks
 
-1. **Independent Verification (`/egm-review`)**:
-   - Perform an independent `/egm-review` of the completed Candidate 2, 4, and 5 resolutions to confirm all corrections prior to any Git commit considerations.
-2. **Phase D Experimental Gating (Strictly Gated)**:
-   - EXP-019B and EXP-020 remain strictly unauthorized.
-   - Do NOT launch or schedule any training or adaptation jobs without explicit written user approval.
-   - Execute EXP-028 (formal Bland-Altman clinical sleep-summary analysis from `exp019_sleep_summary_agreement.csv`).
+1. **Phase D Execution Sequence (Ratified under DEC-034)**:
+   - **TSK-08 Deferred:** SLAMSS-IFS matched benchmark is formally deferred until the project's final model architecture is developed and frozen.
+   - **Immediate Phase D Priority (Stage 1):** Execute TSK-06 (EXP-019-K: $k$-learning curve under `PREREG_EXP-019_K_CURVE.md`) and TSK-07 (EXP-019-S3: UA-2 re-run under `PREREG_EXP-019_S3_AMENDMENT.md`).
+   - **Workstation Scheduling:** Concurrent execution across dual RTX 3060 GPUs (TSK-07 on GPU 0 [~28 min], TSK-06 on GPU 1 [~1.5–3.0 hrs] or distributed across both cards). Total wall-clock time: **~1.5 to 1.75 hours**.
+2. **Post-Stage 1 Action:**
+   - Consolidate personalization depth and unsupervised adaptation findings.
+   - Develop, validate, and freeze the final project model.
+   - Execute TSK-08 once as the definitive matched benchmark.
 3. **Continuous Git Synchronization**:
-   - Ready to commit and push all newly generated audit, preregistration, diagnostic, and manuscript deliverables upon user instruction.
+   - Ready to commit and push all newly generated preregistration and governance deliverables upon user instruction.

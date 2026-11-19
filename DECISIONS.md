@@ -568,3 +568,75 @@
      The phrase "maximum allowed parameters" is permanently replaced across active governance documentation with:
      > *"163,940 parameters is the baseline reference size. Future models should preferentially be lighter than this baseline. Larger models require explicit scientific justification and transparent reporting."*
 - Reversible: No; ratified governance policy.
+
+---
+
+### DEC-032 (2026-11-19): Phase B Sleep-Summary Agreement Ratification, Finding Reconciliations (FIND-B-01 to FIND-B-06), and Methodological Boundary Resolution
+
+- Date: 2026-11-19
+- Authoritative Review: `PHASE_B_INDEPENDENT_AUDIT_REPORT.md` (Verdict: PASS WITH CORRECTIONS, Cleared for Phase 3)
+- Target Scope: `EXP019_WITHIN_COHORT_SLEEP_SUMMARY_AGREEMENT_REPORT.md`, `research_engine/bidsleep_within_cohort_agreement_analysis.py`, and `experiments/EXP-019/exp019_sleep_summary_agreement.csv`.
+- Ratified Governance Decisions & Reconciled Findings:
+  1. **FIND-B-01 (Multi-Night Scope vs. Single-Night Agreement) — RESOLVED:**
+     - The subject-averaged limits of agreement (e.g., $[-30.11, +34.67]\text{ min}$ for TST in FT-2) strictly evaluate agreement for a **participant's multi-night monitoring mean** ($\sim 3$ evaluation nights).
+     - They must **never be described as spot agreement bounds for an isolated single night**. On single nights, unmodeled within-subject night-to-night variance ($\sigma_w^2$) expands dispersion.
+  2. **FIND-B-02 (Micro-Data Information Loss Inventory) — RESOLVED:**
+     - Formally catalogs that five secondary analyses cannot be evaluated without subject-night micro-data: (i) two-way error variance decomposition ($\sigma_b^2$ vs $\sigma_w^2$), (ii) linear mixed-effects proportional bias regression, (iii) heteroscedasticity rank tests, (iv) non-parametric participant-level cluster bootstrap, and (v) studentized residual outlier leverage diagnostics.
+     - Ratifies subject-averaging as the primary scientifically defensible surrogate under available data.
+  3. **FIND-B-03 (LoA Uncertainty Reporting) — DEFERRED TO PHASE 3:**
+     - Table 1 in draft manuscript Section 6.2 currently reports parametric LoA point estimates.
+     - Scheduled for Phase 3 manuscript editing: incorporate standard errors ($\text{SE}(\text{LoA})$) and 95% confidence intervals on LoA bounds into Table 1 per Bland & Altman (1999) and *Lancet Digital Health* reporting guidelines.
+  4. **FIND-B-04 (WASO Systematic Bias Interpretation) — RESOLVED:**
+     - The significant underestimation of WASO in FT-2 ($-4.87\text{ min}$, 95% CI: $[-8.54, -1.20]\text{ min}$, $p = 0.0104$) is ratified strictly as an **observed empirical model underestimation**.
+     - Causal assertions attributing this bias to an "intrinsic sensor limitation" (e.g. inability to detect micro-arousals) are formally retracted. The bias may arise from multiple technical factors including decision boundaries, training loss class weighting, or feature representations.
+  5. **Additional Methodological Correction (Pooled-Night Interval Framing):**
+     - The unadjusted pooled-night interval ($[-39.60, +46.95]\text{ min}$ for TST) is an unadjusted descriptive summary that confounds between- and within-subject variance. It is strictly prohibited from being presented as a validated single-night prediction interval.
+  6. **FIND-B-05 (Numerical Consistency) & FIND-B-06 (Denominators & Anti-Leakage) — VERIFIED:**
+     - 100% numerical concordance verified between source CSV, script, Phase B report, and manuscript draft.
+     - $N=46$ subjects ($Bidslab49$ correctly excluded per protocol), $N=152$ nights, $C \cap E = \emptyset$ confirmed leak-free.
+- Reversible: No; ratified governance policy.
+
+
+---
+
+### DEC-033 (2026-11-19): Phase D Governance Framework, Task Decoupling, and Preregistration Formalization
+
+- Date: 2026-11-19
+- Authoritative Sources: `PHASE_D_EXPERIMENTAL_DECISION_PLAN.md` (v2), `PHASE_D_PREREGISTRATIONS_INDEPENDENT_REVIEW.md`, `PREREG_EXP-019_K_CURVE.md`, `PREREG_EXP-019_S3_AMENDMENT.md`, `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`
+- Context: Establishing formal governance, statistical specifications, and execution readiness for the three Phase D experimental tasks prior to user authorization.
+- Ratified Governance Decisions:
+  1. **Separation and Independent Governance of Experimental Tasks:**
+     - The three proposed Phase D tasks are partitioned into independently governed, non-conflated protocols:
+       * **Experiment 1 (TSK-06): Calibration-Depth Learning Curve ($k = 1, 3, 4$):** Governed under `PREREG_EXP-019_K_CURVE.md`. Evaluates monotonic depth scaling and the van der Aar replication hypothesis ($H_{k=3}$) using a primary $N = 33$ common-cohort design on fixed evaluation nights $E_4$ (64 nights) and an available-cohort sensitivity analysis ($N_k \in \{46, 46, 42, 33\}$). Controlled via Page's $L$-trend test and a 5-test Holm-Bonferroni step-down family ($\alpha = 0.05$). Status: **PREREGISTERED / PENDING USER EXECUTION AUTHORIZATION**.
+       * **Experiment 2 (TSK-07): Unsupervised Test-Time Adaptation Re-Run ($UA\text{-}2$):** Governed under `PREREG_EXP-019_S3_AMENDMENT.md`. Resolves the DEC-030 implementation no-op by validating raw-unit physiological bounds on reconstructed BPM and scale-invariant accelerometry variance. Establishes mandatory pre-flight validation gates ($> 95\%$ valid epoch ratio; $\ge 600$ epochs/night) and documents the physiological limitations of uniform marginal entropy regularization. Status: **AMENDMENT PREREGISTERED / PENDING USER EXECUTION AUTHORIZATION**.
+       * **Experiment 3 (TSK-08): Matched 5-Fold Cross-Validation Paired Comparative Benchmark of SLAMSS-IFS:** Governed under `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`. Evaluates Model A vs. SLAMSS-IFS under strictly matched 5-fold CV across all 47 subjects with full-night context ($L = 1200$) and 3 seeds. Status: **PREREGISTERED / PENDING USER EXECUTION AUTHORIZATION**.
+  2. **Retraction of Unsupported Non-Inferiority Margin Claims in TSK-08:**
+     - The proposed $-1.50\text{ pp}$ non-inferiority margin and associated ICH E10 half-standard-deviation arguments are formally retracted. In the absence of an externally established clinical or regulatory consensus for wearable sleep staging models, imposing an arbitrary threshold is scientifically unjustified.
+     - TSK-08 is ratified strictly as a **paired comparative evaluation with estimation and confidence intervals** ($\bar{d}$, 10,000-resample participant-level bootstrap 95% CIs, Wilcoxon signed-rank testing, and Cohen's $d_z$ effect sizes). Performance differences will be interpreted alongside parameter compression (4.06x vs. paper text; 33.34x vs. repository) and edge SRAM microcontroller feasibility.
+  3. **Preservation of Locked Baseline Artifacts:**
+     - All locked EXP-018 and EXP-019 confirmatory results, checkpoints, split manifests, and the historical Stage C no-op record ($0.00\text{ pp}$) remain strictly immutable. Output artifacts for Phase D will be written to distinct files (`exp019_k_learning_curve_executed.csv`, `exp019_ua2_rerun_subject_metrics.csv`, `slamss_ifs_matched_subject_metrics.csv`).
+  4. **Strict Anti-Premature Execution Gate:**
+     - Preregistration does not constitute authorization to train. Zero models may be trained and zero GPU processes scheduled until explicit user authorization is recorded.
+- Reversible: No; ratified governance policy.
+
+---
+
+### DEC-034 (2026-11-19): User Strategy Authorization: Deferral of TSK-08 (SLAMSS-IFS Benchmark) Until Final Model Freeze; Execution Prioritization for TSK-06 and TSK-07
+
+- Date: 2026-11-19
+- Authoritative Source: User Strategic Decision (`2026-11-19T08:29:08+06:00`)
+- Context: Optimizing research compute and scientific sequencing. TSK-08 (SLAMSS-IFS matched 5-fold benchmark, 15 runs, ~33.75 GPU hours) represents substantial compute. Running it against an intermediate model before the project's final model architecture is developed and frozen risks redundant compute or benchmarking against an unoptimized artifact.
+- Ratified Strategic Decisions:
+  1. **TSK-08 (SLAMSS-IFS Matched Benchmark) Formally Deferred:**
+     - TSK-08 (EXP-021) is deferred from immediate Phase D execution.
+     - The preregistration `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md` and measured hardware profile (`official_slamss_ifs_hw_profile.json`) remain locked and ready for execution at the appropriate milestone.
+     - TSK-08 will be executed exactly once as the final matched comparative benchmark against the fully developed, frozen final model.
+  2. **Immediate Execution Priority for TSK-06 and TSK-07:**
+     - Task TSK-06 (EXP-019-K: Calibration-depth learning curve $k=1, 3, 4$, governed by `PREREG_EXP-019_K_CURVE.md`) and Task TSK-07 (EXP-019-S3: UA-2 Unsupervised Adaptation Re-Run, governed by `PREREG_EXP-019_S3_AMENDMENT.md`) are cleared as the immediate Phase D execution focus.
+     - Both tasks close the primary scientific questions regarding multi-night supervised personalization depth (Contribution C1) and unsupervised label-free adaptation (Contribution C2).
+     - Both tasks execute within ~1.5 to 1.75 wall-clock hours concurrently on our dual RTX 3060 workstation.
+  3. **Development and Freezing of Final Model:**
+     - Following the completion and analysis of TSK-06 and TSK-07, the project will consolidate all empirical evidence (personalization depth, unsupervised adaptation, context scaling, and sleep-summary agreement) to specify, develop, and freeze the final model.
+     - Once frozen, the single final matched benchmark against SLAMSS-IFS (TSK-08) will be executed under its audited protocol.
+- Reversible: No; ratified project strategic roadmap.
+
