@@ -897,22 +897,25 @@ state.
 
 ## 8.3 EXP-021 — SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Benchmark
 
-- Date: 2026-11-19 (Preregistered; pending execution authorization)
-- Status: **DEFERRED PENDING FINAL MODEL FREEZE (DEC-034)** (Task TSK-08; to be executed once as final matched benchmark against frozen final model)
-- Preregistration Authority: [`PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`](./PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md) (Audited in `PHASE_D_PREREGISTRATIONS_INDEPENDENT_REVIEW.md`)
-- Research Question: How does lightweight Model A (163,940 parameters) compare to the official SLAMSS-IFS baseline under strictly matched 5-fold cross-validation, full-night sequence context ($L = 1200$), and identical preprocessing?
+- Date: 2026-11-21 (Stage 2 Freeze & Stage 3 Benchmark Code Implemented & EGM-Resolved; pending execution authorization)
+- Status: **IMPLEMENTATION COMPLETE & EGM-RESOLVED / PENDING STAGE 2 FREEZE & USER LAUNCH AUTHORIZATION (DEC-034)** (Task TSK-08; to be executed once as final matched benchmark against frozen final model `SleepStagingFinalModel_v1.0`)
+- Preregistration Authority: [`PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`](./PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md) (Audited in `PHASE_D_PREREGISTRATIONS_INDEPENDENT_REVIEW.md` and pre-execution EGM Swarm Review)
+- Stage 2 Freeze Infrastructure: `experiments/STAGE2_FINAL_MODEL/{final_model_spec.json, FINAL_MODEL_SYNTHESIS_AND_FREEZE_SPEC.md, final_model_pipeline.py, freeze_final_model.py}`
+- Stage 3 Execution Infrastructure: `experiments/EXP-021/{official_slamss_ifs_adapter.py, run_tsk08_slamss_matched.py, analyze_tsk08_paired_benchmark.py, run_stage3_dual_gpu.sh}`
+- Research Question: How does frozen Model A (163,940 parameters) compare to the official SLAMSS-IFS baseline under strictly matched 5-fold cross-validation, full-night sequence context ($L = 1200$), and identical preprocessing?
 - Baseline Disambiguation & Parameter Context:
   - Published paper text (Song et al. 2026, *IEEE TBME*): 666,060 parameters (Model A achieves a **4.06-fold parameter compression**).
   - Official author repository codebase (`SLAMSS_IFS_Model.py`): 5,465,768 parameters (Model A achieves a **33.34-fold parameter compression**).
-  - Hardware feasibility: Model A occupies ~164 KB in INT8, running in wearable SoC internal SRAM without external DRAM.
-- Protocol Alignment: Evaluated on identical 5 outer folds (all 47 participants, 246 usable nights), 3 random seeds (42, 123, 2024), full-night context ($L = 1200$), identical 4-class mapping, Real-World (RW) weighting loss.
+  - Hardware feasibility: Model A weight footprint is ~160.1 KiB in INT8 (weights fit within 512 KB wearable MCU SRAM; activation buffers/RTOS budgeted separately).
+- Protocol Alignment: Evaluated on identical 5 outer folds (all 47 participants, 246 usable nights), 3 random seeds (42, 123, 2024), full-night context ($L = 1200$), circadian neutralized (`[freq, 0, 0, hr_mean, hr_std]`) matching locked EXP-018 Model A, identical 4-class mapping, DEC-011 composite loss (`CE + 0.01 * RCCLoss` in FP32 outside AMP), zero-leakage `trg_zeros` (`teacher_forcing_ratio=0.0`).
+- Training Budget & Speedups: `micro_batch_size=4`, `effective_batch_size=4` (42–44 steps/epoch), `max_epochs=100` (up to 4,200–4,400 steps $\ge$ Model A's 3,200 steps), `min_epochs=40`, `patience=25` on inner-val Macro-F1, batched validation (`val_batch_size=16`), `OMP_NUM_THREADS=4`.
 - Methodological Framework: Estimation and paired comparative evaluation with confidence intervals (unsupported non-inferiority margins retracted under DEC-033).
 - Statistical Protocol:
   - Estimand: Cohort mean paired difference $\bar{d} = \frac{1}{47} \sum_{i=1}^{47} (\text{Macro-F1}_i(\text{Model A}) - \text{Macro-F1}_i(\text{SLAMSS-IFS}))$.
-  - Inference: 10,000-resample participant-level bootstrap 95% confidence intervals, two-sided Wilcoxon signed-rank test, Cohen's $d_z$ effect size.
+  - Inference: 10,000-resample participant-level bootstrap 95% confidence intervals, two-sided Wilcoxon signed-rank test, Cohen's $d_z$ effect size, strict 47-subject × 3-seed completeness guards.
   - Three-tier interpretation framework (Model A advantage, SLAMSS-IFS advantage, performance indistinguishable).
-- Execution Budget: 15 training runs (5 folds $\times$ 3 seeds) $\implies$ ~33.75 total GPU hours on RTX 3060 with AMP; ~16 to 18 wall-clock hours distributed across dual RTX 3060 GPUs (7 runs on GPU 0, 8 runs on GPU 1; official 5.47M repository architecture measured peak VRAM 5.12 GiB reserved with AMP at $B=4$, fitting comfortably within 12 GB VRAM).
-- Output Artifacts: `experiments/EXP-021/slamss_ifs_matched_subject_metrics.csv` and `experiments/EXP-021/slamss_ifs_paired_comparative_report.md`.
+- Execution Budget: 15 training runs (5 folds $\times$ 3 seeds) distributed across dual RTX 3060 GPUs (7 runs on GPU 0, 8 runs on GPU 1; measured peak VRAM 5.12 GiB reserved with AMP at $B=4$); expected wall-clock **~21 to 28 hours** (at early stop 65–85 epochs; up to ~33h at full 100 epochs).
+- Output Artifacts: `experiments/EXP-021/run_results/*.json`, `experiments/EXP-021/slamss_ifs_matched_subject_metrics.csv`, `experiments/EXP-021/slamss_ifs_paired_subject_deltas.csv`, `experiments/EXP-021/slamss_ifs_paired_comparison_summary.json`, and `experiments/EXP-021/slamss_ifs_paired_comparative_report.md`.
 
 ---
 
@@ -928,7 +931,8 @@ state.
    - Observed mean gain: $\bar{\Delta} = +1.01\text{ pp}$ [95% CI: $-0.17, +1.99\text{ pp}$] with 73.9% of subjects improving.
    - Reconciled decision rule status: INCONCLUSIVE (effect up to +2.0 pp cannot be ruled out).
    - Specificity control (S1) confirmed: fine-tuning on another subject degrades performance by $-1.72\text{ pp}$ below zero-shot baseline ($p = 9.0 \times 10^{-6}$).
-   - Unsupervised adaptation (S3) produced 0.00 pp across all 46 subjects due to an implementation no-op (invalidated in Phase A2 audit `S3_INFOMAX_NOOP_AUDIT_REPORT.md`, DEC-030; scientifically uninformative).
+   - Unsupervised adaptation (S3) originally produced 0.00 pp due to a DEC-030 unit-mismatch no-op; subsequently remediated and executed under TSK-07 (DEC-036), establishing a modest statistically superior gain ($\bar{\Delta} = +0.21\text{ pp}$ [95% CI: $+0.04, +0.39\text{ pp}$], $p_{\text{sup}} = 0.0322$, 0% collapse; classified as `SUB-BENCHMARK GAIN`).
+   - Calibration-depth learning curve (TSK-06, DEC-035) confirmed monotonic depth scaling on the $N=33$ common cohort ($E_4$, Page's $L = 863.0, z = 2.261, p = 0.01187$) and replicated van der Aar et al. (2025) at $k=3$ ($\Delta = +3.54\text{ pp}, p = 0.00030$).
 5. **Prior Art Realignment (Research Direction v4)**:
    - Withdrew "open lane" novelty claim following identification of van der Aar et al. 2025 (*Physiological Measurement*, DOI: 10.1088/1361-6579/ae0119; $n=59$ adults, wrist PPG + accelerometry, up to 7 home nights, 82.5% improved, significant at $\ge 3$ training nights).
    - Reframed research as pre-registered replication and extension in healthy adults using consumer-smartwatch IHR and accelerometry, with strict failure-mode heterogeneity analysis and clinical sleep-summary agreement.

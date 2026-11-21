@@ -1,0 +1,175 @@
+{
+  "model_name": "SleepStagingFinalModel_v1.0",
+  "freeze_timestamp_utc": "2026-11-21T02:02:16Z",
+  "spec_sha256": "b62b42608e0e67a80dfcdd693be3fc86a2cad4aa41a6b074aa19384c816627c0",
+  "memory_profile": {
+    "model_name": "SleepStagingFinalModel_v1.0",
+    "trainable_parameters": 163940,
+    "fp32_bytes": 655760,
+    "fp32_kib": 640.39,
+    "fp16_bytes": 327880,
+    "fp16_kib": 320.2,
+    "int8_bytes": 163940,
+    "int8_kib": 160.1,
+    "compression_vs_slamss_paper_text": 4.06,
+    "compression_vs_slamss_official_repo": 33.34,
+    "weights_fit_nrf5340_512kb_sram_int8": true,
+    "sram_note": "Parameter weights only; BiGRU activation buffers and RTOS stack require separate SRAM budgeting."
+  },
+  "fold_parity_tolerance": 0.0005,
+  "subject_parity_tolerance": 0.005,
+  "max_fold_pooled_parity_diff_vs_exp018": 9.9e-05,
+  "max_subject_parity_diff_vs_exp018": 0.000655,
+  "checkpoints": [
+    {
+      "fold": 1,
+      "seed": 42,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold1_seed42.pt",
+      "sha256": "1bbc65b1ffa67d0168198d6238b84f71645bd551ad28e7d846cca4ba1664fd82",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 1.6e-05,
+      "max_subject_f1_diff": 0.000334,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 1,
+      "seed": 123,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold1_seed123.pt",
+      "sha256": "4e4af4fa325d90aed0bb4c899a523ba8ce1c25a3e08114e632f2d6879eecbfc2",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 5.7e-05,
+      "max_subject_f1_diff": 0.000349,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 1,
+      "seed": 2024,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold1_seed2024.pt",
+      "sha256": "43706d6efb84733e38fd22b467c8b58cad167c0ffb572c2b9e0fea77720c65a7",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 7e-05,
+      "max_subject_f1_diff": 0.000232,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 2,
+      "seed": 42,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold2_seed42.pt",
+      "sha256": "6ff162e5f8749a697384a886e2e61756059ac8e79a56c2ced1c928b04227e591",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 2.8e-05,
+      "max_subject_f1_diff": 0.000655,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 2,
+      "seed": 123,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold2_seed123.pt",
+      "sha256": "8d147b36854823acb8b62a0c28f45947c7b42ab603c19333391ca73974adcb15",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 5e-06,
+      "max_subject_f1_diff": 0.000349,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 2,
+      "seed": 2024,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold2_seed2024.pt",
+      "sha256": "b73890666795c61944df9f5879852c81beb614f3cbd6909750cf50ed7903f0bf",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 9.7e-05,
+      "max_subject_f1_diff": 0.000277,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 3,
+      "seed": 42,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold3_seed42.pt",
+      "sha256": "ed275dc8c48339c5e5c5931519e49d492f9427de5a1b3c952b33ca7989ed613a",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 2.8e-05,
+      "max_subject_f1_diff": 0.000323,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 3,
+      "seed": 123,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold3_seed123.pt",
+      "sha256": "da15d322a74c27e0183b072dfc367bff84330814881331b62d278779e3eea042",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 2.5e-05,
+      "max_subject_f1_diff": 0.000265,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 3,
+      "seed": 2024,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold3_seed2024.pt",
+      "sha256": "5c0de015a3f6d0093484a22a54ebbf0afbc704515015e0b01b10723d3a7bee89",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 5.9e-05,
+      "max_subject_f1_diff": 0.00035,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 4,
+      "seed": 42,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold4_seed42.pt",
+      "sha256": "4b1efa83d67aa3f0ecc5d334f4f8860dec25df8cbf3344b882a23b1f2f3c9f80",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 1.3e-05,
+      "max_subject_f1_diff": 0.000319,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 4,
+      "seed": 123,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold4_seed123.pt",
+      "sha256": "261bab7bdb16ca186c1b817f28f6ed675f3d5dbef27db457196c7f8917d2065a",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 1.3e-05,
+      "max_subject_f1_diff": 0.000496,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 4,
+      "seed": 2024,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold4_seed2024.pt",
+      "sha256": "4c94de9c4513641097ebceb4f23bedb0cecf45e95eba4b4a43835e97b2ca344a",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 3e-06,
+      "max_subject_f1_diff": 2e-05,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 5,
+      "seed": 42,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold5_seed42.pt",
+      "sha256": "c34cea492afb122103c83b367e8b9ef281fcb7d1ec383a0fd16e244cc663c431",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 9.9e-05,
+      "max_subject_f1_diff": 0.00039,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 5,
+      "seed": 123,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold5_seed123.pt",
+      "sha256": "cab7b0b9a14a65aa9e60c07cb16a738f96399991b3495831b859d49c395f6319",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 2.5e-05,
+      "max_subject_f1_diff": 0.0002,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    },
+    {
+      "fold": 5,
+      "seed": 2024,
+      "checkpoint_relpath": "experiments/EXP-018/checkpoints/modelA_L1200_fold5_seed2024.pt",
+      "sha256": "3630bc53c24120450255912da8da8792c7f88b2ab7ee8081b079b8c73b123283",
+      "n_parameters": 163940,
+      "fold_pooled_f1_diff": 9.2e-05,
+      "max_subject_f1_diff": 0.000282,
+      "status": "FROZEN_AND_PARITY_VERIFIED"
+    }
+  ]
+}

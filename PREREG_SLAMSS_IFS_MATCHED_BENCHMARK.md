@@ -1,10 +1,10 @@
 # PRE-REGISTRATION: SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Benchmark
 
 **Document ID:** `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK`  
-**Experiment ID:** EXP-021 (Phase D, Experiment 3 / Task TSK-08)  
-**Status:** DRAFT FOR USER REVIEW (No models trained; zero GPU execution; locked baselines preserved)  
+**Experiment ID:** EXP-021 (Phase D, Stage 3 / Task TSK-08)  
+**Status:** FINALIZED & EGM-VERIFIED (Pending Explicit User Execution Authorization under DEC-033 & DEC-034; zero models trained; locked baselines preserved)  
 **Governing Authority:** [`RESEARCH_DIRECTION_v4_FULL.md`](./RESEARCH_DIRECTION_v4_FULL.md), Section 8 & Section 11; [`DECISIONS.md`](./DECISIONS.md); [`PHASE_D_EXPERIMENTAL_DECISION_PLAN.md`](./PHASE_D_EXPERIMENTAL_DECISION_PLAN.md)  
-**Date:** 2026-11-19 (Revised — Paired Comparative Framework)  
+**Date:** 2026-11-21 (Pre-Execution EGM Amendment: Circadian Feature Parity & Training Budget Locked)  
 
 ---
 
@@ -73,12 +73,19 @@ SLAMSS-IFS will be trained and evaluated under the identical experimental harnes
 |    - Manifest Hash: review_package/fold_manifests.csv (SHA256: 36d84020...)            |
 | 3. Sequence Context: Full-night context L = 1200 epochs (10 hours) with sliding-        |
 |    window probability stitching for sequence length N > L.                              |
-| 4. Input Features: Resampled 1 Hz instantaneous heart rate + accelerometry magnitude,  |
-|    sampling frequency proxy, and elapsed time proxy (matching SLAMSS-IFS specification).|
+| 4. Input Features: Resampled 1 Hz instantaneous heart rate + accelerometry magnitude     |
+|    (B, L*30, 2) plus matched 5-channel epoch metadata [freq, clock=0, time_feat=0,     |
+|    hr_mean, hr_std] (neutralize_circadian=True) for strict feature parity with locked  |
+|    EXP-018 Model A (DEC-024 proved unneutralized time_feat confounds architecture by   |
+|    +1.36 pp). Two of cnn_ACT's 5 channels (clock, time_feat) are zeroed identically    |
+|    to Model A's meta_proj(5->16).                                                      |
 | 5. Target Mapping: 4-class classification:                                              |
 |    Wake = 0, Light (N1+N2) = 1, Deep (N3) = 2, REM = 3; unscored/padded = -100.         |
 | 6. Random Seeds: Exactly the 3 locked project seeds: 42, 123, 2024.                    |
-| 7. Loss Function: Real-World (RW) weighting loss (Song et al. 2026 specification).      |
+| 7. Loss Function: DEC-011 composite loss L_total = L_CE(masked) + 0.01 * L_RCC(masked)  |
+|    using official asymmetric fn/fp matrices, computed strictly in FP32 outside AMP.    |
+| 8. Decoder Input Integrity: Zero-leakage trg_zeros with teacher_forcing_ratio = 0.0     |
+|    at both train and inference time (remediating upstream t=0 target leakage).         |
 +-----------------------------------------------------------------------------------------+
 ```
 
@@ -153,14 +160,20 @@ Rather than imposing arbitrary regulatory pass/fail boundaries, the experimental
     * Model Parameters: 20.85 MiB; Adam Optimizer State: **41.70 MiB** (1st and 2nd momentum states).
     * Numerical Stability: Verified fully stable across all batch sizes (zero NaNs/Infs; mean loss: ~1.21–1.23).
   - **Verdict:** The official 5.47M SLAMSS-IFS model fits comfortably on a **single 12 GB RTX 3060 GPU** even at $B = 4$; the previous assumption requiring $\ge 24\text{ GB}$ VRAM (A100 or RTX 3090/4090) was an unbatched theoretical overestimate.
+- **Training Budget & Optimizer-Step Parity:**
+  - Micro-batch size $B = 4$, effective batch size $B_{\text{eff}} = 4$ (`accum_steps = 1`, zero tail-accumulation scaling bias), yielding **42–44 optimizer steps/epoch** across 168–175 training nights/fold.
+  - Budget: `max_epochs = 100` (up to **4,200–4,400 optimizer steps**, strictly matching/exceeding Model A's locked 3,200 steps and `B0_GRL`'s ~80-epoch convergence window under DEC-017), Adam (`lr = 1e-4`), gradient clipping `max_norm = 1.0`.
+  - Early stopping on inner-validation Macro-F1 (zero outer-test access) with `min_epochs = 40` (~1,700-step floor) and `patience = 25` epochs. Note: Model A EXP-018 used fixed 3,200 steps without validation checkpointing; granting inner-val early stopping to SLAMSS-IFS is transparently disclosed as conservative in SLAMSS-IFS's favor.
+  - Validation & outer-test inference use batched sliding-window probability stitching (`val_batch_size = 16` under `torch.no_grad()`, ~2 s/epoch vs. ~30 s/epoch unbatched) with identical mathematical outputs.
 - **Runtime & Parallel Allocation:**
-  - Expected runtime per fold-seed run: ~2.0 to 2.5 hours on RTX 3060 with AMP.
-  - Total compute: $15 \text{ runs} \times 2.25\text{ h} \approx 33.75\text{ GPU hours}$.
+  - Empirical step timing at $B=4$: ~145 s/epoch training + ~2.5 s/epoch batched validation $\approx$ **~148 s/epoch (~2.5 min/epoch)**.
+  - Expected runtime per fold-seed run (early stopping at ~65–85 epochs): **~2.7 to 3.5 hours** on RTX 3060 with AMP and CPU thread pinning (`OMP_NUM_THREADS=4 MKL_NUM_THREADS=4`).
   - Dual-GPU parallel distribution:
-    * GPU 0 (`cuda:0`): 7 runs (e.g. Folds 1–2 all seeds + Fold 3 seed 42).
-    * GPU 1 (`cuda:1`): 8 runs (e.g. Fold 3 seeds 123, 2024 + Folds 4–5 all seeds).
-  - Expected wall-clock duration: **~16 to 18 hours** total execution time.
+    * GPU 0 (`cuda:0`): 7 runs (Folds 1–2 all seeds + Fold 3 seed 42).
+    * GPU 1 (`cuda:1`): 8 runs (Fold 3 seeds 123, 2024 + Folds 4–5 all seeds).
+  - Expected wall-clock duration: **~21 to 28 hours** total execution time (up to ~33 hours if all 8 GPU-1 runs hit `max_epochs = 100`).
 - **Output Artifacts:**
-  - Predictions and out-of-fold metrics written to `experiments/EXP-021/slamss_ifs_matched_subject_metrics.csv`.
-  - Paired comparative analysis serialized to `experiments/EXP-021/slamss_ifs_paired_comparative_report.md`.
+  - Per-run telemetry JSONs written atomically to `experiments/EXP-021/run_results/slamss_ifs_fold{fold}_seed{seed}.json`.
+  - Aggregated out-of-fold metrics written to `experiments/EXP-021/slamss_ifs_matched_subject_metrics.csv`.
+  - Paired comparative analysis serialized to `experiments/EXP-021/slamss_ifs_paired_subject_deltas.csv`, `experiments/EXP-021/slamss_ifs_paired_comparison_summary.json`, and `experiments/EXP-021/slamss_ifs_paired_comparative_report.md`.
   - Locked EXP-018 and EXP-019 Model A baselines remain strictly untouched.

@@ -65,10 +65,10 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
   - Stage 1 (Primary C1 & C2 Closure — COMPLETED):
     * Experiment 1 (TSK-06 / EXP-019-K): Calibration-depth learning curve ($k = 1, 3, 4$) under `PREREG_EXP-019_K_CURVE.md` (Common-cohort $N=33$ on $E_4$, Page's $L$-test, Holm-Bonferroni correction). Status: **COMPLETED (DEC-035)**. Monotonic scaling confirmed ($p = 0.01187$); van der Aar replication confirmed ($\Delta_{k=3} = +3.54\text{ pp}$, $p = 0.00030$); marginal saturation steps inconclusive.
     * Experiment 2 (TSK-07 / EXP-019-S3): Unsupervised adaptation re-run ($UA\text{-}2$) under `PREREG_EXP-019_S3_AMENDMENT.md` (DEC-030 unit fix, pre-flight gate, InfoMax). Status: **COMPLETED (DEC-036)**. Sub-benchmark gain ($\Delta = +0.21\text{ pp}$ [95% CI: $+0.04, +0.39$], $p = 0.0322$).
-  - Stage 2 (Final Model Synthesis & Freezing — NEXT IMMEDIATE TASK):
-    * Synthesize findings across TSK-06, TSK-07, context scaling (EXP-018), and agreement (EXP-019); develop, validate, and freeze final project model.
-  - Stage 3 (Definitive Matched Baseline Benchmark — Run Once):
-    * Experiment 3 (TSK-08 / EXP-021): SLAMSS-IFS matched 5-fold cross-validation paired comparative benchmark under `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`. Status: *DEFERRED PENDING FINAL MODEL FREEZE (DEC-034)*.
+  - Stage 2 (Final Model Synthesis & Freezing — COMPLETED & SEALED under DEC-037):
+    * Executed `freeze_final_model.py --device cuda:0` across all 15 frozen Model A checkpoints (`163,940` params). All 15 checkpoints SHA-256 sealed (`frozen_checkpoint_manifest.json`), 141 subject-seed OOF rows extracted (`final_model_oof_subject_metrics.csv`, max fold-pooled parity diff `0.000099`, max per-subject diff `0.000655`), and `STAGE2_MODEL_FREEZE_REPORT.md` generated.
+  - Stage 3 (Definitive Matched Baseline Benchmark — EGM-VERIFIED & LAUNCHED under DEC-037):
+    * Experiment 3 (TSK-08 / EXP-021): Restored 246-night `prep_57738d534b` feature cache, verified 12/12 unit & CUDA AMP tests (`tests/test_stage2_stage3_implementation.py`) and end-to-end dual-GPU `--dry-run`, ratified `DEC-037`, and launched the full 15-run dual-GPU SLAMSS-IFS benchmark (`./experiments/EXP-021/run_stage3_dual_gpu.sh`).
   - Deferred Tasks: EXP-019B (heterogeneity tests), EXP-020 (gated adaptation), and EXP-027 (SleepAccel transfer) remain deferred under DEC-029.
 - **Phase E: Synthesis & Writing (COMPLETE FOR DRAFT v0.1)**
   - Candidate 1 (COMPLETE): Historical split & data leakage audit across EXP-001 to EXP-004 (`EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`, `EXPERIMENTS.md` TA-01 to TA-06).
@@ -85,10 +85,9 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
    - TSK-06 ($k$-learning curve) and TSK-07 (UA-2 rerun) successfully executed and verified on dual-GPU workstation.
    - All empirical metrics serialized to `exp019_k_learning_curve_executed.csv`, `exp019_k_curve_subject_metrics.csv`, and `exp019_ua2_rerun_subject_metrics.csv`.
    - Governance decisions DEC-035 and DEC-036 ratified in `DECISIONS.md`.
-2. **Next Milestone: Stage 2 Final Model Synthesis & Freezing**:
-   - Synthesize evidence from TSK-06 (monotonic personalization scaling $k=1..4$), TSK-07 (modest label-free InfoMax auxiliary gain), context scaling ($L=1200$ vs $L=60$), and clinical agreement.
-   - Specify and freeze the definitive final model architecture for the manuscript.
-3. **Stage 3 Execution: Definitive SLAMSS-IFS Matched Benchmark (TSK-08)**:
-   - Run the audited 5-fold comparative benchmark of SLAMSS-IFS vs. frozen final model under `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`.
-4. **Continuous Git Synchronization**:
-   - Commit and push all Stage 1 execution artifacts, code, tests, and updated governance documents to `origin main` per project policy.
+2. **Stage 2 Final Model Freeze (COMPLETED under DEC-037)**:
+   - All 15 frozen Model A checkpoints SHA-256 hashed (`frozen_checkpoint_manifest.json`) and 141 subject-seed OOF rows verified (`final_model_oof_subject_metrics.csv`, `STAGE2_MODEL_FREEZE_REPORT.md`).
+3. **Stage 3 Execution (TSK-08 / EXP-021 — IN PROGRESS on Dual RTX 3060 GPUs)**:
+   - 15-run official 5,465,768-parameter SLAMSS-IFS benchmark running concurrently on `cuda:0` (7 runs) and `cuda:1` (8 runs) via `./experiments/EXP-021/run_stage3_dual_gpu.sh`, followed automatically by `analyze_tsk08_paired_benchmark.py`.
+4. **Post-Stage 3 Action**:
+   - Inspect `experiments/EXP-021/slamss_ifs_paired_comparative_report.md`, record final benchmark decision in `DECISIONS.md` and `EXPERIMENTS.md`, and push all results to `origin main`.

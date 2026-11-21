@@ -1,0 +1,173 @@
+{
+  "spec_version": "1.1.0",
+  "model_name": "SleepStagingFinalModel_v1.0",
+  "backbone_id": "Model_A_ConventionalCNNBiGRU",
+  "governance_authority": [
+    "DEC-029",
+    "DEC-031",
+    "DEC-033",
+    "DEC-034",
+    "DEC-035",
+    "DEC-036"
+  ],
+  "freeze_status": "FROZEN_AND_PARITY_VERIFIED",
+  "governance_decision": "DEC-037",
+  "architecture": {
+    "module": "exp013_models",
+    "class_name": "ConventionalCNNBiGRU",
+    "hyperparameters": {
+      "d_model": 64,
+      "d_temp": 96,
+      "n_classes": 4,
+      "n_meta": 5,
+      "dropout": 0.2,
+      "use_rcc_loss": true
+    },
+    "exact_trainable_parameters": 163940,
+    "memory_footprint": {
+      "note": "Parameter weights only; full-night BiGRU activation buffers and RTOS stack require separate SRAM budgeting.",
+      "fp32_bytes": 655760,
+      "fp32_kib": 640.39,
+      "fp16_bytes": 327880,
+      "fp16_kib": 320.2,
+      "int8_bytes": 163940,
+      "int8_kib": 160.1,
+      "compression_vs_slamss_paper_666060": 4.0628,
+      "compression_vs_slamss_repo_5465768": 33.3401,
+      "weights_fit_nrf5340_512kb_sram_int8": true,
+      "reference_mcu": "Nordic nRF5340 (512 KB SRAM)"
+    }
+  },
+  "data_and_context_protocol": {
+    "dataset": "PhysioNet BIDSleep (47 healthy adults, 246 usable nights; healthy-adult cohort only)",
+    "cache_fingerprint_dir": "/home/rj2826/ai-research/sleep/sleepchannelnet_v8_preprocessing_audit_work_REAL/cache/prep_57738d534b",
+    "manifests_dir": "experiments/EXP-014/EXP014_MANIFESTS",
+    "authoritative_manifest_csv": "review_package/fold_manifests.csv",
+    "context_len_epochs": 1200,
+    "epoch_duration_sec": 30,
+    "sampling_rate_hz": 1,
+    "neutralize_circadian": true,
+    "input_channels": {
+      "ihr": "X[:, 0, :] (30 samples/epoch, standardized 1 Hz IHR)",
+      "accel": "X[:, 6, :] (30 samples/epoch, standardized 1 Hz triaxial magnitude)",
+      "meta": "[freq, clock=0, time_feat=0, hr_mean, hr_std] (5 channels)"
+    },
+    "target_classes": {
+      "0": "Wake",
+      "1": "Light (N1+N2)",
+      "2": "Deep (N3)",
+      "3": "REM",
+      "-100": "Unscored / Padded (ignore_index)"
+    },
+    "sliding_window_inference": {
+      "engine": "experiments/EXP-018/exp018_inference.py::SlidingWindowPredictor",
+      "short_night_rule": "N <= 1200: right-pad to 1200, pack_padded_sequence(seq_len=N), m=0",
+      "long_night_rule": "N > 1200: W=1200, stride=600, margin=300, boundary anchors w=0 and w=N-1200"
+    }
+  },
+  "population_backbone_training": {
+    "source_experiment": "EXP-018 Phase 2",
+    "checkpoints_dir": "experiments/EXP-018/checkpoints",
+    "checkpoint_pattern": "modelA_L1200_fold{fold}_seed{seed}.pt",
+    "folds": [1, 2, 3, 4, 5],
+    "seeds": [42, 123, 2024],
+    "loss": "CE + 0.01 * RCCLoss (official asymmetric fn/fp weights)",
+    "optimizer": "Adam(lr=1e-4, betas=(0.9, 0.999), weight_decay=0.0, grad_clip=1.0)",
+    "compute_schedule": {
+      "batch_size": 2,
+      "context_len": 1200,
+      "grad_accum": 1,
+      "tokens_per_step": 2400,
+      "optimizer_steps": 3200,
+      "total_tokens": 7680000
+    },
+    "verified_pooled_epoch_oof_3seed_summary": {
+      "aggregation_note": "Pooled across all valid epochs of all 47 subjects, reported as Mean +/- SD across N=3 seeds (distinct from unweighted N=47 participant-mean OOF reported in Stage 2/3 paired comparisons).",
+      "macro_f1_mean": 0.6479,
+      "macro_f1_sd": 0.0053,
+      "accuracy_pct_mean": 66.18,
+      "accuracy_pct_sd": 0.73,
+      "kappa_mean": 0.5078,
+      "kappa_sd": 0.0076
+    }
+  },
+  "tiered_personalization_policy": {
+    "tier_0_zero_shot": {
+      "required_labeled_nights": 0,
+      "required_unlabeled_nights": 0,
+      "description": "Direct frozen population backbone inference with full-night L=1200 context."
+    },
+    "tier_1_unsupervised_auxiliary": {
+      "required_labeled_nights": 0,
+      "required_unlabeled_nights": 2,
+      "method": "InfoMax entropy minimization with marginal diversity regularization (TSK-07 / DEC-036)",
+      "trainable_scope": "head_gru",
+      "scope_regex": "(classifier_head|temporal_gru.*weight_.*l1|temporal_gru.*bias_.*l1|temp_norm)",
+      "lr": 1e-05,
+      "steps": 20,
+      "lambda_div": 1.0,
+      "prior_entropy_nats": 1.3862943611198906,
+      "collapse_abort_threshold_nats": 0.6931471805599453,
+      "wearable_quality_gate": {
+        "note": "On cached z-scored IHR inputs (prep_57738d534b), enforces finite |z| <= 10.0; when raw_bpm_array or unstandardized BPM is supplied, enforces [30.0, 180.0] BPM.",
+        "accel_intra_epoch_var_min": 1e-06,
+        "standardized_hr_abs_z_max": 10.0,
+        "raw_bpm_range": [30.0, 180.0],
+        "cohort_valid_epoch_ratio_min": 0.95,
+        "night_min_valid_epochs": 600,
+        "non_physiological_leakage_max": 0
+      },
+      "verified_evidence": {
+        "delta_macro_f1_pp": 0.21,
+        "ci_95_pp": [0.04, 0.39],
+        "wilcoxon_p_superiority": 0.0322,
+        "win_rate_pct": 58.7,
+        "collapse_abort_count": 0,
+        "classification": "SUB-BENCHMARK GAIN (Safe mild auxiliary; not a substitute for labeled calibration)"
+      }
+    },
+    "tier_2_supervised_calibration": {
+      "required_labeled_nights_recommended_min": 1,
+      "required_labeled_nights_replicated_target": 3,
+      "supported_depths": [1, 2, 3, 4],
+      "method": "Within-person supervised fine-tuning with RCC composite loss (TSK-06 / DEC-035)",
+      "stage_d_fold_configs_json": "experiments/EXP-019/exp019_stage_d_selected_configs.json",
+      "out_of_study_deployment_note": "Within 5-fold CV, adapt_supervised selects the fold-locked Stage D config. For out-of-study deployment, use either the 5-fold backbone ensemble or consensus config (lr=3e-5, epochs=5, scope='all').",
+      "stage_coverage_safety_diagnostic": {
+        "enabled": true,
+        "min_stage_epoch_fraction_warn": 0.02,
+        "rationale": "Flags severely missing-stage calibration nights (e.g., Bidslab34 with 0.68% Deep sleep) that risk catastrophic negative transfer."
+      },
+      "verified_locked_exp019_ha_n46_e2": {
+        "n_subjects": 46,
+        "n_eval_nights": 152,
+        "delta_pp": 1.01,
+        "ci_95_pp": [-0.17, 1.99],
+        "wilcoxon_p": 0.00131,
+        "win_rate_pct": 73.9,
+        "reconciled_verdict": "INCONCLUSIVE (did not meet +1.50 pp practical threshold; substantial subject heterogeneity including negative transfer)"
+      },
+      "verified_evidence_common_cohort_n33_e4": {
+        "pages_l_statistic": 863.0,
+        "pages_l_z": 2.261,
+        "pages_l_p": 0.01187,
+        "k1_delta_pp": 3.0,
+        "k2_delta_pp": 3.13,
+        "k3_delta_pp": 3.54,
+        "k4_delta_pp": 3.96,
+        "marginal_step_3_vs_2_pp": 0.41,
+        "marginal_step_3_vs_2_p": 0.287,
+        "marginal_step_4_vs_3_pp": 0.42,
+        "marginal_step_4_vs_3_p": 0.262,
+        "dimension_1_verdict": "REPLICATION CONFIRMED (van der Aar et al. 2025 3-night healthy-adult replication)",
+        "dimension_2_verdict": "INCONCLUSIVE SCALING (overall Page's L monotonic trend significant, but individual marginal steps beyond k=1 do not reach Holm-Bonferroni significance)"
+      },
+      "verified_evidence_available_cohort_sensitivity_ek": {
+        "k1_n46_delta_pp": 1.92,
+        "k2_n46_delta_pp": 2.72,
+        "k3_n42_delta_pp": 2.57,
+        "k4_n33_delta_pp": 3.96
+      }
+    }
+  }
+}

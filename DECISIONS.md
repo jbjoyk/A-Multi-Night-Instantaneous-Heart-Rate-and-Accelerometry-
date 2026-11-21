@@ -699,4 +699,27 @@
      - However, the magnitude of unsupervised gain ($+0.21\text{ pp}$) is modest compared to 1-night supervised fine-tuning ($+3.00\text{ pp}$). Unsupervised InfoMax alone cannot substitute for labeled calibration; it serves as a mild, safe regularization auxiliary rather than a primary personalization mechanism.
 - Reversible: No; ratified empirical research record.
 
+---
+
+### DEC-037 (2026-11-21): Stage 2 Final Model Freeze (`SleepStagingFinalModel_v1.0`) and Stage 3 (TSK-08 / EXP-021) Execution Launch Authorization
+
+- Date: 2026-11-21
+- Authoritative Sources: `experiments/STAGE2_FINAL_MODEL/final_model_spec.json`, `FINAL_MODEL_SYNTHESIS_AND_FREEZE_SPEC.md`, `STAGE2_MODEL_FREEZE_REPORT.md`, `frozen_checkpoint_manifest.json`, `final_model_oof_subject_metrics.csv`, `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md`, User Execution Authorization (`2026-11-21T07:35:17+06:00`)
+- Context: Completing the Stage 2 milestone established under `DEC-034` (synthesizing and freezing the project's definitive model following Stage 1 completion) and lifting the `DEC-034` deferral gate to launch the single definitive matched 5-fold comparative benchmark against official SLAMSS-IFS (Stage 3 / TSK-08 / EXP-021).
+- Ratified Governance & Technical Decisions:
+  1. **Permanent Freeze of `SleepStagingFinalModel_v1.0` (Stage 2 Complete):**
+     - **Population Backbone:** Model A (`ConventionalCNNBiGRU`, exactly **163,940 trainable parameters**; ~160.1 KiB INT8 weight footprint, achieving **4.06x** compression vs. SLAMSS-IFS paper text [666,060 params] and **33.34x** vs. official repository [5,465,768 params]).
+     - **Temporal Context & Inference:** Full-night context $L = 1200$ epochs (10 hours) with `SlidingWindowPredictor` probability stitching and circadian neutralization (`[freq, 0, 0, hr_mean, hr_std]`).
+     - **Cryptographic Seal & Parity Verification:** All 15 locked EXP-018 Phase 2 checkpoints (`modelA_L1200_fold{1..5}_seed{42,123,2024}.pt`) were SHA-256 hashed (`frozen_checkpoint_manifest.json`) and evaluated across all 47 subjects (141 subject-seed rows in `final_model_oof_subject_metrics.csv`), achieving a maximum fold-pooled Macro-F1 discrepancy of **`0.000099`** ($< 0.01\text{ pp}$) and maximum per-subject discrepancy of **`0.000655`** ($0.065\text{ pp}$) against locked EXP-018 Phase 2 JSONs.
+     - **Unweighted 47-Subject Participant-Mean OOF Reference (`N = 47`, 3-seed means):** Macro-F1 = **$64.79\% \pm 7.45\text{ pp}$**, Accuracy = **$66.18\% \pm 6.79\text{ pp}$**, Weighted-F1 = **$65.96\% \pm 6.73\text{ pp}$**, Cohen's $\kappa = \mathbf{0.5078 \pm 0.1011}$ (Wake F1 $62.70\%$, Light F1 $66.61\%$, Deep F1 $66.76\%$, REM F1 $63.09\%$).
+     - **Tiered Personalization Policy Frozen:** Tier 0 (Zero-Shot $L=1200$), Tier 1 (Optional Quality-Gated `head_gru` InfoMax auxiliary, $+0.21\text{ pp}$, `SUB-BENCHMARK GAIN` under `DEC-036`), Tier 2 (Supervised within-person fine-tuning $k \in \{1..4\}$ with non-mutating stage-coverage safety diagnostics, monotonic scaling confirmed under `DEC-035`).
+  2. **EGM Pre-Execution Hardening & Protocol Parity Lock for Stage 3 (TSK-08 / EXP-021):**
+     - **Circadian Input Parity:** Locked `neutralize_circadian=True` (`x_meta = [freq, 0, 0, hr_mean, hr_std]`) in `PREREG_SLAMSS_IFS_MATCHED_BENCHMARK.md` §3 Item 4 so official SLAMSS-IFS and frozen Model A receive identical input features without circadian confounding (`DEC-024`).
+     - **Zero-Leakage Decoder & FP32 Composite Loss:** `OfficialSLAMSSIFSWrapper` passes all-zero `trg_zeros` with `teacher_forcing_ratio=0.0` (remediating upstream $t=0$ ground-truth label leakage), and `OfficialSLAMSSCompositeLoss` computes `CE + 0.01 * RCCLoss` strictly in FP32 with AMP autocast disabled.
+     - **Training Budget & Batched Validation:** `micro_batch_size = 4`, `effective_batch_size = 4` (`accum_steps = 1`, 42–44 optimizer steps/epoch), `max_epochs = 100` (up to 4,200–4,400 steps $\ge$ Model A's 3,200 steps), `min_epochs = 40` (~1,700-step floor), `patience = 25` on inner-validation Macro-F1, and batched validation inference (`val_batch_size = 16`).
+  3. **Authorization to Launch Stage 3 (TSK-08 / EXP-021):**
+     - With Stage 2 sealed and all 12 unit/contract/CUDA-AMP tests + dual-GPU dry runs passing (0 blocking or major drift items remaining), the `DEC-034` deferral gate is formally lifted and Stage 3 dual-GPU execution (7 runs on `cuda:0`, 8 runs on `cuda:1`) is authorized for immediate launch.
+- Reversible: No; ratified model freeze and benchmark launch authorization.
+
+
 
