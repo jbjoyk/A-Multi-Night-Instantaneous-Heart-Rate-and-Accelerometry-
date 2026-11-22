@@ -102,7 +102,11 @@
   - **Candidate 3 (COMPLETE):** Design-informed exploratory preregistration drafts authored with prior-access disclosures: EXP-019B (`EXP019B_PREREGISTRATION_DRAFT.md`, SHA-256: `30ca80f1...`) and EXP-020 (`EXP020_PREREGISTRATION_DRAFT.md`, SHA-256: `c226cc41...`).
   - **Candidate 4 (COMPLETE / AUDITED):** BIDSleep cohort data and signal integrity audit (`BIDSLEEP_COHORT_DATA_INTEGRITY_AUDIT.md`); reconciled 47 vs 46 subject denominators, 7 excluded nights across 6 subjects, HealthKit IHR effective sampling rate (median 0.197 Hz, IQR 0.073 Hz), `Bidslab34` calibration Deep sleep scarcity (0.68%, 15 epochs), and evaluable cohort denominators across $k=1..4$ ($47, 46, 42, 33$).
   - **Candidate 5 / Phase 3 Polish (COMPLETE):** Full working manuscript draft Sections 1–8 authored (`MANUSCRIPT_DRAFT_v0.1.md`) with evidence-to-claim matrix (`MANUSCRIPT_EVIDENCE_TO_CLAIM_MATRIX.csv` claims CLM-001 through CLM-040) and open unresolved evidence register (`MANUSCRIPT_UNRESOLVED_EVIDENCE.md`). Resolved FIND-B-01 (multi-night LoA scope), FIND-B-02 (micro-data information loss), FIND-B-03 (LoA uncertainty bounds in Table 1), and FIND-B-04 (empirical WASO model underestimation).
-  - Write manuscript adhering strictly to pre-registered rules and honest negative/inconclusive reporting.
+  - **Stage D (100% COMPLETE under `DEC-040` & `DEC-041`, Commit `945c7c1`):**
+    - `EXP-019B` (CPU exploratory heterogeneity closure): 0/12 tests significant after BH-FDR ($q \ge 0.5673$).
+    - `EXP-020` (`cuda:0` exploratory regularized/gated closure): `GATE_tau` $+1.33\text{ pp}$ vs. ZS ($p_{\text{Holm}}=0.0028$, `Bidslab34` abstained); `FT-2-KL` $+1.03\text{ pp}$ ($p_{\text{Holm}}=0.0030$).
+    - `EXP-027` & `EXP-028` (`cuda:1` strictly zero-shot external validation on PhysioNet SleepAccel v1.0.0, `qc_clean` $n=25$, `all` $n=31$): Model A achieved statistical parity with 33.34x larger SLAMSS-IFS (`prob_ensemble` `62.94%` vs. `62.79%` Macro-F1, $p=0.9789$; `mean_single_model` `-0.57 pp`, $p=0.5782$), with full Bland-Altman (1999) PSG agreement and raw paired tuples persisted.
+  - **Ready for Stage E:** Author `MANUSCRIPT_DRAFT_v0.2.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), and Stage D (`DEC-040`, `DEC-041`).
 
 ---
 

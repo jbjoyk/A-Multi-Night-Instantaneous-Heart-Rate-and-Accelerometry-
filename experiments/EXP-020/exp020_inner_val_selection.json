@@ -1,0 +1,49 @@
+{
+  "folds": {
+    "1": {
+      "lambda_kl_star": 0.1,
+      "lambda_tie_breaker_used": false,
+      "tau_star": 0.05,
+      "tau_tie_breaker_used": false,
+      "tau_comb_star": 0.05,
+      "arm_c_gate_status": "UNLOCKED",
+      "delta_kl_vs_zs_inner": 0.021250618560434774
+    },
+    "2": {
+      "lambda_kl_star": 0.1,
+      "lambda_tie_breaker_used": false,
+      "tau_star": 0.01,
+      "tau_tie_breaker_used": true,
+      "tau_comb_star": 0.01,
+      "arm_c_gate_status": "FOLD_2_COMBINED_SKIPPED_BY_INNER_VAL_GATE",
+      "delta_kl_vs_zs_inner": 0.026581774896050535
+    },
+    "3": {
+      "lambda_kl_star": 0.1,
+      "lambda_tie_breaker_used": false,
+      "tau_star": 0.01,
+      "tau_tie_breaker_used": true,
+      "tau_comb_star": 0.01,
+      "arm_c_gate_status": "FOLD_3_COMBINED_SKIPPED_BY_INNER_VAL_GATE",
+      "delta_kl_vs_zs_inner": 0.035267344873935416
+    },
+    "4": {
+      "lambda_kl_star": 1.0,
+      "lambda_tie_breaker_used": false,
+      "tau_star": 0.01,
+      "tau_tie_breaker_used": true,
+      "tau_comb_star": 0.01,
+      "arm_c_gate_status": "UNLOCKED",
+      "delta_kl_vs_zs_inner": 0.007964945355727338
+    },
+    "5": {
+      "lambda_kl_star": 0.1,
+      "lambda_tie_breaker_used": false,
+      "tau_star": 0.01,
+      "tau_tie_breaker_used": true,
+      "tau_comb_star": 0.01,
+      "arm_c_gate_status": "FOLD_5_COMBINED_SKIPPED_BY_INNER_VAL_GATE",
+      "delta_kl_vs_zs_inner": 0.0288473731485397
+    }
+  }
+}

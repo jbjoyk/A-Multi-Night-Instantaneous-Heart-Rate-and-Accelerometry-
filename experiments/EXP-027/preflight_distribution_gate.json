@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "n_records": 31,
+  "n_qc_pass": 25,
+  "raw_mag_median_g": 0.9972924563346992,
+  "raw_hr_median_bpm": 64.0,
+  "std_ihr_median": 0.0,
+  "std_acc_median": 0.0,
+  "std_ihr_iqr": 1.0,
+  "std_acc_iqr": 0.7326064109802246,
+  "bidsleep_ref": {
+    "sample_n": 20,
+    "ihr_med": 0.0,
+    "acc_med": 0.0
+  }
+}

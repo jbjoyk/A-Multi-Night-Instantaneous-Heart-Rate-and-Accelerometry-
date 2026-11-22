@@ -2088,9 +2088,9 @@
     "semantic_hash": ""
   },
   "docs/designs/SITEMAP.md": {
-    "mtime": 1794817156.1744418,
-    "seen": 1795184615.2908037,
-    "ast_hash": "38de0a1799e0e6d2bc5f46f3434ac838",
+    "mtime": 1795367499.4768949,
+    "seen": 1795367643.874714,
+    "ast_hash": "29c972ac7e3694d677248bf1f96e6c4b",
     "semantic_hash": ""
   },
   "docs/designs/exp019_adaptation.md": {
@@ -3678,9 +3678,81 @@
     "semantic_hash": ""
   },
   "docs/designs/exp019b_exp020_closure_spec.md": {
-    "mtime": 1795345626.8099787,
-    "seen": 1795346407.870142,
-    "ast_hash": "2b07370eea1a5d0584ad56e7d41907aa",
+    "mtime": 1795365311.3584414,
+    "seen": 1795365523.6537058,
+    "ast_hash": "2e92bf97bdddbb2ba9bbb294e2fe6260",
+    "semantic_hash": ""
+  },
+  "docs/designs/exp027_exp028_sleepaccel_external_validation.md": {
+    "mtime": 1795367497.6408823,
+    "seen": 1795367643.8747172,
+    "ast_hash": "56d1ad61523db80d0517e2719c379fdb",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-019B/run_exp019b_heterogeneity_audit.py": {
+    "mtime": 1795368343.0885954,
+    "seen": 1795372877.2938097,
+    "ast_hash": "d698d81a05c751e0ed52b02df14af80a",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-020/run_exp020_regularized_gated_adaptation.py": {
+    "mtime": 1795368421.534125,
+    "seen": 1795372877.2938108,
+    "ast_hash": "d12071adadc674b448de695bce5351f6",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-027/preflight_distribution_gate.json": {
+    "mtime": 1795372301.1275687,
+    "seen": 1795372877.293835,
+    "ast_hash": "2f10b5cc0482c374b2557253b676508a",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-027/prepare_sleepaccel.py": {
+    "mtime": 1795372280.103742,
+    "seen": 1795372877.293836,
+    "ast_hash": "7fe9eeb778c905c26a7dd42bd1080be4",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-027/run_exp027_sleepaccel_inference.py": {
+    "mtime": 1795368350.3616445,
+    "seen": 1795372877.2938368,
+    "ast_hash": "08fb51748e4b68057c4fc6e0d6334437",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-027/run_exp028_sleepaccel_bland_altman.py": {
+    "mtime": 1795368307.6813564,
+    "seen": 1795372877.2938373,
+    "ast_hash": "20b1dd42adbff52c5bdcc716fd11f5c7",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-027/sleepaccel_sha256_manifest.json": {
+    "mtime": 1795372289.1943617,
+    "seen": 1795372877.293838,
+    "ast_hash": "7ab18e12dc0c72b2f36ed340fc9bd42f",
+    "semantic_hash": ""
+  },
+  "tests/test_exp019b_features.py": {
+    "mtime": 1795368418.0281012,
+    "seen": 1795372877.2938695,
+    "ast_hash": "18512d86fc5a811bf4fda31b9af9ad17",
+    "semantic_hash": ""
+  },
+  "tests/test_exp020_preflight.py": {
+    "mtime": 1795368477.9325056,
+    "seen": 1795372877.2938704,
+    "ast_hash": "7f1e32a5a47df98287aa463642b98cda",
+    "semantic_hash": ""
+  },
+  "tests/test_exp027_exp028_preflight.py": {
+    "mtime": 1795368351.910655,
+    "seen": 1795372877.2938714,
+    "ast_hash": "26c96cd44ee787bd73ec1da0df77f7d5",
+    "semantic_hash": ""
+  },
+  "docs/audits/STAGE_D_PRE_EXECUTION_DRIFT_REPORT.md": {
+    "mtime": 1795372393.9793158,
+    "seen": 1795372877.2939172,
+    "ast_hash": "91b39d664aee77844a9a99d9c0a72964",
     "semantic_hash": ""
   }
 }

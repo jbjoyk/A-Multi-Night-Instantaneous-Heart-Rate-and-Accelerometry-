@@ -1,0 +1,49 @@
+{
+  "classification": "DESIGN_INFORMED_EXPLORATORY_CLOSURE",
+  "n_family1": 46,
+  "n_family2": 47,
+  "n_responders_gt0": 34,
+  "n_non_responders_le0": 12,
+  "oldham_headroom": {
+    "spearman_rho": 0.037560133289642424,
+    "p_value": 0.8042722245981586
+  },
+  "subgroup_mann_whitney": {
+    "min_stage_frac": {
+      "responder_median": 0.08668091740171739,
+      "non_responder_median": 0.06611162983712003,
+      "mann_whitney_u": 236.0,
+      "mann_whitney_p": 0.4307010054776391
+    },
+    "stage_entropy": {
+      "responder_median": 1.7557635529676918,
+      "non_responder_median": 1.7806147112001178,
+      "mann_whitney_u": 202.0,
+      "mann_whitney_p": 0.9700676353435369
+    },
+    "eff_ihr_hz": {
+      "responder_median": 0.11695313178872638,
+      "non_responder_median": 0.15042003211803984,
+      "mann_whitney_u": 210.0,
+      "mann_whitney_p": 0.890567606328032
+    },
+    "missingness_rate": {
+      "responder_median": 0.005793608960632515,
+      "non_responder_median": 0.00954558385047359,
+      "mann_whitney_u": 185.0,
+      "mann_whitney_p": 0.6433106045060691
+    },
+    "baseline_hr_mean": {
+      "responder_median": 66.4414524320782,
+      "non_responder_median": 69.0524828601653,
+      "mann_whitney_u": 153.0,
+      "mann_whitney_p": 0.20648504946086343
+    },
+    "baseline_hr_iqr": {
+      "responder_median": 6.5,
+      "non_responder_median": 7.0,
+      "mann_whitney_u": 183.5,
+      "mann_whitney_p": 0.6116347368735251
+    }
+  }
+}

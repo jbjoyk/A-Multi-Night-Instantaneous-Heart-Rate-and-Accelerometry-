@@ -1,0 +1,88 @@
+{
+  "classification": "DESIGN_INFORMED_EXPLORATORY_CLOSURE",
+  "n_outer_subjects": 46,
+  "environment": {
+    "python": "3.14.7",
+    "torch": "2.14.1+cu130",
+    "cuda_available": true,
+    "device": "cuda:0",
+    "gpu_name": "NVIDIA GeForce RTX 3060"
+  },
+  "arms": {
+    "FT-2-KL": {
+      "mean_macro_f1": 0.6561649923808869,
+      "delta_vs_zs_pp": 1.0329644233338025,
+      "delta_vs_zs_ci95_pp": [
+        -0.10871866239656296,
+        2.008083586894797
+      ],
+      "wilcoxon_p_vs_zs_raw": 0.0014810148917661081,
+      "delta_vs_ft2_pp": 0.01741410784885744,
+      "delta_vs_ft2_ci95_pp": [
+        -0.0640052534110014,
+        0.1053009209501623
+      ],
+      "tail_p5_pp": -5.36035055482796,
+      "tail_p10_pp": -1.848063742272025,
+      "tail_min_pp": -15.140074665424244,
+      "n_harm_le_neg5pp": 3,
+      "wilcoxon_p_vs_zs_holm": 0.0029620297835322162
+    },
+    "GATE_tau": {
+      "mean_macro_f1": 0.6591463544754063,
+      "delta_vs_zs_pp": 1.3311006327857313,
+      "delta_vs_zs_ci95_pp": [
+        0.48661414417631005,
+        2.1224056599965695
+      ],
+      "wilcoxon_p_vs_zs_raw": 0.0009186147969957985,
+      "delta_vs_ft2_pp": 0.3155503173007862,
+      "delta_vs_ft2_ci95_pp": [
+        -0.10226814994651913,
+        1.0489191018488777
+      ],
+      "tail_p5_pp": -2.609592933702558,
+      "tail_p10_pp": -1.5853527232940223,
+      "tail_min_pp": -6.404080191410593,
+      "n_harm_le_neg5pp": 2,
+      "wilcoxon_p_vs_zs_holm": 0.0027558443909873956
+    },
+    "FT-2-KL_GATE_tau": {
+      "mean_macro_f1": 0.6558524083682833,
+      "delta_vs_zs_pp": 1.001706022073438,
+      "delta_vs_zs_ci95_pp": [
+        -0.13971064887479803,
+        1.973729165978802
+      ],
+      "wilcoxon_p_vs_zs_raw": 0.0025325910524721437,
+      "delta_vs_ft2_pp": -0.013844293411507202,
+      "delta_vs_ft2_ci95_pp": [
+        -0.12575168528520392,
+        0.09103401486962952
+      ],
+      "tail_p5_pp": -5.36035055482796,
+      "tail_p10_pp": -1.848063742272025,
+      "tail_min_pp": -15.140074665424244,
+      "n_harm_le_neg5pp": 3,
+      "wilcoxon_p_vs_zs_holm": 0.0029620297835322162
+    }
+  },
+  "bidslab34_audit": {
+    "subject_id": "Bidslab34",
+    "fold": 2,
+    "min_stage_frac_cal": 0.0068368277119416595,
+    "ZS": 0.6005945660379097,
+    "FT-2": 0.4397603037544151,
+    "FT-2-KL": 0.44919381938366726,
+    "GATE_tau": 0.6005945660379097,
+    "GATE_abstained": true,
+    "FT-2-KL_GATE_tau": 0.44919381938366726,
+    "arm_c_unlocked": false,
+    "lambda_kl_star": 0.1,
+    "tau_star": 0.01,
+    "GATE_fixed_0.01": 0.6005945660379097,
+    "GATE_fixed_0.02": 0.6005945660379097,
+    "GATE_fixed_0.03": 0.6005945660379097,
+    "GATE_fixed_0.05": 0.6005945660379097
+  }
+}
