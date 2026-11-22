@@ -1902,9 +1902,9 @@
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1795344540.163057,
-    "seen": 1795345041.3414457,
-    "ast_hash": "c9d0393d7aa74b3f24415f489570f141",
+    "mtime": 1795346374.5662062,
+    "seen": 1795346407.8701172,
+    "ast_hash": "38023b275c807a058a880bd2dd4ab5a4",
     "semantic_hash": ""
   },
   "EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md": {
@@ -1920,9 +1920,9 @@
     "semantic_hash": ""
   },
   "HANDOFF.md": {
-    "mtime": 1795344892.3526323,
-    "seen": 1795345041.3414483,
-    "ast_hash": "523bd470f9ead531c23560f18c513d73",
+    "mtime": 1795346397.3443537,
+    "seen": 1795346407.8701193,
+    "ast_hash": "4cc7b093c67963e49e9c6ed29da306cd",
     "semantic_hash": ""
   },
   "NOTEBOOK_STATE.md": {
@@ -3669,6 +3669,18 @@
     "mtime": 1795344260.730576,
     "seen": 1795345041.3415387,
     "ast_hash": "7a01fe07d2500bff9cd66be759955c7b",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-019/reconcile_tsk06_clean_zs.py": {
+    "mtime": 1795346173.202937,
+    "seen": 1795346407.8700612,
+    "ast_hash": "0cc6e410921d7ab9ec51121a4ca727e6",
+    "semantic_hash": ""
+  },
+  "docs/designs/exp019b_exp020_closure_spec.md": {
+    "mtime": 1795345626.8099787,
+    "seen": 1795346407.870142,
+    "ast_hash": "2b07370eea1a5d0584ad56e7d41907aa",
     "semantic_hash": ""
   }
 }
