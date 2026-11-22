@@ -31,3 +31,6 @@ predictions/
 cache/
 experiments/EXP-027/cache/
 data/external/
+
+# Runtime execution logs
+logs/

@@ -931,6 +931,61 @@ state.
 
 ---
 
+## 8.4 EXP-019B — Exploratory Subject-Level Adaptation Heterogeneity Audit
+
+- Date: 2026-11-23 (Executed under DEC-021 & DEC-040; Code Commit `945c7c1`)
+- Status: **EXECUTED / VERIFIED (DEC-040)** (Exploratory design-informed closure; cleared via `STAGE_D_POST_EXECUTION_EGM_DRIFT_REPORT.md` with 0 Blocking, 0 Major)
+- Spec Authority: [`docs/designs/exp019b_exp020_closure_spec.md`](./docs/designs/exp019b_exp020_closure_spec.md)
+- Execution Driver: `experiments/EXP-019B/run_exp019b_heterogeneity_audit.py` (CPU-only, `OMP_NUM_THREADS=4`; pre-flight verified via `tests/test_exp019b_features.py`).
+- Research Question: Can individual subject adaptation response (EXP-019 `FT-2 - ZS`, $N=46$) or Model A vs. SLAMSS-IFS gap (EXP-021, $N=47$) be predicted by baseline physiological, recording quality, or stage-representation covariates?
+- Predictors Tested: 6 pre-registered features (`min_stage_frac`, `stage_entropy`, `eff_ihr_hz`, `missingness_rate`, `baseline_hr_mean`, `baseline_hr_iqr`).
+- Execution Results:
+  - All 12 primary hypothesis tests were null after Benjamini-Hochberg FDR correction ($q_{\text{family}} \ge 0.5673$, $q_{\text{pooled}} \ge 0.5913$).
+  - Oldham's method headroom check: $\rho = +0.0376, p = 0.8043$ (no baseline dependency).
+  - Subgroup checks ($N=34$ improved vs. $N=12$ harmed): no statistically significant feature differences.
+- Decision Categorization: Confirms that subject adaptation response heterogeneity is not driven by simple baseline HR, sampling rate, or stage-representation statistics.
+- Output Artifacts: `experiments/EXP-019B/{exp019b_subject_features.csv, exp019b_correlation_summary.csv, exp019b_diagnostics.json, EXP019B_CLOSURE_REPORT.md}`.
+
+---
+
+## 8.5 EXP-020 — Exploratory Regularized and Gated Adaptation Closure
+
+- Date: 2026-11-23 (Executed under DEC-021 & DEC-040; Code Commit `945c7c1`)
+- Status: **EXECUTED / VERIFIED (DEC-040)** (Exploratory closure; cleared via `STAGE_D_POST_EXECUTION_EGM_DRIFT_REPORT.md` with 0 Blocking, 0 Major)
+- Spec Authority: [`docs/designs/exp019b_exp020_closure_spec.md`](./docs/designs/exp019b_exp020_closure_spec.md)
+- Execution Driver: `experiments/EXP-020/run_exp020_regularized_gated_adaptation.py` on `cuda:0` (NVIDIA RTX 3060 12GB; pre-flight verified via `tests/test_exp020_preflight.py`).
+- Cohort: $N=46$ outer test participants (152 eval nights), identical to EXP-019; splits strictly from `EXP014_MANIFESTS/fold_{1..5}.json`.
+- Research Question: Does output-distribution regularization (`FT-2-KL`) or calibration-stage gating (`GATE_tau`) prevent severe negative transfer while preserving adaptation gains?
+- Execution Results:
+  - `FT-2-KL`: Macro-F1 = `0.6562` ($\bar{\Delta}_{\text{vs ZS}} = +1.03\text{ pp}$ [95% CI: $-0.11, +2.01\text{ pp}$], $p_{\text{Holm}} = 0.0030$; $\bar{\Delta}_{\text{vs FT-2}} = +0.02\text{ pp}$, $N_{\text{harm}} = 3$, worst outlier `-15.14 pp`).
+  - `GATE_tau`: Macro-F1 = `0.6591` ($\bar{\Delta}_{\text{vs ZS}} = +1.33\text{ pp}$ [95% CI: $+0.49, +2.12\text{ pp}$], $p_{\text{Holm}} = 0.0028$; $\bar{\Delta}_{\text{vs FT-2}} = +0.32\text{ pp}$, $N_{\text{harm}} = 2$). Successfully cut worst-case degradation from `-16.34 pp` to `-6.40 pp` by abstaining `Bidslab34` ($\text{min\_stage\_frac}_{\text{cal}} = 0.0068 < \tau^* = 0.01$).
+  - `FT-2-KL_GATE_tau`: Macro-F1 = `0.6559` ($\bar{\Delta}_{\text{vs ZS}} = +1.00\text{ pp}$, $p_{\text{Holm}} = 0.0030$; Arm c inner-val gate skipped Folds 2, 3, 5).
+- Decision Categorization: Adopt `GATE_tau` as the recommended exploratory safety guardrail against severe missing-stage negative transfer for Tier-2 adaptation under DEC-040.
+- Output Artifacts: `experiments/EXP-020/{exp020_inner_val_selection.json, exp020_subject_metrics.csv, exp020_summary_metrics.json, EXP020_CLOSURE_REPORT.md}`.
+
+---
+
+## 8.6 EXP-027 & EXP-028 — Zero-Shot External PSG Validation & Bland-Altman Agreement on PhysioNet SleepAccel v1.0.0
+
+- Date: 2026-11-23 (Executed under DEC-021 & DEC-041; Code Commit `945c7c1`)
+- Status: **EXECUTED / VERIFIED (DEC-041)** (Strictly zero-shot external validation; cleared via `STAGE_D_PRE_EXECUTION_DRIFT_REPORT.md` and `STAGE_D_POST_EXECUTION_EGM_DRIFT_REPORT.md` with 0 Blocking, 0 Major)
+- Spec Authority: [`docs/designs/exp027_exp028_sleepaccel_external_validation.md`](./docs/designs/exp027_exp028_sleepaccel_external_validation.md)
+- Execution Driver: `experiments/EXP-027/run_exp027_sleepaccel_inference.py` and `experiments/EXP-027/run_exp028_sleepaccel_bland_altman.py` on `cuda:1` (NVIDIA RTX 3060 12GB; verified via `tests/test_exp027_exp028_preflight.py`).
+- External Dataset: PhysioNet SleepAccel v1.0.0 (DOI: `10.13026/hmhs-py35`, $N=31$ Apple Watch + in-lab PSG reference). Pre-flight distribution gate PASSED. Excluded 6 subjects (5 short recordings $<600$ epochs: `3951299`, `5132496`, `7596675`, `8443592`, `8692249`; 1 ACC dropout `cov_mo = 0.136`: `7749105`). Evaluated clean cohort: $n_{\text{qc\_pass}} = 25$. Exactly 3 subjects had zero reference epochs for certain PSG stages (`1455390`, `5132496`, `7749105`), resulting in 96 expected runtime warnings handled with zero NaNs.
+- Model Comparison: 15 frozen Model A checkpoints (`163,940` params) vs. 15 frozen EXP-021 Official SLAMSS-IFS checkpoints (`5,465,768` params; 33.34x larger).
+- Execution Results (EXP-027 4-Class Classification):
+  - Primary (`qc_clean`, $n=25$, `mean_single_model`): Model A `60.51%` vs. SLAMSS-IFS `61.08%` Macro-F1 ($\bar{\Delta} = -0.57\text{ pp}$ [95% CI: $-2.13, +0.94\text{ pp}$], Wilcoxon $p = 0.5782$, $d_z = -0.14$, `10W/15L`).
+  - Secondary (`qc_clean`, $n=25$, `prob_ensemble`): Model A **`62.94%`** vs. SLAMSS-IFS **`62.79%`** Macro-F1 ($\bar{\Delta} = +0.15\text{ pp}$ [95% CI: $-1.51, +1.86\text{ pp}$], Wilcoxon $p = 0.9789$, $d_z = +0.03$).
+  - Sensitivity (`all_n31`, $n=31$): `mean_single_model` $\bar{\Delta} = -1.62\text{ pp}$ ($p = 0.3468$); `prob_ensemble` $\bar{\Delta} = -1.20\text{ pp}$ (`62.94%` vs. `64.14%`, $p = 0.5551$).
+  - Claim Boundary: Non-significant difference reported strictly as **no statistically significant difference / empirical parity** under paired testing (TOST equivalence not claimed).
+- Execution Results (EXP-028 Clinical Sleep-Summary Agreement):
+  - Model A vs. PSG (`prob_ensemble`, $n=25$): TST bias `+12.22` min (95% LoA $[-23.18, +47.62]$, $r=0.9099$); SOL bias `+2.44` min (non-parametric median `+2.50` min); WASO bias `-13.82` min; SE bias `+2.71%`; Deep% bias `+10.23%`; REM% bias `+9.35%`.
+  - Bias in Deep% and REM% reflects Dreem ambulatory EEG vs. in-lab PSG reference difference (label-prior shift).
+  - Remediated FIND-B-02 by persisting 744 raw paired subject-night tuples (`exp028_sleepaccel_raw_paired_tuples.csv`).
+- Output Artifacts: `experiments/EXP-027/{preflight_distribution_gate.json, sleepaccel_qc_summary.csv, sleepaccel_sha256_manifest.json, exp027_per_subject_metrics.csv, exp027_summary.json}` and `experiments/EXP-028/{exp028_sleepaccel_raw_paired_tuples.csv, exp028_sleepaccel_bland_altman_summary.csv}`.
+
+---
+
 ## 9. Research Trajectory (v4 Working Direction)
 
 1. **What we started with**: SleepChannelNet baseline (Macro-F1 ~0.678) and a proxy implementation of SLAMSS-IFS.

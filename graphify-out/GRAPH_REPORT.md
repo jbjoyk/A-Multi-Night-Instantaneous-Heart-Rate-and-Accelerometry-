@@ -1,39 +1,39 @@
 # Graph Report - 02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels  (2026-11-23)
 
 ## Corpus Check
-- 603 files · ~624,226 words
+- 610 files · ~628,389 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 104 file(s) not represented in the graph (top: .csv 83, .log 11, .ipynb 6)
+- Unclassified: 110 file(s) not represented in the graph (top: .csv 89, .log 11, .ipynb 6)
 
 ## Summary
-- 4423 nodes · 8140 edges · 375 communities (219 shown, 156 thin omitted)
-- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 665 edges (avg confidence: 0.92)
+- 4438 nodes · 8155 edges · 386 communities (216 shown, 170 thin omitted)
+- Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 666 edges (avg confidence: 0.92)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `945c7c13`
+- Built from commit: `bfdfae43`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - ExperimentEngine
-- torch
 - os
-- test_nas_iteration1_eval_stress.py
+- os
+- adapt_supervised_ft
 - DatasetGate
 - ResearchGovernor
 - EXP-019: Multi-Night Within-Person Sleep Staging Adaptation Specification
 - .__init__
 - EXP-027 & EXP-028: Strictly Zero-Shot External Validation on PhysioNet SleepAccel v1.0.0
-- load_night_features
+- compute_ece
 - evaluate_validation_sweep
 - EXP-019: Multi-Night Within-Person Sleep Staging Adaptation Specification
 - SLAMSSDataset
 - EXP-019: Multi-Night Within-Person Sleep Staging Adaptation Specification
 - ResearchMemoryValidator
 - Design Specification: EXP-019 Phase A3 Diagnostic Extraction and Reconstruction
-- run_exp018_execution.py
-- numpy
+- run_governed_preflight
+- DecisionEngine
 - Tensor
 - Manuscript Draft: Sections 1–8 (Version 0.1)
 - Tensor
@@ -44,8 +44,8 @@
 - evaluate_dataset
 - evaluate_dataset
 - .__init__
-- run_exp019b_heterogeneity_audit.py
-- MultiScaleLocalUltradianLatentNorm
+- numpy
+- extract_exp019_phase_a3_outputs.py
 - test_frozen_test_shield.py
 - test_simulation_safety.py
 - .__init__
@@ -54,9 +54,9 @@
 - .__init__
 - PriorCalibratedBoundedMarginPyramidCNNBiGRU
 - Decisions
-- extract_exp019_phase_a3_outputs.py
-- test_exp019_invariants.py
-- audit_calibration_stage_coverage
+- ConventionalCNNBiGRU
+- profile_official_slamss_ifs_hw.py
+- train_and_save_checkpoint
 - .__init__
 - SLEEP Research Direction (v3, full)
 - Forensic Split Integrity and Data-Leakage Audit: EXP-001 to EXP-004
@@ -68,8 +68,8 @@
 - Experiments
 - Independent Conformance and Evidence Audit: Phase B and Phase C Execution
 - MultiScaleTemporalFusion
-- CircadianAnchoredCrossAttention
-- evaluate_outer_test
+- CircadianCrossAttentionCNNBiGRU
+- MaskedTemporalInstanceNorm
 - 2. Objective-by-Objective Goal Attainment Audit
 - 3. The Six Testable Explanations (Falsifiable Hypotheses)
 - run_tests
@@ -77,28 +77,28 @@
 - EGM Synchronization Review Report: Post-Sync Audit of Research Workspace
 - SLEEP Research Direction (v4, full and consolidated)
 - 🟡 Majors (Methodology, Optimization & Codebase Parity)
-- ACCEncoder
+- EXP-006/sleep_adaptive_net.py
 - EXP012_AUDIT/EXP012_AUDIT_REPORT.md
 - SUPERVISOR_REVIEW_EXP012/EXP012_AUDIT_REPORT.md
 - CircadianCrossModalCNNBiGRU
 - Independent Adversarial Research Review & Methodological Audit: Phase B (EXP-019 Sleep-Summary Agreement)
 - candidate_hypotheses
 - 2. Core Architectural Components
-- EXP-006/sleep_adaptive_net.py
+- .verify_dataset_structure
 - Prioritized Findings & Resolution Decisions
 - 4.1 Experiment 1 (TSK-06): Supervised Personalization Learning Curve ($k = 1, 3, 4$)
 - PRE-REGISTRATION ADDENDUM: EXP-019 Calibration-Depth Learning Curve (k = 1, 3, 4)
 - PRE-REGISTRATION AMENDMENT: EXP-019 Secondary Hypothesis S3 (UA-2 Unsupervised Adaptation Re-Run)
-- os
+- ClinicalHypnogramEvaluator
 - run_proxy_evaluation
 - evaluate_outer_test
 - run_stage2_freeze
-- run_benchmark
+- benchmark_int8_edge.py
 - evaluate_outer_test
-- evaluate_outer_test
-- benchmark_and_reproducibility.py
+- run_stage_c
+- build_exp013_model
 - Detailed Findings
-- test_frozen_test_shield.py
+- Independent Forensic & Governance Audit: Phase A Close-Out Evaluation
 - EXP-019 Final Report: Multi-Night Within-Person Adaptation (Hypothesis H-A)
 - train_single_model
 - 2. Itemized Adversarial Audit Findings
@@ -107,7 +107,7 @@
 - 2. Technical Claims Audit
 - 2. Technical Claims Audit
 - 🟡 Major Findings
-- select_best_config
+- compute_bh_fdr
 - Phase B & Phase C Execution Report: Knowledge Base Corrections, Systematic Literature Search, Core Full-Text Assessment, and Second-Dataset Search
 - Protocol & Preregistration Draft: EXP-019B (Exploratory Heterogeneity Analysis)
 - evaluate_dataset
@@ -116,17 +116,17 @@
 - evaluate_model_on_epochs
 - Independent Governance and Scientific Review: Phase A3 Diagnostic Extraction Specification
 - Prioritized Findings (Blockers -> Major -> Nits)
-- compute_wearable_quality_mask
+- evaluate_outer_test
 - Detailed Audit by Document & Dimension
 - PRE-REGISTRATION: EXP-019, H-A Multi-Night Within-Person Adaptation
 - PRE-REGISTRATION: SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Benchmark
 - Wearable Sleep Staging Research Project Blueprint
 - AGENTS.md
-- CrossModalFiLMCNNBiGRU
+- InterEpochSequenceAttention
 - EXP-013: Rigorous Component Attribution Experiment Results
 - evaluate_dataset
 - EXP-014: 75-Run Subject-Level Cross-Validation Final Audit Report
-- Tensor
+- LiteratureAgent
 - EXP-018: Context-Horizon Scaling Curve — Phase 1 Final Report
 - Prioritized Findings (Blockers -> Major -> Nits)
 - Phase A3 Diagnostic Extraction and Reconstruction Report
@@ -136,25 +136,25 @@
 - Autoresearch & AI-Scientist Adaptation Document
 - EXPERIMENTS.md
 - 🟡 Major Findings
-- MultiScaleConventionalCNNBiGRU
+- select_best_config
 - experiments/README.md
 - FinalSleepStagingSystem
 - SLAMSSSlidingWindowPredictor
 - run_single_fold_seed
-- Tensor
+- evaluate_dataset
 - Empirical INT8 Quantization & Edge Deployment Benchmark Report
 - OfficialSLAMSSIFSWrapper
 - Empirical INT8 Quantization & Edge Deployment Benchmark Report
-- evaluate_outer_test
-- Independent Forensic & Governance Audit: Phase A Close-Out Evaluation
 - evaluate_dataset
-- EXP-012 — Final Frozen Test Benchmark of SleepAdaptiveNet (B0_GRL)
+- compute_wearable_quality_mask
+- evaluate_dataset
+- UnbiasedHypersphericalBoundedMarginPyramidCNNBiGRU
 - PHASE 3 INFRASTRUCTURE SMOKE TEST SPECIFICATION
 - Comprehension Findings
 - Prioritized Findings & Strategic Synthesis
-- GradientReversalLayer
+- .__init__
 - Prioritized Findings & Resolution Actions
-- test_tsk06_tsk07_execution_readiness.py
+- prepare_sleepaccel.py
 - Research Knowledge & Literature Intelligence System
 - Comprehensive Resolution Report: BIDSleep Candidates 2, 4, and 5
 - CODE_FOR_REVIEW.md: Source Code of Critical Pipeline and Model Components
@@ -170,7 +170,7 @@
 - 2. Key Methodological & Forensic Findings
 - evaluate_dataset
 - Literature Search Strategy
-- regenerate_modelA_checkpoints.py
+- torch
 - build_exp013_model
 - AI-Driven Sleep Staging Using Instantaneous Heart Rate and Accelerometry: Insights from an Apple Watch Study
 - AdaptiveSleepDataset
@@ -179,7 +179,7 @@
 - Forensic Audit: TSK-06 Calibration-Depth Zero-Shot Baseline Discrepancy
 - EXP-014 Phase 1 Audit: Matched SLAMSS-IFS Availability & Horizon Evaluation Report
 - run_paired_comparative_analysis
-- DEC-027 — EXP-019 500-Epoch Extended Training Benchmark: Baseline vs MultiScaleConventionalCNNBiGRU
+- .__init__
 - experiment_engine.py
 - Prioritized Findings (Blockers -> Major -> Nits)
 - 2. Synthesized Review Findings by Severity
@@ -215,9 +215,9 @@
 - build_pdf_report.py
 - Protocol for Standardized Hardware Efficiency Benchmarking
 - .__init__
+- evaluate_dataset
+- Tensor
 - AutonomicHomeostasisBoundedMarginPyramidCNNBiGRU
-- evaluate_dataset
-- evaluate_dataset
 - Detailed Reviewer Observations
 - Phase D Experimental Decision Plan: BIDSleep Personalization Project
 - 9. Work plan
@@ -226,16 +226,17 @@
 - Target Files to Create/Modify
 - Stage 8: Intermediate Zoom Out Review Report
 - Manuscript Unresolved Evidence & Open Verification Register
-- nas_iteration18_model.py
-- DynamicCircadianPhaseGating
+- Tensor
+- SlidingWindowPredictor
+- 2. Objective-by-Objective Goal Attainment Audit
+- evaluate_records
+- build_exp014_model
+- Stage D Post-Execution EGM Drift Report
+- CalibratedAutonomicDispersionPyramidCNNBiGRU
 - ConjunctiveAutonomicDispersionModulationSynergy
 - DualScaleAccelerometryDSLBS
-- DualScaleLocalBasalStandardization
-- DynamicCircadianPhaseGating
-- InterEpochSequenceAttention
-- MultiScaleLocalUltradianLatentNorm
 - EXP-014: 75-Run 5-Fold Cross-Validation & Autonomous NAS Loop
-- evaluate_dataset
+- DualScaleLocalBasalStandardization
 - Technical Plan (Architecture)
 - evaluate_dataset
 - P001: AI-Driven Sleep Staging Using Instantaneous Heart Rate and Accelerometry: Insights from an Apple Watch Study
@@ -353,35 +354,47 @@
 - 2026-11-17_phase1_seed_ingestion.md
 - 2026-11-17_phase2_completion.md
 - 2026-11-17_phase3_scale_105.md
-- FinalModelConfig
-- Stage D Pre-Execution Drift Report (DEC-037 Gate)
-- exp018_dataset.py
-- run_stage3_dual_gpu.sh
-- ConventionalCNNBiGRU
-- experiments/README.md
-- 3. Tiered Deployment & Personalization Interface
-- Competing Hypotheses Database: Heterogeneous Adaptation Response
-- .__init__
-- DualScaleAccelerometryDSLBS
-- DualScaleLocalBasalStandardization
-- evaluate_validation
-- MultiScaleLocalUltradianLatentNorm
-- test_recurrent_padding.py
-- DualScaleLocalBasalStandardization
 - DynamicCircadianPhaseGating
-- Execution Specification: EXP-019B & EXP-020 Exploratory Closure
-- EXP-008: Boundary Weight Sweep & GRL Disentanglement
+- Stage D Pre-Execution Drift Report (DEC-037 Gate)
+- InterEpochSequenceAttention
+- run_stage3_dual_gpu.sh
+- ACCEncoder
+- experiments/README.md
+- MultiScaleLocalUltradianLatentNorm
+- Competing Hypotheses Database: Heterogeneous Adaptation Response
+- AdaptiveCosineClassifierHead
+- DualScaleAutonomicSomatomotorPyramidCNNBiGRU
+- SmoothSynergyUltradianPyramidCNNBiGRU
+- evaluate_validation
+- BoundedMarginSynergyPyramidCNNBiGRU
+- DualScaleAccelerometryDSLBS
+- SubjectAdaptiveAutonomicDispersionPyramidCNNBiGRU
+- DualScaleLocalBasalStandardization
+- InterEpochSkipAttentionCNNBiGRU
+- PhysiologicalMultiScaleFusionCNNBiGRU
 - EXP-017: Sequence Horizon Evaluation ($T=600$ vs $T \le 1200$)
 - Stage 2: Final Model Freeze Verification Report
-- EXP-019: 500-Epoch Extended Training Benchmark
+- InterEpochSequenceAttention
 - test_exp019_pipeline.py
 - .__init__
-- UncertaintyHead
-- Code Discrepancy in `experiments/EXP-019/exp019_adaptation_core.py`
-- InterEpochSequenceAttention
-- BoundedMarginCrossModalSynergy
-- AutonomicHomeostasisBoundedMarginCrossModalSynergy
+- MultiScaleLocalUltradianLatentNorm
+- DualScaleAccelerometryDSLBS
+- DualScaleLocalBasalStandardization
+- SomatomotorAtoniaGatedPyramidCNNBiGRU
+- DynamicCircadianPhaseGating
 - EXP-021 (TSK-08): SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Report
+- MultiScaleLocalUltradianLatentNorm
+- FinalSleepStagingSystem
+- UnbiasedHypersphericalCosineClassifierHead
+- EXP-019B Subject-Level Heterogeneity Closure Report (Exploratory)
+- EXP020_CLOSURE_REPORT.md
+- AdaptiveCosineClassifierHead
+- DualScaleAccelerometryDSLBS
+- DualScaleLocalBasalStandardization
+- DynamicCircadianPhaseGating
+- InterEpochSequenceAttention
+- test_exp019_parameter_budget
+- 6. Summary of Findings by Severity
 - research_engine
 
 ## God Nodes (most connected - your core abstractions)
@@ -397,65 +410,61 @@
 10. `compute_wearable_quality_mask()` - 33 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `DEC-029 (2026-11-17): Formal Adoption of Research Direction v4, Prior Art Re-alignment, and EXP-019 Governance Reconciliation` --references--> `compute_wearable_quality_mask()`  [INFERRED]
+  DECISIONS.md → experiments/EXP-019/exp019_adaptation_core.py
+- `Goals` --references--> `SLAMSSSlidingWindowPredictor`  [INFERRED]
+  docs/designs/exp027_exp028_sleepaccel_external_validation.md → experiments/EXP-021/official_slamss_ifs_adapter.py
 - `AXIS 3: Checkpoint & Governance Integrity` --references--> `OfficialSLAMSSIFSWrapper`  [INFERRED]
   docs/audits/STAGE_D_PRE_EXECUTION_DRIFT_REPORT.md → experiments/EXP-021/official_slamss_ifs_adapter.py
-- `AXIS 4: 1-Subject Smoke Dry-Runs & Telemetry` --references--> `adapt_supervised_ft()`  [INFERRED]
-  docs/audits/STAGE_D_PRE_EXECUTION_DRIFT_REPORT.md → experiments/EXP-019/exp019_adaptation_core.py
 - `Overview` --references--> `OfficialSLAMSSIFSWrapper`  [INFERRED]
   docs/designs/exp027_exp028_sleepaccel_external_validation.md → experiments/EXP-021/official_slamss_ifs_adapter.py
 - `Design Document Sitemap` --references--> `OfficialSLAMSSIFSWrapper`  [INFERRED]
   docs/designs/SITEMAP.md → experiments/EXP-021/official_slamss_ifs_adapter.py
-- `Invariants` --references--> `ResearchMemoryValidator`  [INFERRED]
-  experiments/EXP-015/README.md → research_engine/memory_validator.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (375 total, 156 thin omitted)
+## Communities (386 total, 170 thin omitted)
 
 ### Community 0 - "ExperimentEngine"
-Cohesion: 0.09
-Nodes (14): SleepEvaluator, ResearchGovernor, DecisionEngine, ExperimentEngine, HypothesisAgent, test_decision_engine_rules(), test_engine_simulated_cycle_blocked(), test_engine_simulated_cycle_failure() (+6 more)
+Cohesion: 0.10
+Nodes (11): SleepEvaluator, ExperimentEngine, HypothesisAgent, test_engine_simulated_cycle_blocked(), test_engine_simulated_cycle_failure(), test_engine_simulated_cycle_success(), test_attack_e_direct_runner_bypass(), test_attack_f_altered_proposal_after_token_generation() (+3 more)
 
-### Community 1 - "torch"
+### Community 1 - "os"
 Cohesion: 0.06
-Nodes (12): ConventionalCNNBiGRU, build_exp014_model(), build_nas_iteration14_model(), CalibratedAutonomicDispersionPyramidCNNBiGRU, CrossModalFiLMFusion, build_exp014_model(), ACCEncoder, HREncoder (+4 more)
+Nodes (10): run_smoke_training(), build_nas_iteration15_model(), ConjunctiveDispersionSubjectAdaptivePyramidCNNBiGRU, load_model_a_oof_dataframe(), main(), write_comparative_markdown_report(), ACCEncoder, build_ablation_model() (+2 more)
 
 ### Community 2 - "os"
-Cohesion: 0.11
-Nodes (5): Q2. Sequence Length and Cropping Mechanics (`ControlledSleepDataset`), Question Summary, Verified Audit Findings, load_fold1_data(), ControlledSleepDataset
+Cohesion: 0.09
+Nodes (14): run_exp008(), run_exp009(), run_exp010(), run_exp011(), train_seed_convergence(), main(), run_exp012(), load_fold1_data() (+6 more)
 
-### Community 3 - "test_nas_iteration1_eval_stress.py"
-Cohesion: 0.11
-Nodes (8): test_manifest_partition_disjointness_all_folds(), test_metric_oracle_all_zeros(), test_metric_oracle_missing_predicted_classes(), test_metric_oracle_nan_edge_case_single_class(), test_metric_oracle_perfect_inversion(), test_metric_oracle_uniform_random(), test_runtime_dataloader_data_isolation(), test_unseeded_weight_initialization_variance_demonstration()
+### Community 3 - "adapt_supervised_ft"
+Cohesion: 0.10
+Nodes (17): DEC-030 (2026-11-17): Phase A2 S3 Forensic Diagnosis Ratification & Invalidation of Unsupervised Adaptation Negative Claim, 4.1 Frozen Backbone, Manifests & Exact Schedule Inheritance, 4.3 W0-A Weight-Immutability & State-Reset Invariant (`restore_pristine_model()`), 4.4 Primary Comparison Family (Holm-Bonferroni) & Secondary Endpoints (Outer $N=46$), 4.5 Mandatory Pre-Flight Unit Tests (`experiments/EXP-020/test_exp020_preflight.py`), 4.6 Planned EXP-020 Artifacts & Compute Budget, 4. Part 2: EXP-020 — Regularized & Gated Adaptation Closure (`cuda:0`), adapt_supervised_ft() (+9 more)
 
 ### Community 4 - "DatasetGate"
-Cohesion: 0.12
-Nodes (12): DatasetGate, DatasetGateError, DatasetIntegrityError, SplitDisjointnessError, run_governed_exp017(), test_assert_no_test_leakage_clean(), test_dataset_and_cache_integrity(), test_split_disjointness_overlap_train_test() (+4 more)
+Cohesion: 0.11
+Nodes (17): DatasetGate, DatasetGateError, SplitDisjointnessError, TestSetLeakageError, test_assert_no_test_leakage_blocked(), test_assert_no_test_leakage_clean(), test_split_disjointness_overlap_train_test(), test_split_disjointness_overlap_train_val() (+9 more)
 
 ### Community 5 - "ResearchGovernor"
 Cohesion: 0.08
-Nodes (24): AutonomyLevel, ExperimentDesigner, test_governor_blocks_test_set_proposals(), test_500_epoch_hard_block(), test_autonomy_escalation_security(), test_autonomy_level_default(), test_test_set_proposal_protection(), designer() (+16 more)
+Nodes (28): main(), AutonomyLevel, main(), ResearchGovernor, ExperimentDesigner, ResearchHypothesis, test_governor_blocks_test_set_proposals(), test_500_epoch_hard_block() (+20 more)
 
 ### Community 6 - "EXP-019: Multi-Night Within-Person Sleep Staging Adaptation Specification"
 Cohesion: 0.05
 Nodes (43): 10. `HANDOFF.md` (`Modify`), 1. Architectural Invariant, 1. `experiments/EXP-019-EXPLORATORY/` (`Directory Migration / Pre-Execution Cleanup`), 1. Reproducibility & Determinism, 1. Static Analysis & Compilation Check, 2. Execution Budget & Resource Isolation, 2. `experiments/EXP-018/regenerate_modelA_checkpoints.py` (`Create`), 2. The Five Evaluated Arms (+35 more)
 
 ### Community 7 - ".__init__"
-Cohesion: 0.05
-Nodes (12): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation(), AdaptiveCosineClassifierHead, BoundedMarginCrossModalSynergy, BoundedMarginSynergyPyramidCNNBiGRU, build_nas_iteration12_model(), DualScaleAccelerometryDSLBS (+4 more)
+Cohesion: 0.07
+Nodes (7): AdaptiveCosineClassifierHead, BoundedMarginCrossModalSynergy, DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm
 
 ### Community 8 - "EXP-027 & EXP-028: Strictly Zero-Shot External Validation on PhysioNet SleepAccel v1.0.0"
 Cohesion: 0.11
-Nodes (15): Alternative A: Cohort-Level Z-Scoring or Fine-Tuning on SleepAccel, Alternative B: Evaluating Only the 15-Checkpoint Probability Ensemble, Alternative C: Storing Only Summary Bland-Altman Tables Without Raw Paired Tuples, Alternatives Considered, Critical User Journeys (CUJs), CUJ 1: Governed Dataset Download, Integrity Verification, and QC, CUJ 2: Pre-Flight Feature Parity & Distribution Gate, CUJ 3: Zero-Shot Paired Inference (`EXP-027`) & External Bland-Altman (`EXP-028`) (+7 more)
-
-### Community 9 - "load_night_features"
-Cohesion: 0.07
-Nodes (19): run_smoke_training(), Interface, evaluate_validation_sweep(), run_exp008(), train_sweep_model(), run_exp009(), run_exp010(), run_exp011() (+11 more)
+Nodes (16): Alternative A: Cohort-Level Z-Scoring or Fine-Tuning on SleepAccel, Alternative B: Evaluating Only the 15-Checkpoint Probability Ensemble, Alternative C: Storing Only Summary Bland-Altman Tables Without Raw Paired Tuples, Alternatives Considered, Critical User Journeys (CUJs), CUJ 1: Governed Dataset Download, Integrity Verification, and QC, CUJ 2: Pre-Flight Feature Parity & Distribution Gate, CUJ 3: Zero-Shot Paired Inference (`EXP-027`) & External Bland-Altman (`EXP-028`) (+8 more)
 
 ### Community 10 - "evaluate_validation_sweep"
-Cohesion: 0.07
-Nodes (26): AUDIT_ANSWERS.md: Comprehensive Methodological and Technical Audit, Physiological Mechanism, Q1. Window Count Reconciliation (EXP-012 Test Benchmark), Q3. Class Mix Shift from 5-Hour Cropping, Q4. Metadata Features Representation (`x_meta`) and Baseline Model Attribution, Q5. Preprocessing Cache and Feature Normalization Locality, Q6. Unknown Label Handling and Boundary Loss Protection, Q7. Subject-Invariant GRL Gradient Scaling and Scheduling (+18 more)
+Cohesion: 0.05
+Nodes (37): EXP-008: Boundary Weight Sweep & GRL Disentanglement, Interface, Invariants, Overview, Side Effects, Verification, evaluate_validation_sweep(), train_sweep_model() (+29 more)
 
 ### Community 11 - "EXP-019: Multi-Night Within-Person Sleep Staging Adaptation Specification"
 Cohesion: 0.05
@@ -463,27 +472,27 @@ Nodes (43): 10. `HANDOFF.md` (`Modify`), 1. Architectural Invariant, 1. `experim
 
 ### Community 12 - "SLAMSSDataset"
 Cohesion: 0.06
-Nodes (9): run_unit_tests(), BahdanauAttention, InterEpochSeq2Seq, IntraEpochBiLSTM, IntraEpochCNN, RWLoss, evaluate_model(), SLAMSSDataset (+1 more)
+Nodes (11): run_10_steps(), run_unit_tests(), BahdanauAttention, InterEpochSeq2Seq, IntraEpochBiLSTM, IntraEpochCNN, RWLoss, SLAMSS_IFS (+3 more)
 
 ### Community 13 - "EXP-019: Multi-Night Within-Person Sleep Staging Adaptation Specification"
 Cohesion: 0.05
 Nodes (43): 10. `HANDOFF.md` (`Modify`), 1. Architectural Invariant, 1. `experiments/EXP-019-EXPLORATORY/` (`Directory Migration / Pre-Execution Cleanup`), 1. Reproducibility & Determinism, 1. Static Analysis & Compilation Check, 2. Execution Budget & Resource Isolation, 2. `experiments/EXP-018/regenerate_modelA_checkpoints.py` (`Create`), 2. The Five Evaluated Arms (+35 more)
 
 ### Community 14 - "ResearchMemoryValidator"
-Cohesion: 0.10
-Nodes (18): 6. Simulation Non-Evidence Boundaries & Data Model Decoupling, main(), MemoryCorruptionError, ResearchMemoryValidator, test_duplicate_experiment_ids_raises(), test_impossible_metric_values_raise(), test_invalid_lifecycle_status_raises(), test_missing_required_fields_raises() (+10 more)
+Cohesion: 0.11
+Nodes (17): 6. Simulation Non-Evidence Boundaries & Data Model Decoupling, MemoryCorruptionError, ResearchMemoryValidator, test_duplicate_experiment_ids_raises(), test_impossible_metric_values_raise(), test_invalid_lifecycle_status_raises(), test_missing_required_fields_raises(), test_real_recorded_as_simulation_safety() (+9 more)
 
 ### Community 15 - "Design Specification: EXP-019 Phase A3 Diagnostic Extraction and Reconstruction"
 Cohesion: 0.05
 Nodes (42): 10.1 Stratification Scheme, 10.2 Metrics Reported per Night Index, 10. Night-Index Evaluation Methodology ($k=2$), 11. Statistical Tests and Inference Rules, 12. Multiplicity Handling, 13. Missing-Data and Edge-Case Handling, 14.1 `exp019_k_learning_curve.csv`, 14.2 `exp019_confusion_matrices.json` (+34 more)
 
-### Community 16 - "run_exp018_execution.py"
+### Community 16 - "run_governed_preflight"
 Cohesion: 0.09
-Nodes (18): verify_compute_schedule_invariant(), compute_paired_subject_bootstrap_delta(), evaluate_decision_matrix(), fit_parametric_saturation_curve(), bi_exp(), root_fn(), generate_markdown_report(), generate_phase1b_report() (+10 more)
+Nodes (17): compute_paired_subject_bootstrap_delta(), evaluate_decision_matrix(), evaluate_records(), fit_parametric_saturation_curve(), bi_exp(), root_fn(), generate_markdown_report(), generate_phase1b_report() (+9 more)
 
-### Community 17 - "numpy"
-Cohesion: 0.10
-Nodes (21): run_data_sanity_check(), compute_sha256(), download_sleepaccel(), ExternalValidationGateError, _load_txt_auto(), main(), map_sleepaccel_labels(), nearest_gap() (+13 more)
+### Community 17 - "DecisionEngine"
+Cohesion: 0.19
+Nodes (4): 3. What Was Changed and Why, DecisionEngine, ExperimentDecision, test_decision_engine_rules()
 
 ### Community 19 - "Manuscript Draft: Sections 1–8 (Version 0.1)"
 Cohesion: 0.05
@@ -491,15 +500,15 @@ Nodes (39): 1.1 Clinical and Wearable Context, 1.2 The Promise and Peril of Pers
 
 ### Community 20 - "Tensor"
 Cohesion: 0.05
-Nodes (8): AdaptiveReliabilityFusion, compute_boundary_loss(), GradientReversalFunction, GradientReversalLayer, SubjectDiscriminator, TemporalConvBlock, TransitionAwareModule, UncertaintyHead
+Nodes (7): AdaptiveReliabilityFusion, GradientReversalFunction, GradientReversalLayer, SubjectDiscriminator, TemporalConvBlock, TransitionAwareModule, UncertaintyHead
 
 ### Community 21 - "adapt_supervised_ft_kl"
-Cohesion: 0.15
-Nodes (9): adapt_supervised_ft_kl(), compute_calibration_min_stage_frac(), compute_kl_regularized_loss(), holm_bonferroni(), main(), restore_pristine_model(), run_exp020(), set_deterministic_seed() (+1 more)
+Cohesion: 0.12
+Nodes (13): AXIS 1: Spec-to-Code Drift Table, evaluate_records_macro_f1(), adapt_supervised_ft_kl(), compute_calibration_min_stage_frac(), compute_kl_regularized_loss(), holm_bonferroni(), load_subject_records(), main() (+5 more)
 
 ### Community 22 - "test_nas_iteration1_adversarial.py"
-Cohesion: 0.08
-Nodes (19): compute_mstf_params_analytical(), run_adversarial_suite(), test_baseline_and_mutated_parameter_counts(), test_eval_mode_determinism(), test_extreme_inputs_all_zeros(), test_extreme_inputs_high_variance_noise(), test_gradient_dynamic_range(), test_gradient_propagation_all_parallel_branches() (+11 more)
+Cohesion: 0.06
+Nodes (35): EXP-012 — Final Frozen Test Benchmark of SleepAdaptiveNet (B0_GRL), EXP-013 — Rigorous Component Attribution Experiment (OFAT Factorial Ablation), EXP-014 — 75-Run Subject-Level Cross-Validation Robustness Experiment, MultiScaleConventionalCNNBiGRU, EXP-016-SMOKE — Phase-3 Governed Live Infrastructure Smoke Test, EXP-017 — Controlled Evaluation of Sequence Truncation in Wearable Sleep Staging, EXP-018 — Context-Horizon Scaling Curve with Data-Coverage Control (Phase 1), EXP-018 Phase 1b — Circadian Feature Ablation (+27 more)
 
 ### Community 23 - "Master Roadmap Audit: Research Direction v4 Comprehensive Assessment"
 Cohesion: 0.05
@@ -507,71 +516,75 @@ Nodes (37): 10. Scientific Claim Audit, 11. Final Decision & Next EGM Action, 1.
 
 ### Community 24 - "GPUResourceManager"
 Cohesion: 0.10
-Nodes (15): 3. What Was Changed and Why, Interface, GPUResourceManager, ResourceAllocationError, test_gpu_resource_manager_allocation_and_release(), resource_manager(), test_concurrent_allocation_exclusivity(), test_double_allocation_saturation() (+7 more)
+Nodes (13): GPUResourceManager, ResourceAllocationError, test_gpu_resource_manager_allocation_and_release(), resource_manager(), test_concurrent_allocation_exclusivity(), test_double_allocation_saturation(), test_invalid_gpu_specifications(), test_normal_allocation() (+5 more)
 
 ### Community 25 - "evaluate_dataset"
-Cohesion: 0.09
-Nodes (6): build_nas_iteration7_model(), DynamicCircadianPhaseGating, InterEpochSequenceAttention, LocalUltradianAdaptiveNormCNNBiGRU, LocalUltradianBasalStandardization, LocalUltradianLatentNorm
+Cohesion: 0.07
+Nodes (9): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation(), build_nas_iteration7_model(), DynamicCircadianPhaseGating, InterEpochSequenceAttention, LocalUltradianAdaptiveNormCNNBiGRU, LocalUltradianBasalStandardization (+1 more)
 
 ### Community 26 - "evaluate_dataset"
-Cohesion: 0.09
-Nodes (6): build_nas_iteration8_model(), DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, LocalUltradianPyramidCNNBiGRU, MultiScaleLocalUltradianLatentNorm
+Cohesion: 0.07
+Nodes (9): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation(), build_nas_iteration8_model(), DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, LocalUltradianPyramidCNNBiGRU (+1 more)
 
 ### Community 27 - ".__init__"
-Cohesion: 0.05
-Nodes (13): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation(), build_nas_iteration15_model(), CalibratedMultiStreamClassifierHead, ConjunctiveAutonomicDispersionModulationSynergy, ConjunctiveDispersionSubjectAdaptivePyramidCNNBiGRU, DualScaleAccelerometryDSLBS (+5 more)
+Cohesion: 0.07
+Nodes (8): CalibratedMultiStreamClassifierHead, ConjunctiveAutonomicDispersionModulationSynergy, DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm, SequenceSubjectAdaptiveNormalization
 
-### Community 28 - "run_exp019b_heterogeneity_audit.py"
-Cohesion: 0.18
-Nodes (8): compute_subject_window_features(), load_usable_nights_by_subject(), main(), run_exp019b_audit(), spearman_with_bootstrap(), test_cohort_subject_id_sets(), test_raw_hr_features_physiological_bounds_and_no_nans(), test_synthetic_spearman_bh_fdr_and_bootstrap()
+### Community 28 - "numpy"
+Cohesion: 0.05
+Nodes (34): compute_subject_window_features(), load_usable_nights_by_subject(), main(), run_exp019b_audit(), spearman_with_bootstrap(), compute_paired_stats(), extract_8_metrics(), load_preprocessed_sleepaccel() (+26 more)
+
+### Community 29 - "extract_exp019_phase_a3_outputs.py"
+Cohesion: 0.13
+Nodes (8): benjamini_hochberg(), compute_bland_altman_stats(), compute_bootstrap_ci(), df_to_markdown_table(), evaluate_records_predictions(), run_phase_a3_extraction(), select_donor_subject(), verify_file_hash()
 
 ### Community 30 - "test_frozen_test_shield.py"
-Cohesion: 0.12
-Nodes (8): compute_ece(), EvaluatorError, MetricHierarchy, TestSetProtectionViolation, test_compute_ece(), test_evaluator_predictions_math(), test_metric_hierarchy_definitions(), test_test_set_protection_gate()
+Cohesion: 0.11
+Nodes (10): compute_ece(), EvaluatorError, MetricHierarchy, TestSetProtectionViolation, Safeguards Implemented:, test_compute_ece(), test_evaluator_predictions_math(), test_metric_hierarchy_definitions() (+2 more)
 
 ### Community 31 - "test_simulation_safety.py"
-Cohesion: 0.12
-Nodes (13): 2.7 State Machine Validator (`research_engine/state_machine.py`), Invariants, ExecutionMode, ExecutionModeViolationError, ExperimentStateMachine, IllegalStateTransitionError, LifecycleStatus, sample_memory() (+5 more)
+Cohesion: 0.13
+Nodes (12): Invariants, ExecutionMode, ExecutionModeViolationError, ExperimentStateMachine, IllegalStateTransitionError, LifecycleStatus, sample_memory(), test_execution_mode_mutation_rejected() (+4 more)
 
 ### Community 32 - ".__init__"
 Cohesion: 0.07
-Nodes (9): AntiCollapseCosineClassifierHead, build_nas_iteration13_model(), DualAutonomicBoundedMarginSynergy, DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm (+1 more)
+Nodes (7): AntiCollapseCosineClassifierHead, DualAutonomicBoundedMarginSynergy, DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm
 
 ### Community 33 - ".__init__"
 Cohesion: 0.07
 Nodes (7): CalibratedMultiStreamClassifierHead, DualAutonomicBoundedMarginSynergy, DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm
 
 ### Community 34 - ".__init__"
-Cohesion: 0.07
-Nodes (8): build_nas_iteration10_model(), CrossModalAutonomicSomatomotorInteraction, DualScaleAccelerometryDSLBS, DualScaleAutonomicSomatomotorPyramidCNNBiGRU, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm
+Cohesion: 0.08
+Nodes (6): CrossModalAutonomicSomatomotorInteraction, DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm
 
 ### Community 35 - ".__init__"
-Cohesion: 0.07
-Nodes (8): build_nas_iteration11_model(), DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm, SmoothSynergyUltradianPyramidCNNBiGRU, SoftContinuousBilinearSynergyManifold
+Cohesion: 0.08
+Nodes (6): DualScaleAccelerometryDSLBS, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm, SoftContinuousBilinearSynergyManifold
 
 ### Community 36 - "PriorCalibratedBoundedMarginPyramidCNNBiGRU"
-Cohesion: 0.26
-Nodes (5): bounded_margin(), build_candidate_omicron_model(), build_nas_iteration17_model(), PriorCalibratedBoundedMarginPyramidCNNBiGRU, run_candidate_omicron_verification()
+Cohesion: 0.22
+Nodes (4): build_candidate_omicron_model(), build_nas_iteration17_model(), PriorCalibratedBoundedMarginPyramidCNNBiGRU, run_candidate_omicron_verification()
 
 ### Community 37 - "Decisions"
-Cohesion: 0.07
-Nodes (29): DEC-001 — Use repository files as the shared research memory, DEC-002 — Exclude raw dataset recordings from normal Git commits, DEC-003 — Do not infer unverified research facts, DEC-004 — Keep requested ablations separate from the recorded baseline, DEC-005 — Do not describe current no-graph control as exact SLAMSS-IFS, DEC-006 — Use head entropy adaptation where BatchNorm adaptation is unavailable, DEC-007 — Keep optimization and final evaluation separate, DEC-008 — Freeze optimizer settings before the one-time test pass (+21 more)
+Cohesion: 0.05
+Nodes (42): DEC-001 — Use repository files as the shared research memory, DEC-002 — Exclude raw dataset recordings from normal Git commits, DEC-003 — Do not infer unverified research facts, DEC-004 — Keep requested ablations separate from the recorded baseline, DEC-005 — Do not describe current no-graph control as exact SLAMSS-IFS, DEC-006 — Use head entropy adaptation where BatchNorm adaptation is unavailable, DEC-007 — Keep optimization and final evaluation separate, DEC-008 — Freeze optimizer settings before the one-time test pass (+34 more)
 
-### Community 38 - "extract_exp019_phase_a3_outputs.py"
-Cohesion: 0.04
-Nodes (45): SlidingWindowPredictor, 1.2 Root Cause of Adaptation Stochasticity, compute_distribution_divergence(), run_heterogeneity_audit(), adapt_supervised_ft(), adapt_unsupervised_infomax(), prepare_calibration_batch(), reset_model_weights() (+37 more)
+### Community 38 - "ConventionalCNNBiGRU"
+Cohesion: 0.09
+Nodes (13): ConventionalCNNBiGRU, SlidingWindowPredictor, reset_model_weights(), train_per_subject_scratch(), run_stage_d(), bootstrap_ci(), run_k_learning_curve(), run_ua2_rerun() (+5 more)
 
-### Community 39 - "test_exp019_invariants.py"
-Cohesion: 0.16
-Nodes (7): get_adaptation_core(), test_cohort_census_and_bidslab49_exclusion(), test_state_neutralization_invariance(), test_target_masking_and_remapping(), test_temporal_disjointness(), test_ua2_anti_collapse_safeguard(), test_wearable_quality_heuristic()
+### Community 39 - "profile_official_slamss_ifs_hw.py"
+Cohesion: 0.39
+Nodes (6): build_official_slamss_ifs(), compute_loss(), count_parameters(), load_real_bidsleep_batch(), main(), profile_batch_size()
 
-### Community 40 - "audit_calibration_stage_coverage"
-Cohesion: 0.20
-Nodes (10): AXIS 1: Spec-to-Code Drift Table, 3.1 Outcomes & Cohort Denominators ($N=46$ vs. $N=47$), 3.2 Subject-Level Feature Specifications (6 Primary Predictors), 3.3 Statistical Plan & Closed BH-FDR Multiplicity Control, 3.4 Mandatory Pre-Execution Unit Tests for EXP-019B, 3.5 Planned EXP-019B Artifacts, 3. Part 1: EXP-019B — Subject-Level Heterogeneity Closure (CPU-Only), compute_bh_fdr() (+2 more)
+### Community 40 - "train_and_save_checkpoint"
+Cohesion: 0.15
+Nodes (3): main(), train_and_save_checkpoint(), RandomCropSleepDataset
 
 ### Community 41 - ".__init__"
-Cohesion: 0.08
-Nodes (7): build_nas_iteration9_model(), CrossModalSomatomotorAtoniaGating, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm, SomatomotorAtoniaGatedPyramidCNNBiGRU
+Cohesion: 0.09
+Nodes (5): CrossModalSomatomotorAtoniaGating, DualScaleLocalBasalStandardization, DynamicCircadianPhaseGating, InterEpochSequenceAttention, MultiScaleLocalUltradianLatentNorm
 
 ### Community 42 - "SLEEP Research Direction (v3, full)"
 Cohesion: 0.08
@@ -586,8 +599,8 @@ Cohesion: 0.09
 Nodes (22): 1. Executive Summary & Verdict, 2. Master Finding Table, 3.1 Multiplicity Across the 24 Arm-by-Metric Bias Tests (FIND-P3-01), 3.2 Evaluation Night Inventory and Variance Weighting (FIND-P3-02), 3.3 Bland–Altman Distributional Assumptions (FIND-P3-03), 3.4 Numerical and Unit Consistency in Table 1 (FIND-P3-04), 3.5 Confidence Interval and Limits of Agreement Interpretation, 3.6 Claim-to-Evidence Traceability (`MANUSCRIPT_EVIDENCE_TO_CLAIM_MATRIX.csv`) (+14 more)
 
 ### Community 45 - "ClinicalHypnogramEvaluator"
-Cohesion: 0.08
-Nodes (22): ClinicalHypnogramEvaluator, 1.1 Detailed Arm-by-Arm Analysis, 1. Reconstruction Feasibility Assessment, 2.1 Critical Defect in Proposed Gate (Section 15.1), 2.2 Scientifically Defensible Tiered Integrity Gate, 2. Integrity Gate Reformulation, 3.1 Clustered Structure in Bland–Altman Agreement (MAJOR), 3.2 Unit of Analysis for Hypothesis Tests (MINOR) (+14 more)
+Cohesion: 0.13
+Nodes (14): 2.1 Critical Defect in Proposed Gate (Section 15.1), 2.2 Scientifically Defensible Tiered Integrity Gate, 2. Integrity Gate Reformulation, 3.1 Clustered Structure in Bland–Altman Agreement (MAJOR), 3.2 Unit of Analysis for Hypothesis Tests (MINOR), 3. Statistical Methodology Review, 4.1 Masking of Unscored and Artifact Epochs in Hypnograms (CRITICAL), 4.2 Resource and Execution Feasibility (+6 more)
 
 ### Community 46 - "Independent Conformance Audit Report: Phase B and Phase C Corrections"
 Cohesion: 0.09
@@ -603,35 +616,35 @@ Nodes (20): 1. Dataset Overview and Hardware Signals, 2.1 Heart Rate Resampling 
 
 ### Community 49 - "Experiments"
 Cohesion: 0.10
-Nodes (20): 10. Formal Test-Access Log (EXP-001 through EXP-019), 8.1 EXP-019-K — Calibration-Depth Learning Curve (k = 1, 2, 3, 4), 8.2 EXP-019-S3 — UA-2 Unsupervised Test-Time Adaptation Re-Run, 8.3 EXP-021 — SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Benchmark, 9. Research Trajectory (v4 Working Direction), EXP-001 — Real-data SleepChannelNet and SleepJEPA comparison, EXP-002 — Requested SE, transitions, HR-motion and unsupervised-personalization implementation, EXP-003 — Latest supplied complete-graph baseline artifacts and QC audit (+12 more)
+Nodes (20): 8.1 EXP-019-K — Calibration-Depth Learning Curve (k = 1, 2, 3, 4), 8.2 EXP-019-S3 — UA-2 Unsupervised Test-Time Adaptation Re-Run, 8.3 EXP-021 — SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Benchmark, 8.4 EXP-019B — Exploratory Subject-Level Adaptation Heterogeneity Audit, 8.5 EXP-020 — Exploratory Regularized and Gated Adaptation Closure, 8.6 EXP-027 & EXP-028 — Zero-Shot External PSG Validation & Bland-Altman Agreement on PhysioNet SleepAccel v1.0.0, 9. Research Trajectory (v4 Working Direction), EXP-001 — Real-data SleepChannelNet and SleepJEPA comparison (+12 more)
 
 ### Community 50 - "Independent Conformance and Evidence Audit: Phase B and Phase C Execution"
 Cohesion: 0.10
 Nodes (19): 1. Executive Summary & Verdict Overview, 2.1 B1 — Knowledge Base Corrections (PASSED), 2.2 B2 — Systematic Literature Search (DEFICIENT IN DATABASE COVERAGE), 2.3 B3 — Core Full-Text Examination & Exit Deliverables (PARTIALLY COMPLETE), 2. Phase B Detailed Conformance Checks, 3.1 Candidate Dataset Audit (PASSED), 3.2 Global Negative Claim Defect (MAJOR FINDING), 3. Phase C Detailed Conformance Checks (+11 more)
 
 ### Community 51 - "MultiScaleTemporalFusion"
-Cohesion: 0.11
-Nodes (5): MultiScaleTemporalConvBlock, MultiScaleTemporalFusion, test_channel_budget_boundary_cap(), test_even_kernel_size_dimension_incompatibility(), test_residual_shortcut_gradient_flow()
-
-### Community 52 - "CircadianAnchoredCrossAttention"
 Cohesion: 0.12
-Nodes (4): CircadianAnchoredCrossAttention, LocalizedCosineCrossAttention, MaskedTemporalInstanceNorm, MultiScaleModalityBlock
+Nodes (4): MultiScaleTemporalConvBlock, MultiScaleTemporalFusion, test_even_kernel_size_dimension_incompatibility(), test_residual_shortcut_gradient_flow()
 
-### Community 53 - "evaluate_outer_test"
+### Community 52 - "CircadianCrossAttentionCNNBiGRU"
 Cohesion: 0.05
-Nodes (13): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed(), evaluate_dataset(), load_fold1_data(), run_proxy_evaluation() (+5 more)
+Nodes (14): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed(), evaluate_dataset(), load_fold1_data(), run_proxy_evaluation() (+6 more)
+
+### Community 53 - "MaskedTemporalInstanceNorm"
+Cohesion: 0.12
+Nodes (3): MaskedTemporalInstanceNorm, MultiScaleTemporalFusion, PhysiologicalBasalStandardization
 
 ### Community 54 - "2. Objective-by-Objective Goal Attainment Audit"
-Cohesion: 0.11
-Nodes (17): 1. Executive Summary & Central Verdict, 2.1 Contribution C1: Multi-Night Supervised Personalization, 2.2 Contribution C2: Calibration-Night Class Coverage and Adaptation Failure, 2.3 Contribution C3: External Validation and Clinical Sleep-Summary Agreement, 2.4 Algorithmic Research Contribution, 2.5 Matched Baseline Evaluation, 2.6 Evidence Needed to Support a Credible Q1 Publication, 2. Objective-by-Objective Goal Attainment Audit (+9 more)
+Cohesion: 0.20
+Nodes (9): 1. Executive Summary & Central Verdict, 3. Dissecting the "Manuscript Completeness" Illusion, 4. The Most Important Remaining Scientific Work, 5. Strategic Recommendation: What Phase to Run Next, **Central Question: How far has the project actually progressed toward its original scientific and publication goals?**, Critical Assessment of Scientific Progress, Evidence Gaps, and Publication Viability, **FINAL SCIENTIFIC VERDICT: NOT SCIENTIFICALLY READY FOR TOP-TIER Q1 SUBMISSION**, Independent Research Goal Attainment Audit: BIDSleep Personalization Project (+1 more)
 
 ### Community 55 - "3. The Six Testable Explanations (Falsifiable Hypotheses)"
 Cohesion: 0.12
 Nodes (16): 1. Overview & Problem Context, 2. Causal Architecture of Adaptation Heterogeneity, 3. The Six Testable Explanations (Falsifiable Hypotheses), 4. Multi-Lens Statistical Protocol & Multiplicity Control, 5. Inventive Solutions (TRIZ Resolutions for Next Protocol Design), 6. Goals vs. Non-Goals, Concepts Brief: Deconstructing Heterogeneity in Within-Person Sleep Staging Adaptation, In-Scope Goals (+8 more)
 
 ### Community 56 - "run_tests"
-Cohesion: 0.09
-Nodes (17): DEC-011 — SLAMSS-IFS Reproduction Fidelity Classification and Discrepancy Resolution, Attention, CNN, Decoder, Encode_micro, Encoder, Seq2Seq, build_official_slamss_ifs() (+9 more)
+Cohesion: 0.11
+Nodes (13): DEC-011 — SLAMSS-IFS Reproduction Fidelity Classification and Discrepancy Resolution, Attention, CNN, Decoder, Encode_micro, Encoder, Seq2Seq, count_parameters() (+5 more)
 
 ### Community 57 - "Research Governance, Autonomy Policies, and Scientific Safeguards"
 Cohesion: 0.12
@@ -649,9 +662,9 @@ Nodes (17): 10. Decision gates and paper outcomes, 11. Q1 readiness checklist, 1
 Cohesion: 0.12
 Nodes (15): 1. Executive Summary, 2. Synthesized Review Findings by Severity, 🔴 Blockers (System Architecture & Statistical Rigor), Finding 1: The $UA\text{-}2$ Masking Paradox (Wearable-Only Adaptation vs. EEG Leakage), Finding 2: Unconstrained Shannon Entropy Minimization Mode Collapse, Finding 3: Compound Decision Rule Statistical Power Formulation, Finding 4: Step-Count & Batching Representation for $PS\text{-}2$ and $FT\text{-}2$, Finding 5: Sampling Protocol in Specificity Control ($FT\text{-}other\text{-}2$) (+7 more)
 
-### Community 61 - "ACCEncoder"
-Cohesion: 0.13
-Nodes (5): ACCEncoder, HREncoder, TemporalConvBlock, build_nas_iteration4_model(), CircadianCrossAttentionCNNBiGRU
+### Community 61 - "EXP-006/sleep_adaptive_net.py"
+Cohesion: 0.06
+Nodes (13): EXP-005 — Scientific Equivalence Audit: SLAMSS-IFS Baseline vs Official Repository, AdaptiveReliabilityFusion, build_ablation_model(), compute_boundary_loss(), GradientReversalFunction, GradientReversalLayer, SleepAdaptiveNet, SubjectDiscriminator (+5 more)
 
 ### Community 62 - "EXP012_AUDIT/EXP012_AUDIT_REPORT.md"
 Cohesion: 0.12
@@ -662,8 +675,8 @@ Cohesion: 0.12
 Nodes (15): 1. Overall Performance Across Seeds ($N=3$), 2. Verified Subject-Level Bootstrap 95% Confidence Intervals ($B=1000$), 3. Verified Per-Class Metrics (34,241 Windows per Seed), 4. Verified Pooled Confusion Matrix (Sum = 102,723 Windows across 3 Seeds), 5. Verified Boundary Dynamics (1,379 Boundary vs. 32,862 Stable Windows), 6. Verified Per-Subject Summary (11 Subjects, Recomputed), Claims I Can and Cannot Support, Claims That Are NOT SUPPORTED (or Downgraded) (+7 more)
 
 ### Community 64 - "CircadianCrossModalCNNBiGRU"
-Cohesion: 0.12
-Nodes (5): build_nas_iteration3_model(), CircadianAnchoredCrossModalFusion, CircadianCrossModalCNNBiGRU, MaskedTemporalInstanceNorm, MultiScaleModalityBlock
+Cohesion: 0.06
+Nodes (13): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed(), evaluate_dataset(), load_fold1_data(), run_proxy_evaluation() (+5 more)
 
 ### Community 65 - "Independent Adversarial Research Review & Methodological Audit: Phase B (EXP-019 Sleep-Summary Agreement)"
 Cohesion: 0.12
@@ -674,16 +687,16 @@ Cohesion: 0.12
 Nodes (15): budget, decision, decision_notes, experiment_id, hypothesis, id, motivation, priority (+7 more)
 
 ### Community 67 - "2. Core Architectural Components"
-Cohesion: 0.13
-Nodes (14): 1. System Overview, 2.10 Decision Engine (`research_engine/decision_logic.py`), 2.11 Research Memory Validator & Shielding (`research_engine/memory_validator.py` & `research_memory.json`), 2.1 The Research Governor (`governor.py`), 2.2 Literature Agent (`research_engine/literature_agent.py`), 2.3 Hypothesis Agent (`research_engine/hypothesis_agent.py`), 2.4 Experiment Designer (`research_engine/experiment_designer.py`), 2.5 Scientific Reviewer (`research_engine/scientific_reviewer.py`) (+6 more)
+Cohesion: 0.12
+Nodes (15): 1. System Overview, 2.10 Decision Engine (`research_engine/decision_logic.py`), 2.11 Research Memory Validator & Shielding (`research_engine/memory_validator.py` & `research_memory.json`), 2.1 The Research Governor (`governor.py`), 2.2 Literature Agent (`research_engine/literature_agent.py`), 2.3 Hypothesis Agent (`research_engine/hypothesis_agent.py`), 2.4 Experiment Designer (`research_engine/experiment_designer.py`), 2.5 Scientific Reviewer (`research_engine/scientific_reviewer.py`) (+7 more)
 
-### Community 68 - "EXP-006/sleep_adaptive_net.py"
-Cohesion: 0.15
-Nodes (7): AdaptiveReliabilityFusion, build_ablation_model(), SleepAdaptiveNet, TransitionAwareModule, get_official_weights(), RCCLoss, run_10_loss_tests()
+### Community 68 - ".verify_dataset_structure"
+Cohesion: 0.24
+Nodes (4): DatasetIntegrityError, test_dataset_and_cache_integrity(), test_attack_i_invalid_dataset_fingerprint(), mock_verify_structure()
 
 ### Community 69 - "Prioritized Findings & Resolution Decisions"
-Cohesion: 0.12
-Nodes (15): Finding C-10 [`egm-implementation-readiness`, `egm-codebase-details`] - Severity: 🟢 Nit, Finding C-1 [`egm-design`, `egm-zoom-out`, `egm-inventive-catalyst`] - Severity: 🔴 Blocker / 🟡 Major, Finding C-2 [`egm-comprehension`, `egm-zoom-out`, `egm-style`] - Severity: 🟡 Major, Finding C-3 [`egm-structural`, `egm-zoom-out`] - Severity: 🟡 Major, Finding C-4 [`egm-design`, `egm-style`, `egm-zoom-out`] - Severity: 🟡 Major, Finding C-5 [`egm-implementation-readiness`] - Severity: 🟡 Major, Finding C-6 [`egm-codebase-details`, `egm-implementation-readiness`] - Severity: 🟡 Major, Finding C-7 [`egm-style`] - Severity: 🟡 Major (+7 more)
+Cohesion: 0.13
+Nodes (14): Finding C-10 [`egm-implementation-readiness`, `egm-codebase-details`] - Severity: 🟢 Nit, Finding C-1 [`egm-design`, `egm-zoom-out`, `egm-inventive-catalyst`] - Severity: 🔴 Blocker / 🟡 Major, Finding C-2 [`egm-comprehension`, `egm-zoom-out`, `egm-style`] - Severity: 🟡 Major, Finding C-3 [`egm-structural`, `egm-zoom-out`] - Severity: 🟡 Major, Finding C-4 [`egm-design`, `egm-style`, `egm-zoom-out`] - Severity: 🟡 Major, Finding C-5 [`egm-implementation-readiness`] - Severity: 🟡 Major, Finding C-6 [`egm-codebase-details`, `egm-implementation-readiness`] - Severity: 🟡 Major, Finding C-8 [`egm-implementation-readiness`, `egm-codebase-details`, `egm-style`] - Severity: 🟢 Nit (+6 more)
 
 ### Community 70 - "4.1 Experiment 1 (TSK-06): Supervised Personalization Learning Curve ($k = 1, 3, 4$)"
 Cohesion: 0.13
@@ -697,53 +710,49 @@ Nodes (15): 1. Scientific Motivation and Core Questions, 2.1 The Participant Att
 Cohesion: 0.13
 Nodes (15): 1.1 Forensic Diagnosis & Preservation of Historical Records, 1. Background & Forensic Preservation of the Historical No-Op, 2.1 Scientific Question, 2.2 Formal Hypothesis S3 (Revised), 2. Scientific Motivation & Core Hypothesis, 3.1 Physical Units vs. Preprocessed Cache Realities, 3.2 Mandatory Pre-Flight Quality Gate, 3. Sensor Normalization, Physical Units, and Quality Masking (+7 more)
 
-### Community 73 - "os"
-Cohesion: 0.06
-Nodes (26): run_exp014_preflight_audit(), load_subject_records(), load_model_a_oof_dataframe(), main(), write_comparative_markdown_report(), compute_paired_stats(), extract_8_metrics(), load_preprocessed_sleepaccel() (+18 more)
+### Community 73 - "ClinicalHypnogramEvaluator"
+Cohesion: 0.14
+Nodes (7): ClinicalHypnogramEvaluator, Question 3: Deliverable Classification Table, calculate_night_hypnogram_metrics_masked(), compute_bland_altman_stats(), Local Interface & Invariants, test_clinical_metrics_synthetic(), test_clinical_hypnogram_evaluator_parity_and_bland_altman()
 
 ### Community 74 - "run_proxy_evaluation"
-Cohesion: 0.22
-Nodes (3): evaluate_dataset(), extract_margins(), load_fold1_data()
+Cohesion: 0.19
+Nodes (5): compute_effective_margins(), evaluate_dataset(), extract_margins(), load_fold1_data(), run_proxy_evaluation()
 
 ### Community 75 - "evaluate_outer_test"
 Cohesion: 0.20
 Nodes (5): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed()
 
 ### Community 76 - "run_stage2_freeze"
-Cohesion: 0.16
-Nodes (5): sha256_file(), compute_subject_metrics(), run_stage2_freeze(), write_freeze_report(), test_stage2_compute_subject_metrics_nan_safe_kappa()
+Cohesion: 0.25
+Nodes (3): compute_subject_metrics(), write_freeze_report(), test_stage2_compute_subject_metrics_nan_safe_kappa()
 
-### Community 77 - "run_benchmark"
-Cohesion: 0.20
-Nodes (7): bootstrap_ci(), holm_bonferroni_adjust(), main(), pages_l_test(), pooled_macro_f1(), compute_metrics_safe(), paired_bootstrap_ci()
+### Community 77 - "benchmark_int8_edge.py"
+Cohesion: 0.16
+Nodes (9): bootstrap_ci(), holm_bonferroni_adjust(), main(), pages_l_test(), compute_metrics_safe(), generate_report_markdown(), paired_bootstrap_ci(), run_benchmark() (+1 more)
 
 ### Community 78 - "evaluate_outer_test"
-Cohesion: 0.06
-Nodes (12): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed(), evaluate_dataset(), load_fold1_data(), run_proxy_evaluation() (+4 more)
-
-### Community 79 - "evaluate_outer_test"
 Cohesion: 0.20
 Nodes (5): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed()
 
-### Community 80 - "benchmark_and_reproducibility.py"
-Cohesion: 0.33
-Nodes (5): run_10_step_benchmark_and_reproducibility(), run_10_steps(), count_params(), run_tests(), SLAMSS_IFS
+### Community 79 - "run_stage_c"
+Cohesion: 0.21
+Nodes (7): 1.1 Detailed Arm-by-Arm Analysis, 1.2 Root Cause of Adaptation Stochasticity, 1. Reconstruction Feasibility Assessment, compute_bootstrap_ci(), evaluate_records_full_metrics(), run_stage_c(), select_donor_subject()
 
 ### Community 81 - "Detailed Findings"
 Cohesion: 0.14
 Nodes (13): 1. Undefined Dependent Metric & Delta Scale — Severity: 🟡 Major, 2. Undefined Distribution Priors & Divergence Bounds — Severity: 🟡 Major, 3. Undefined Project Acronym: H-A — Severity: 🟡 Major, 4. Unstated Responder Threshold — Severity: 🟡 Major, 5. Incompletely Defined Oldham Predictor & Baselines — Severity: 🟡 Major, 6. Architectural Context for Adaptation Scope Discrepancy — Severity: 🟡 Major, 7. Missing Units and Definitions for Calibration Predictors — Severity: 🟡 Major, 8. Dataset Subject Identifier Context — Severity: 🟢 Nit (+5 more)
 
-### Community 82 - "test_frozen_test_shield.py"
-Cohesion: 0.18
-Nodes (13): TestSetLeakageError, Safeguards Implemented:, test_assert_no_test_leakage_blocked(), test_clinical_metrics_synthetic(), test_data_integrity_and_no_leakage(), dataset_gate(), evaluator(), test_direct_test_evaluation_without_authorization_blocked() (+5 more)
+### Community 82 - "Independent Forensic & Governance Audit: Phase A Close-Out Evaluation"
+Cohesion: 0.17
+Nodes (11): 1. Executive Summary & Phase A Exit Recommendation, 2. Phase A Status Table, 3. Scientific Validity Assessment, 4. Governance Assessment, 5. Missing Phase A Work, 6. Exit Criteria Checklist for Phase A Close-Out, A. Mandatory Blocking Tasks (Required by Preregistration & v4), B. Optional Non-Blocking Tasks (+3 more)
 
 ### Community 83 - "EXP-019 Final Report: Multi-Night Within-Person Adaptation (Hypothesis H-A)"
 Cohesion: 0.14
 Nodes (13): 1. Executive Summary & Preregistered Decision Rule Verdicts, 2. Overall Performance by Arm, 3.1 Primary Hypothesis H-A Verdict Rationale, 3.2 Specificity Negative Control S1: Proof of Genuine Personalization, 3.3 Cohort Transfer Value S2: Scratch vs Transfer, 3.4 Unsupervised Test-Time Adaptation S3: InfoMax Evaluation (Historical Interpretation & Invalidation), 3. Detailed Scientific Findings & Analysis, 4. Subject-Level Breakdown (Selected Extremes) (+5 more)
 
 ### Community 84 - "train_single_model"
-Cohesion: 0.21
-Nodes (6): Interface, evaluate_loader(), load_fold1_datasets(), main(), synthesize_and_report(), train_single_model()
+Cohesion: 0.13
+Nodes (11): EXP-019: 500-Epoch Extended Training Benchmark, Interface, Invariants, Overview, Side Effects, Verification, evaluate_loader(), load_fold1_datasets() (+3 more)
 
 ### Community 85 - "2. Itemized Adversarial Audit Findings"
 Cohesion: 0.14
@@ -766,12 +775,12 @@ Cohesion: 0.15
 Nodes (12): 1. Classification Definitions, 2. Technical Claims Audit, Claim 10: "Parameter Count: 162,325 vs SLAMSS-IFS 5,465,768 (33.7x reduction)", Claim 1: "34,800 evaluated 30-second windows on the test set", Claim 2: "REM support is 8,871 windows", Claim 4: "Physiologically plausible sleep architectures", Claim 5: "Exceptional calibration (ECE 0.0257)", Claim 6: "Edge feasibility: High" (+4 more)
 
 ### Community 90 - "🟡 Major Findings"
-Cohesion: 0.09
-Nodes (21): 1. Executive Summary & Review Dashboard, 2. Reviewer Status Matrix, 3. Consolidated Findings by Severity, 4. Traceability Matrix, 5. Concrete Action Plan & Implementation Guidance, A. Modifications to `experiments/EXP-019/audit_heterogeneity_mechanisms.py`, B. Modifications to `experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md`, 🔴 Blocker / Critical Architectural Decisions (+13 more)
+Cohesion: 0.06
+Nodes (31): 1. Executive Summary & Review Dashboard, 2. Reviewer Status Matrix, 4. Traceability Matrix, 5. Concrete Action Plan & Implementation Guidance, A. Modifications to `experiments/EXP-019/audit_heterogeneity_mechanisms.py`, B. Modifications to `experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md`, Consolidated EGM Goldfish Review Report (Stages 5–9), compute_distribution_divergence() (+23 more)
 
-### Community 91 - "select_best_config"
-Cohesion: 0.18
-Nodes (8): 4.1 Frozen Backbone, Manifests & Exact Schedule Inheritance, 4.2 Experimental Arms & Strictly Nested Inner-Val Selection (Zero Cross-Fold Leakage), 4.3 W0-A Weight-Immutability & State-Reset Invariant (`restore_pristine_model()`), 4.4 Primary Comparison Family (Holm-Bonferroni) & Secondary Endpoints (Outer $N=46$), 4.5 Mandatory Pre-Flight Unit Tests (`experiments/EXP-020/test_exp020_preflight.py`), 4.6 Planned EXP-020 Artifacts & Compute Budget, 4. Part 2: EXP-020 — Regularized & Gated Adaptation Closure (`cuda:0`), select_best_config()
+### Community 91 - "compute_bh_fdr"
+Cohesion: 0.14
+Nodes (13): 1. Mandatory Prior-Access Disclosure, Terminology & Claim Boundaries, 3.1 Outcomes & Cohort Denominators ($N=46$ vs. $N=47$), 3.2 Subject-Level Feature Specifications (6 Primary Predictors), 3.3 Statistical Plan & Closed BH-FDR Multiplicity Control, 3.4 Mandatory Pre-Execution Unit Tests for EXP-019B, 3.5 Planned EXP-019B Artifacts, 3. Part 1: EXP-019B — Subject-Level Heterogeneity Closure (CPU-Only), 5. Key Audit Risks & Mitigations (+5 more)
 
 ### Community 92 - "Phase B & Phase C Execution Report: Knowledge Base Corrections, Systematic Literature Search, Core Full-Text Assessment, and Second-Dataset Search"
 Cohesion: 0.15
@@ -794,20 +803,20 @@ Cohesion: 0.17
 Nodes (11): 1. Executive Summary, 2. Experimental Setup and Preflight Verification, 3. Seed-Level Empirical Results (Primary Matched-600 Epochs), 4. Per-Subject Analysis & Cluster Bootstrap ($N=5$), 5. Secondary Operational Analysis (Descriptive / Non-Causal Extended Coverage), 6. Scientific Interpretation & Falsification Analysis, 7. Artifacts and Provenance, 8. Recommended Next Actions (+3 more)
 
 ### Community 97 - "evaluate_model_on_epochs"
-Cohesion: 0.21
-Nodes (4): Interface, compute_paired_cluster_bootstrap(), evaluate_model_on_epochs(), train_single_run()
+Cohesion: 0.22
+Nodes (5): Interface, compute_paired_cluster_bootstrap(), evaluate_model_on_epochs(), run_governed_exp017(), train_single_run()
 
 ### Community 99 - "Independent Governance and Scientific Review: Phase A3 Diagnostic Extraction Specification"
-Cohesion: 0.17
-Nodes (11): 1. Governance Verdict, 2. Exact Next Safe Action, Execution Status Table, Executive Summary, Final Review Decision and Next Safe Action, Independent Governance and Scientific Review: Phase A3 Diagnostic Extraction Specification, Question 1: Are $k=1, 3, 4$ Already Executed?, Question 2: Was $k=1–4$ Preregistered as an Executable Experiment? (+3 more)
+Cohesion: 0.18
+Nodes (10): 1. Governance Verdict, 2. Exact Next Safe Action, Execution Status Table, Executive Summary, Final Review Decision and Next Safe Action, Independent Governance and Scientific Review: Phase A3 Diagnostic Extraction Specification, Question 1: Are $k=1, 3, 4$ Already Executed?, Question 2: Was $k=1–4$ Preregistered as an Executable Experiment? (+2 more)
 
 ### Community 100 - "Prioritized Findings (Blockers -> Major -> Nits)"
 Cohesion: 0.17
 Nodes (11): 1. Exploratory Gating Rule Suffers from Post-Hoc Data Snooping and Rejects Genuine Responders — Severity: 🔴 Blocker / 🟡 Major, 2. Methodological Inconsistency in Oldham's Method for RTM Evaluation — Severity: 🟡 Major, 3. Incomplete Parameter Displacement Stratification (Fold Hyperparameter Confounder) — Severity: 🟡 Major, 4. Severe Structural Asymmetry & Omission of Mechanisms 2, 4, and 6 — Severity: 🟡 Major, 5. Taxonomy & Nomenclature Disconnect Between Section 1 and Section 2 — Severity: 🟡 Major, 6. Emotional Typography and Promotional Framing in Gating Results — Severity: 🟡 Major, 7. Epistemic Overreach and Uncalibrated Causal Claims — Severity: 🟡 Major, 8. Escaped TeX Formatting Artifacts and Unit Standardization — Severity: 🟢 Nit (+3 more)
 
-### Community 101 - "compute_wearable_quality_mask"
-Cohesion: 0.24
-Nodes (8): compute_wearable_quality_mask(), 1. Executive Summary & Verdict Classification, 2. Complete S3 Execution Path Audit (Stages 1–14), 3. Quantitative Forensic Metrics, 5. Minimum Corrective Actions Required by `RESEARCH_DIRECTION_v4`, EXP-019 S3 Diagnostic Audit: Implementation No-Op Forensic Report, Verdict: **C. Adaptation did not actually occur because of an implementation/configuration no-op.**, Novelty Registry
+### Community 101 - "evaluate_outer_test"
+Cohesion: 0.20
+Nodes (5): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed()
 
 ### Community 102 - "Detailed Audit by Document & Dimension"
 Cohesion: 0.17
@@ -870,24 +879,32 @@ Cohesion: 0.22
 Nodes (8): 1. Executive Summary, 2. What Was Borrowed, 4. What Was Intentionally NOT Adopted & Capability Disclosures, 5. Governance Limitation: Direct Git Push to Main (`GIT_BRANCH_ISOLATION_NOT_FULLY_AUTOMATED`), 6. Institutional Memory Consistency Audit (Phase 2.1), Autoresearch & AI-Scientist Adaptation Document, From Karpathy / Autoresearch:, From SakanaAI / AI-Scientist:
 
 ### Community 120 - "🟡 Major Findings"
-Cohesion: 0.09
-Nodes (21): 1. Executive Summary & Review Dashboard, 2. Reviewer Status Matrix, 3. Consolidated Findings by Severity, 4. Traceability Matrix, 5. Concrete Action Plan & Implementation Guidance, A. Modifications to `experiments/EXP-019/audit_heterogeneity_mechanisms.py`, B. Modifications to `experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md`, 🔴 Blocker / Critical Architectural Decisions (+13 more)
+Cohesion: 0.14
+Nodes (14): 3. Consolidated Findings by Severity, 🔴 Blocker / Critical Architectural Decisions, Finding C-10: Filter Usable Nights in Population Prior Calculation, Finding C-1: Reframe Section 3 from "Deployment Gating Solution" to "Diagnostic Counterfactual Stress Test", Finding C-2: Add Unified 4-Line Executive Context Box (Preventing Textbook Bloat), Finding C-3: Consolidate Null Mechanisms (M2, M4, M6) into a Single Subsection, Finding C-4: Methodological & Epistemic Calibration (Oldham's Method & Causal Language), Finding C-5: Deterministic RNG Seeding for PyTorch Dropout in Parameter Displacement (+6 more)
 
-### Community 121 - "MultiScaleConventionalCNNBiGRU"
-Cohesion: 0.19
-Nodes (6): build_nas_iteration1_model(), MultiScaleConventionalCNNBiGRU, test_extreme_batch_sizes(), test_extreme_inputs_large_magnitude(), test_extreme_sequence_lengths(), test_rccloss_single_class_batch()
+### Community 121 - "select_best_config"
+Cohesion: 0.20
+Nodes (7): 4.2 Experimental Arms & Strictly Nested Inner-Val Selection (Zero Cross-Fold Leakage), select_best_config(), 1. The Wearable Quality Filter, 2. The Silent Loop Termination, 3. Impact on Stage D Hyperparameter Tuning, 4. Root Cause Analysis, Code Discrepancy in `experiments/EXP-019/exp019_adaptation_core.py`
 
 ### Community 122 - "experiments/README.md"
 Cohesion: 0.29
 Nodes (6): EXP-011: Multi-Seed Long-Training Convergence Audit, Interface, Invariants, Overview, Side Effects, Verification
 
+### Community 123 - "FinalSleepStagingSystem"
+Cohesion: 0.14
+Nodes (10): audit_calibration_stage_coverage(), _ensure_label_placeholder_for_unlabeled(), verify_wearable_quality_records(), 1. Scientific Synthesis Leading to the Final Model Freeze, 2. Frozen Final Model Architecture (`SleepStagingFinalModel_v1.0`), 3. Tiered Deployment & Personalization Interface, 4. Stage 2 Freeze Verification Procedure (Not Yet Executed), Frozen Population Checkpoint Inventory (15 Checkpoints) (+2 more)
+
 ### Community 124 - "SLAMSSSlidingWindowPredictor"
-Cohesion: 0.16
-Nodes (4): Goals, build_slamss_window_arrays(), SLAMSSMatchedDataset, SLAMSSSlidingWindowPredictor
+Cohesion: 0.12
+Nodes (7): build_slamss_window_arrays(), SLAMSSMatchedDataset, SLAMSSSlidingWindowPredictor, compute_epoch_metrics(), evaluate_records_sliding(), run_single_fold_seed(), set_deterministic_seed()
 
 ### Community 125 - "run_single_fold_seed"
-Cohesion: 0.15
-Nodes (10): aggregate_completed_runs_to_csv(), compute_epoch_metrics(), evaluate_records_sliding(), main(), parse_fold_seed_pairs(), run_single_fold_seed(), set_deterministic_seed(), sha256_file() (+2 more)
+Cohesion: 0.24
+Nodes (6): aggregate_completed_runs_to_csv(), main(), parse_fold_seed_pairs(), sha256_file(), verify_manifests_and_splits(), test_stage3_manifest_verification_and_aggregation()
+
+### Community 126 - "evaluate_dataset"
+Cohesion: 0.27
+Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
 
 ### Community 127 - "Empirical INT8 Quantization & Edge Deployment Benchmark Report"
 Cohesion: 0.18
@@ -901,21 +918,21 @@ Nodes (7): DEC-037 (2026-11-21): Stage 2 Final Model Freeze (`SleepStagingFinalM
 Cohesion: 0.18
 Nodes (10): 1. Executive Summary: Empirical Edge Deployment Verification, 2. Parameter Footprint & Serialization Profiles, 3. Computational Complexity (FLOPs & MACs), 4. Activation Buffers & Peak Inference RAM, 5. Wall-Clock Latency Benchmark (Per-Night $L=1200$), 6. Static PTQ Feasibility & Operator Compatibility Audit, 7. 47-Subject Paired OOF Statistical Evaluation (INT8 vs FP32), 8. Artifact Registry (+2 more)
 
-### Community 130 - "evaluate_outer_test"
-Cohesion: 0.20
-Nodes (5): evaluate_outer_test(), load_fold_data(), run_full_5fold_cross_validation(), gpu_worker(), run_single_fold_seed()
+### Community 130 - "evaluate_dataset"
+Cohesion: 0.27
+Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
 
-### Community 131 - "Independent Forensic & Governance Audit: Phase A Close-Out Evaluation"
-Cohesion: 0.17
-Nodes (11): 1. Executive Summary & Phase A Exit Recommendation, 2. Phase A Status Table, 3. Scientific Validity Assessment, 4. Governance Assessment, 5. Missing Phase A Work, 6. Exit Criteria Checklist for Phase A Close-Out, A. Mandatory Blocking Tasks (Required by Preregistration & v4), B. Optional Non-Blocking Tasks (+3 more)
+### Community 131 - "compute_wearable_quality_mask"
+Cohesion: 0.18
+Nodes (10): compute_wearable_quality_mask(), EXP-019 — Multi-Night Within-Person Adaptation (Confirmatory Test of Hypothesis H-A) (Completed), 1. Executive Summary & Verdict Classification, 2. Complete S3 Execution Path Audit (Stages 1–14), 3. Quantitative Forensic Metrics, 5. Minimum Corrective Actions Required by `RESEARCH_DIRECTION_v4`, EXP-019 S3 Diagnostic Audit: Implementation No-Op Forensic Report, Verdict: **C. Adaptation did not actually occur because of an implementation/configuration no-op.** (+2 more)
 
 ### Community 132 - "evaluate_dataset"
 Cohesion: 0.27
 Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
 
-### Community 133 - "EXP-012 — Final Frozen Test Benchmark of SleepAdaptiveNet (B0_GRL)"
-Cohesion: 0.18
-Nodes (11): EXP-012 — Final Frozen Test Benchmark of SleepAdaptiveNet (B0_GRL), EXP-013 — Rigorous Component Attribution Experiment (OFAT Factorial Ablation), EXP-014 — 75-Run Subject-Level Cross-Validation Robustness Experiment, EXP-016-SMOKE — Phase-3 Governed Live Infrastructure Smoke Test, EXP-017 — Controlled Evaluation of Sequence Truncation in Wearable Sleep Staging, EXP-018 — Context-Horizon Scaling Curve with Data-Coverage Control (Phase 1), EXP-018 Phase 1b — Circadian Feature Ablation, EXP-018 Phase 2 — Cohort-Wide 5-Fold Cross-Validation (Completed) (+3 more)
+### Community 133 - "UnbiasedHypersphericalBoundedMarginPyramidCNNBiGRU"
+Cohesion: 0.25
+Nodes (4): build_candidate_pi_model(), build_nas_iteration18_model(), UnbiasedHypersphericalBoundedMarginPyramidCNNBiGRU, run_candidate_pi_verification()
 
 ### Community 134 - "PHASE 3 INFRASTRUCTURE SMOKE TEST SPECIFICATION"
 Cohesion: 0.20
@@ -933,9 +950,9 @@ Nodes (9): 1. Reframing Section 3: Rejection of Overfitted "Gating Solution" in 
 Cohesion: 0.20
 Nodes (9): [Additional Correction] [`egm-critic`] - Status: RESOLVED, [FIND-B-01] [`egm-critic`] - Severity: Major — Status: RESOLVED, [FIND-B-02] [`egm-critic`] - Severity: Major — Status: RESOLVED, [FIND-B-03] [`egm-critic`] - Severity: Minor — Status: DEFERRED TO PHASE 3, [FIND-B-04] [`egm-critic`] - Severity: Minor — Status: RESOLVED, [FIND-B-05] & [FIND-B-06] [`egm-critic`] - Status: VERIFIED, Goldfish Annotated Review Report, Post-Resolution Summary (+1 more)
 
-### Community 139 - "test_tsk06_tsk07_execution_readiness.py"
-Cohesion: 0.15
-Nodes (6): test_locked_artifact_hashes_immutable(), test_pages_l_test_mathematics(), test_preflight_gate_audit_log(), test_tsk06_dry_run_execution(), test_tsk07_dry_run_execution(), test_wearable_quality_mask_logic()
+### Community 139 - "prepare_sleepaccel.py"
+Cohesion: 0.05
+Nodes (35): 10. Formal Test-Access Log (EXP-001 through EXP-019), evaluate_records(), pages_l_test(), compute_sha256(), download_sleepaccel(), ExternalValidationGateError, _load_txt_auto(), main() (+27 more)
 
 ### Community 140 - "Research Knowledge & Literature Intelligence System"
 Cohesion: 0.20
@@ -969,10 +986,6 @@ Nodes (8): 1. Protocol Comparison Table, 2. In-Depth Analysis of Differences, 3.
 Cohesion: 0.22
 Nodes (8): 1. Protocol Comparison Table, 2. In-Depth Analysis of Differences, 3. Aggregation Matching (`SLAMSS_IFS_MATCHED_AGGREGATION`), 4. Comparability Verdict, A. Sequence Truncation ($T=600$ vs $T=1200$), B. Validation Model Selection vs. Locked Budget, C. Primary Reported F1 Metric: Weighted vs. Macro, SLAMSS-IFS Comparability Audit
 
-### Community 148 - "evaluate_1epoch_fold1"
-Cohesion: 0.22
-Nodes (3): evaluate_1epoch_fold1(), run_nas_iteration1_evaluation(), test_gpu_memory_leak_consecutive_runs()
-
 ### Community 149 - "EXP-014 Preflight Audit 0B: Sleep Stage Boundary Definition & Verification"
 Cohesion: 0.22
 Nodes (8): 1. Audit Objective, 2. Exact Programmatic Code Logic, 3. Mathematical Definition, 4. Verification of Window Counts on Held-Out Test Set, 5. Cross-Model Application Audit, 6. Audit Conclusion & Stability Verdict, EXP-014 Preflight Audit 0B: Sleep Stage Boundary Definition & Verification, Temporal Characterization:
@@ -997,13 +1010,13 @@ Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
 Cohesion: 0.22
 Nodes (8): 1. Search Scope & Priority Tiers, 2. Recency & Foundational Balance, 3. Multi-Database, Forward-Citation & Contradiction-First Protocol, 4. Two-Stage PRISMA-Style Screening & Update Pipeline, Literature Search Strategy, Tier 1: Core Domain (Target `HIGH` Relevance), Tier 2: Failure Modes, Criticism & Negative Results (Mandatory Contradiction Search), Tier 3: Transferable Methods (Target `MEDIUM` Relevance)
 
-### Community 155 - "regenerate_modelA_checkpoints.py"
-Cohesion: 0.10
-Nodes (7): create_infinite_batch_stream(), RandomCropSleepDataset, seed_worker(), main(), train_and_save_checkpoint(), RandomCropSleepDataset, evaluate_records()
+### Community 155 - "torch"
+Cohesion: 0.06
+Nodes (20): run_data_sanity_check(), run_10_step_benchmark_and_reproducibility(), run_preflight_audit(), create_infinite_batch_stream(), RandomCropSleepDataset, seed_worker(), verify_compute_schedule_invariant(), create_infinite_batch_stream() (+12 more)
 
 ### Community 156 - "build_exp013_model"
-Cohesion: 0.11
-Nodes (6): build_exp013_model(), TestEXP013Models, compute_paired_bootstrap(), evaluate_model_on_test(), evaluate_validation_sweep_exp013(), run_exp013()
+Cohesion: 0.19
+Nodes (3): compute_paired_bootstrap(), evaluate_model_on_test(), evaluate_validation_sweep_exp013()
 
 ### Community 157 - "AI-Driven Sleep Staging Using Instantaneous Heart Rate and Accelerometry: Insights from an Apple Watch Study"
 Cohesion: 0.25
@@ -1018,32 +1031,28 @@ Cohesion: 0.27
 Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
 
 ### Community 161 - "Forensic Audit: TSK-06 Calibration-Depth Zero-Shot Baseline Discrepancy"
-Cohesion: 0.20
-Nodes (9): 1. Executive Summary & Root Cause Finding, 3. Detailed Code Line Citations (`run_tsk06_k_curve.py`), 4. Empirical Verification & Impact Analysis, 5. Recommended Erratum & Reconciliation Text for `DECISIONS.md`, A. Spot-Check of Fold First Subjects vs. Subsequent Subjects, B. Clean Recalculation (Zero-Shot Reset Invariant Enforced), Forensic Audit: TSK-06 Calibration-Depth Zero-Shot Baseline Discrepancy, Key Findings: (+1 more)
+Cohesion: 0.18
+Nodes (10): 1. Executive Summary & Root Cause Finding, 2. Evaluation of Candidate Hypotheses, 3. Detailed Code Line Citations (`run_tsk06_k_curve.py`), 4. Empirical Verification & Impact Analysis, 5. Recommended Erratum & Reconciliation Text for `DECISIONS.md`, A. Spot-Check of Fold First Subjects vs. Subsequent Subjects, B. Clean Recalculation (Zero-Shot Reset Invariant Enforced), Forensic Audit: TSK-06 Calibration-Depth Zero-Shot Baseline Discrepancy (+2 more)
 
 ### Community 162 - "EXP-014 Phase 1 Audit: Matched SLAMSS-IFS Availability & Horizon Evaluation Report"
 Cohesion: 0.25
 Nodes (7): 2. Evaluation of Frozen SleepAdaptiveNet Model E at Full-Night Length (Phase 1B), 3. Subject-Level Generalization Performance at Full-Night Length, 4. Key Takeaways for SLAMSS-IFS vs. SleepAdaptiveNet, Comparative Results (Multi-Seed $N=3$, Mean ± SD):, Dataset Expansion:, EXP-014 Phase 1 Audit: Matched SLAMSS-IFS Availability & Horizon Evaluation Report, Per-stage metric differences under full-night evaluation:
 
 ### Community 163 - "run_paired_comparative_analysis"
-Cohesion: 0.20
-Nodes (7): 2. Reused Helpers & Frozen Assets (No Duplication), classify_preregistered_outcome(), paired_metric_inference(), participant_bootstrap_ci(), run_paired_comparative_analysis(), validate_subject_seed_completeness(), test_stage3_paired_inference_discordance_and_partial_seed_rejection()
-
-### Community 164 - "DEC-027 — EXP-019 500-Epoch Extended Training Benchmark: Baseline vs MultiScaleConventionalCNNBiGRU"
-Cohesion: 0.17
-Nodes (12): DEC-027 — EXP-019 500-Epoch Extended Training Benchmark: Baseline vs MultiScaleConventionalCNNBiGRU, DEC-028 (2026-11-16): Confirmatory Execution of EXP-019 (Multi-Night Within-Person Adaptation Hypothesis H-A), DEC-029 (2026-11-17): Formal Adoption of Research Direction v4, Prior Art Re-alignment, and EXP-019 Governance Reconciliation, DEC-030 (2026-11-17): Phase A2 S3 Forensic Diagnosis Ratification & Invalidation of Unsupervised Adaptation Negative Claim, DEC-031 (2026-11-17): Parameter-Count Governance Reformulation — Adoption of Lightweight-First Principle and Removal of Arbitrary Numerical Ceiling, DEC-032 (2026-11-19): Phase B Sleep-Summary Agreement Ratification, Finding Reconciliations (FIND-B-01 to FIND-B-06), and Methodological Boundary Resolution, DEC-033 (2026-11-19): Phase D Governance Framework, Task Decoupling, and Preregistration Formalization, DEC-034 (2026-11-19): User Strategy Authorization: Deferral of TSK-08 (SLAMSS-IFS Benchmark) Until Final Model Freeze; Execution Prioritization for TSK-06 and TSK-07 (+4 more)
+Cohesion: 0.21
+Nodes (6): classify_preregistered_outcome(), paired_metric_inference(), participant_bootstrap_ci(), run_paired_comparative_analysis(), validate_subject_seed_completeness(), test_stage3_paired_inference_discordance_and_partial_seed_rejection()
 
 ### Community 165 - "experiment_engine.py"
-Cohesion: 0.07
-Nodes (12): main(), ExperimentDecision, ExperimentDesignError, ExperimentSpecification, ResearchHypothesis, EvidenceCategory, LiteratureAgent, ReviewVerdict (+4 more)
+Cohesion: 0.12
+Nodes (8): ExperimentDesignError, ExperimentSpecification, Interface, ReviewVerdict, ScientificReviewer, test_designer_rejects_multi_variable_convoluted_change(), test_reviewer_accepts_clean_proposal(), test_reviewer_rejects_unanchored_baseline()
 
 ### Community 166 - "Prioritized Findings (Blockers -> Major -> Nits)"
 Cohesion: 0.25
 Nodes (7): 1. Context Insufficiency: Missing High-Altitude Motivation & Confirmatory Outcome Framing — Severity: 🟡 Major, 2. Binary Discard vs Prior-Preserving Adaptation in Deployment Gating — Severity: 🟡 Major, 3. Monolithic Coupling of Feature Personalization and Class Prior Fitting — Severity: 🟡 Major, 4. Explicit Contrast Between Static Predictors and Retrospective Divergence — Severity: 🟢 Nit, Goldfish Review Report: Initial Zoom Out Review (Stage 5), Prioritized Findings (Blockers -> Major -> Nits), Reviewer Status
 
 ### Community 167 - "2. Synthesized Review Findings by Severity"
-Cohesion: 0.14
-Nodes (13): 1. Executive Summary, 2. Synthesized Review Findings by Severity, 🔴 Blockers (Codebase Parity & Physical Tensor Reality), Finding 1: Checkpoint Regeneration Import & Serialization Parity, Finding 2: Calibration Night Tensor Batching vs. Night Length Reality, Finding 4: Explicit JSON Schemas for Inter-Script Contracts, Finding 5: Target Masking Value (`-100` vs `-1`), Finding 6: Missing `cache_dir` in Script Signatures (+5 more)
+Cohesion: 0.25
+Nodes (7): 1. Executive Summary, 2. Synthesized Review Findings by Severity, 🔴 Blockers (Codebase Parity & Physical Tensor Reality), Finding 1: Checkpoint Regeneration Import & Serialization Parity, Finding 2: Calibration Night Tensor Batching vs. Night Length Reality, 🟢 Nits (Codebase Polish & Style), Stage 9 Implementation Readiness Report: `docs/designs/exp019_adaptation.md` (Lines 255–395)
 
 ### Community 168 - "evaluate_dataset"
 Cohesion: 0.27
@@ -1165,17 +1174,13 @@ Nodes (5): 1. Benchmarking Objectives, 2. Standardized Measurement Environment (
 Cohesion: 0.33
 Nodes (3): build_candidate_xi_model(), CalibratedMultiStreamClassifierHead, TemporalBoutRefinedPyramidCNNBiGRU
 
-### Community 200 - "AutonomicHomeostasisBoundedMarginPyramidCNNBiGRU"
-Cohesion: 0.31
-Nodes (4): AutonomicHomeostasisBoundedMarginPyramidCNNBiGRU, bounded_margin(), build_nas_iteration19_model(), run_candidate_rho_verification()
-
-### Community 201 - "evaluate_dataset"
+### Community 200 - "evaluate_dataset"
 Cohesion: 0.27
 Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
 
-### Community 202 - "evaluate_dataset"
-Cohesion: 0.27
-Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
+### Community 202 - "AutonomicHomeostasisBoundedMarginPyramidCNNBiGRU"
+Cohesion: 0.25
+Nodes (4): AutonomicHomeostasisBoundedMarginPyramidCNNBiGRU, build_nas_iteration19_model(), Interface, run_candidate_rho_verification()
 
 ### Community 203 - "Detailed Reviewer Observations"
 Cohesion: 0.33
@@ -1205,17 +1210,29 @@ Nodes (4): 1. Executive Summary & Verdict, 2. Audit of Applied Mitigations (Simp
 Cohesion: 0.40
 Nodes (4): 1. Executive Summary, 2. Inventory of Unresolved Evidence & Action Items, 3. Action Plan for Final Manuscript Compilation, Manuscript Unresolved Evidence & Open Verification Register
 
-### Community 211 - "nas_iteration18_model.py"
-Cohesion: 0.06
-Nodes (15): compute_effective_margins(), run_proxy_evaluation(), bounded_margin(), BoundedMarginCrossModalSynergy, BoundedMarginSTE, build_candidate_pi_model(), build_nas_iteration18_model(), DualScaleAccelerometryDSLBS (+7 more)
+### Community 212 - "SlidingWindowPredictor"
+Cohesion: 0.25
+Nodes (3): compute_clean_zs_cpu(), pooled_macro_f1(), SlidingWindowPredictor
+
+### Community 213 - "2. Objective-by-Objective Goal Attainment Audit"
+Cohesion: 0.25
+Nodes (8): 2.1 Contribution C1: Multi-Night Supervised Personalization, 2.2 Contribution C2: Calibration-Night Class Coverage and Adaptation Failure, 2.3 Contribution C3: External Validation and Clinical Sleep-Summary Agreement, 2.4 Algorithmic Research Contribution, 2.5 Matched Baseline Evaluation, 2.6 Evidence Needed to Support a Credible Q1 Publication, 2. Objective-by-Objective Goal Attainment Audit, Journal Tier Analysis:
+
+### Community 214 - "evaluate_records"
+Cohesion: 0.29
+Nodes (3): bootstrap_ci(), evaluate_records(), execute_preflight_gate()
+
+### Community 215 - "build_exp014_model"
+Cohesion: 0.20
+Nodes (3): build_exp014_model(), run_exp014_preflight_audit(), build_exp014_model()
+
+### Community 216 - "Stage D Post-Execution EGM Drift Report"
+Cohesion: 0.50
+Nodes (3): Post-Execution Drift Summary Table, Section 4: Mandatory Claim-Boundary Guardrails (`DEC-040`, `DEC-041`, `MANUSCRIPT_DRAFT_v0.2.md`), Stage D Post-Execution EGM Drift Report
 
 ### Community 221 - "EXP-014: 75-Run 5-Fold Cross-Validation & Autonomous NAS Loop"
-Cohesion: 0.29
-Nodes (6): EXP-014: 75-Run 5-Fold Cross-Validation & Autonomous NAS Loop, Interface, Invariants, Overview, Side Effects, Verification
-
-### Community 222 - "evaluate_dataset"
-Cohesion: 0.27
-Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
+Cohesion: 0.33
+Nodes (5): EXP-014: 75-Run 5-Fold Cross-Validation & Autonomous NAS Loop, Invariants, Overview, Side Effects, Verification
 
 ### Community 223 - "Technical Plan (Architecture)"
 Cohesion: 0.33
@@ -1225,45 +1242,25 @@ Nodes (6): 1. Download, `.gitignore` Governance, and Coverage QC, 2. Exact Senso
 Cohesion: 0.27
 Nodes (3): evaluate_dataset(), load_fold1_data(), run_proxy_evaluation()
 
-### Community 341 - "FinalModelConfig"
-Cohesion: 0.25
-Nodes (7): FinalModelConfig, verify_wearable_quality_records(), _make_dummy_night(), test_stage2_config_memory_and_unloaded_guard(), test_stage2_unlabeled_wearable_gate_and_backbone_non_mutation(), test_stage3_matched_dataset_padding_crop_and_circadian(), test_stage3_sliding_window_batched_equivalence()
-
 ### Community 344 - "Stage D Pre-Execution Drift Report (DEC-037 Gate)"
 Cohesion: 0.25
 Nodes (7): AXIS 2: BIDSleep vs. SleepAccel Distribution & QC Audit, AXIS 3: Checkpoint & Governance Integrity, AXIS 4: 1-Subject Smoke Dry-Runs & Telemetry, Excluded SleepAccel Subjects (`6 / 31` Excluded from `qc_clean`), Final Gate Verdict: **`GO`**, Side-by-Side Feature & Label Distribution, Stage D Pre-Execution Drift Report (DEC-037 Gate)
-
-### Community 345 - "exp018_dataset.py"
-Cohesion: 0.29
-Nodes (3): create_infinite_batch_stream(), seed_worker(), verify_compute_schedule_invariant()
 
 ### Community 346 - "run_stage3_dual_gpu.sh"
 Cohesion: 0.33
 Nodes (5): MKL_NUM_THREADS, NUMEXPR_NUM_THREADS, OMP_NUM_THREADS, print_log_tail(), run_stage3_dual_gpu.sh script
 
+### Community 347 - "ACCEncoder"
+Cohesion: 0.07
+Nodes (8): ACCEncoder, HREncoder, TemporalConvBlock, build_exp013_model(), ConventionalCNNBiGRU, build_nas_iteration2_model(), CrossModalFiLMCNNBiGRU, CrossModalFiLMFusion
+
 ### Community 348 - "experiments/README.md"
 Cohesion: 0.33
 Nodes (3): experiments, Overview, Subdirectories & Boundaries
 
-### Community 349 - "3. Tiered Deployment & Personalization Interface"
-Cohesion: 0.29
-Nodes (6): 1. Scientific Synthesis Leading to the Final Model Freeze, 2. Frozen Final Model Architecture (`SleepStagingFinalModel_v1.0`), 3. Tiered Deployment & Personalization Interface, 4. Stage 2 Freeze Verification Procedure (Not Yet Executed), Frozen Population Checkpoint Inventory (15 Checkpoints), Stage 2: Final Model Synthesis, Architecture Freeze, and Deployment Specification
-
 ### Community 350 - "Competing Hypotheses Database: Heterogeneous Adaptation Response"
 Cohesion: 0.25
 Nodes (7): Competing Hypotheses Database: Heterogeneous Adaptation Response, H-MECH-01: Calibration-Night Label / Prior Probability Shift, H-MECH-02: Regression to the Mean (RTM) / Baseline Ceiling Effect, H-MECH-03: Parameter Displacement / Optimization Instability, H-MECH-04: Physiological / Autonomic Drift (HR Volatility), H-MECH-05: Inter-Night Signal Magnitude / Normalization Mismatch, H-MECH-06: Unsupervised Adaptation Sensitivity under Small Calibration Batches
-
-### Community 357 - "test_recurrent_padding.py"
-Cohesion: 0.25
-Nodes (3): test_batch_collation_and_model_forward(), test_controlled_dataset_variable_length_padding(), test_recurrent_padding_invariance()
-
-### Community 360 - "Execution Specification: EXP-019B & EXP-020 Exploratory Closure"
-Cohesion: 0.29
-Nodes (6): 1. Mandatory Prior-Access Disclosure, Terminology & Claim Boundaries, 5. Key Audit Risks & Mitigations, 6. Alternatives Considered, Execution Specification: EXP-019B & EXP-020 Exploratory Closure, Inline Terminology, Scope & Non-Goals
-
-### Community 361 - "EXP-008: Boundary Weight Sweep & GRL Disentanglement"
-Cohesion: 0.33
-Nodes (5): EXP-008: Boundary Weight Sweep & GRL Disentanglement, Invariants, Overview, Side Effects, Verification
 
 ### Community 362 - "EXP-017: Sequence Horizon Evaluation ($T=600$ vs $T \le 1200$)"
 Cohesion: 0.33
@@ -1273,41 +1270,45 @@ Nodes (5): EXP-017: Sequence Horizon Evaluation ($T=600$ vs $T \le 1200$), Invar
 Cohesion: 0.50
 Nodes (3): 1. 47-Subject Unweighted Participant-Mean OOF Reference Summary (N = 47), 2. Cryptographic Checkpoint Registry (SHA-256), Stage 2: Final Model Freeze Verification Report
 
-### Community 364 - "EXP-019: 500-Epoch Extended Training Benchmark"
-Cohesion: 0.33
-Nodes (5): EXP-019: 500-Epoch Extended Training Benchmark, Invariants, Overview, Side Effects, Verification
-
-### Community 368 - "Code Discrepancy in `experiments/EXP-019/exp019_adaptation_core.py`"
-Cohesion: 0.40
-Nodes (5): 1. The Wearable Quality Filter, 2. The Silent Loop Termination, 3. Impact on Stage D Hyperparameter Tuning, 4. Root Cause Analysis, Code Discrepancy in `experiments/EXP-019/exp019_adaptation_core.py`
+### Community 365 - "test_exp019_pipeline.py"
+Cohesion: 0.25
+Nodes (3): test_exp019_dummy_forward_and_backward(), test_exp019_fold1_manifest_leakage(), test_exp019_mcc_metric_compatibility()
 
 ### Community 372 - "EXP-021 (TSK-08): SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Report"
 Cohesion: 0.50
 Nodes (3): 1. Primary Estimand & Hardware Efficiency Trade-Off, 2. Complete Primary & Secondary Paired Metrics (N = 47), EXP-021 (TSK-08): SLAMSS-IFS Matched 5-Fold Cross-Validation Paired Comparative Report
 
-### Community 373 - "research_engine"
+### Community 374 - "FinalSleepStagingSystem"
+Cohesion: 0.10
+Nodes (11): 2. Reused Helpers & Frozen Assets (No Duplication), FinalModelConfig, FinalSleepStagingSystem, sha256_file(), run_stage2_freeze(), test_deterministic_checkpoint_sha256_and_param_count(), _make_dummy_night(), test_stage2_config_memory_and_unloaded_guard() (+3 more)
+
+### Community 384 - "6. Summary of Findings by Severity"
+Cohesion: 0.50
+Nodes (4): 6. Summary of Findings by Severity, Critical Issues, Major Issues, Minor Issues
+
+### Community 385 - "research_engine"
 Cohesion: 0.50
 Nodes (4): Overview, research_engine, Side Effects, Verification
 
 ## Knowledge Gaps
 - **3 isolated node(s):** `MKL_NUM_THREADS`, `NUMEXPR_NUM_THREADS`, `OMP_NUM_THREADS`
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2468 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **156 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 2479 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **170 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ConventionalCNNBiGRU` connect `torch` to `os`, `test_nas_iteration1_eval_stress.py`, `.__init__`, `load_night_features`, `run_exp018_execution.py`, `numpy`, `evaluate_1epoch_fold1`, `test_nas_iteration1_adversarial.py`, `evaluate_dataset`, `evaluate_dataset`, `.__init__`, `build_exp013_model`, `regenerate_modelA_checkpoints.py`, `.__init__`, `.__init__`, `.__init__`, `.__init__`, `PriorCalibratedBoundedMarginPyramidCNNBiGRU`, `extract_exp019_phase_a3_outputs.py`, `test_exp019_invariants.py`, `.__init__`, `evaluate_outer_test`, `ACCEncoder`, `.__init__`, `AutonomicHomeostasisBoundedMarginPyramidCNNBiGRU`, `os`, `evaluate_outer_test`, `nas_iteration18_model.py`, `train_single_model`, `.__init__`, `.forward`, `evaluate_model_on_epochs`, `test_recurrent_padding.py`, `test_exp019_pipeline.py`, `.__init__`, `FinalSleepStagingSystem`?**
-  _High betweenness centrality (0.065) - this node is a cross-community bridge._
+- **Why does `ConventionalCNNBiGRU` connect `ConventionalCNNBiGRU` to `os`, `os`, `UnbiasedHypersphericalBoundedMarginPyramidCNNBiGRU`, `.__init__`, `.__init__`, `prepare_sleepaccel.py`, `run_governed_preflight`, `test_nas_iteration1_adversarial.py`, `evaluate_dataset`, `evaluate_dataset`, `torch`, `.__init__`, `extract_exp019_phase_a3_outputs.py`, `numpy`, `.__init__`, `.__init__`, `.__init__`, `.__init__`, `PriorCalibratedBoundedMarginPyramidCNNBiGRU`, `.__init__`, `train_and_save_checkpoint`, `.__init__`, `MaskedTemporalInstanceNorm`, `.__init__`, `AutonomicHomeostasisBoundedMarginPyramidCNNBiGRU`, `benchmark_int8_edge.py`, `run_stage_c`, `build_exp013_model`, `train_single_model`, `SlidingWindowPredictor`, `build_exp014_model`, `CalibratedAutonomicDispersionPyramidCNNBiGRU`, `🟡 Major Findings`, `ACCEncoder`, `DualScaleAutonomicSomatomotorPyramidCNNBiGRU`, `.forward`, `SmoothSynergyUltradianPyramidCNNBiGRU`, `BoundedMarginSynergyPyramidCNNBiGRU`, `evaluate_model_on_epochs`, `SubjectAdaptiveAutonomicDispersionPyramidCNNBiGRU`, `InterEpochSkipAttentionCNNBiGRU`, `PhysiologicalMultiScaleFusionCNNBiGRU`, `InterEpochSequenceAttention`, `test_exp019_pipeline.py`, `.__init__`, `SomatomotorAtoniaGatedPyramidCNNBiGRU`, `FinalSleepStagingSystem`, `test_exp019_parameter_budget`?**
+  _High betweenness centrality (0.057) - this node is a cross-community bridge._
 - **Are the 18 inferred relationships involving `ConventionalCNNBiGRU` (e.g. with `ACCEncoder` and `HREncoder`) actually correct?**
   _`ConventionalCNNBiGRU` has 18 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `MKL_NUM_THREADS`, `NUMEXPR_NUM_THREADS`, `OMP_NUM_THREADS` to the rest of the system?**
   _3 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `ExperimentEngine` be split into smaller, more focused modules?**
-  _Cohesion score 0.08503401360544217 - nodes in this community are weakly interconnected._
-- **Why does `compute_wearable_quality_mask()` connect `compute_wearable_quality_mask` to `2. Evidence-Grounded Future Questions (`FUTURE` Layer)`, `run_paired_comparative_analysis`, `DEC-027 — EXP-019 500-Epoch Extended Training Benchmark: Baseline vs MultiScaleConventionalCNNBiGRU`, `EXP-012 — Final Frozen Test Benchmark of SleepAdaptiveNet (B0_GRL)`, `extract_exp019_phase_a3_outputs.py`, `Independent Forensic & Governance Audit: Phase A Close-Out Evaluation`, `4.1 Experiment 1 (TSK-06): Supervised Personalization Learning Curve ($k = 1, 3, 4$)`, `PRE-REGISTRATION AMENDMENT: EXP-019 Secondary Hypothesis S3 (UA-2 Unsupervised Adaptation Re-Run)`, `test_tsk06_tsk07_execution_readiness.py`, `Research Knowledge & Literature Intelligence System`, `EXP-019 Final Report: Multi-Night Within-Person Adaptation (Hypothesis H-A)`, `FinalModelConfig`, `2. Itemized Adversarial Audit Findings`, `Master Roadmap Audit: Research Direction v4 Comprehensive Assessment`, `2. Objective-by-Objective Goal Attainment Audit`, `EGM Synchronization Review Report: Post-Sync Audit of Research Workspace`, `run_exp019b_heterogeneity_audit.py`, `Competing Hypotheses Database: Heterogeneous Adaptation Response`?**
-  _High betweenness centrality (0.054) - this node is a cross-community bridge._
-- **Should `torch` be split into smaller, more focused modules?**
-  _Cohesion score 0.060694579681921455 - nodes in this community are weakly interconnected._
-- **Why does `ControlledSleepDataset` connect `os` to `ExperimentEngine`, `evaluate_outer_test`, `evaluate_dataset`, `.__init__`, `load_night_features`, `evaluate_validation_sweep`, `CODE_FOR_REVIEW.md: Source Code of Critical Pipeline and Model Components`, `evaluate_dataset`, `evaluate_dataset`, `.__init__`, `build_exp013_model`, `evaluate_dataset`, `experiment_engine.py`, `evaluate_dataset`, `evaluate_dataset`, `evaluate_outer_test`, `evaluate_dataset`, `run_proxy_evaluation`, `evaluate_outer_test`, `evaluate_dataset`, `evaluate_outer_test`, `evaluate_outer_test`, `train_single_model`, `evaluate_dataset`, `evaluate_dataset`, `evaluate_dataset`, `evaluate_model_on_epochs`, `.__getitem__`, `test_recurrent_padding.py`, `evaluate_dataset`?**
-  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+  _Cohesion score 0.10241820768136557 - nodes in this community are weakly interconnected._
+- **Why does `compute_wearable_quality_mask()` connect `compute_wearable_quality_mask` to `2. Evidence-Grounded Future Questions (`FUTURE` Layer)`, `adapt_supervised_ft`, `Decisions`, `ConventionalCNNBiGRU`, `4.1 Experiment 1 (TSK-06): Supervised Personalization Learning Curve ($k = 1, 3, 4$)`, `PRE-REGISTRATION AMENDMENT: EXP-019 Secondary Hypothesis S3 (UA-2 Unsupervised Adaptation Re-Run)`, `Research Knowledge & Literature Intelligence System`, `Independent Forensic & Governance Audit: Phase A Close-Out Evaluation`, `EXP-019 Final Report: Multi-Night Within-Person Adaptation (Hypothesis H-A)`, `2. Itemized Adversarial Audit Findings`, `FinalSleepStagingSystem`, `Master Roadmap Audit: Research Direction v4 Comprehensive Assessment`, `evaluate_records`, `2. Objective-by-Objective Goal Attainment Audit`, `EGM Synchronization Review Report: Post-Sync Audit of Research Workspace`, `FinalSleepStagingSystem`, `numpy`, `Competing Hypotheses Database: Heterogeneous Adaptation Response`?**
+  _High betweenness centrality (0.051) - this node is a cross-community bridge._
+- **Should `os` be split into smaller, more focused modules?**
+  _Cohesion score 0.05586722767648434 - nodes in this community are weakly interconnected._
+- **Why does `ControlledSleepDataset` connect `os` to `ExperimentEngine`, `evaluate_dataset`, `evaluate_dataset`, `evaluate_validation_sweep`, `CODE_FOR_REVIEW.md: Source Code of Critical Pipeline and Model Components`, `evaluate_dataset`, `evaluate_dataset`, `evaluate_dataset`, `evaluate_dataset`, `torch`, `test_simulation_safety.py`, `evaluate_dataset`, `ConventionalCNNBiGRU`, `evaluate_dataset`, `evaluate_dataset`, `CircadianCrossAttentionCNNBiGRU`, `CircadianCrossModalCNNBiGRU`, `evaluate_dataset`, `run_proxy_evaluation`, `evaluate_outer_test`, `evaluate_outer_test`, `train_single_model`, `evaluate_dataset`, `evaluate_dataset`, `evaluate_model_on_epochs`, `.__getitem__`, `evaluate_outer_test`, `evaluate_dataset`, `evaluate_dataset`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._

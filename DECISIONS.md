@@ -812,19 +812,22 @@
 
 ## DEC-040 — EXP-019B & EXP-020 Design-Informed Exploratory Closure (2026-11-23, Commit `945c7c1`)
 
-- **Classification:** Design-informed exploratory closure on BIDSleep (`N=46` / `N=47`). Confirmatory verdict labels are strictly prohibited.
+- **Classification:** Design-informed exploratory closure on BIDSleep (`N=46` / `N=47`) under DEC-021. Confirmatory verdict labels are strictly prohibited.
+- **Audit Clearance:** Cleared post-execution by `docs/audits/STAGE_D_POST_EXECUTION_EGM_DRIFT_REPORT.md` (0 Blocking, 0 Major).
 - **EXP-019B (CPU Heterogeneity Audit):** Across 6 predictors (`min_stage_frac`, `stage_entropy`, `eff_ihr_hz`, `missingness_rate`, `baseline_hr_mean`, `baseline_hr_iqr`) tested against `EXP-019` (`FT-2 - ZS`, $N=46$) and `EXP-021` (`Model A - SLAMSS-IFS`, $N=47$), **zero predictors** reached `FDR q < 0.05` (all $q_{\text{family}} \ge 0.5673$, $q_{\text{pooled}} \ge 0.5913$; Oldham headroom check $\rho = +0.0376, p = 0.8043$). Individual subject heterogeneity in adaptation response is not explained by simple baseline HR, sampling rate, or stage-distribution summaries.
 - **EXP-020 (Regularized & Gated Adaptation Closure, $N=46$):**
   - `FT-2-KL`: `0.6562` Macro-F1 ($\bar{\Delta}_{\text{vs ZS}} = +1.03\text{ pp}$ [95% CI: $-0.11, +2.01\text{ pp}$], $p_{\text{Holm}} = 0.0030$; $\bar{\Delta}_{\text{vs FT-2}} = +0.02\text{ pp}$, $N_{\text{harm}} = 3$, worst outlier `-15.14 pp`).
   - `GATE_tau`: `0.6591` Macro-F1 ($\bar{\Delta}_{\text{vs ZS}} = +1.33\text{ pp}$ [95% CI: $+0.49, +2.12\text{ pp}$], $p_{\text{Holm}} = 0.0028$; $\bar{\Delta}_{\text{vs FT-2}} = +0.32\text{ pp}$, $N_{\text{harm}} = 2$, worst outlier reduced to `-6.40 pp` via `Bidslab34` abstention at `min_stage_frac_cal = 0.0068 < tau* = 0.01`).
   - `FT-2-KL_GATE_tau`: `0.6559` Macro-F1 ($\bar{\Delta}_{\text{vs ZS}} = +1.00\text{ pp}$, $p_{\text{Holm}} = 0.0030$; Arm c inner-val gate skipped Folds 2, 3, 5).
-- **Decision:** Adopt `GATE_tau` as the recommended exploratory safety guardrail against severe missing-stage negative transfer (`Bidslab34`) for Tier-2 adaptation, while reporting all EXP-019B/EXP-020 results strictly as exploratory findings.
+- **Decision:** Adopt `GATE_tau` as the recommended exploratory safety guardrail against severe missing-stage negative transfer (`Bidslab34`) for Tier-2 adaptation, while reporting all EXP-019B/EXP-020 results strictly as exploratory findings under DEC-021.
 
 ---
 
 ## DEC-041 — EXP-027 & EXP-028 Strictly Zero-Shot External PSG Validation on PhysioNet SleepAccel v1.0.0 (2026-11-23, Commit `945c7c1`)
 
-- **Protocol:** Zero-shot external validation (zero retraining, zero fine-tuning, zero threshold tuning) on PhysioNet SleepAccel v1.0.0 (DOI: `10.13026/hmhs-py35`, $N=31$ Apple Watch + in-lab PSG), locked under `docs/designs/exp027_exp028_sleepaccel_external_validation.md` and cleared via `docs/audits/STAGE_D_PRE_EXECUTION_DRIFT_REPORT.md` (`GO`, `n_qc_pass = 25`, 6 exclusions: 5 with `n_epochs < 600` and 1 [`7749105`] with ACC dropout `cov_mo = 0.136`).
+- **Protocol:** Zero-shot external validation (zero retraining, zero fine-tuning, zero threshold tuning) on PhysioNet SleepAccel v1.0.0 (DOI: `10.13026/hmhs-py35`, $N=31$ Apple Watch + in-lab PSG), locked under `docs/designs/exp027_exp028_sleepaccel_external_validation.md`, cleared pre-execution via `docs/audits/STAGE_D_PRE_EXECUTION_DRIFT_REPORT.md` (`GO`, `n_qc_pass = 25`, 6 exclusions: 5 with `n_epochs < 600` and 1 [`7749105`] with ACC dropout `cov_mo = 0.136`), and cleared post-execution via `docs/audits/STAGE_D_POST_EXECUTION_EGM_DRIFT_REPORT.md` (0 Blocking, 0 Major).
+- **Claim Boundary & Epistemological Framing:** The non-significant difference between Model A and the 33.34x larger Official SLAMSS-IFS is strictly framed as **no statistically significant difference / empirical parity** under paired testing. TOST equivalence is explicitly **not** claimed because no formal clinical equivalence margin was pre-specified.
+- **PSG Support Diagnostics:** Exactly 3 subjects in SleepAccel have zero reference PSG epochs for certain sleep stages (`1455390` with Deep = 0; `5132496` with REM = 0; `7749105` with REM = 0), generating 96 expected `RuntimeWarning`s in `evaluator.py:129` ($3 \times 2 \times 16$) that were safely caught with zero NaNs (`np.nan_to_num(..., 0.0)` and `zero_division=0`).
 - **EXP-027 (4-Class Stage Classification, Model A vs. Official SLAMSS-IFS, 15+15 Checkpoints):**
   - **Primary (`qc_clean`, $n=25$, `mean_single_model`):** Model A `60.51%` vs. SLAMSS-IFS `61.08%` Macro-F1 ($\bar{\Delta} = -0.57\text{ pp}$ [95% CI: $-2.13, +0.94\text{ pp}$], Wilcoxon $p = 0.5782$, $d_z = -0.14$, `10W/15L`); Kappa `0.4792` vs. `0.4919` ($p = 0.6150$).
   - **Secondary (`qc_clean`, $n=25$, `prob_ensemble`):** Model A **`62.94%`** vs. SLAMSS-IFS **`62.79%`** Macro-F1 ($\bar{\Delta} = +0.15\text{ pp}$ [95% CI: $-1.51, +1.86\text{ pp}$], $p = 0.9789$); Wake F1 `+2.65 pp`, Deep F1 `+1.13 pp`, REM F1 `-0.61 pp`, Light F1 `-2.56 pp` ($p = 0.0088$).
@@ -833,6 +836,7 @@
   - Persisted 744 raw paired tuples (`exp028_sleepaccel_raw_paired_tuples.csv`) and Bland-Altman (1999) `SE(LoA)` + Shapiro-Wilk fallback (`exp028_sleepaccel_bland_altman_summary.csv`).
   - **Model A:** `tst_min` bias `+12.22` min (`95% LoA [-23.18, +47.62]`, $r = 0.9099$); `sol_min` bias `+2.44` min (non-normal $p_{\text{SW}}=0.0059$, median `+2.50` min); `waso_min` bias `-13.82` min ($r = 0.3589$); `sleep_efficiency_pct` bias `+2.71%` (`[-5.47, +10.89]`); `deep_pct_tst` bias `+10.23%`; `rem_pct_tst` bias `+9.35%`.
   - **SLAMSS-IFS:** `tst_min` bias `+15.72` min (`[-19.84, +51.28]`, $r = 0.9078$); `sol_min` bias `+0.38` min; `waso_min` bias `-15.16` min; `sleep_efficiency_pct` bias `+3.49%`; `deep_pct_tst` bias `+8.84%`; `rem_pct_tst` bias `+6.87%`.
+  - **Label-Prior Shift:** Positive Deep% (`+10.23%`) and REM% (`+9.35%`) biases in both models reflect the known systematic reference discrepancy between in-lab PSG and Dreem ambulatory EEG (BIDSleep training source), where in-lab PSG scores less N1/N2 and higher consolidated slow-wave sleep.
 - **Decision:** External zero-shot generalization of the 163,940-parameter Model A on independent Apple Watch + PSG hardware is **verified**, achieving statistical parity with the 33.34x larger 5,465,768-parameter Official SLAMSS-IFS (`prob_ensemble` `+0.15 pp`, $p = 0.9789$). Stage D is closed; proceed to Stage E (`MANUSCRIPT_DRAFT_v0.2.md`).
 
 
