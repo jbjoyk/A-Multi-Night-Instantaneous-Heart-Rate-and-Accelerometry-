@@ -1,0 +1,9 @@
+Aggregated 141 subject-seed rows to /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-021/slamss_ifs_matched_subject_metrics.csv
+================================================================================
+EXP-021 (TSK-08) PAIRED COMPARATIVE ANALYSIS COMPLETE
+================================================================================
+Primary Macro-F1 Diff (Model A - SLAMSS-IFS): -2.58 pp [95% CI: -3.53, -1.68 pp]
+Wilcoxon p (two-sided): 1.9818e-06 | Cohen's d_z: -0.780
+Official Classification: SLAMSS-IFS ADVANTAGE (STATISTICALLY SIGNIFICANT)
+Report saved to: /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-021/slamss_ifs_paired_comparative_report.md
+================================================================================

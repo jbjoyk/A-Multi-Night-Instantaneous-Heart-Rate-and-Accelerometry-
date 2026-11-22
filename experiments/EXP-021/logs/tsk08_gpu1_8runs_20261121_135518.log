@@ -1,0 +1,255 @@
+Scheduled 8 (fold, seed) pairs on cuda:1: [(3, 123), (3, 2024), (4, 42), (4, 123), (4, 2024), (5, 42), (5, 123), (5, 2024)]
+[SKIP] Completed run already exists: /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-021/run_results/slamss_ifs_fold3_seed123.json
+================================================================================
+TSK-08 OFFICIAL SLAMSS-IFS | Fold 3/5 | Seed 2024 | Device: cuda:1
+Subjects: train=33 (175 nights), val=5 (26 nights), outer_test=9 (45 nights)
+Config: L=1200, micro_B=4, eff_B=4 (accum=1, ~44 steps/ep), val_B=16, lr=0.0001, max_epochs=100, min_epochs=40, patience=25, AMP=True, neutralize_circadian=True
+================================================================================
+/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/.venv/lib/python3.14/site-packages/torch/nn/modules/rnn.py:1358: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("GRU", *args, **kwargs)
+cuda:1
+Epoch 001/100 (Steps:   44) | Loss: 1.2183 | Val F1: 0.4685 | Val Acc: 0.4824 | 149.7s * BEST
+Epoch 002/100 (Steps:   88) | Loss: 1.0904 | Val F1: 0.5079 | Val Acc: 0.5088 | 146.2s * BEST
+Epoch 003/100 (Steps:  132) | Loss: 1.0815 | Val F1: 0.5091 | Val Acc: 0.5436 | 153.3s * BEST
+Epoch 004/100 (Steps:  176) | Loss: 1.0399 | Val F1: 0.5582 | Val Acc: 0.5631 | 161.0s * BEST
+Epoch 005/100 (Steps:  220) | Loss: 0.9993 | Val F1: 0.5902 | Val Acc: 0.5935 | 147.3s * BEST
+Epoch 008/100 (Steps:  352) | Loss: 0.9582 | Val F1: 0.6062 | Val Acc: 0.6031 | 146.0s * BEST
+Epoch 010/100 (Steps:  440) | Loss: 0.9354 | Val F1: 0.5854 | Val Acc: 0.6004 | 143.2s
+Epoch 011/100 (Steps:  484) | Loss: 0.9219 | Val F1: 0.6198 | Val Acc: 0.6150 | 143.6s * BEST
+Epoch 012/100 (Steps:  528) | Loss: 0.8620 | Val F1: 0.6320 | Val Acc: 0.6336 | 143.5s * BEST
+Epoch 013/100 (Steps:  572) | Loss: 0.8356 | Val F1: 0.6419 | Val Acc: 0.6457 | 143.2s * BEST
+Epoch 014/100 (Steps:  616) | Loss: 0.8171 | Val F1: 0.6429 | Val Acc: 0.6510 | 143.5s * BEST
+Epoch 015/100 (Steps:  660) | Loss: 0.8180 | Val F1: 0.6068 | Val Acc: 0.6330 | 143.7s
+Epoch 017/100 (Steps:  748) | Loss: 0.8052 | Val F1: 0.6458 | Val Acc: 0.6514 | 143.4s * BEST
+Epoch 018/100 (Steps:  792) | Loss: 0.7891 | Val F1: 0.6735 | Val Acc: 0.6794 | 143.9s * BEST
+Epoch 020/100 (Steps:  880) | Loss: 0.7618 | Val F1: 0.6560 | Val Acc: 0.6566 | 143.1s
+Epoch 021/100 (Steps:  924) | Loss: 0.7706 | Val F1: 0.6810 | Val Acc: 0.6828 | 143.1s * BEST
+Epoch 024/100 (Steps: 1056) | Loss: 0.7432 | Val F1: 0.6883 | Val Acc: 0.6946 | 143.2s * BEST
+Epoch 025/100 (Steps: 1100) | Loss: 0.7316 | Val F1: 0.6733 | Val Acc: 0.6781 | 143.0s
+Epoch 030/100 (Steps: 1320) | Loss: 0.6919 | Val F1: 0.6869 | Val Acc: 0.6959 | 143.1s
+Epoch 033/100 (Steps: 1452) | Loss: 0.6624 | Val F1: 0.6888 | Val Acc: 0.6941 | 143.1s * BEST
+Epoch 035/100 (Steps: 1540) | Loss: 0.6305 | Val F1: 0.6791 | Val Acc: 0.6862 | 143.0s
+Epoch 036/100 (Steps: 1584) | Loss: 0.6310 | Val F1: 0.6930 | Val Acc: 0.7022 | 143.1s * BEST
+Epoch 040/100 (Steps: 1760) | Loss: 0.6049 | Val F1: 0.6807 | Val Acc: 0.6834 | 143.1s
+Epoch 045/100 (Steps: 1980) | Loss: 0.5380 | Val F1: 0.6703 | Val Acc: 0.6786 | 143.1s
+Epoch 050/100 (Steps: 2200) | Loss: 0.4937 | Val F1: 0.6748 | Val Acc: 0.6798 | 143.0s
+Epoch 055/100 (Steps: 2420) | Loss: 0.4558 | Val F1: 0.6673 | Val Acc: 0.6692 | 143.2s
+Epoch 060/100 (Steps: 2640) | Loss: 0.4228 | Val F1: 0.6466 | Val Acc: 0.6602 | 143.0s
+Epoch 064/100 (Steps: 2816) | Loss: 0.4073 | Val F1: 0.6489 | Val Acc: 0.6555 | 143.0s
+Early stopping triggered at epoch 64 (best epoch 36, best Val Macro-F1 = 0.6930, total steps = 2816).
+[COMPLETED] Fold 3 Seed 2024 | Best Ep: 36 (2816 steps) | Outer Test Macro-F1: 0.7224 | Acc: 0.7333 | Peak VRAM: 6966.0 MiB | Time: 153.6 min
+================================================================================
+TSK-08 OFFICIAL SLAMSS-IFS | Fold 4/5 | Seed 42 | Device: cuda:1
+Subjects: train=33 (174 nights), val=5 (25 nights), outer_test=9 (47 nights)
+Config: L=1200, micro_B=4, eff_B=4 (accum=1, ~44 steps/ep), val_B=16, lr=0.0001, max_epochs=100, min_epochs=40, patience=25, AMP=True, neutralize_circadian=True
+================================================================================
+/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/.venv/lib/python3.14/site-packages/torch/nn/modules/rnn.py:1358: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("GRU", *args, **kwargs)
+cuda:1
+Epoch 001/100 (Steps:   44) | Loss: 1.2078 | Val F1: 0.3821 | Val Acc: 0.3792 | 142.8s * BEST
+Epoch 002/100 (Steps:   88) | Loss: 1.0977 | Val F1: 0.4527 | Val Acc: 0.5058 | 143.3s * BEST
+Epoch 004/100 (Steps:  176) | Loss: 1.0126 | Val F1: 0.5531 | Val Acc: 0.5683 | 143.3s * BEST
+Epoch 005/100 (Steps:  220) | Loss: 0.9710 | Val F1: 0.5658 | Val Acc: 0.5780 | 143.3s * BEST
+Epoch 007/100 (Steps:  308) | Loss: 0.9347 | Val F1: 0.5989 | Val Acc: 0.6139 | 143.1s * BEST
+Epoch 009/100 (Steps:  396) | Loss: 0.9087 | Val F1: 0.6127 | Val Acc: 0.6150 | 149.2s * BEST
+Epoch 010/100 (Steps:  440) | Loss: 0.8841 | Val F1: 0.6167 | Val Acc: 0.6132 | 146.9s * BEST
+Epoch 011/100 (Steps:  484) | Loss: 0.8652 | Val F1: 0.6340 | Val Acc: 0.6425 | 146.0s * BEST
+Epoch 013/100 (Steps:  572) | Loss: 0.8196 | Val F1: 0.6794 | Val Acc: 0.6714 | 150.1s * BEST
+Epoch 014/100 (Steps:  616) | Loss: 0.8009 | Val F1: 0.6936 | Val Acc: 0.6912 | 149.1s * BEST
+Epoch 015/100 (Steps:  660) | Loss: 0.7776 | Val F1: 0.6982 | Val Acc: 0.6935 | 148.3s * BEST
+Epoch 016/100 (Steps:  704) | Loss: 0.7610 | Val F1: 0.6984 | Val Acc: 0.6962 | 145.7s * BEST
+Epoch 020/100 (Steps:  880) | Loss: 0.7220 | Val F1: 0.7201 | Val Acc: 0.7191 | 143.8s * BEST
+Epoch 024/100 (Steps: 1056) | Loss: 0.6858 | Val F1: 0.7216 | Val Acc: 0.7206 | 143.4s * BEST
+Epoch 025/100 (Steps: 1100) | Loss: 0.6830 | Val F1: 0.7158 | Val Acc: 0.7115 | 143.2s
+Epoch 027/100 (Steps: 1188) | Loss: 0.6642 | Val F1: 0.7249 | Val Acc: 0.7232 | 147.0s * BEST
+Epoch 030/100 (Steps: 1320) | Loss: 0.6497 | Val F1: 0.7263 | Val Acc: 0.7262 | 144.0s * BEST
+Epoch 035/100 (Steps: 1540) | Loss: 0.6087 | Val F1: 0.7158 | Val Acc: 0.7135 | 144.0s
+Epoch 040/100 (Steps: 1760) | Loss: 0.5646 | Val F1: 0.7094 | Val Acc: 0.7039 | 143.7s
+Epoch 045/100 (Steps: 1980) | Loss: 0.5192 | Val F1: 0.7130 | Val Acc: 0.7077 | 143.9s
+Epoch 050/100 (Steps: 2200) | Loss: 0.4733 | Val F1: 0.7030 | Val Acc: 0.6984 | 143.8s
+Epoch 055/100 (Steps: 2420) | Loss: 0.4317 | Val F1: 0.6982 | Val Acc: 0.6965 | 144.1s
+Epoch 060/100 (Steps: 2640) | Loss: 0.4024 | Val F1: 0.6877 | Val Acc: 0.6866 | 143.9s
+Epoch 064/100 (Steps: 2816) | Loss: 0.3663 | Val F1: 0.6740 | Val Acc: 0.6704 | 148.5s
+Early stopping triggered at epoch 64 (best epoch 30, best Val Macro-F1 = 0.7263, total steps = 2816).
+[COMPLETED] Fold 4 Seed 42 | Best Ep: 30 (2816 steps) | Outer Test Macro-F1: 0.6855 | Acc: 0.6861 | Peak VRAM: 6874.0 MiB | Time: 154.3 min
+================================================================================
+TSK-08 OFFICIAL SLAMSS-IFS | Fold 4/5 | Seed 123 | Device: cuda:1
+Subjects: train=33 (174 nights), val=5 (25 nights), outer_test=9 (47 nights)
+Config: L=1200, micro_B=4, eff_B=4 (accum=1, ~44 steps/ep), val_B=16, lr=0.0001, max_epochs=100, min_epochs=40, patience=25, AMP=True, neutralize_circadian=True
+================================================================================
+/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/.venv/lib/python3.14/site-packages/torch/nn/modules/rnn.py:1358: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("GRU", *args, **kwargs)
+cuda:1
+Epoch 001/100 (Steps:   44) | Loss: 1.2200 | Val F1: 0.4501 | Val Acc: 0.4881 | 149.4s * BEST
+Epoch 002/100 (Steps:   88) | Loss: 1.0776 | Val F1: 0.5042 | Val Acc: 0.5003 | 150.1s * BEST
+Epoch 003/100 (Steps:  132) | Loss: 1.0600 | Val F1: 0.5260 | Val Acc: 0.5436 | 152.1s * BEST
+Epoch 005/100 (Steps:  220) | Loss: 0.9924 | Val F1: 0.5852 | Val Acc: 0.5914 | 144.9s * BEST
+Epoch 007/100 (Steps:  308) | Loss: 0.9386 | Val F1: 0.5896 | Val Acc: 0.6110 | 144.7s * BEST
+Epoch 008/100 (Steps:  352) | Loss: 0.9065 | Val F1: 0.6163 | Val Acc: 0.6333 | 144.7s * BEST
+Epoch 009/100 (Steps:  396) | Loss: 0.8964 | Val F1: 0.6269 | Val Acc: 0.6381 | 144.6s * BEST
+Epoch 010/100 (Steps:  440) | Loss: 0.8660 | Val F1: 0.6407 | Val Acc: 0.6443 | 145.3s * BEST
+Epoch 011/100 (Steps:  484) | Loss: 0.8339 | Val F1: 0.6739 | Val Acc: 0.6724 | 153.2s * BEST
+Epoch 012/100 (Steps:  528) | Loss: 0.8104 | Val F1: 0.6745 | Val Acc: 0.6668 | 177.4s * BEST
+Epoch 014/100 (Steps:  616) | Loss: 0.7917 | Val F1: 0.6922 | Val Acc: 0.6922 | 177.4s * BEST
+Epoch 015/100 (Steps:  660) | Loss: 0.7720 | Val F1: 0.6791 | Val Acc: 0.6756 | 177.4s
+Epoch 016/100 (Steps:  704) | Loss: 0.7642 | Val F1: 0.6994 | Val Acc: 0.6982 | 177.8s * BEST
+Epoch 017/100 (Steps:  748) | Loss: 0.7588 | Val F1: 0.7044 | Val Acc: 0.7046 | 177.9s * BEST
+Epoch 018/100 (Steps:  792) | Loss: 0.7472 | Val F1: 0.7112 | Val Acc: 0.7086 | 177.9s * BEST
+Epoch 019/100 (Steps:  836) | Loss: 0.7420 | Val F1: 0.7134 | Val Acc: 0.7065 | 177.5s * BEST
+Epoch 020/100 (Steps:  880) | Loss: 0.7347 | Val F1: 0.7073 | Val Acc: 0.7038 | 178.0s
+Epoch 025/100 (Steps: 1100) | Loss: 0.7014 | Val F1: 0.7183 | Val Acc: 0.7213 | 143.8s * BEST
+Epoch 030/100 (Steps: 1320) | Loss: 0.6657 | Val F1: 0.7228 | Val Acc: 0.7196 | 143.7s * BEST
+Epoch 035/100 (Steps: 1540) | Loss: 0.6252 | Val F1: 0.7219 | Val Acc: 0.7213 | 143.7s
+Epoch 040/100 (Steps: 1760) | Loss: 0.5748 | Val F1: 0.7148 | Val Acc: 0.7104 | 143.4s
+Epoch 045/100 (Steps: 1980) | Loss: 0.5205 | Val F1: 0.7042 | Val Acc: 0.7005 | 143.8s
+Epoch 050/100 (Steps: 2200) | Loss: 0.4736 | Val F1: 0.6963 | Val Acc: 0.6955 | 143.9s
+Epoch 055/100 (Steps: 2420) | Loss: 0.4418 | Val F1: 0.6993 | Val Acc: 0.6944 | 143.8s
+Epoch 060/100 (Steps: 2640) | Loss: 0.4194 | Val F1: 0.6883 | Val Acc: 0.6806 | 143.8s
+Epoch 064/100 (Steps: 2816) | Loss: 0.3832 | Val F1: 0.6833 | Val Acc: 0.6810 | 143.6s
+Early stopping triggered at epoch 64 (best epoch 30, best Val Macro-F1 = 0.7228, total steps = 2816).
+[COMPLETED] Fold 4 Seed 123 | Best Ep: 30 (2816 steps) | Outer Test Macro-F1: 0.6738 | Acc: 0.6733 | Peak VRAM: 6874.0 MiB | Time: 160.7 min
+================================================================================
+TSK-08 OFFICIAL SLAMSS-IFS | Fold 4/5 | Seed 2024 | Device: cuda:1
+Subjects: train=33 (174 nights), val=5 (25 nights), outer_test=9 (47 nights)
+Config: L=1200, micro_B=4, eff_B=4 (accum=1, ~44 steps/ep), val_B=16, lr=0.0001, max_epochs=100, min_epochs=40, patience=25, AMP=True, neutralize_circadian=True
+================================================================================
+/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/.venv/lib/python3.14/site-packages/torch/nn/modules/rnn.py:1358: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("GRU", *args, **kwargs)
+cuda:1
+Epoch 001/100 (Steps:   44) | Loss: 1.2207 | Val F1: 0.3200 | Val Acc: 0.4616 | 143.4s * BEST
+Epoch 002/100 (Steps:   88) | Loss: 1.0910 | Val F1: 0.4678 | Val Acc: 0.5106 | 144.1s * BEST
+Epoch 003/100 (Steps:  132) | Loss: 1.0477 | Val F1: 0.5549 | Val Acc: 0.5516 | 144.0s * BEST
+Epoch 005/100 (Steps:  220) | Loss: 0.9712 | Val F1: 0.5667 | Val Acc: 0.5759 | 143.9s * BEST
+Epoch 007/100 (Steps:  308) | Loss: 0.9355 | Val F1: 0.6003 | Val Acc: 0.6095 | 146.9s * BEST
+Epoch 008/100 (Steps:  352) | Loss: 0.9161 | Val F1: 0.6102 | Val Acc: 0.6211 | 147.6s * BEST
+Epoch 010/100 (Steps:  440) | Loss: 0.8916 | Val F1: 0.6263 | Val Acc: 0.6278 | 148.4s * BEST
+Epoch 011/100 (Steps:  484) | Loss: 0.8652 | Val F1: 0.6337 | Val Acc: 0.6402 | 145.8s * BEST
+Epoch 012/100 (Steps:  528) | Loss: 0.8336 | Val F1: 0.6710 | Val Acc: 0.6696 | 145.6s * BEST
+Epoch 013/100 (Steps:  572) | Loss: 0.8142 | Val F1: 0.6789 | Val Acc: 0.6786 | 145.4s * BEST
+Epoch 014/100 (Steps:  616) | Loss: 0.7874 | Val F1: 0.7033 | Val Acc: 0.7017 | 145.8s * BEST
+Epoch 015/100 (Steps:  660) | Loss: 0.7719 | Val F1: 0.6971 | Val Acc: 0.6936 | 144.6s
+Epoch 016/100 (Steps:  704) | Loss: 0.7613 | Val F1: 0.7049 | Val Acc: 0.6985 | 145.8s * BEST
+Epoch 018/100 (Steps:  792) | Loss: 0.7364 | Val F1: 0.7121 | Val Acc: 0.7110 | 145.6s * BEST
+Epoch 020/100 (Steps:  880) | Loss: 0.7159 | Val F1: 0.6691 | Val Acc: 0.6665 | 148.9s
+Epoch 021/100 (Steps:  924) | Loss: 0.7158 | Val F1: 0.7167 | Val Acc: 0.7169 | 147.6s * BEST
+Epoch 024/100 (Steps: 1056) | Loss: 0.6901 | Val F1: 0.7284 | Val Acc: 0.7329 | 145.8s * BEST
+Epoch 025/100 (Steps: 1100) | Loss: 0.6938 | Val F1: 0.7212 | Val Acc: 0.7234 | 145.9s
+Epoch 030/100 (Steps: 1320) | Loss: 0.6449 | Val F1: 0.7225 | Val Acc: 0.7243 | 147.1s
+Epoch 035/100 (Steps: 1540) | Loss: 0.6338 | Val F1: 0.7134 | Val Acc: 0.7159 | 146.1s
+Epoch 040/100 (Steps: 1760) | Loss: 0.5691 | Val F1: 0.7050 | Val Acc: 0.7043 | 144.9s
+Epoch 045/100 (Steps: 1980) | Loss: 0.5150 | Val F1: 0.7103 | Val Acc: 0.7109 | 146.3s
+Epoch 050/100 (Steps: 2200) | Loss: 0.4749 | Val F1: 0.7013 | Val Acc: 0.7013 | 144.9s
+Epoch 055/100 (Steps: 2420) | Loss: 0.4420 | Val F1: 0.6858 | Val Acc: 0.6875 | 145.7s
+Epoch 060/100 (Steps: 2640) | Loss: 0.4024 | Val F1: 0.6762 | Val Acc: 0.6754 | 145.4s
+Epoch 064/100 (Steps: 2816) | Loss: 0.3774 | Val F1: 0.6915 | Val Acc: 0.6906 | 148.2s
+Early stopping triggered at epoch 64 (best epoch 24, best Val Macro-F1 = 0.7284, total steps = 2816).
+[COMPLETED] Fold 4 Seed 2024 | Best Ep: 24 (2816 steps) | Outer Test Macro-F1: 0.6686 | Acc: 0.6761 | Peak VRAM: 6874.0 MiB | Time: 157.9 min
+================================================================================
+TSK-08 OFFICIAL SLAMSS-IFS | Fold 5/5 | Seed 42 | Device: cuda:1
+Subjects: train=33 (171 nights), val=5 (28 nights), outer_test=9 (47 nights)
+Config: L=1200, micro_B=4, eff_B=4 (accum=1, ~43 steps/ep), val_B=16, lr=0.0001, max_epochs=100, min_epochs=40, patience=25, AMP=True, neutralize_circadian=True
+================================================================================
+/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/.venv/lib/python3.14/site-packages/torch/nn/modules/rnn.py:1358: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("GRU", *args, **kwargs)
+cuda:1
+Epoch 001/100 (Steps:   43) | Loss: 1.2064 | Val F1: 0.3436 | Val Acc: 0.4554 | 146.5s * BEST
+Epoch 002/100 (Steps:   86) | Loss: 1.0877 | Val F1: 0.3859 | Val Acc: 0.4858 | 145.6s * BEST
+Epoch 003/100 (Steps:  129) | Loss: 1.0555 | Val F1: 0.4573 | Val Acc: 0.5011 | 146.2s * BEST
+Epoch 004/100 (Steps:  172) | Loss: 1.0158 | Val F1: 0.5354 | Val Acc: 0.5447 | 143.7s * BEST
+Epoch 005/100 (Steps:  215) | Loss: 0.9728 | Val F1: 0.5360 | Val Acc: 0.5676 | 142.8s * BEST
+Epoch 008/100 (Steps:  344) | Loss: 0.9359 | Val F1: 0.5566 | Val Acc: 0.5821 | 143.7s * BEST
+Epoch 010/100 (Steps:  430) | Loss: 0.9017 | Val F1: 0.5742 | Val Acc: 0.5882 | 142.9s * BEST
+Epoch 012/100 (Steps:  516) | Loss: 0.8412 | Val F1: 0.6130 | Val Acc: 0.6273 | 141.4s * BEST
+Epoch 015/100 (Steps:  645) | Loss: 0.7690 | Val F1: 0.5593 | Val Acc: 0.6020 | 139.5s
+Epoch 016/100 (Steps:  688) | Loss: 0.7631 | Val F1: 0.6168 | Val Acc: 0.6344 | 139.6s * BEST
+Epoch 020/100 (Steps:  860) | Loss: 0.7182 | Val F1: 0.6387 | Val Acc: 0.6510 | 139.5s * BEST
+Epoch 025/100 (Steps: 1075) | Loss: 0.6860 | Val F1: 0.5842 | Val Acc: 0.5982 | 139.5s
+Epoch 030/100 (Steps: 1290) | Loss: 0.6573 | Val F1: 0.6036 | Val Acc: 0.6093 | 139.6s
+Epoch 035/100 (Steps: 1505) | Loss: 0.6096 | Val F1: 0.6366 | Val Acc: 0.6482 | 139.7s
+Epoch 040/100 (Steps: 1720) | Loss: 0.5622 | Val F1: 0.6283 | Val Acc: 0.6418 | 139.7s
+Epoch 045/100 (Steps: 1935) | Loss: 0.5288 | Val F1: 0.6179 | Val Acc: 0.6255 | 139.5s
+Epoch 050/100 (Steps: 2150) | Loss: 0.4847 | Val F1: 0.6125 | Val Acc: 0.6311 | 140.1s
+Epoch 055/100 (Steps: 2365) | Loss: 0.4385 | Val F1: 0.6104 | Val Acc: 0.6270 | 139.8s
+Epoch 056/100 (Steps: 2408) | Loss: 0.4416 | Val F1: 0.6391 | Val Acc: 0.6448 | 139.9s * BEST
+Epoch 060/100 (Steps: 2580) | Loss: 0.4133 | Val F1: 0.6369 | Val Acc: 0.6409 | 139.9s
+Epoch 065/100 (Steps: 2795) | Loss: 0.3851 | Val F1: 0.6157 | Val Acc: 0.6303 | 139.8s
+Epoch 070/100 (Steps: 3010) | Loss: 0.3666 | Val F1: 0.6174 | Val Acc: 0.6313 | 139.9s
+Epoch 075/100 (Steps: 3225) | Loss: 0.3354 | Val F1: 0.6373 | Val Acc: 0.6415 | 140.1s
+Epoch 080/100 (Steps: 3440) | Loss: 0.3202 | Val F1: 0.6097 | Val Acc: 0.6161 | 139.7s
+Epoch 081/100 (Steps: 3483) | Loss: 0.3086 | Val F1: 0.6108 | Val Acc: 0.6285 | 139.5s
+Early stopping triggered at epoch 81 (best epoch 56, best Val Macro-F1 = 0.6391, total steps = 3483).
+[COMPLETED] Fold 5 Seed 42 | Best Ep: 56 (3483 steps) | Outer Test Macro-F1: 0.6722 | Acc: 0.6792 | Peak VRAM: 6498.0 MiB | Time: 189.4 min
+================================================================================
+TSK-08 OFFICIAL SLAMSS-IFS | Fold 5/5 | Seed 123 | Device: cuda:1
+Subjects: train=33 (171 nights), val=5 (28 nights), outer_test=9 (47 nights)
+Config: L=1200, micro_B=4, eff_B=4 (accum=1, ~43 steps/ep), val_B=16, lr=0.0001, max_epochs=100, min_epochs=40, patience=25, AMP=True, neutralize_circadian=True
+================================================================================
+/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/.venv/lib/python3.14/site-packages/torch/nn/modules/rnn.py:1358: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("GRU", *args, **kwargs)
+cuda:1
+Epoch 001/100 (Steps:   43) | Loss: 1.1979 | Val F1: 0.3107 | Val Acc: 0.4651 | 139.4s * BEST
+Epoch 002/100 (Steps:   86) | Loss: 1.1053 | Val F1: 0.4293 | Val Acc: 0.5003 | 139.9s * BEST
+Epoch 003/100 (Steps:  129) | Loss: 1.0587 | Val F1: 0.4516 | Val Acc: 0.4969 | 139.8s * BEST
+Epoch 005/100 (Steps:  215) | Loss: 0.9968 | Val F1: 0.5044 | Val Acc: 0.5370 | 139.7s * BEST
+Epoch 006/100 (Steps:  258) | Loss: 0.9550 | Val F1: 0.5078 | Val Acc: 0.5297 | 139.7s * BEST
+Epoch 007/100 (Steps:  301) | Loss: 0.9320 | Val F1: 0.5619 | Val Acc: 0.5730 | 139.8s * BEST
+Epoch 008/100 (Steps:  344) | Loss: 0.8957 | Val F1: 0.5738 | Val Acc: 0.5734 | 139.7s * BEST
+Epoch 009/100 (Steps:  387) | Loss: 0.8644 | Val F1: 0.6050 | Val Acc: 0.6001 | 139.7s * BEST
+Epoch 010/100 (Steps:  430) | Loss: 0.8220 | Val F1: 0.6013 | Val Acc: 0.6162 | 139.7s
+Epoch 011/100 (Steps:  473) | Loss: 0.8006 | Val F1: 0.6075 | Val Acc: 0.6113 | 139.8s * BEST
+Epoch 012/100 (Steps:  516) | Loss: 0.7920 | Val F1: 0.6135 | Val Acc: 0.6240 | 139.8s * BEST
+Epoch 015/100 (Steps:  645) | Loss: 0.7674 | Val F1: 0.6116 | Val Acc: 0.6366 | 139.6s
+Epoch 017/100 (Steps:  731) | Loss: 0.7378 | Val F1: 0.6287 | Val Acc: 0.6297 | 139.7s * BEST
+Epoch 020/100 (Steps:  860) | Loss: 0.7206 | Val F1: 0.6247 | Val Acc: 0.6505 | 139.8s
+Epoch 024/100 (Steps: 1032) | Loss: 0.7050 | Val F1: 0.6400 | Val Acc: 0.6444 | 139.9s * BEST
+Epoch 025/100 (Steps: 1075) | Loss: 0.6888 | Val F1: 0.6313 | Val Acc: 0.6490 | 139.8s
+Epoch 029/100 (Steps: 1247) | Loss: 0.6640 | Val F1: 0.6402 | Val Acc: 0.6519 | 138.6s * BEST
+Epoch 030/100 (Steps: 1290) | Loss: 0.6497 | Val F1: 0.6489 | Val Acc: 0.6587 | 138.5s * BEST
+Epoch 035/100 (Steps: 1505) | Loss: 0.6080 | Val F1: 0.6209 | Val Acc: 0.6411 | 138.4s
+Epoch 040/100 (Steps: 1720) | Loss: 0.5501 | Val F1: 0.6208 | Val Acc: 0.6212 | 138.4s
+Epoch 045/100 (Steps: 1935) | Loss: 0.5077 | Val F1: 0.6064 | Val Acc: 0.6078 | 138.4s
+Epoch 050/100 (Steps: 2150) | Loss: 0.4864 | Val F1: 0.6314 | Val Acc: 0.6448 | 138.4s
+Epoch 055/100 (Steps: 2365) | Loss: 0.4406 | Val F1: 0.6100 | Val Acc: 0.6209 | 138.4s
+Epoch 060/100 (Steps: 2580) | Loss: 0.4030 | Val F1: 0.5818 | Val Acc: 0.5945 | 138.4s
+Epoch 064/100 (Steps: 2752) | Loss: 0.4024 | Val F1: 0.5883 | Val Acc: 0.6000 | 138.5s
+Early stopping triggered at epoch 64 (best epoch 30, best Val Macro-F1 = 0.6489, total steps = 2752).
+[COMPLETED] Fold 5 Seed 123 | Best Ep: 30 (2752 steps) | Outer Test Macro-F1: 0.7050 | Acc: 0.7100 | Peak VRAM: 6498.0 MiB | Time: 148.3 min
+================================================================================
+TSK-08 OFFICIAL SLAMSS-IFS | Fold 5/5 | Seed 2024 | Device: cuda:1
+Subjects: train=33 (171 nights), val=5 (28 nights), outer_test=9 (47 nights)
+Config: L=1200, micro_B=4, eff_B=4 (accum=1, ~43 steps/ep), val_B=16, lr=0.0001, max_epochs=100, min_epochs=40, patience=25, AMP=True, neutralize_circadian=True
+================================================================================
+/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/.venv/lib/python3.14/site-packages/torch/nn/modules/rnn.py:1358: UserWarning: dropout option adds dropout after all but last recurrent layer, so non-zero dropout expects num_layers greater than 1, but got dropout=0.2 and num_layers=1
+  super().__init__("GRU", *args, **kwargs)
+cuda:1
+Epoch 001/100 (Steps:   43) | Loss: 1.1944 | Val F1: 0.4086 | Val Acc: 0.5006 | 138.1s * BEST
+Epoch 002/100 (Steps:   86) | Loss: 1.0836 | Val F1: 0.4478 | Val Acc: 0.4860 | 138.5s * BEST
+Epoch 004/100 (Steps:  172) | Loss: 1.0206 | Val F1: 0.5097 | Val Acc: 0.5451 | 138.2s * BEST
+Epoch 005/100 (Steps:  215) | Loss: 0.9718 | Val F1: 0.5079 | Val Acc: 0.5402 | 138.3s
+Epoch 006/100 (Steps:  258) | Loss: 0.9654 | Val F1: 0.5111 | Val Acc: 0.5598 | 138.2s * BEST
+Epoch 007/100 (Steps:  301) | Loss: 0.9459 | Val F1: 0.5236 | Val Acc: 0.5741 | 138.4s * BEST
+Epoch 008/100 (Steps:  344) | Loss: 0.9214 | Val F1: 0.5544 | Val Acc: 0.5696 | 138.4s * BEST
+Epoch 010/100 (Steps:  430) | Loss: 0.8902 | Val F1: 0.5413 | Val Acc: 0.5799 | 138.3s
+Epoch 011/100 (Steps:  473) | Loss: 0.8818 | Val F1: 0.5732 | Val Acc: 0.5977 | 138.2s * BEST
+Epoch 012/100 (Steps:  516) | Loss: 0.8500 | Val F1: 0.5958 | Val Acc: 0.6190 | 138.3s * BEST
+Epoch 013/100 (Steps:  559) | Loss: 0.8125 | Val F1: 0.5985 | Val Acc: 0.6203 | 138.6s * BEST
+Epoch 015/100 (Steps:  645) | Loss: 0.7696 | Val F1: 0.5987 | Val Acc: 0.6273 | 141.7s * BEST
+Epoch 016/100 (Steps:  688) | Loss: 0.7568 | Val F1: 0.6000 | Val Acc: 0.6118 | 141.2s * BEST
+Epoch 018/100 (Steps:  774) | Loss: 0.7381 | Val F1: 0.6122 | Val Acc: 0.6307 | 140.8s * BEST
+Epoch 020/100 (Steps:  860) | Loss: 0.7276 | Val F1: 0.6014 | Val Acc: 0.6229 | 140.7s
+Epoch 021/100 (Steps:  903) | Loss: 0.7099 | Val F1: 0.6320 | Val Acc: 0.6423 | 140.7s * BEST
+Epoch 023/100 (Steps:  989) | Loss: 0.6948 | Val F1: 0.6378 | Val Acc: 0.6528 | 140.5s * BEST
+Epoch 025/100 (Steps: 1075) | Loss: 0.6838 | Val F1: 0.6269 | Val Acc: 0.6443 | 140.6s
+Epoch 030/100 (Steps: 1290) | Loss: 0.6487 | Val F1: 0.6444 | Val Acc: 0.6514 | 140.6s * BEST
+Epoch 035/100 (Steps: 1505) | Loss: 0.6104 | Val F1: 0.6469 | Val Acc: 0.6582 | 140.5s * BEST
+Epoch 040/100 (Steps: 1720) | Loss: 0.5473 | Val F1: 0.6223 | Val Acc: 0.6360 | 141.3s
+Epoch 041/100 (Steps: 1763) | Loss: 0.5310 | Val F1: 0.6473 | Val Acc: 0.6553 | 142.7s * BEST
+Epoch 043/100 (Steps: 1849) | Loss: 0.5134 | Val F1: 0.6477 | Val Acc: 0.6555 | 144.2s * BEST
+Epoch 045/100 (Steps: 1935) | Loss: 0.4916 | Val F1: 0.6321 | Val Acc: 0.6429 | 141.7s
+Epoch 050/100 (Steps: 2150) | Loss: 0.4602 | Val F1: 0.6197 | Val Acc: 0.6296 | 141.3s
+Epoch 055/100 (Steps: 2365) | Loss: 0.4395 | Val F1: 0.6013 | Val Acc: 0.6210 | 138.7s
+Epoch 060/100 (Steps: 2580) | Loss: 0.4155 | Val F1: 0.6206 | Val Acc: 0.6338 | 138.6s
+Epoch 065/100 (Steps: 2795) | Loss: 0.3914 | Val F1: 0.6461 | Val Acc: 0.6574 | 138.4s
+Epoch 068/100 (Steps: 2924) | Loss: 0.3717 | Val F1: 0.6264 | Val Acc: 0.6357 | 138.7s
+Early stopping triggered at epoch 68 (best epoch 43, best Val Macro-F1 = 0.6477, total steps = 2924).
+[COMPLETED] Fold 5 Seed 2024 | Best Ep: 43 (2924 steps) | Outer Test Macro-F1: 0.6738 | Acc: 0.6747 | Peak VRAM: 6498.0 MiB | Time: 158.8 min

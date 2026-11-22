@@ -67,8 +67,8 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
     * Experiment 2 (TSK-07 / EXP-019-S3): Unsupervised adaptation re-run ($UA\text{-}2$) under `PREREG_EXP-019_S3_AMENDMENT.md` (DEC-030 unit fix, pre-flight gate, InfoMax). Status: **COMPLETED (DEC-036)**. Sub-benchmark gain ($\Delta = +0.21\text{ pp}$ [95% CI: $+0.04, +0.39$], $p = 0.0322$).
   - Stage 2 (Final Model Synthesis & Freezing — COMPLETED & SEALED under DEC-037):
     * Executed `freeze_final_model.py --device cuda:0` across all 15 frozen Model A checkpoints (`163,940` params). All 15 checkpoints SHA-256 sealed (`frozen_checkpoint_manifest.json`), 141 subject-seed OOF rows extracted (`final_model_oof_subject_metrics.csv`, max fold-pooled parity diff `0.000099`, max per-subject diff `0.000655`), and `STAGE2_MODEL_FREEZE_REPORT.md` generated.
-  - Stage 3 (Definitive Matched Baseline Benchmark — EGM-VERIFIED & LAUNCHED under DEC-037):
-    * Experiment 3 (TSK-08 / EXP-021): Restored 246-night `prep_57738d534b` feature cache, verified 12/12 unit & CUDA AMP tests (`tests/test_stage2_stage3_implementation.py`) and end-to-end dual-GPU `--dry-run`, ratified `DEC-037`, and launched the full 15-run dual-GPU SLAMSS-IFS benchmark (`./experiments/EXP-021/run_stage3_dual_gpu.sh`).
+  - Stage 3 (Definitive Matched Baseline Benchmark — COMPLETED under DEC-038):
+    * Experiment 3 (TSK-08 / EXP-021): Restored 246-night `prep_57738d534b` feature cache, verified 12/12 unit & CUDA AMP tests, and executed the full 15-run dual-GPU SLAMSS-IFS benchmark across both RTX 3060 GPUs (`./experiments/EXP-021/run_stage3_dual_gpu.sh`). Evaluated against frozen Model A ($N=47$, 10,000 bootstrap resamples; SLAMSS-IFS advantage $\bar{d} = -2.58\text{ pp}$ [95% CI: $-3.53, -1.68\text{ pp}$], $p = 1.98 \times 10^{-6}$; Model A achieves 33.34x parameter reduction with statistical equivalence on REM sleep staging, $p=0.105$). Output artifacts generated in `experiments/EXP-021/` and ratified under `DEC-038`.
   - Deferred Tasks: EXP-019B (heterogeneity tests), EXP-020 (gated adaptation), and EXP-027 (SleepAccel transfer) remain deferred under DEC-029.
 - **Phase E: Synthesis & Writing (COMPLETE FOR DRAFT v0.1)**
   - Candidate 1 (COMPLETE): Historical split & data leakage audit across EXP-001 to EXP-004 (`EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md`, `EXPERIMENTS.md` TA-01 to TA-06).
@@ -87,7 +87,9 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
    - Governance decisions DEC-035 and DEC-036 ratified in `DECISIONS.md`.
 2. **Stage 2 Final Model Freeze (COMPLETED under DEC-037)**:
    - All 15 frozen Model A checkpoints SHA-256 hashed (`frozen_checkpoint_manifest.json`) and 141 subject-seed OOF rows verified (`final_model_oof_subject_metrics.csv`, `STAGE2_MODEL_FREEZE_REPORT.md`).
-3. **Stage 3 Execution (TSK-08 / EXP-021 — IN PROGRESS on Dual RTX 3060 GPUs)**:
-   - 15-run official 5,465,768-parameter SLAMSS-IFS benchmark running concurrently on `cuda:0` (7 runs) and `cuda:1` (8 runs) via `./experiments/EXP-021/run_stage3_dual_gpu.sh`, followed automatically by `analyze_tsk08_paired_benchmark.py`.
-4. **Post-Stage 3 Action**:
-   - Inspect `experiments/EXP-021/slamss_ifs_paired_comparative_report.md`, record final benchmark decision in `DECISIONS.md` and `EXPERIMENTS.md`, and push all results to `origin main`.
+3. **Stage 3 Execution (TSK-08 / EXP-021 — COMPLETED under DEC-038)**:
+   - 15-run official 5,465,768-parameter SLAMSS-IFS benchmark completed across all 5 folds $\times$ 3 seeds on dual RTX 3060 GPUs.
+   - Paired comparative analysis executed via `analyze_tsk08_paired_benchmark.py`: SLAMSS-IFS advantage established ($\bar{d} = -2.58\text{ pp}$ Macro-F1, $p = 1.98 \times 10^{-6}$), with Model A achieving 33.34x parameter reduction and statistical equivalence on REM ($p = 0.1047$).
+   - Deliverables emitted: `experiments/EXP-021/{slamss_ifs_matched_subject_metrics.csv, slamss_ifs_paired_subject_deltas.csv, slamss_ifs_paired_comparison_summary.json, slamss_ifs_paired_comparative_report.md}`.
+4. **Next Concrete Task**:
+   - Update manuscript Section 6 & Table 2 with the definitive matched SLAMSS-IFS paired benchmark metrics and accuracy-vs-efficiency trade-off synthesis, preparing the final submission-ready manuscript.
