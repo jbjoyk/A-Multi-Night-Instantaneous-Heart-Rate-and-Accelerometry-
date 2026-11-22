@@ -770,6 +770,21 @@
      - Furthermore, with 2-night within-person personalization (TSK-06, $\bar{\Delta} = +3.13\text{ pp}$ to $+3.54\text{ pp}$), personalized Model A reaches $65.82\% - 66.25\%$ Macro-F1, largely closing the zero-shot gap with SLAMSS-IFS while maintaining a 33.34x parameter reduction.
 - Reversible: No; ratified empirical research record.
 
+---
+
+## DEC-039 (2026-11-22): Forensic Erratum on TSK-06 Calibration-Depth Baseline & Reconciliation of Available Cohort k=2
+
+- Date: 2026-11-22
+- Authoritative Sources: `experiments/EXP-019/TSK06_ZS_DISCREPANCY_AUDIT.md`, `experiments/EXP-019/run_tsk06_k_curve.py`, `experiments/EXP-019/exp019_subject_metrics.csv`
+- Context: Forensic audit of TSK-06 execution script (`experiments/EXP-019/run_tsk06_k_curve.py`) resolving the discrepancy between locked EXP-019 $k=2$ ($+1.01\text{ pp}$, $\text{ZS} = 64.58\%$, $\text{FT} = 65.59\%$) and TSK-06 executed summary ($+2.72\text{ pp}$, $\text{ZS} = 62.86\%$, $\text{FT} = 65.58\%$).
+- Finding: An in-place weight mutation defect in `run_tsk06_k_curve.py` caused `predictor_zs` on subjects 2..N of each fold to evaluate a model fine-tuned on the prior subject (de facto donor control), yielding an average baseline of $62.86\%$ (matching `FT-other-2`). All fine-tuned models (`FT_Ek_MacroF1`, `FT_E4_MacroF1`) were correctly reset from the clean backbone and are completely valid.
+- Reconciliation & Impact:
+  1. The true available-cohort $k=2$ gain over clean Zero-Shot is $+1.00\text{ pp}$ ($64.58\% \to 65.58\%$), confirming harmony with locked EXP-019 ($+1.01\text{ pp}$).
+  2. The true common-cohort ($N=33$, $E_4$) Zero-Shot baseline is $63.54\%$, yielding clean adaptation gains of $+1.74\text{ pp}$ ($k=1$), $+1.87\text{ pp}$ ($k=2$), $+2.28\text{ pp}$ ($k=3$), and $+2.71\text{ pp}$ ($k=4$).
+  3. All primary hypotheses ratified under DEC-035 remain valid: Page's $L$ trend test ($p = 0.01187$) and van der Aar replication ($k=3$ gain $+2.28\text{ pp} \ge +1.00\text{ pp}$) remain robustly supported.
+- Governance Action: Preserve historical executed CSVs under the immutable data rule; record this erratum in `DECISIONS.md`, `RESEARCH_STATE.md`, and `EXPERIMENTS.md`.
+
+
 
 
 

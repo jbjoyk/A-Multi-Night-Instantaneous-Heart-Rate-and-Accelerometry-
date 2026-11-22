@@ -1,0 +1,218 @@
+{
+  "timestamp_utc": "2026-11-22T10:40:39Z",
+  "model_architecture": "ConventionalCNNBiGRU",
+  "frozen_release": "SleepStagingFinalModel_v1.0",
+  "evaluation_cohort": "BIDSleep 47 subjects (246 usable nights)",
+  "quantization_engine": "torch.ao.quantization.quantize_dynamic (qint8 Linear + GRU)",
+  "file_size_profile": {
+    "total_parameters": 163940,
+    "quantized_parameters_linear_gru": 112932,
+    "quantized_parameter_ratio": 0.6888617786995243,
+    "fp32_raw_payload_bytes": 655760,
+    "fp32_raw_payload_kib": 640.390625,
+    "fp16_raw_payload_bytes": 327880,
+    "fp16_raw_payload_kib": 320.1953125,
+    "int8_raw_payload_bytes": 163940,
+    "int8_raw_payload_kib": 160.09765625,
+    "int8_dynamic_raw_payload_bytes": 316964,
+    "int8_dynamic_raw_payload_kib": 309.53515625,
+    "fp32_serialized_file_bytes": 677237,
+    "fp32_serialized_file_kib": 661.3642578125,
+    "fp16_serialized_file_bytes": 346741,
+    "fp16_serialized_file_kib": 338.6142578125,
+    "int8_serialized_file_bytes": 348149,
+    "int8_serialized_file_kib": 339.9892578125
+  },
+  "flop_profile": {
+    "full_night_epochs_L": 1200,
+    "hr_encoder_macs": 335078400,
+    "acc_encoder_macs": 335078400,
+    "meta_proj_macs": 96000,
+    "temporal_gru_macs": 116121600,
+    "classifier_head_macs": 7680000,
+    "total_macs": 794054400,
+    "total_macs_m": 794.0544,
+    "theoretical_flops": 1588108800,
+    "empirical_flops_pytorch_counter": 1588108800,
+    "total_gflops": 1.5881088,
+    "flops_match_exact": true
+  },
+  "memory_profile": {
+    "activation_buffers_total_graph_mb": 34.89,
+    "peak_single_activation_tensor_mb": 4.61,
+    "fp32_cuda_allocated_peak_mb": 49.12451171875,
+    "fp32_cuda_reserved_peak_mb": 84.0,
+    "cpu_int8_traced_inference_peak_mb": 0.5935811996459961,
+    "nrf5340_compatibility": {
+      "ram_capacity_kb": 512,
+      "int8_weights_kb": 160.1,
+      "fits_weights_in_sram": true,
+      "streaming_chunk_requirement": "For ultra-low power MCUs with 512KB SRAM, full-night L=1200 activations (~35MB) cannot reside in SRAM simultaneously; edge runtime must stream inference in sliding windows (e.g. 1 epoch at a time with sequential recurrent state passing, requiring <32KB activation SRAM)."
+    }
+  },
+  "latencies": {
+    "fp32_cuda0_ms": {
+      "mean": 17.176541479711886,
+      "std": 0.09108131745029005
+    },
+    "fp32_cpu_1thread_ms": {
+      "mean": 72.93219988059718,
+      "std": 0.9342824572040455
+    },
+    "int8_cpu_1thread_ms": {
+      "mean": 69.38797130045714,
+      "std": 1.4805703317294268
+    },
+    "fp32_cpu_4threads_ms": {
+      "mean": 47.23200132022612,
+      "std": 0.7591130358898442
+    },
+    "int8_cpu_4threads_ms": {
+      "mean": 47.730797020194586,
+      "std": 0.488770303837982
+    }
+  },
+  "static_ptq_audit": {
+    "framework": "PyTorch 2.14.1+cu130",
+    "tested_modes": [
+      "eager_mode_static_quantization",
+      "fx_graph_mode_ptq"
+    ],
+    "eager_mode_status": "BLOCKED",
+    "eager_mode_blocker": "TemporalConvBlock residual addition uses raw tensor addition (+) which fails on QuantizedCPU backend with 'Could not run aten::add.out with arguments from QuantizedCPU backend' unless model architecture is invasively refactored to use FloatFunctional(). Furthermore, PyTorch natively lacks a static quantized GRU operator (quantized recurrent networks are restricted by PyTorch to dynamic quantization).",
+    "fx_graph_mode_status": "BLOCKED",
+    "fx_graph_mode_blocker": "Symbolic tracing fails in nn.utils.rnn.pack_padded_sequence on dynamic length tensor seq_lens_cpu.",
+    "calibration_leakage_guarantee": "Zero test leakage confirmed: all inner calibration attempts were strictly restricted to fold inner_train splits.",
+    "production_recommendation": "Dynamic INT8 quantization (torch.ao.quantization.quantize_dynamic for nn.GRU and nn.Linear) is the mathematically sound, officially supported, zero-leakage production quantization engine for Model A."
+  },
+  "paired_statistical_summary": {
+    "macro_f1": {
+      "metric_name": "Macro-F1",
+      "unit": "pp",
+      "fp32_mean": 64.79074784213319,
+      "fp32_sd": 7.448850491102475,
+      "int8_mean": 64.79182507962243,
+      "int8_sd": 7.472673290934493,
+      "mean_delta": 0.0010772374892407026,
+      "delta_ci95_low": -0.02766580916938941,
+      "delta_ci95_high": 0.031206435616978202,
+      "p_value": 0.7892091820157958,
+      "cohens_dz": 0.010414133190825767,
+      "wins": 21,
+      "losses": 26,
+      "ties": 0
+    },
+    "accuracy": {
+      "metric_name": "Accuracy",
+      "unit": "pp",
+      "fp32_mean": 66.18278365476003,
+      "fp32_sd": 6.790109663471624,
+      "int8_mean": 66.17641175911947,
+      "int8_sd": 6.828722036181693,
+      "mean_delta": -0.006371895640566217,
+      "delta_ci95_low": -0.039103909892330216,
+      "delta_ci95_high": 0.028327636901281105,
+      "p_value": 0.46558182628133693,
+      "cohens_dz": -0.053559810372968426,
+      "wins": 20,
+      "losses": 27,
+      "ties": 0
+    },
+    "weighted_f1": {
+      "metric_name": "Weighted-F1",
+      "unit": "pp",
+      "fp32_mean": 65.9636975183027,
+      "fp32_sd": 6.727754453872655,
+      "int8_mean": 65.9671627684317,
+      "int8_sd": 6.754211455006797,
+      "mean_delta": 0.0034652501290269844,
+      "delta_ci95_low": -0.029642086763590467,
+      "delta_ci95_high": 0.03795823784105908,
+      "p_value": 0.8380287516768448,
+      "cohens_dz": 0.028964748654359152,
+      "wins": 20,
+      "losses": 27,
+      "ties": 0
+    },
+    "kappa": {
+      "metric_name": "Cohen's Kappa",
+      "unit": "",
+      "fp32_mean": 0.507784761066798,
+      "fp32_sd": 0.10107054845355079,
+      "int8_mean": 0.5078323563533378,
+      "int8_sd": 0.10138300511567026,
+      "mean_delta": 4.759528653950859e-05,
+      "delta_ci95_low": -0.0003777391296761591,
+      "delta_ci95_high": 0.0004919210821445087,
+      "p_value": 0.7650881263111131,
+      "cohens_dz": 0.03087047799574784,
+      "wins": 20,
+      "losses": 27,
+      "ties": 0
+    },
+    "f1_wake": {
+      "metric_name": "Wake F1",
+      "unit": "pp",
+      "fp32_mean": 62.70043137215091,
+      "fp32_sd": 11.052804792531504,
+      "int8_mean": 62.67348470824053,
+      "int8_sd": 11.060372768746843,
+      "mean_delta": -0.02694666391038166,
+      "delta_ci95_low": -0.07864767586378292,
+      "delta_ci95_high": 0.024110573026377414,
+      "p_value": 0.3361193387760153,
+      "cohens_dz": -0.146558247564159,
+      "wins": 18,
+      "losses": 29,
+      "ties": 0
+    },
+    "f1_light": {
+      "metric_name": "Light F1",
+      "unit": "pp",
+      "fp32_mean": 66.61173760819091,
+      "fp32_sd": 5.253040434269833,
+      "int8_mean": 66.60288857943874,
+      "int8_sd": 5.273390167663936,
+      "mean_delta": -0.008849028752153832,
+      "delta_ci95_low": -0.05189698705046277,
+      "delta_ci95_high": 0.03522688688540684,
+      "p_value": 0.5962626683115957,
+      "cohens_dz": -0.057156915059565536,
+      "wins": 21,
+      "losses": 26,
+      "ties": 0
+    },
+    "f1_deep": {
+      "metric_name": "Deep F1",
+      "unit": "pp",
+      "fp32_mean": 66.75738815904238,
+      "fp32_sd": 12.312099306387875,
+      "int8_mean": 66.75860848158393,
+      "int8_sd": 12.293460130767379,
+      "mean_delta": 0.0012203225415770298,
+      "delta_ci95_low": -0.04287457405187457,
+      "delta_ci95_high": 0.047618352419803237,
+      "p_value": 0.7811455418672324,
+      "cohens_dz": 0.00776368495630936,
+      "wins": 24,
+      "losses": 23,
+      "ties": 0
+    },
+    "f1_rem": {
+      "metric_name": "REM F1",
+      "unit": "pp",
+      "fp32_mean": 63.093434229148514,
+      "fp32_sd": 13.109181341896955,
+      "int8_mean": 63.13231854922646,
+      "int8_sd": 13.125563808539342,
+      "mean_delta": 0.03888432007792672,
+      "delta_ci95_low": -0.017778575163041915,
+      "delta_ci95_high": 0.0994437074470598,
+      "p_value": 0.3052008343870085,
+      "cohens_dz": 0.189613896306119,
+      "wins": 25,
+      "losses": 22,
+      "ties": 0
+    }
+  }
+}

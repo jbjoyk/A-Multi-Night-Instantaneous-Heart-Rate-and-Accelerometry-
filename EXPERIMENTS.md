@@ -857,7 +857,8 @@ state.
   - **Dimension 1 (van der Aar Replication):** **REPLICATION CONFIRMED (van der Aar Replicated)** ($\Delta \ge +1.00\text{ pp}$, CI low $> 0$, $p_{\text{adj}} < 0.05$).
   - **Dimension 2 (Scaling Trajectory):** **INCONCLUSIVE SCALING** (Monotonic trend confirmed via Page's $L$, but individual marginal steps $\Delta_{3-2}$ and $\Delta_{4-3}$ do not individually reach Holm-Bonferroni significance given $N=33$).
 - Historical Invariant: Locked $k = 2$ predictions in `exp019_subject_metrics.csv` remain strictly immutable.
-- Output Artifacts: [`experiments/EXP-019/exp019_k_learning_curve_executed.csv`](./experiments/EXP-019/exp019_k_learning_curve_executed.csv) and [`experiments/EXP-019/exp019_k_curve_subject_metrics.csv`](./experiments/EXP-019/exp019_k_curve_subject_metrics.csv).
+- Forensic Baseline Erratum (DEC-039 / `TSK06_ZS_DISCREPANCY_AUDIT.md`): In `run_tsk06_k_curve.py`, an un-reset Zero-Shot predictor on subjects 2..N evaluated weights fine-tuned on the prior subject (de facto donor control), producing an apparent available-cohort $k=2$ baseline of $62.86\%$ (matching `FT-other-2`). All fine-tuned models (`FT_Ek_MacroF1`, `FT_E4_MacroF1`) were correctly reset from the clean backbone. True clean $k=2$ gain over locked ZS ($64.58\%$) is $+1.00\text{ pp}$ ($64.58\% \to 65.58\%$), in perfect harmony with locked EXP-019 ($+1.01\text{ pp}$). Page's $L$ monotonic trend ($p=0.01187$) and van der Aar replication at $k=3$ remain robustly confirmed.
+- Output Artifacts: [`experiments/EXP-019/exp019_k_learning_curve_executed.csv`](./experiments/EXP-019/exp019_k_learning_curve_executed.csv), [`experiments/EXP-019/exp019_k_curve_subject_metrics.csv`](./experiments/EXP-019/exp019_k_curve_subject_metrics.csv), and forensic audit [`experiments/EXP-019/TSK06_ZS_DISCREPANCY_AUDIT.md`](./experiments/EXP-019/TSK06_ZS_DISCREPANCY_AUDIT.md).
 
 ---
 

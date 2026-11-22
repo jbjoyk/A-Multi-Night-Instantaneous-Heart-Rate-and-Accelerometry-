@@ -1902,9 +1902,9 @@
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1795315296.5078924,
-    "seen": 1795315395.6869378,
-    "ast_hash": "603ce8be65763e3ff3c8f209c1f9ea06",
+    "mtime": 1795344540.163057,
+    "seen": 1795345041.3414457,
+    "ast_hash": "c9d0393d7aa74b3f24415f489570f141",
     "semantic_hash": ""
   },
   "EXP001_EXP004_SPLIT_LEAKAGE_AUDIT.md": {
@@ -1914,15 +1914,15 @@
     "semantic_hash": ""
   },
   "EXPERIMENTS.md": {
-    "mtime": 1795315369.4264624,
-    "seen": 1795315395.6869395,
-    "ast_hash": "d02759bc6cda4c026dd52d050059f897",
+    "mtime": 1795344659.7669332,
+    "seen": 1795345041.3414474,
+    "ast_hash": "af2c55e6f2f0c5dd8d72ed3606850ced",
     "semantic_hash": ""
   },
   "HANDOFF.md": {
-    "mtime": 1795315385.6595893,
-    "seen": 1795315395.6869402,
-    "ast_hash": "805c603ac1b9ab6b684060d9c2ada106",
+    "mtime": 1795344892.3526323,
+    "seen": 1795345041.3414483,
+    "ast_hash": "523bd470f9ead531c23560f18c513d73",
     "semantic_hash": ""
   },
   "NOTEBOOK_STATE.md": {
@@ -3144,9 +3144,9 @@
     "semantic_hash": ""
   },
   "RESEARCH_STATE.md": {
-    "mtime": 1795315323.5961041,
-    "seen": 1795315395.6870975,
-    "ast_hash": "ccbfb441f2d8198d71e2eef375f16b2f",
+    "mtime": 1795344776.6157875,
+    "seen": 1795345041.3416326,
+    "ast_hash": "317307b4c0c74c30fb74cfae008556aa",
     "semantic_hash": ""
   },
   "experiments/EXP-001/AI-Driven_Sleep_Staging_Using_Instantaneous_Heart_Rate_and_Accelerometry_Insight.pdf": {
@@ -3639,6 +3639,36 @@
     "mtime": 1795315144.278912,
     "seen": 1795315395.6870182,
     "ast_hash": "b1378d8e53bf3415175cad6847e9d96f",
+    "semantic_hash": ""
+  },
+  "experiments/STAGE2_FINAL_MODEL/benchmark_int8_edge.py": {
+    "mtime": 1795344222.5487196,
+    "seen": 1795345041.3414013,
+    "ast_hash": "25aa27f60a27f534c070e58d15fc93ab",
+    "semantic_hash": ""
+  },
+  "experiments/STAGE2_FINAL_MODEL/int8_quantization_profile.json": {
+    "mtime": 1795344039.1507545,
+    "seen": 1795345041.3414073,
+    "ast_hash": "ca0851982b7887e2602051bea2390ba4",
+    "semantic_hash": ""
+  },
+  "INT8_EDGE_BENCHMARK_REPORT.md": {
+    "mtime": 1795344260.730495,
+    "seen": 1795345041.3414493,
+    "ast_hash": "7a01fe07d2500bff9cd66be759955c7b",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-019/TSK06_ZS_DISCREPANCY_AUDIT.md": {
+    "mtime": 1795341499.900759,
+    "seen": 1795345041.3415277,
+    "ast_hash": "a67cda7aa8d2359eda6b5d6cca3e5f6e",
+    "semantic_hash": ""
+  },
+  "experiments/STAGE2_FINAL_MODEL/INT8_EDGE_BENCHMARK_REPORT.md": {
+    "mtime": 1795344260.730576,
+    "seen": 1795345041.3415387,
+    "ast_hash": "7a01fe07d2500bff9cd66be759955c7b",
     "semantic_hash": ""
   }
 }
