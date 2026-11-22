@@ -29,3 +29,5 @@ predictions/
 
 # Local preprocessing caches
 cache/
+experiments/EXP-027/cache/
+data/external/
