@@ -1,0 +1,35 @@
+@page { size: A4; margin: 16mm 14mm; }
+body {
+  font-family: "Liberation Sans", "DejaVu Sans", Arial, sans-serif;
+  font-size: 9.5pt;
+  line-height: 1.42;
+  color: #1a1a1a;
+  max-width: 100%;
+}
+h1 { font-size: 15pt; line-height: 1.25; margin-bottom: 10pt; }
+h2 { font-size: 12pt; margin-top: 16pt; margin-bottom: 6pt; border-bottom: 0.75pt solid #d0d7de; padding-bottom: 2pt; page-break-after: avoid; }
+h3 { font-size: 10.2pt; margin-top: 12pt; margin-bottom: 4pt; page-break-after: avoid; }
+p { margin: 0 0 7pt 0; text-align: left; }
+img { display: block; max-width: 100%; height: auto; margin: 12pt auto 6pt auto; page-break-inside: avoid; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.2pt;
+  line-height: 1.25;
+  margin: 8pt 0 10pt 0;
+}
+th, td {
+  border-top: 0.5pt solid #cccccc;
+  border-bottom: 0.5pt solid #cccccc;
+  padding: 3.5pt 4pt;
+  text-align: left;
+  vertical-align: top;
+  word-break: normal;
+}
+thead th {
+  background-color: #f3f6f9;
+  border-top: 1.2pt solid #222222;
+  border-bottom: 1pt solid #222222;
+  font-weight: 700;
+}
+tr { page-break-inside: avoid; }

@@ -1,10 +1,5 @@
 # Safety, Calibration Thresholds, and External Clinical PSG Generalisation of Lightweight Consumer-Smartwatch Sleep Staging: A Pre-Registered, Leakage-Free Study
 
-**Target Venue:** *The Lancet Digital Health* (primary) / *npj Digital Medicine* (secondary)  
-**Reporting Standard:** TRIPOD+AI & *Lancet* House Structure [7]  
-**Draft Version:** v1.0 (Stage E Resolved Submission Manuscript)  
-**Draft Date:** 2026-11-23  
-
 ---
 
 ## Structured Summary
@@ -16,7 +11,7 @@ Consumer smartwatches estimate sleep stages from ~0.2 Hz instantaneous heart rat
 Under subject-disjoint 5-fold cross-validation in BIDSleep (N=47 healthy adults, 246 nights; Apple Watch and Dreem 2 EEG), we benchmarked frozen Model A (163,940 parameters; 33.34-fold compression vs official 5,465,768-parameter SLAMSS-IFS) and dynamic INT8 quantisation. Across N=46 eligible participants (152 evaluation nights), we tested 2-night supervised fine-tuning against a pre-registered +1.50 percentage-point (pp) threshold, donor-night, from-scratch, and quality-gated unsupervised controls, 1-to-4-night scaling (N=33 common cohort, 64 nights), and exploratory stage-coverage gating. Zero-shot external validation used single-night in-lab PSG from PhysioNet SleepAccel (N=31; n=25 quality-clean primary).
 
 ### Findings
-On BIDSleep (N=47), Model A achieved 64.79% Macro-F1 (66.18% accuracy) vs 67.37% (68.75%) for SLAMSS-IFS (-2.58 pp, p=1.98×10^-6); dynamic INT8 (309.54 KiB, 47.7 ms/night) preserved Macro-F1 (+0.0011 pp, p=0.7892). Confirmatory 2-night fine-tuning (N=46) yielded +1.01 pp (95% CI -0.17 to +1.99, p=0.00131), inconclusive against the +1.50 pp threshold. Monotonic 1-to-4-night scaling (N=33: +1.75 to +2.71 pp, Page's L p=0.01187) and exploratory stage-coverage gating (+1.33 pp, 95% CI +0.49 to +2.12, cutting worst collapse 61% to -6.40 pp) supported k≥3 calibration. On zero-shot external single-night PSG (n=25 primary single-model evaluation), SLAMSS-IFS's lead attenuated 78% to -0.57 pp (60.51% vs 61.08%, p=0.5782; N=31 -1.62 pp, p=0.3468), while Dreem 2-to-PSG label-prior shift drove Deep (+10.65%) and REM (+10.13%) overestimation.
+On BIDSleep (N=47), Model A achieved 64.79% Macro-F1 (66.18% accuracy) vs 67.37% (68.75%) for SLAMSS-IFS (-2.58 pp, p=1.98×10^-6); dynamic INT8 (309.54 KiB, 47.7 ms/night) preserved Macro-F1 (+0.0011 pp, p=0.7892). Confirmatory 2-night fine-tuning (N=46) yielded +1.01 pp (95% CI -0.17 to +1.99, p=0.00131), inconclusive against the +1.50 pp threshold. Monotonic 1-to-4-night scaling (N=33: +1.75 to +2.71 pp, Page's L p=0.01187) and exploratory stage-coverage gating (+1.33 pp, 95% CI +0.49 to +2.12, cutting worst collapse 61% to -6.40 pp (Figure 3A)) supported k≥3 calibration. On zero-shot external single-night PSG (n=25 primary single-model evaluation), SLAMSS-IFS's lead attenuated 78% to -0.57 pp (60.51% vs 61.08%, p=0.5782; N=31 -1.62 pp, p=0.3468), while Dreem 2-to-PSG label-prior shift drove Deep (+10.65%) and REM (+10.13%) overestimation.
 
 ### Interpretation
 On zero-shot external single-night PSG, lightweight smartwatch models showed no statistically significant difference in 4-class Macro-F1 versus 33-fold larger server architectures and reliably tracked total sleep time, whereas stage proportions required label-prior calibration. Within-person fine-tuning was inconclusive at two nights, requiring at least three calibration nights and exploratory stage-coverage gating.
@@ -173,7 +168,7 @@ In the full available-cohort sensitivity analysis ($E_k$, evaluating all post-ca
 ### 3.5 Exploratory Heterogeneity and Safe Adaptation
 *(Prior-Access Exploratory Disclosure: The covariate heterogeneity audit and stage-coverage gating analyses were designed after inspecting the primary personalisation and 5-fold cross-validation results; they are strictly hypothesis-generating exploratory findings and do not alter the inconclusive confirmatory verdict for two-night fine-tuning.)*
 
-In the exploratory heterogeneity audit across 12 primary Spearman rank correlation tests (evaluating 6 baseline physiological, sampling-quality, and stage-distribution predictors against two-night personalisation gain [$N=46$] and Model A-versus-SLAMSS-IFS architecture difference [$N=47$]), zero of 12 predictors reached Benjamini–Hochberg FDR significance ($q < 0.05$; all within-family $q_{\text{family}} \ge 0.5673$, pooled $q_{\text{pooled}} \ge 0.5913$). Oldham's headroom check [10] confirmed the absence of baseline performance coupling ($\rho = +0.0376$, $p=0.8043$), demonstrating that routine baseline summary covariates do not linearly predict average adaptation gain.
+In the exploratory heterogeneity audit across 12 primary Spearman rank correlation tests (evaluating 6 baseline physiological, sampling-quality, and stage-distribution predictors against two-night personalisation gain [$N=46$] and Model A-versus-SLAMSS-IFS architecture difference [$N=47$]), zero of 12 predictors reached Benjamini–Hochberg FDR significance (Figure 3B) ($q < 0.05$; all within-family $q_{\text{family}} \ge 0.5673$, pooled $q_{\text{pooled}} \ge 0.5913$). Oldham's headroom check [10] confirmed the absence of baseline performance coupling ($\rho = +0.0376$, $p=0.8043$), demonstrating that routine baseline summary covariates do not linearly predict average adaptation gain.
 
 Instead, diagnostic inspection revealed that extreme negative transfer under two-night fine-tuning was driven by discrete calibration-night class starvation—most notably in participant `Bidslab34` ($-16.34\text{ pp}$ Macro-F1 collapse), whose two calibration nights contained only 0.68% (15 epochs) of Deep slow-wave sleep. In the exploratory safe-adaptation comparison across $N=46$ participants, Kullback–Leibler divergence regularisation (`FT-2-KL`) achieved 65.62% Macro-F1 ($+1.03\text{ pp}$ vs `ZS`, 95% CI $-0.11\text{ to }+2.01$, $p_{\text{Holm}}=0.0030$, $N_{\text{harm}}=3$ participants with $\le -5.0\text{ pp}$ harm) but failed to prevent catastrophic outlier collapse (worst participant $-15.14\text{ pp}$). Conversely, pre-adaptation stage-coverage gating (`GATE_tau`, abstaining to frozen `ZS` whenever any sleep stage represented less than $\tau = 0.01$ [1.0%] of calibration epochs) achieved 65.91% Macro-F1 ($+1.33\text{ pp}$ vs `ZS`, 95% CI $+0.49\text{ to }+2.12$, $p_{\text{Holm}}=0.0028$, $N_{\text{harm}}=2$). Stage-coverage gating surgically abstained on 2 of 46 participants—including `Bidslab34` ($0.0068 < 0.01$)—reducing worst-case participant collapse by 61% from $-16.34\text{ pp}$ (`FT-2`) to $-6.40\text{ pp}$, whereas combining KL regularisation with gating (`FT-2-KL_GATE_tau`: 65.59%, $+1.00\text{ pp}$, $p_{\text{Holm}}=0.0030$) offered no additional benefit.
 
@@ -272,17 +267,27 @@ This research received no specific grant from any funding agency in the public, 
 
 ## Figure Legends
 
+![](../../figures/manuscript_v1/Figure1_Pareto_External_PSG_Transfer.png){ width=100% }
+
 **Figure 1. Accuracy–efficiency compression trade-off and external zero-shot PSG transfer attenuation.**
 (A) Trainable parameter scale (log scale) versus 4-class Macro-F1 comparing the compact 163.9k-parameter architecture (Dynamic INT8: 309.54 KiB) against the 5.47M-parameter server reference (33.34x larger) across within-cohort BIDSleep 5-fold cross-validation ($N=47$, home Dreem 2 EEG) and external zero-shot PhysioNet SleepAccel ($n=25$ quality-clean single-night in-lab PSG; primary single-model mean and secondary 15-model probability ensemble). (B) Stage-wise paired Macro-F1 and per-stage F1 differences (Model A minus SLAMSS-IFS, 95% bootstrap CI) on quality-clean SleepAccel ($n=25$).
+
+![](../../figures/manuscript_v1/Figure2_Calibration_Depth_Learning_Curve.png){ width=100% }
 
 **Figure 2. Multi-night calibration-depth learning curves.**
 Paired 4-class Macro-F1 gains over reconciled clean zero-shot baselines across $k=1$–$4$ labeled calibration nights per participant for (A) the available cohort ($N=46, 46, 42, 33$) and (B) the fixed common post-calibration evaluation cohort $E_4$ ($N=33$, 64 evaluation nights; clean zero-shot baseline 63.54%; Page's $L$ trend $p=0.0119$ one-sided, $p=0.0594$ two-sided sensitivity). Dotted line denotes the pre-registered $+1.50$ percentage-point benchmark.
 
+![](../../figures/manuscript_v1/Figure3_Exploratory_Tail_Risk_and_Heterogeneity.png){ width=100% }
+
 **Figure 3. Exploratory tail-risk mitigation and adaptation heterogeneity audit.**
 (A) Participant-level Macro-F1 changes versus zero-shot ($N=46$, ranked by unregularized 2-night fine-tuning) comparing unregularized fine-tuning (minimum $-16.34$ pp), soft KL logit regularization (minimum $-15.14$ pp), and pre-adaptation stage-coverage abstention gating (minimum $-6.40$ pp; 2/46 surgical abstentions including `Bidslab34`). (B) Forest plot of Spearman $\rho$ (95% bootstrap CI) and Benjamini–Hochberg FDR $q$-values across six physiological and signal-quality predictors of adaptation gain (0/12 features survive FDR; Oldham headroom check $\rho=+0.038$, $p=0.804$).
 
+![](../../figures/manuscript_v1/Figure4_External_PSG_Bland_Altman.png){ width=100% }
+
 **Figure 4. External zero-shot single-night PSG Bland–Altman agreement ($n=25$, primary single-model mean).**
 Agreement between wearable predictions and in-lab PSG across (A) Total Sleep Time, (B) Sleep Onset Latency, (C) Wake After Sleep Onset, (D) Sleep Efficiency, (E) Deep Sleep (% of TST), and (F) REM Sleep (% of TST) for Model A (blue circles, solid lines) and SLAMSS-IFS (vermilion triangles, dashed lines). Parametric mean bias and 95% limits of agreement are plotted where Shapiro–Wilk normality holds; non-parametric median bias and 2.5th–97.5th percentile limits are plotted where normality fails ($p<0.05$).
+
+![](../../figures/manuscript_v1/Figure5_Label_Prior_Shift_Diagnosis.png){ width=100% }
 
 **Figure 5. Cross-modality label-prior shift diagnosis (home Dreem 2 EEG vs. in-lab PSG).**
 (A) Reference sleep-stage prevalence comparing BIDSleep night-averaged Dreem 2 EEG labels (12.8% Wake, 44.2% Light, 18.9% Deep, 24.1% REM) against SleepAccel in-lab PSG labels (8.3% Wake, 57.7% Light, 11.1% Deep, 22.9% REM; $+13.5$ pp Light shift, $-7.8$ pp Deep shift). (B) Resulting Deep% and REM% of TST projections on quality-clean SleepAccel ($n=25$, primary single-model mean) for both frozen zero-shot architectures relative to in-lab PSG reference means.
