@@ -169,25 +169,31 @@ def build_figure_1() -> None:
     ax1.plot([params_a, params_s], [sa_a_s, sa_s_s], color="#888888", lw=0.95, ls=":", zorder=2)
 
     # Non-overlapping direct labels
-    ax1.text(params_a * 1.15, bid_a + 0.45, f"Model A (163.9k)\nINT8: 310 KiB | {bid_a:.2f}%",
-             fontsize=7.3, color=PALETTE["model_a"], fontweight="bold", ha="left", va="bottom")
-    ax1.text(params_s * 0.90, bid_s + 0.45, f"Official SLAMSS-IFS\n5.47M (33.34x) | {bid_s:.2f}%",
-             fontsize=7.3, color=PALETTE["slamss"], fontweight="bold", ha="right", va="bottom")
+    ax1.text(params_a * 0.72, bid_a + 1.30, f"Model A (163.9k)\nINT8: 310 KiB | {bid_a:.2f}%",
+             fontsize=7.2, color=PALETTE["model_a"], fontweight="bold", ha="left", va="bottom")
+    ax1.text(params_s * 0.90, bid_s + 0.50, f"Official SLAMSS-IFS\n5.47M (33.34x) | {bid_s:.2f}%",
+             fontsize=7.2, color=PALETTE["slamss"], fontweight="bold", ha="right", va="bottom")
 
-    ax1.text(params_a * 1.16, 62.65, f"−{bid_a - sa_a_s:.2f} pp",
-             fontsize=7.2, color=PALETTE["model_a"], va="center", ha="left")
-    ax1.text(params_s * 0.86, 64.25, f"−{bid_s - sa_s_s:.2f} pp",
-             fontsize=7.2, color=PALETTE["slamss"], va="center", ha="right")
-
-    ax1.text(params_a * 1.16, sa_a_s - 0.10, f"{sa_a_s:.2f}%\n(Ens: {sa_a_e:.2f}%)",
+    ax1.text(params_a * 1.18, sa_a_e + 0.05, f"Ens: {sa_a_e:.2f}%",
              fontsize=7.0, color=PALETTE["model_a"], va="center", ha="left")
-    ax1.text(params_s * 0.86, sa_s_s - 0.10, f"{sa_s_s:.2f}%\n(Ens: {sa_s_e:.2f}%)",
-             fontsize=7.0, color=PALETTE["slamss"], va="center", ha="right")
+    ax1.text(params_a * 1.18, 61.75, f"−{bid_a - sa_a_s:.2f} pp",
+             fontsize=7.0, color=PALETTE["model_a"], va="center", ha="left")
+    ax1.text(params_a * 1.18, sa_a_s - 0.08, f"{sa_a_s:.2f}%",
+             fontsize=7.1, color=PALETTE["model_a"], fontweight="bold", va="center", ha="left",
+             bbox=dict(boxstyle="square,pad=0.08", fc="white", ec="none", alpha=0.92))
 
-    # In-cohort gap box in clean center whitespace pointing up to dotted connector
+    ax1.text(params_s * 0.85, 64.75, f"−{bid_s - sa_s_s:.2f} pp",
+             fontsize=7.0, color=PALETTE["slamss"], va="center", ha="right")
+    ax1.text(params_s * 0.85, sa_s_e + 0.05, f"Ens: {sa_s_e:.2f}%",
+             fontsize=7.0, color=PALETTE["slamss"], va="center", ha="right")
+    ax1.text(params_s * 0.85, sa_s_s + 0.05, f"{sa_s_s:.2f}%",
+             fontsize=7.1, color=PALETTE["slamss"], fontweight="bold", va="center", ha="right",
+             bbox=dict(boxstyle="square,pad=0.08", fc="white", ec="none", alpha=0.92))
+
+    # In-cohort gap box in clean center whitespace pointing to open segment of dotted connector
     ax1.annotate(
         "In-cohort gap: −2.58 pp\n(p < 0.0001)",
-        xy=(1.02, 66.10), xytext=(1.02, 63.75),
+        xy=(1.55, 66.44), xytext=(1.05, 63.75),
         fontsize=7.1, ha="center", va="center", color="#222222",
         arrowprops=dict(arrowstyle="->", color="#777777", lw=0.9),
         bbox=dict(boxstyle="round,pad=0.28", fc="#F7F7F7", ec="#BBBBBB", lw=0.7),
@@ -568,14 +574,14 @@ def build_figure_4() -> None:
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(
         handles, labels, loc="upper center", ncol=2, frameon=False,
-        bbox_to_anchor=(0.5, 1.005), fontsize=8.6
+        bbox_to_anchor=(0.5, 0.995), fontsize=8.8
     )
     fig.text(
-        0.5, 0.962,
+        0.5, 0.012,
         "A = Model A; S = SLAMSS-IFS (primary single-model mean, n = 25);  † non-parametric median & 2.5th–97.5th percentile LoA (Shapiro–Wilk p < 0.05);  * proportional bias p < 0.05.",
-        ha="center", va="top", fontsize=7.3, color="#444444"
+        ha="center", va="bottom", fontsize=7.4, color="#444444"
     )
-    fig.subplots_adjust(left=0.065, right=0.985, top=0.865, bottom=0.07, hspace=0.68, wspace=0.28)
+    fig.subplots_adjust(left=0.065, right=0.985, top=0.855, bottom=0.105, hspace=0.68, wspace=0.28)
     save_fig(fig, "Figure4_External_PSG_Bland_Altman")
 
 
@@ -623,26 +629,26 @@ def build_figure_5() -> None:
         ax1.text(rect.get_x() + rect.get_width() / 2, h + 1.1, f"{h:.1f}%",
                  ha="center", va="bottom", fontsize=7.2, color="#333333", fontweight="bold")
 
-    # Clean vertical arrows above Light & Deep (zero overlap with legend or REM bars)
+    # Clean vertical arrows above Light & Deep; legend in open upper-right whitespace
     ax1.annotate(
         "+13.5 pp Light",
-        xy=(1 + w / 2, 62.0), xytext=(1.55, 69.5),
+        xy=(1 + w / 2, 62.5), xytext=(0.68, 73.5),
         fontsize=7.4, fontweight="bold", color=PALETTE["danger"], ha="center",
         arrowprops=dict(arrowstyle="->", color=PALETTE["danger"], lw=1.15)
     )
     ax1.annotate(
         "−7.8 pp Deep",
-        xy=(2 + w / 2, 16.0), xytext=(2 + w / 2, 37.5),
+        xy=(2 + w / 2, 16.5), xytext=(2 + w / 2, 38.0),
         fontsize=7.4, fontweight="bold", color=PALETTE["danger"], ha="center",
         arrowprops=dict(arrowstyle="->", color=PALETTE["danger"], lw=1.15)
     )
 
     ax1.set_xticks(x)
     ax1.set_xticklabels(stages)
-    ax1.set_ylim(0, 79)
+    ax1.set_ylim(0, 82)
     ax1.set_ylabel("Reference Stage Prevalence (% of Epochs)")
     set_panel_header(ax1, "A", "Cross-Modality Reference Prior Shift", title_x=0.075)
-    ax1.legend(loc="upper left", frameon=True, fontsize=7.0, edgecolor="#DDDDDD")
+    ax1.legend(loc="upper right", frameon=True, fontsize=6.8, edgecolor="#DDDDDD")
 
     # --- Panel B ---
     m_keys = ["deep_pct_tst", "rem_pct_tst"]
