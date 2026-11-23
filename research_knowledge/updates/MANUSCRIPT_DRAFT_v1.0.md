@@ -270,13 +270,30 @@ This research received no specific grant from any funding agency in the public, 
 
 ---
 
+## Figure Legends
+
+**Figure 1. Accuracy–efficiency compression trade-off and external zero-shot PSG transfer attenuation.**
+(A) Trainable parameter scale (log scale) versus 4-class Macro-F1 comparing the compact 163.9k-parameter architecture (Dynamic INT8: 309.54 KiB) against the 5.47M-parameter server reference (33.34x larger) across within-cohort BIDSleep 5-fold cross-validation ($N=47$, home Dreem 2 EEG) and external zero-shot PhysioNet SleepAccel ($n=25$ quality-clean single-night in-lab PSG; primary single-model mean and secondary 15-model probability ensemble). (B) Stage-wise paired Macro-F1 and per-stage F1 differences (Model A minus SLAMSS-IFS, 95% bootstrap CI) on quality-clean SleepAccel ($n=25$).
+
+**Figure 2. Multi-night calibration-depth learning curves.**
+Paired 4-class Macro-F1 gains over reconciled clean zero-shot baselines across $k=1$–$4$ labeled calibration nights per participant for (A) the available cohort ($N=46, 46, 42, 33$) and (B) the fixed common post-calibration evaluation cohort $E_4$ ($N=33$, 64 evaluation nights; clean zero-shot baseline 63.54%; Page's $L$ trend $p=0.0119$ one-sided, $p=0.0594$ two-sided sensitivity). Dotted line denotes the pre-registered $+1.50$ percentage-point benchmark.
+
+**Figure 3. Exploratory tail-risk mitigation and adaptation heterogeneity audit.**
+(A) Participant-level Macro-F1 changes versus zero-shot ($N=46$, ranked by unregularized 2-night fine-tuning) comparing unregularized fine-tuning (minimum $-16.34$ pp), soft KL logit regularization (minimum $-15.14$ pp), and pre-adaptation stage-coverage abstention gating (minimum $-6.40$ pp; 2/46 surgical abstentions including `Bidslab34`). (B) Forest plot of Spearman $\rho$ (95% bootstrap CI) and Benjamini–Hochberg FDR $q$-values across six physiological and signal-quality predictors of adaptation gain (0/12 features survive FDR; Oldham headroom check $\rho=+0.038$, $p=0.804$).
+
+**Figure 4. External zero-shot single-night PSG Bland–Altman agreement ($n=25$, primary single-model mean).**
+Agreement between wearable predictions and in-lab PSG across (A) Total Sleep Time, (B) Sleep Onset Latency, (C) Wake After Sleep Onset, (D) Sleep Efficiency, (E) Deep Sleep (% of TST), and (F) REM Sleep (% of TST) for Model A (blue circles, solid lines) and SLAMSS-IFS (vermilion triangles, dashed lines). Parametric mean bias and 95% limits of agreement are plotted where Shapiro–Wilk normality holds; non-parametric median bias and 2.5th–97.5th percentile limits are plotted where normality fails ($p<0.05$).
+
+**Figure 5. Cross-modality label-prior shift diagnosis (home Dreem 2 EEG vs. in-lab PSG).**
+(A) Reference sleep-stage prevalence comparing BIDSleep night-averaged Dreem 2 EEG labels (12.8% Wake, 44.2% Light, 18.9% Deep, 24.1% REM) against SleepAccel in-lab PSG labels (8.3% Wake, 57.7% Light, 11.1% Deep, 22.9% REM; $+13.5$ pp Light shift, $-7.8$ pp Deep shift). (B) Resulting Deep% and REM% of TST projections on quality-clean SleepAccel ($n=25$, primary single-model mean) for both frozen zero-shot architectures relative to in-lab PSG reference means.
+
 ## References
 
-1. Song et al. [VERIFY-BIB: confirm full author list and exact published article title] SLAMSS-IFS and BIDSleep multi-night dataset. *IEEE Trans Biomed Eng* 2026; DOI: `10.1109/TBME.2025.3612158` (PhysioNet dataset DOI: `10.13026/rees-1092`).
+1. Song TA, Zhang Y, Zhou Z, et al. AI-driven sleep staging using instantaneous heart rate and accelerometry: insights from an Apple Watch study. *IEEE Trans Biomed Eng* 2026; **73**(4): 1596–1608. doi:10.1109/TBME.2025.3612158 (PhysioNet dataset doi:10.13026/rees-1092).
 2. Walch O, Huang Y, Forger D, Goldstein C. Sleep stage prediction with raw acceleration and photoplethysmography heart rate data derived from a consumer wearable device. *Sleep* 2019; 42(12):zsz180. DOI: `10.1093/sleep/zsz180` (PhysioNet dataset DOI: `10.13026/hmhs-py35`).
-3. van der Aar JF, et al. [VERIFY-BIB: confirm full author list, volume, and article ID] Supervised multi-night personalization of wrist PPG sleep staging in sleep-disordered adults. *Physiol Meas* 2025; DOI: `10.1088/1361-6579/ae0119`.
+3. van der Aar JF, van Gilst MM, van den Ende DA, Overeem S, Peri E, Fonseca P. Learning individual autonomic representations of sleep stages to improve photoplethysmography based sleep monitoring. *Physiol Meas* 2025; **46**(9): 095012. doi:10.1088/1361-6579/ae0119.
 4. Bland JM, Altman DG. Measuring agreement in method comparison studies. *Stat Methods Med Res* 1999; 8(2):135–160. DOI: `10.1177/096228029900800204`.
-5. Quirk C, et al. [VERIFY-BIB: confirm full author list, publication venue, and DOI/URL] Data leakage in deep learning sleep staging. 2024.
+5. Brookshire G, Kasper J, Blauch NM, et al. Data leakage in deep learning studies of translational EEG. *Front Neurosci* 2024; **18**: 1373515. doi:10.3389/fnins.2024.1373515.
 6. Beattie Z, Oyang Y, Statan A, et al. Estimation of sleep stages in a healthy adult population from optical plethysmography and accelerometer signals. *Physiol Meas* 2017; 38(11):1968–1979. DOI: `10.1088/1361-6579/aa9047`.
 7. Collins GS, Moons KGM, Dhiman P, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. *BMJ* 2024; 385:e078378. DOI: `10.1136/bmj-2023-078378`.
 8. Berry RB, Brooks R, Gamaldo CE, et al. *The AASM Manual for the Scoring of Sleep and Associated Events: Rules, Terminology and Technical Specifications*, Version 2.6. Darien, IL: American Academy of Sleep Medicine; 2020.
