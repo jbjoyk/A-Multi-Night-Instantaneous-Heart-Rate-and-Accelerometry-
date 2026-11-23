@@ -1,196 +1,97 @@
-# Consolidated EGM Goldfish Review Report (Stages 5–9)
+# Consolidated Goldfish Review Report: `docs/designs/exp029_ultradian_pyramidal_coupler.md`
 
-**Target Document:** [`experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md)  
-**Implementation Script:** [`experiments/EXP-019/audit_heterogeneity_mechanisms.py`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/audit_heterogeneity_mechanisms.py)  
-**Data Artifact:** [`experiments/EXP-019/heterogeneity_predictors_table.csv`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/experiments/EXP-019/heterogeneity_predictors_table.csv)  
-**Review Standard:** EGM Goldfish Protocol (Full Uninterrupted Flow: Stages 5 → 6 → 7 → 8 → 9)  
-**Date:** November 17, 2026
-
----
-
-## 1. Executive Summary & Review Dashboard
-
-The exploratory heterogeneity diagnostic audit delivers critical empirical insights into the EXP-019 multi-night adaptation experiment. It establishes two fundamental scientific conclusions:
-1. **Pre-adaptation subject features offer essentially zero predictive foreknowledge of adaptation gain** ($q \approx 0.9711$ across all 9 pre-adaptation hypotheses).
-2. **Subject performance degradation is governed by inter-night non-stationary label shift** ($D_{JS}(P_C \parallel P_E)$, $\rho = -0.2933, p = 0.0479$). In particular, the severe collapse of `Bidslab34` ($-16.34\text{ pp}$) is traced directly to extreme stage absence during calibration ($0.7\%$ Deep sleep) reappearing in evaluation nights (~$18\%$).
-
-Across all five stages of the EGM Goldfish Review Protocol, the mathematical execution, zero-leakage invariants, and numerical reproduction of results were **verified with 100% parity**. 
-
-However, the review swarm identified critical methodological, architectural, and presentation vulnerabilities:
-- **Flawed Gating Framing (Major):** Section 3 presented a post-hoc compound gate as an exploratory "safety simulation". Critic and Zoom-Out reviews proved that this rule was reverse-engineered to catch `Bidslab34`, discards a confirmed positive responder (`Bidslab15`, $+1.27\text{ pp}$), misses 11 of 12 non-responders (sensitivity = $8.3\%$), and represents brittle symptom-patching rather than principled algorithmic resolution.
-- **Context Insufficiency vs. Textbook Bloat (Major):** The document lacked high-altitude framing of the EXP-019 task, metric ($\Delta$ Macro-F1), and responder threshold, but must resolve this via a concise metadata block rather than sprawling textbook text.
-- **Statistical Calibration (Major):** Oldham's method requires reporting Pearson $r$ alongside Spearman $\rho$, while recognizing that the baseline correlation was already non-significant ($p = 0.256$). Causal overreach ("negative infinity", "causal diagnosis") must be de-escalated to objective diagnostic language.
-- **Implementation Portability & Determinism (Major):** The audit script lacked deterministic RNG seeding for PyTorch dropout during parameter displacement extraction, contained brittle working-directory-dependent CLI defaults, and omitted `sys.path` entries.
+*   **Target Document:** [`docs/designs/exp029_ultradian_pyramidal_coupler.md`](./docs/designs/exp029_ultradian_pyramidal_coupler.md)
+*   **Status:** Resolved (All `5` Blockers, `5` Majors, and `6` Nits accepted and applied)
+*   **Date:** 2026-11-23
+*   **Reviewers:** `egm-zoom-out`, `egm-design`, `egm-structural`, `egm-codebase-details`, `egm-implementation-readiness`
+*   **Overall Verdict:** **NOT READY FOR IMPLEMENTATION / Q1 PREREGISTRATION** (`5 Blockers`, `5 Majors`, `6 Nits`)
 
 ---
 
-## 2. Reviewer Status Matrix
+## 1. Blockers (Must Resolve Before Implementation)
 
-| Stage | Reviewer Lens | Persona / Agent | Target Scope | Status |
-|---|---|---|---|---|
-| **Stage 5** | Skeptical Architect | `egm-zoom-out` | Full Report (Lines 1–51) | **Completed** |
-| **Stage 5** | Inventive Problem Solving | `egm-inventive-catalyst` | Full Report (Lines 1–51) | **Completed** |
-| **Stage 6** | Naive Reader (Comprehension) | `egm-comprehension` | Report (Isolated Reading) | **Completed** |
-| **Stage 7** | Hostile Design Critic | `egm-design` | Feature Scope (Lines 1–51) | **Completed** |
-| **Stage 7** | Document Architect (Layout) | `egm-structural` | Feature Scope (Lines 1–51) | **Completed** |
-| **Stage 7** | Technical Copy Editor | `egm-style` | Feature Scope (Lines 1–51) | **Completed** |
-| **Stage 8** | Intermediate Zoom Out | `egm-zoom-out` | Full Synthesis & Anti-Bloat | **Completed** |
-| **Stage 9** | Pragmatic Tech Lead | `egm-implementation-readiness` | `audit_heterogeneity_mechanisms.py` | **Completed** |
-| **Stage 9** | Codebase Details Auditor | `egm-codebase-details` | Code vs Doc & Tabular Parity | **Completed** |
-| **Stage 9** | Technical Copy Editor | `egm-style` | Docstrings, CLI & Comments | **Completed** |
+### B1. `DampedEMCalibrator` Mechanics, Temperature Scaling $T$, & Source-Domain Tuning Incoherence
+*   **Sources:** `egm-design` (B1, B2, M3), `egm-zoom-out` (B1), `egm-implementation-readiness` (B2), `egm-codebase-details` (M2), `egm-structural` (M2)
+*   **Affected Scope:** `docs/designs/exp029_ultradian_pyramidal_coupler.md` (L11, L26, L40, L50–54, L109–114, L170–174, L187) vs. `exp018_inference.py` (L78–111, L139–140, L171–182) and `test_rccloss_audit.py` (L37–51).
+*   **Findings:**
+    1. **Post-Softmax Temperature Scaling Impossibility:** [`SlidingWindowPredictor`](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/exp018_inference.py#L20-L182) applies `F.softmax(logits, dim=-1)` per window *before* stitching into `final_probs` (`exp018_inference.py:96, 140`). Standard logit temperature scaling `softmax(logits / T)` cannot be recovered from averaged window probabilities. Furthermore, `SlidingWindowPredictor.predict_night` has an early `return` for Case 1 (`N <= L`, `exp018_inference.py:103-111`), which would silently bypass `prior_calibrator` if applied only after Case 2 (`L171`).
+    2. **Undefined $\pi_{\text{src}}$ & `RCCLoss` Miscalibration:** Equation (1) uses $\pi_{\text{src}}(c)$ without defining it. Because primary training uses `CE + 0.01 * RCCLoss`, softmax outputs are **not** calibrated to empirical `inner_train` class priors. Using empirical frequencies as $\pi_{\text{src}}$ violates Bayes' rule in Saerens EM.
+    3. **EM Fixed-Point & Tuning Leakage:** Anchoring $\pi^{(t+1)} = (1 - \alpha)\pi_{\text{src}} + \alpha \hat{\pi}_{\text{EM}}^{(t+1)}$ prevents convergence to $\pi_{\text{tgt}}$. Tuning $(\alpha, T)$ on pooled BIDSleep `OOF` leaks outer test data; tuning on BIDSleep `inner_val` cannot optimize SleepAccel Dreem 2 -> PSG shift (since BIDSleep has no modality shift, $\alpha = 0$ is optimal on-domain); and tuning $\alpha$ around SleepAccel `1455390` (`0%` Deep) is implicit external test leakage.
+    4. **YAGNI / Baseline Confound:** `DampedEMCalibrator` is a 0-parameter post-hoc wrapper. Bundling it into `EXP-029` without testing `Model A + EM` and `SLAMSS-IFS + EM` on existing `EXP-027` prediction caches conflates representation gains with prior adjustment.
+*   **Required Fix:** Either decouple `DampedEMCalibrator` from `EXP-029` (evaluating it first on frozen `EXP-027` caches of `Model A` and `SLAMSS-IFS`), or explicitly define: (a) per-window `logits / T` vs. power-scaled `final_probs ** (1/T)`, (b) Case 1 (`N <= L`) + Case 2 (`N > L`) hook placement, (c) $\pi_{\text{src}}$ as the model's mean predicted `inner_val` marginal, (d) EM iteration count $K$ and final $p_i^{\text{cal}}(c)$, and (e) a single preregistered $\alpha$ (e.g., $\alpha = 0.35$) rather than on-domain tuning.
 
----
+### B2. Unspecified Training Loop, Optimizer, AMP FP32 Loss Boundary, & Manifest Verification
+*   **Sources:** `egm-implementation-readiness` (B1, M5), `egm-zoom-out` (M3), `egm-structural` (M1), `egm-codebase-details` (M1, M5)
+*   **Affected Scope:** `docs/designs/exp029_ultradian_pyramidal_coupler.md` (L44–48, L111, L153, L168, L176–181, L192, L198) vs. `experiments/EXP-021/run_tsk08_slamss_matched.py` (L16–20, L88–151, L306–340, L390–393) and `test_rccloss_audit.py` (L21–33).
+*   **Findings:**
+    1. **AMP `float16` `NaN` Hazard in `RCCLoss`:** `RCCLoss.forward` (`test_rccloss_audit.py:21-29`) clamps probabilities to `[1e-5, 1 - 1e-5]` and casts weights to `x.data.type()`. Under CUDA AMP `float16`, `1.0 - 1e-5` rounds to `1.0`, causing `torch.log(0.0) = -inf` and `NaN` gradients. `EXP-021` avoids this by computing `CE + 0.01 * RCCLoss` strictly in FP32 outside `torch.amp.autocast`.
+    2. **Missing Training Hyperparameters & Dataset Contract:** `run_exp029_cv.py` omits optimizer (`Adam(lr=1e-4, betas=(0.9, 0.999))`), LR scheduler (none), `max_epochs=100`, `min_epochs=40`, `patience=25`, `grad_clip=1.0`, `random_crop=True`, `val_batch_size=16`, checkpoint selection criterion (`inner_val` pooled `macro_f1 > best + 1e-6`), and cannot reuse `SLAMSSMatchedDataset` (`run_tsk08_slamss_matched.py:309`, which yields `x_signal` instead of separate `x_ihr`, `x_accel`, `x_meta`, `seq_lens`).
+    3. **Missing Cryptographic Manifest Gate:** Omits `verify_manifests_and_splits` against `review_package/fold_manifests.csv` (SHA-256 prefix `36d84020`, `run_tsk08_slamss_matched.py:88-151`).
+*   **Required Fix:** Lock all training hyperparameters to exact `EXP-018`/`EXP-021` parity, mandate FP32 loss computation outside `autocast`, and specify the `EXP-029` dataset contract and manifest SHA-256 verification.
 
-## 3. Consolidated Findings by Severity
+### B3. Missing Holm-Bonferroni Multiplicity Control, Seed-Aggregation Unit, & Equivalence Framing
+*   **Sources:** `egm-structural` (B2), `egm-design` (M4), `egm-zoom-out` (M4)
+*   **Affected Scope:** `docs/designs/exp029_ultradian_pyramidal_coupler.md` (L24, L48, L200) vs. `experiments/EXP-021/analyze_tsk08_paired_benchmark.py` (L5–19, L136–195) and `DECISIONS.md` (`DEC-033`, `DEC-041`).
+*   **Findings:**
+    1. Proposes paired Wilcoxon tests (`N = 47`) and 10,000-resample bootstrap CIs across 6 arms and 5+ metrics without Holm-Bonferroni FWER control, primary vs. secondary hypothesis hierarchy, or joint significance criterion (`CI excludes 0 AND Wilcoxon p < 0.05`).
+    2. Fails to state that the unit of analysis is the `N = 47` participant mean across 3 seeds (`42, 123, 2024`), and omits Arms `(c)` and `(d)` from CUJ 1 / Verification Plan comparisons.
+    3. G1 ("Match or surpass Official SLAMSS-IFS") violates `DEC-033`/`DEC-041`, which bar claiming equivalence from a non-significant $p$-value without a pre-specified equivalence margin.
+*   **Required Fix:** Preregister a strict hierarchical testing plan (Primary: Arm `(e)` vs. `(a)` and `(e)` vs. `(f)` on `N = 47` seed-averaged Macro-F1 with Holm-Bonferroni; Secondary: per-stage F1s and Arms `(b)`/`(c)`/`(d)` with Holm-Bonferroni) and adopt `DEC-041` parity/superiority framing.
 
-### 🔴 Blocker / Critical Architectural Decisions
+### B4. Quantizable Weight Arithmetic Error (`132,356` vs. `140,644`) & Unreachable `~310–350 KiB` INT8 Payload Target
+*   **Sources:** `egm-structural` (B1), `egm-codebase-details` (M4), `egm-implementation-readiness` (M4), `egm-design` (N9), `egm-zoom-out` (N6)
+*   **Affected Scope:** `docs/designs/exp029_ultradian_pyramidal_coupler.md` (L127, L154) vs. `experiments/STAGE2_FINAL_MODEL/benchmark_int8_edge.py` (L155–166).
+*   **Findings:** `132,356 / 200,100 = 66.15%` mistakenly included `LayerNorm(64)` (`128` FP32 params) in `classifier_head` and omitted `hr_encoder.proj` (`4,160`), `acc_encoder.proj` (`4,160`), and `meta_proj.0` (`96`). The exact `nn.Linear + nn.GRU` count is **`140,644 / 200,100 = 70.29%`** (`59,456` FP32 params). Under `benchmark_int8_edge.py:165`, the actual Dynamic INT8 in-memory payload is **`369.60 KiB`**, exceeding the `~310–350 KiB` NFR target.
+*   **Required Fix:** Correct the count to `140,644 / 200,100 (70.29%)` and update the NFR Dynamic INT8 payload target to `~370 KiB` (`369.6 KiB`).
 
-#### Finding C-1: Reframe Section 3 from "Deployment Gating Solution" to "Diagnostic Counterfactual Stress Test"
-* **Lenses:** `egm-design`, `egm-zoom-out`, `egm-inventive-catalyst`
-* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Section 3; `audit_heterogeneity_mechanisms.py` Section 3 printouts
-* **Discrepancy:** The compound gate ($\min_c P_C(y=c) \ge 3.0\%$ AND $D_{JS}(P_C \parallel P_{\text{pop}}) < 0.35$) is post-hoc data-snooped around `Bidslab34`. In doing so, it:
-  1. Erroneously discards confirmed positive responder `Bidslab15` ($+1.27\text{ pp}$).
-  2. Misses 11 of 12 non-responders in the cohort (sensitivity = $8.3\%$).
-  3. Sits on an unstable threshold boundary where a $+0.5\%$ shift would drop high responders `Bidslab42` ($+6.31\text{ pp}$) and `Bidslab62` ($+4.48\text{ pp}$).
-  4. Masks an architectural limitation (unregularized cross-entropy driving absent-class logits negative) with a brittle client-exclusion heuristic.
-* **Consolidated Action:**
-  - Rename Section 3 to: `## 3. Stress-Testing Static Pre-Adaptation Gating (Counterfactual Analysis)`.
-  - Disclose that the gate excluded positive responder `Bidslab15` and failed to catch 11 of 12 non-responders.
-  - Conclude that static pre-adaptation screening is an ineffective, blunt tool; the principled architectural solution is algorithmic regularization (prior-preserving loss penalties or feature-only adaptation).
-
----
-
-### 🟡 Major Findings
-
-#### Finding C-2: Add Unified 4-Line Executive Context Box (Preventing Textbook Bloat)
-* **Lenses:** `egm-comprehension`, `egm-zoom-out`, `egm-style`
-* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Header (Lines 1–6)
-* **Discrepancy:** A reader cannot tell what metric `Delta` represents (Macro-F1 percentage points on 4-stage sleep), what `H-A` stands for, what the responder threshold is, or what entity probability distributions $P$ represent.
-* **Consolidated Action:** Add a concise metadata box immediately following the title:
-  - **Task & Model:** EXP-019 subject-specific adaptation of Model A (CNN-BiGRU) on nights 2–3, evaluated on nights 4+ across 46 subjects (5-fold CV).
-  - **Target Metric:** 4-class sleep staging Macro-F1 (Wake, Light, Deep, REM); $\Delta = \text{Macro-F1}_{\text{FT}} - \text{Macro-F1}_{\text{ZS}}$ in percentage points (`pp`).
-  - **Responder Definition:** $\Delta > 0.0\text{ pp}$ ($N=34$ responders, $N=12$ non-responders). Confirmatory H-A mean gain was $+1.01\text{ pp}$ (non-significant vs $+1.50\text{ pp}$ target, $p=0.171$).
-  - **Divergence Metrics:** $D_{JS}$ is base-2 Jensen-Shannon divergence ($\in [0, 1]$) between 4-stage empirical probability vectors ($P_C$ calibration, $P_E$ evaluation, $P_{\text{pop}}$ training fold prior).
-
-#### Finding C-3: Consolidate Null Mechanisms (M2, M4, M6) into a Single Subsection
-* **Lenses:** `egm-structural`, `egm-zoom-out`
-* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Section 1 Table & Section 2 Headings
-* **Discrepancy:** Section 1 tested 6 mechanisms, but Section 2 provided narrative subsections only for M1, M3, and M5. M2 (autonomic HR volatility), M4 (transition friction), and M6 (token exposure) were omitted without explanation.
-* **Consolidated Action:**
-  - Sub-header Table 1 explicitly by **Mechanism 1 through 6** and correlate hypothesis IDs (`H-D1..3`, `H-P1`, `H-C1..2`, `H-L1`, `H-R1`, `H-S1`).
-  - Add a compact subsection `### D. Uniformly Null Autonomic, Structural, and Exposure Predictors (Mechanisms 2, 4, 6)` summarizing that HR volatility ($\rho = -0.21$), transition rate ($\rho = -0.02$), and calibration token volume ($\rho = -0.06$) demonstrated no predictive power after FDR adjustment ($q = 0.9711$).
-
-#### Finding C-4: Methodological & Epistemic Calibration (Oldham's Method & Causal Language)
-* **Lenses:** `egm-design`, `egm-style`, `egm-zoom-out`
-* **Affected Scope:** `HETEROGENEITY_AUDIT_REPORT.md` Section 2.A & 2.B; `audit_heterogeneity_mechanisms.py` Line 311
-* **Discrepancy:** 
-  1. Oldham's variance cancellation theorem strictly holds for linear Pearson covariance, not rank-order Spearman $\rho$. Furthermore, claiming Oldham's method "proves the ceiling effect is an RTM artifact" is uncalibrated because the baseline correlation was already statistically insignificant ($\rho = -0.1710, p = 0.2559$).
-  2. Section 2.A Line 30 labels an observational case as `*Causal Diagnosis*` and claims fine-tuning drove emission bias to "negative infinity".
-* **Consolidated Action:**
-  - In Section 2.B, report both Pearson ($r = +0.032, p = 0.832$) and Spearman ($\rho = +0.038, p = 0.804$) for Oldham's mean ($\frac{\text{ZS} + \text{FT}}{2}$). State cleanly that baseline performance showed no significant relationship with $\Delta$ before or after adjustment.
-  - Reclassify `*Causal Diagnosis*` to `**Forensic Case Interpretation (Bidslab34):**` and describe emission bias as "severely suppressed" rather than "driven to negative infinity".
-
-#### Finding C-5: Deterministic RNG Seeding for PyTorch Dropout in Parameter Displacement
-* **Lenses:** `egm-implementation-readiness`
-* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 232–246
-* **Discrepancy:** `adapt_supervised_ft()` puts the model in `model.train()`, consuming PyTorch RNG during dropout forward passes. Without explicit seeding, re-running the script produces subtle stochastic fluctuations in `param_displacement_norm`.
-* **Consolidated Action:** Add `torch.manual_seed(42)`, `torch.cuda.manual_seed_all(42)`, and `np.random.seed(42)` at script initialization and before each subject's adaptation.
-
-#### Finding C-6: Portability & Path Anchoring for CLI Execution
-* **Lenses:** `egm-codebase-details`, `egm-implementation-readiness`
-* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 30–35 & Lines 426–433
-* **Discrepancy:** `sys.path` omitted `exp019_dir`, and CLI default arguments were relative paths from CWD. Running the script from `experiments/EXP-019/` caused `FileNotFoundError` and `ModuleNotFoundError`.
-* **Consolidated Action:** Add `exp019_dir` to `sys.path` and anchor all CLI default paths to `repo_root` using `os.path.join(repo_root, ...)`.
-
-#### Finding C-7: Docstrings and CLI Argument Help Strings
-* **Lenses:** `egm-style`
-* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 80–90 & Lines 423–435
-* **Discrepancy:** `run_heterogeneity_audit` lacked a docstring, and all `argparse` options lacked `--help` text.
-* **Consolidated Action:** Add Google-style docstrings with parameter definitions, return types, and descriptive CLI `--help` strings.
+### B5. `DEC-031` Capacity-Count Disclosure (`Delta%` vs. `163,940`) & Loose `223,268`-Param Control
+*   **Sources:** `egm-zoom-out` (B2)
+*   **Affected Scope:** `docs/designs/exp029_ultradian_pyramidal_coupler.md` (L20, L25, L116–127, L145) vs. `DECISIONS.md` (`DEC-031`, L537–570).
+*   **Findings:** `DEC-031` removed arbitrary ceilings (`< 250k / < 300k`) and requires explicit $\Delta\%$ disclosure relative to `163,940` (`+22.06%` for Arm `(e)`, `+36.19%` for Arm `(b)`). Furthermore, Arm `(b)` (`223,268` params) is `+11.58%` larger than Arm `(e)` (`200,100`), whereas `d_temp=120` (`hidden=60/dir`) yields `207,284` params (`+3.59%` vs. Arm `(e)`).
+*   **Required Fix:** Add the mandatory $\Delta\%$ vs. `163,940` column to Section 5 and justify the `+22.06%` capacity increase under `DEC-031` (or tighten Arm `(b)` / slim Arm `(e)`).
 
 ---
 
-### 🟢 Nits & Code Quality
+## 2. Majors (Should Resolve Before Coding)
 
-#### Finding C-8: Dead Code and In-Loop Import Removal
-* **Lenses:** `egm-implementation-readiness`, `egm-codebase-details`, `egm-style`
-* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 223–227
-* **Consolidated Action:** Relocate `from sklearn.metrics import f1_score` to module header, delete dead lines 223–225 (`pd.Series(...).corr(...)`), and add defensive handling for empty calibration slices.
-
-#### Finding C-9: Normalize TeX Escaping & Standardization
-* **Lenses:** `egm-structural`, `egm-style`, `egm-codebase-details`
-* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Line 408; `HETEROGENEITY_AUDIT_REPORT.md` Line 45
-* **Consolidated Action:** Replace double braces `$D_{{JS}}(P_C \parallel P_{{\text{{pop}}}})$` with standard TeX `$D_{JS}(P_C \parallel P_{\text{pop}})$` and format covariance terms as `\text{Cov}(\text{ZS}, \text{FT} - \text{ZS})`.
-
-#### Finding C-10: Filter Usable Nights in Population Prior Calculation
-* **Lenses:** `egm-implementation-readiness`, `egm-codebase-details`
-* **Affected Scope:** `audit_heterogeneity_mechanisms.py` Lines 103–106
-* **Consolidated Action:** Filter `df_inv[df_inv["usable"] == True]` before averaging demographic stage fractions.
+1. **M1 — Unscoped `EXP-020` `FT-2` / `GATE_tau` Adaptation Protocol (`CUJ 3`):** Missing script reference, adaptation LR/epochs/`tau`, frozen vs. unfrozen parameter groups (`FiLM`, `fine_gru`, `coarse_gru`, `classifier_head`), and runtime budget (`138` runs). *(`implementation-readiness` B3, `zoom-out` M5)*
+2. **M2 — `UltradianPyramidalCoupler.forward()` Return Dict & `seq_lens=None` Contract:** Must specify the 14-key `Dict[str, torch.Tensor]` return format (`out["logits"]` for `exp018_inference.py:95, 139`) and the `seq_lens=None` fallback required by `benchmark_int8_edge.py:207`. *(`codebase-details` M3)*
+3. **M3 — `EXP-027` / `EXP-028` Cache Isolation, Arm Naming, & Ensemble Calibration Order:** `run_exp028_sleepaccel_bland_altman.py` globs all `*.npz` in `exp027_dir/cache/predictions` and splits on `"__"`. Must isolate `EXP-029` cache under `experiments/EXP-029/sleepaccel_cache/`, specify `mean_single_model` vs. `prob_ensemble` EM order, and note unscored (`y == -100`) PSG boundary epochs. *(`implementation-readiness` M6, `design` M7/N12)*
+4. **M4 — Redundant `Linear(96->96)` Projection Before Coarse `BiGRU`:** A bare `Linear(96->96)` without nonlinearity before `nn.GRU` is algebraically redundant (`9,312` params). Either insert `LayerNorm + GELU + Dropout` or remove it. *(`design` M6)*
+5. **M5 — Reuse `ConventionalCNNBiGRU(d_temp=128)` & Specify `build_exp029_model` `arm_id`s:** `ConventionalCNNBiGRU(d_temp=128)` in `exp013_models.py:49-57` already produces `223,268` params without a duplicate class; document exact `arm_id` strings. *(`implementation-readiness` M7, `codebase-details` N7)*
 
 ---
 
-## 4. Traceability Matrix
+## 3. Nits (Cleanup & Clarity)
 
-| Raw Finding Source | Primary Lens | Severity | Consolidated Action Item |
-|---|---|---|---|
-| Stage 5 Finding 1 | `egm-zoom-out` | Major | **Finding C-2**: Add 4-line executive context block |
-| Stage 5 Finding 2 | `egm-inventive-catalyst` | Major | **Finding C-1**: Reframe gating to counterfactual analysis & prior regularization |
-| Stage 5 Finding 3 | `egm-inventive-catalyst` | Major | **Finding C-1**: Note architectural extraction/decoupling of prior from features |
-| Stage 5 Finding 4 | `egm-zoom-out` | Nit | **Finding C-2**: Clarify contrast between static predictors and dynamic shift |
-| Stage 6 Finding 1 | `egm-comprehension` | Major | **Finding C-2**: Define `Delta` and Macro-F1 metric in context block |
-| Stage 6 Finding 2 | `egm-comprehension` | Major | **Finding C-2**: Define $P_C, P_E, P_{\text{pop}}$ and $D_{JS}$ bounds |
-| Stage 6 Finding 3 | `egm-comprehension` | Major | **Finding C-2**: Define `H-A` project acronym |
-| Stage 6 Finding 4 | `egm-comprehension` | Major | **Finding C-2**: State responder threshold ($\Delta > 0.0\text{ pp}$) |
-| Stage 6 Finding 5 | `egm-comprehension` | Major | **Finding C-4**: Define Oldham formula and baselines |
-| Stage 6 Finding 6 | `egm-comprehension` | Major | **Finding C-3**: Document Model A and Stage-D hyperparameter origin |
-| Stage 6 Finding 7 | `egm-comprehension` | Major | **Finding C-2**: Defer variable definitions to artifact schemas |
-| Stage 7 Finding 1 | `egm-design` | Blocker/Major | **Finding C-1**: Reframe gating; report responder rejection and low sensitivity |
-| Stage 7 Finding 2 | `egm-design` | Major | **Finding C-4**: Compute Pearson $r$ for Oldham; calibrate null baseline |
-| Stage 7 Finding 3 | `egm-design` | Major | **Finding C-3**: Acknowledge fold-level optimization hyperparameter confounder |
-| Stage 7 Finding 4 | `egm-structural` | Major | **Finding C-3**: Consolidate M2, M4, M6 in narrative subsection |
-| Stage 7 Finding 5 | `egm-structural` | Major | **Finding C-3**: Group Table 1 by Mechanism 1–6 with hypothesis IDs |
-| Stage 7 Finding 6 | `egm-style` | Major | **Finding C-1**: Strip shouting bold and exclamation marks from gating |
-| Stage 7 Finding 7 | `egm-style` | Major | **Finding C-4**: Replace "Causal Diagnosis" and "negative infinity" |
-| Stage 7 Finding 8 | `egm-structural` | Nit | **Finding C-9**: Normalize TeX formatting and percentage styles |
-| Stage 8 Finding 1 | `egm-zoom-out` | Blocker/Major | **Finding C-1**: Counterfactual reframe of Section 3 (anti-symptom-patching) |
-| Stage 8 Finding 2 | `egm-zoom-out` | Major | **Finding C-2**: Anti-bloat 4-bullet executive metadata box |
-| Stage 8 Finding 3 | `egm-zoom-out` | Major | **Finding C-3**: Consolidate null mechanisms without textbook bloat |
-| Stage 8 Finding 4 | `egm-zoom-out` | Major | **Finding C-4**: Statistical and epistemic de-escalation |
-| Stage 9 Finding 1 | `egm-readiness` | Major | **Finding C-5**: Seed PyTorch/NumPy RNG for deterministic displacement |
-| Stage 9 Finding 2 | `egm-readiness` / `codebase` | Major | **Finding C-6**: Anchor CLI default paths and include `exp019_dir` in `sys.path` |
-| Stage 9 Finding 3 | `egm-style` | Major | **Finding C-7**: Add docstring to `run_heterogeneity_audit` and CLI `--help` |
-| Stage 9 Finding 4 | `egm-readiness` / `codebase` | Nit | **Finding C-8**: Remove dead code, move `f1_score` to top import |
-| Stage 9 Finding 5 | `egm-codebase` | Nit | **Finding C-9**: Fix string-escape double braces in line 408 |
-| Stage 9 Finding 6 | `egm-readiness` / `codebase` | Nit | **Finding C-10**: Filter usable nights for population prior |
+1. **N1 — Module 2 Heading Parameter Mismatch (`125,952` vs. `125,760`):** Line 81 includes `temp_norm` (`192`); align to `125,760` to match Section 5. *(`structural` N1, `design` N10, `zoom-out` N6, `codebase-details` N6, `implementation-readiness` N8)*
+2. **N2 — "`1 Hz` FiLM" Naming (`(B*T, 64, 7)` is `~0.23 Hz`):** Rename to "Sub-Epoch (`~0.23 Hz`) Pre-Pooling FiLM" or "Intra-Epoch Pre-Pooling FiLM" to avoid reviewer pushback. *(`design` N8)*
+3. **N3 — `nn.GRU(num_layers=1)` Dropout & FiLM Zero-Init:** Set `dropout=0.0` on 1-layer `nn.GRU`s (avoiding PyTorch warnings) and explicitly zero-init both `weight` and `bias` in `IntraEpochFiLM`. *(`zoom-out` N7, `implementation-readiness` N9/N10)*
+4. **N4 — Dual-GPU Split Typo (`9` vs. `7` runs) & Manifest Path Shorthand:** Fix `9 runs` typo in NFR to `7 runs` (`cuda:0`) + `8 runs` (`cuda:1`), and write full `experiments/EXP-014/EXP014_MANIFESTS/fold_1..5.json`. *(`structural` N3, `implementation-readiness` N11, `codebase-details` N7)*
+5. **N5 — Unexplained `N = 46` vs. `N = 47` in `FT-2` / `GATE_tau`:** Note the 1-subject exclusion (single-night subject ineligible for multi-night `FT-2`). *(`structural` N2)*
+6. **N6 — `repeat_interleave(4)` Phase Shift & Unbatched `inner_val` Throughput:** Note `w = N - 1200` 4-epoch phase shift and confirm `SlidingWindowPredictor` validation batching. *(`design` N11, `implementation-readiness` N12)*
 
 ---
 
-## 5. Concrete Action Plan & Implementation Guidance
+## 4. Verified Exact Items
+*   **Parameter Math (Arms `(a)`–`(f)`):** `163,940`, `223,268`, `172,260`, `191,780`, `200,100`, and `5,465,768` all verified exact.
+*   **Pre-Pool Encoder Shapes:** `(B*T, 64, 7)` with `29,568` params/stream verified against `sleep_adaptive_net.py:79-138`.
+*   **Dual-GPU Hardware Feasibility:** Peak VRAM `< 300–450 MB` at `B = 4, L = 1200` and `~25–45 min` per 15-run arm on 2x RTX 3060 12GB verified feasible.
 
-### A. Modifications to `experiments/EXP-019/audit_heterogeneity_mechanisms.py`
-1. **Paths & Imports:**
-   - Add `exp019_dir = os.path.abspath(os.path.dirname(__file__))` to the `sys.path` insertion list.
-   - Anchor all default CLI arguments to `os.path.join(repo_root, ...)`.
-   - Move `from sklearn.metrics import f1_score` to module-level imports.
-2. **Determinism:**
-   - Add `torch.manual_seed(42)`, `torch.cuda.manual_seed_all(42)`, and `np.random.seed(42)` at the entry point of `run_heterogeneity_audit()` and before each subject's adaptation.
-3. **Statistical Robustness:**
-   - Filter `df_inv[df_inv["usable"] == True]` for population prior calculation.
-   - Compute and log both Pearson $r$ and Spearman $\rho$ for Oldham's mean.
-   - Cast `cal_y_valid.astype(int)` defensively before `np.bincount`.
-4. **Code Quality & Docstrings:**
-   - Add NumPy/Google-style docstring to `run_heterogeneity_audit()` documenting inputs and outputs.
-   - Add descriptive `help=` strings to all `argparse` arguments.
-   - Delete dead lines 223–225 (`pd.Series(...).corr(...)`).
-   - Fix double curly-brace string formatting in markdown report emission.
-   - Reframe generated Section 3 markdown according to Finding C-1.
+---
 
-### B. Modifications to `experiments/EXP-019/HETEROGENEITY_AUDIT_REPORT.md`
-1. **Executive Context Box:** Insert the 4-bullet executive context box at the top of the report.
-2. **Table 1 Symmetry:** Sub-header Table 1 by Mechanism 1 through 6, displaying explicit hypothesis IDs.
-3. **Mechanism Discussion:**
-   - Section 2.A: Reclassify `*Causal Diagnosis*` to `**Forensic Case Interpretation (Bidslab34):**` and calibrate emission bias description.
-   - Section 2.B: Report Pearson $r$ alongside Spearman $\rho$ for Oldham's mean; clarify that baseline performance was non-significant both before and after adjustment.
-   - Section 2.C: Acknowledge fold-level hyperparameter budget confounding within `scope=all`.
-   - Section 2.D: Add compact summary of null findings for Mechanisms 2, 4, and 6.
-4. **Section 3 Refactoring:** Reframe "Deployment Gating Simulation" into "Stress-Testing Static Pre-Adaptation Gating (Counterfactual Analysis)", disclosing the rejection of responder `Bidslab15`, the $8.3\%$ sensitivity to non-responders, and motivating algorithmic regularization over static client exclusion.
+## 5. Traceability Matrix
+
+| Consolidated ID | Severity | Raw Reviewer Findings |
+|---|---|---|
+| **B1** | Blocker | `design` B1, B2, M3; `zoom-out` B1; `implementation-readiness` B2; `codebase-details` M2; `structural` M2 |
+| **B2** | Blocker | `implementation-readiness` B1, M5; `zoom-out` M3; `structural` M1; `codebase-details` M1, M5 |
+| **B3** | Blocker | `structural` B2; `design` M4; `zoom-out` M4 |
+| **B4** | Blocker | `structural` B1; `codebase-details` M4; `implementation-readiness` M4; `design` N9; `zoom-out` N6 |
+| **B5** | Blocker | `zoom-out` B2 |
+| **M1** | Major | `implementation-readiness` B3; `zoom-out` M5 |
+| **M2** | Major | `codebase-details` M3 |
+| **M3** | Major | `implementation-readiness` M6; `design` M7, N12 |
+| **M4** | Major | `design` M6 |
+| **M5** | Major | `implementation-readiness` M7; `codebase-details` N7 |
+| **N1–N6** | Nit | `structural` N1–N3; `design` N8, N10–N11; `zoom-out` N6–N7; `codebase-details` N6–N7; `implementation-readiness` N8–N12 |
