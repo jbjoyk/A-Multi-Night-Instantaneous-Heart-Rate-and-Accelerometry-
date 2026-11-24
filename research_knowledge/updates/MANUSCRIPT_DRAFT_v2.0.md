@@ -1,0 +1,196 @@
+# Capacity Scaling, Negative Architectural Ablation, and Zero-Shot Clinical PSG Generalization of Lightweight Consumer-Smartwatch Sleep Staging: A Pre-Registered, Leakage-Free Study
+
+**Target Venue:** *IEEE Journal of Biomedical and Health Informatics* (*IEEE J-BHI*)  
+**Manuscript Version:** v2.0 (Upgraded with `EXP-030` [`DEC-043`] and `EXP-031` [`DEC-044`])
+
+---
+
+## Abstract
+
+**Objective:** Consumer smartwatches estimate sleep stages from ~0.2 Hz instantaneous heart rate (IHR) and tri-axial accelerometry, yet clinical translation is hindered by unquantified capacity–edge trade-offs, architectural complexity assumptions, benchmark leakage, personalization tail risk, and unknown generalization to gold-standard in-lab polysomnography (PSG). We present a pre-registered, leakage-free capacity-scaling, architectural-ablation, multi-night personalization, and zero-shot external PSG validation study.
+
+**Methods:** Under subject-disjoint 5-fold cross-validation in PhysioNet BIDSleep ($N=47$ healthy adults, 246 usable nights; Apple Watch Series 6 and Dreem 2 EEG), we evaluated uniform width scaling of a plain 1D CNN-BiGRU across 9 widths (`W050`–`W250`, 43,108 to 993,380 parameters; `EXP-031`) and a 6-point capacity–edge Pareto grid (`p1_100k`–`p6_1051k`; `EXP-030`) against the 5,465,768-parameter official SLAMSS-IFS server architecture and frozen `Model A-164k` (163,940 parameters). We tested a pre-registered architectural hypothesis (`H-ARCH`) comparing FiLM + multi-scale temporal pooling (`full_v5`, 190,788 parameters) against parameter-matched plain `P190` (190,940 parameters), and enforced a pre-registered `< 400 KiB` Dynamic INT8 edge memory budget. Across $N=46$ eligible participants (152 evaluation nights), we evaluated 2-night supervised fine-tuning (`FT-2`), donor/from-scratch/unsupervised controls, 1-to-4-night scaling ($N=33$), and stage-coverage gating (`GATE_tau`). Zero-shot external validation used single-night in-lab PSG from PhysioNet SleepAccel ($N=31$; $n=25$ quality-clean primary).
+
+**Results:** Uniform width scaling confirmed a statistically significant monotonic scaling trend (`H-SCALE`: Page's $L=10938.0$, $z=+2.493$, two-sided $p_{\text{Holm}}=0.0254$), saturating at ~100k–254k parameters. Under the `< 400 KiB` INT8 budget, compact plain backbones `p1_100k` (98,940 params, 66.67% Macro-F1, 182.00 KiB INT8, 46.35 ms 4-thread CPU) and `P190` (190,940 params, 66.60% Macro-F1, 375.16 KiB INT8, 53.07 ms 4-thread CPU) improved over `Model A-164k` (64.79%) by $+1.88\text{ pp}$ ($p_{\text{Holm}}=1.19\times 10^{-6}$) and $+1.80\text{ pp}$ ($p=2.96\times 10^{-6}$), closing 70–73% of the in-cohort deficit against 5.47M-parameter SLAMSS-IFS (67.37%) to $-0.69\text{ pp}$ ($p_{\text{Holm}}=0.1498$) and $-0.77\text{ pp}$ ($p=0.0727$) at $55.24\times$ and $28.63\times$ fewer parameters. Conversely, `H-ARCH` failed its $+0.75\text{ pp}$ practical threshold (`full_v5` 66.74% vs. `P190` 66.60%: $+0.14\text{ pp}$, 95% CI $[-0.34, +0.61]\text{ pp}$, $p_{\text{Holm}}=0.4037$), yielding a negative architectural ablation. On strictly zero-shot SleepAccel PSG ($n=25$, `em_off`), `P190` achieved 61.52% single-model ($+1.01\text{ pp}$ vs. `Model A`, $+0.44\text{ pp}$ vs. SLAMSS-IFS, $p=0.5424$) and 63.42% 15-model ensemble ($+0.48\text{ pp}$ vs. `Model A`, $+0.64\text{ pp}$ vs. SLAMSS-IFS, $p=0.7112$), while unsupervised EM prior correction (`em_on` in `EXP-029`) degraded Macro-F1 ($63.51\% \rightarrow 61.30\%$). For personalization, `Model A` `FT-2` yielded $+1.01\text{ pp}$ (inconclusive vs. $+1.50\text{ pp}$), scaled monotonically across $k=1\text{–}4$ nights (Page's $L$ $p=0.01187$), and required `GATE_tau` to prevent class-starvation collapse; at higher baseline capacity (`P190` `ZS` 66.42%, `p1_100k` `ZS` 66.84%), `FT-2` yielded no aggregate gain ($-0.33\text{ pp}$ and $-0.57\text{ pp}$) while nested `GATE_tau` preserved zero-shot accuracy (`66.55%` and `66.74%`).
+
+**Conclusion:** Simple width-scaled plain CNN-BiGRU backbones under 400 KiB INT8 capture nearly all in-cohort accuracy of 5.47M-parameter server models and generalize competitively zero-shot to clinical PSG without architectural complexity (`full_v5` negative ablation). Multi-night personalization requires $k \ge 3$ nights and stage-coverage gating (`GATE_tau`), with diminishing returns once baseline capacity reaches ~100k–191k parameters.
+
+**Keywords:** Wearable sleep staging, instantaneous heart rate, capacity scaling, dynamic INT8 quantization, negative ablation, zero-shot polysomnography, multi-night personalization.
+
+---
+
+## 1. Introduction
+
+### 1.1 Clinical and Wearable Context
+Sleep architecture is scored clinically under American Academy of Sleep Medicine (AASM) guidelines [8] into four canonical states: Wakefulness ($W$), Light sleep (combining Non-Rapid Eye Movement [NREM] stages N1 and N2), Deep slow-wave sleep (NREM stage N3), and Rapid Eye Movement (REM) sleep ($R$). While laboratory polysomnography (PSG) remains the diagnostic gold standard, its cost, obtrusive sensor montage, technologist scoring burden, and single-night susceptibility to the first-night effect preclude longitudinal multi-night monitoring in naturalistic home environments [1,2].
+
+Consumer smartwatches equipped with optical photoplethysmography (PPG) and tri-axial accelerometers offer scalable longitudinal tracking by inferring sleep states from peripheral autonomic nervous system (ANS) tone and somatic immobility [1–3,6]. However, mapping low-rate instantaneous heart rate (IHR; ~0.2 Hz via Apple HealthKit) and wrist movement to central EEG-defined sleep stages is an ill-posed inverse problem subject to pronounced inter-individual biological heterogeneity in resting heart rate, autonomic responsivity, and circadian phase [1,3].
+
+### 1.2 Capacity Scaling, Architectural Complexity, and Personalization Risk
+Deploying recurrent neural architectures on consumer wearables requires balancing classification accuracy against strict memory, compute, and latency budgets on smartwatch system-on-chip (SoC) or companion smartphone hardware. A recurring question in biomedical deep learning is whether complex architectural modules (such as Feature-wise Linear Modulation [FiLM] and multi-scale temporal pooling) genuinely outperform simple width scaling when total parameter count is strictly matched. Answering this requires pre-registered, parameter-matched ablations rather than confounded comparisons across different capacities.
+
+In parallel, model personalization—fine-tuning a population backbone on a few initial home nights paired with a dry-sensor EEG headband—offers a route to bridge inter-individual domain shift [3]. Yet unconstrained gradient adaptation on small, class-imbalanced personal calibration sets ($k=1\text{–}4$ nights) risks catastrophic forgetting and negative transfer, wherein fine-tuning degrades subsequent staging accuracy below the unmodified zero-shot population model [3].
+
+### 1.3 Addressed Research Gaps and Claim Boundaries
+This study addresses four foundational gaps in translational wearable sleep staging:
+1. **Capacity Scaling vs. Architectural Complexity (Gap G1; `EXP-030`, `EXP-031`):** Under leakage-free 5-fold cross-validation (`EXP-018`, `EXP-021`), we quantify the exact capacity–accuracy–edge Pareto frontier of plain CNN-BiGRU models from 43.1k to 1.05M parameters, select `< 400 KiB` Dynamic INT8 edge backbones (`p1_100k` and `P190`), and test via parameter-matched ablation (`H-ARCH`) whether FiLM + multi-scale temporal pooling (`full_v5`) provides practical benefit over plain width scaling.
+2. **Protocol-Matched Server Compression Trade-Offs (Gap G2; `EXP-021`, `EXP-030`, `EXP-031`):** Published deep sleep-staging benchmarks frequently suffer from subject or night split leakage and 5-hour nocturnal cropping biases [1,5]; eliminating these confounders allows exact comparison between compact `< 400 KiB` INT8 models and the 5.47M-parameter official SLAMSS-IFS server architecture [1].
+3. **Personalization Thresholds and Safety in Healthy Adults (Gap G3; `EXP-019`, `EXP-019B`, `EXP-020`):** Extending raw-PPG personalization findings in sleep-disordered patients [3], we quantify how many labeled home nights ($k=1\text{–}4$) are needed for ~0.2 Hz smartwatch IHR adaptation in healthy adults, evaluate specificity and unsupervised controls, and test pre-adaptation stage-coverage gating (`GATE_tau`) across both `Model A-164k` and higher-capacity `p1_100k` / `P190` backbones.
+4. **External Single-Night Clinical PSG Generalization and Label-Prior Shift (Gap G4; `EXP-027`–`EXP-031`):** We evaluate strictly zero-shot generalization to independent gold-standard in-lab PSG [2], quantify clinical sleep-summary agreement via Bland–Altman analysis [4], and test whether unsupervised Expectation-Maximization (EM) label-prior correction (`em_on` in `EXP-029`) resolves cross-modality stage-proportion bias.
+
+We enforce explicit epistemological and clinical claim boundaries throughout this work [7]. We **do not** claim architectural novelty for FiLM or multi-scale temporal pooling (`H-ARCH` was not supported; `EXP-029`/`EXP-031` are reported transparently as a negative architectural ablation). We **do not** claim formal statistical equivalence under two one-sided tests (TOST) without a pre-registered margin; non-significant paired differences against SLAMSS-IFS are framed strictly as narrowing the gap (a small residual difference is not ruled out). Our locked primary confirmatory hypothesis for two-night `Model A` fine-tuning (`H-A`) is preserved strictly as inconclusive against its pre-registered $+1.50\text{ pp}$ threshold. Finally, all findings are scoped to healthy adults and offline full-night inference ($L=1200$ bidirectional GRU buffering) on smartwatch SoCs or companion smartphones rather than 1-epoch causal streaming on a 512 KB SRAM microcontroller.
+
+---
+
+## 2. Methods
+
+### 2.1 Study Design, Datasets, and Participant Flow
+We conducted a multi-stage computational validation across two independent, publicly available human sleep datasets in accordance with the TRIPOD+AI statement [7]. Secondary computational analysis of de-identified public archives was exempt from additional local institutional review board approval; original data collection was approved by the University of Massachusetts Amherst Institutional Review Board (BIDSleep [1]) and the University of Michigan Institutional Review Board (SleepAccel [2]), with written informed consent obtained from all participants.
+
+The internal multi-night development, scaling, and personalization cohort was **PhysioNet BIDSleep** ($N=47$, doi:`10.13026/rees-1092`, ODC-By v1.0) [1], comprising 47 healthy adults (`Bidslab00`–`Bidslab68`) wearing an Apple Watch Series 6 (HealthKit IHR median effective sampling rate 0.197 Hz, IQR 0.073 Hz, nightly median HR 64.0 BPM, plus tri-axial accelerometry) and a 5-channel dry-sensor Dreem 2 EEG headband scored by a single trained sleep expert (5 AASM stages collapsed to 4). Of 253 recorded sessions, 7 nights across 6 participants failed a pre-registered $<60\%$ synchronized sensor coverage threshold (`Bidslab08` Night 7 [19.3%], `Bidslab16` Night 2 [24.0%], `Bidslab34` Night 1 [58.7%], `Bidslab42` Nights 1 [30.1%] and 3 [1.1%], `Bidslab49` Night 1 [12.4%], and `Bidslab60` Night 1 [33.8%]), leaving 246 usable nights across 47 participants. Across all labeled Dreem 2 EEG epochs prior to sensor masking, the unweighted night-averaged distribution was 44.2% Light, 18.9% Deep, 24.1% REM, and 12.8% Wake; across the 137,801 synchronized sensor-valid 30-second epochs, the pooled distribution was 11.9% Wake, 46.2% Light, 18.6% Deep, and 23.2% REM (21.14% Deep and 29.67% REM of TST on $N=46$ evaluation nights).
+
+Three nested analytical sub-cohorts were defined a priori within BIDSleep: (1) the population baseline and scaling cohort ($N=47$, 246 nights, subject-disjoint 5-fold outer CV); (2) the two-night adaptation cohort ($N=46$, 152 evaluation nights, requiring $n_{\text{usable}} \ge 3$ and excluding `Bidslab49` with 2 usable nights); and (3) the calibration-depth cohort ($k \in \{1,2,3,4\}$) evaluated on both available cohorts ($E_k$: $N=46$ [198 nights] at $k=1$, $N=46$ [152] at $k=2$, $N=42$ [106] at $k=3$, $N=33$ [64] at $k=4$) and the fixed common cohort ($E_4$, $N=33$, 64 nights).
+
+The external zero-shot validation cohort was **PhysioNet SleepAccel v1.0.0** ($N=31$, doi:`10.13026/hmhs-py35`) [2], comprising 31 healthy adults each contributing one single-night Apple Watch + in-lab PSG recording. Pre-flight quality screening excluded 6 recordings prior to comparative inference: 5 short PSG recordings ($<600$ epochs: `3509524` [417], `4018081` [510], `46343` [567], `5132496` [465], `759667` [475]) and 1 accelerometer dropout (`7749105` [960 epochs, 13.65% valid motion coverage]), yielding $n=25$ quality-clean primary participants and $N=31$ all-subject sensitivity participants. In-lab PSG exhibited a reference stage prior of 57.7% Light and 11.1% Deep of total epochs (12.01% Deep and 25.21% REM of TST on $n=25$). Zero-support stage F1 (`1455390` with 0 Deep epochs in $n=25$; `5132496` and `7749105` with 0 REM epochs in $N=31$) was defined deterministically as 0.0.
+
+### 2.2 Input Representation, Capacity-Scaling Grid, and Edge Quantization
+Full-night nocturnal sequences of length $L=1200$ thirty-second epochs (10.0 hours; zero-padded if shorter, stitched via 50%-overlapping sliding-window logits if longer) were constructed from 1 Hz resampled IHR, tri-axial accelerometry magnitude, jerk, and energy features with robust per-night median/IQR normalization. Full-night context ($L=1200$) was selected over 5-hour cropping ($L=600$) [1], which discards 28% of valid epochs, depletes late-night REM, and lowered `Model A` Macro-F1 from 64.79% to 63.06%. All models received identical circadian-neutralized subject metadata (effective sampling rate, nightly HR mean/SD, with clock-time cosine/sine zeroed).
+
+To characterize capacity scaling and edge efficiency, we evaluated two pre-registered width-scaling designs on top of the plain 1D CNN-BiGRU architecture (3-stage 1D Conv encoder with kernels $\{3,5,5\}$ and spatial dropout $p=0.20$, 2-layer BiGRU, linear head) under identical 5-fold $\times$ 3-seed (42, 123, 2024) training:
+1. **`EXP-030` 6-Point Capacity–Edge Pareto Grid (75 runs):** `p1_100k` (98,940 params), `p2_164k` (frozen `Model A` anchor, 163,940 params), `p3_268k` (268,260 params), `p4_404k` (403,524 params), `p5_666k` (665,556 params), and `p6_1051k` (1,051,492 params). Deterministic elbow selection (`elbow_selection.json`, zero SleepAccel look-ahead) targeted the smallest model within $\le 0.20\text{ pp}$ ($\ge 90\%$ gain) of $m_{\max}$ (`66.6726%`), selecting **`p1_100k`** (`CNN-BiGRU-Star`, 98,940 params).
+2. **`EXP-031` 9-Width Single-Factor Sweep & Parameter-Matched Ablation (105 new runs + reused anchors):** Uniform width multiplier $w \in \{0.50, 0.75, 1.00, 1.08, 1.17, 1.25, 1.50, 2.00, 2.50\}$ yielding `W050` (43,108 params), `W075` (93,796), `A` (163,940), **`P190`** (190,940), `B` (223,268, reused from `EXP-029`), `W125` (253,540), `W150` (362,596), `W200` (639,076), and `W250` (993,380). Under pre-registered Section 9 `1-SE` selection constrained to `< 400 KiB` Dynamic INT8 memory (excluding `full_v5` prior to downstream evaluation), **`P190`** (190,940 params, 375.16 KiB INT8, gap `0.0120 pp <= SE_boot 0.1545 pp` vs. $m^*=$ `B` 66.61%) was selected. To test `H-ARCH` without parameter-count confounding, `P190` (190,940 params) was matched against `full_v5` (190,788 params, FiLM + multi-scale temporal pooling from `EXP-029`).
+3. **Server Reference (`SLAMSS-IFS`):** Official repository implementation [1] (5,465,768 trainable params including its 4.70M-param `cnn3` fusion block vs. 666,060 in the paper text), trained under identical 5-fold splits with zero teacher-forcing and FP32 composite loss.
+
+Post-training Dynamic INT8 quantization (`W0-B`) quantized recurrent BiGRU and linear layers (~68.9–70.5% of parameters) while retaining Conv1D/normalization in FP32, profiling exact MMACs, in-memory/serialized weights, and 4-thread (4T) / 1-thread (1T) CPU latency for $L=1200$.
+
+### 2.3 Personalization Protocols, Controls, and Exploratory Closures
+On `Model A` ($N=46$, `EXP-019`), five arms were evaluated on chronological nights $k \ge 3$: frozen `ZS`, confirmatory 2-night fine-tuning (`FT-2`, Adam, $B=2$, nested inner-validation selection of LR, epochs, and unfreezing depth), donor fine-tuning (`FT-other-2`, `S1`), from-scratch training (`PS-2`, `S2`), and remediated quality-gated unsupervised InfoMax (`UA-2`, `S3`, 81,233 epochs, 97.26% valid coverage). Multi-depth scaling ($k=1\text{–}4$, `TSK-06`) was reconciled via CPU-only frozen-checkpoint `ZS` evaluation (63.54% on $E_4$, 64.58% on $E_2$). Exploratory analyses (`EXP-019B`, `EXP-020`) tested 6 baseline covariates (with Benjamini–Hochberg FDR and Oldham's headroom check [10]), KL-regularized `FT-2-KL`, and stage-coverage gating (`GATE_tau`, reverting to `ZS` when $\min_c P_{\text{cal}}(Y=c) < \tau$). For `p1_100k` (`EXP-030`) and `P190` (`EXP-031`), `EXP-020` `FT-2` and nested per-fold `GATE_tau` ($\tau^* \in \{0.01, 0.05\}$; Folds 1–2 selected $\tau^*=0.05$, Folds 3–5 selected $\tau^*=0.01$, abstaining 3/46 subjects total) were evaluated identically.
+
+### 2.4 Statistical Analysis and Clinical Agreement
+Primary metrics were participant-level unweighted 4-class Macro-F1 averaged over 3 seeds (15 checkpoints across 5 folds $\times$ 3 seeds). Paired comparisons used 10,000-resample participant-level percentile bootstrap 95% CIs, two-sided Wilcoxon signed-rank tests, Cohen's $d_z$, and Holm–Bonferroni step-down corrections. `H-SCALE` (monotonic trend across 9 ordered plain widths) used Page's $L$ test [9] with Holm-adjusted two-sided $p < 0.05$. `H-ARCH` required `full_v5 - P190` to exceed $+0.75\text{ pp}$ practically with $p_{\text{Holm}} < 0.05$. On SleepAccel, `em_off` (strictly zero-shot without target-prior adaptation) was evaluated under primary single-model mean and secondary 15-model probability ensemble modes, alongside Bland–Altman clinical agreement [4] (mean bias, 95% LoA, $\text{SE}(\text{LoA})$, MAE, Pearson $r$, proportional-bias slope, Shapiro–Wilk normality). In `EXP-029`, unsupervised EM label-prior correction (`em_on`) was tested as a negative prior-shift check.
+
+### 2.5 TRIPOD+AI Compliance and Protocol Governance
+This study complies with TRIPOD+AI [7]. Pre-registrations were locked in git prior to execution: `EXP-019` (`4dff5b7`, Nov 13, 2026), `EXP-020`/`EXP-027`/`EXP-028` (`945c7c1`, Nov 23, 2026), `EXP-030` (`DEC-043`), and `EXP-031` (`24ca187`, `DEC-044`). Historical 11-subject holdout splits remain retired and excluded from all confirmatory claims.
+
+| Manuscript Section & Scientific Scope | Protocol Status | Internal Experiment ID | Decision Log | Primary Verification Artifact |
+| :--- | :---: | :---: | :---: | :--- |
+| **§2.1–2.2, §3.1:** Matched 5-fold CV ($N=47$) & $L=1200$ framing | Pre-registered baseline | `EXP-018`, `EXP-021` | `DEC-018`–`038` | `experiments/EXP-021/slamss_ifs_paired_comparative_report.md` |
+| **§2.2, §3.1:** 6-point Pareto sweep & `p1_100k` elbow selection | Pre-registered (`PASS`) | `EXP-030` | `DEC-043` | `docs/audits/EXP030_POST_EXECUTION_EGM_DRIFT_REPORT.md` |
+| **§2.2, §3.1–3.2:** 9-width `H-SCALE`, `H-ARCH` (`full_v5` vs `P190`), `P190` selection | Locked (`24ca187`, `PASS`) | `EXP-031` | `DEC-044` | `docs/audits/EXP031_POST_EXECUTION_EGM_DRIFT_REPORT.md` |
+| **§2.3, §3.3–3.5:** Confirmatory `FT-2`, `S1`–`S3`, `k=1..4` scaling, `GATE_tau` | Locked + exploratory | `EXP-019`, `EXP-019B`, `EXP-020` | `DEC-028`–`040` | `experiments/EXP-019/`, `experiments/EXP-020/` |
+| **§2.4, §3.6:** Zero-shot SleepAccel PSG & `em_on` prior-shift check | Locked external + `EXP-029` | `EXP-027`–`EXP-031` | `DEC-041`, `043`, `044` | `experiments/EXP-027/`, `EXP-028/`, `EXP-030/`, `EXP-031/` |
+
+---
+
+## 3. Results
+
+### 3.1 Capacity–Accuracy–Edge Pareto Scaling (`EXP-030` & `EXP-031`, $N=47$)
+Across the 9 ordered plain CNN-BiGRU widths in `EXP-031` (**Table 1**, **Figure 1A**), Macro-F1 increased monotonically with capacity from `W050` (43,108 params, `65.61% ± 7.48%`) to a broad plateau across `p1_100k` (98,940 params, `66.67% ± 7.57%`), `P190` (190,940 params, `66.60% ± 6.85%`), `B` (223,268 params, `66.61% ± 7.06%`), and `W125` (253,540 params, `66.70% ± 6.80%`), before saturating at `W150`–`W250` (`66.01%`–`66.34%`). `H-SCALE` was **SUPPORTED** (Page's $L = 10938.0$, $\mu_L = 10575.0$, $\sigma_L = 145.43$, $z = +2.493$, $p_{\text{one-sided}} = 0.00634$, $p_{\text{two-sided}} = 0.01268$, $p_{\text{Holm, two-sided}} = 0.0254 < 0.05$).
+
+Under the pre-registered `< 400 KiB` Dynamic INT8 budget, both selected compact backbones substantially outperformed frozen `Model A-164k` (`64.79% ± 7.45%`) and narrowed 70–73% of the in-cohort deficit against 5,465,768-parameter `SLAMSS-IFS` (`67.37% ± 6.73%`; a small residual difference is not ruled out):
+- **`p1_100k` (`CNN-BiGRU-Star`, `EXP-030`):** Achieved `66.67% ± 7.57%` Macro-F1 (`+1.88 pp` vs. `Model A-164k`, 95% CI `[+1.25, +2.49]`, $p=5.95\times 10^{-7}$, $p_{\text{Holm}}=1.19\times 10^{-6}$, $d_z=+0.875$, `40/47` wins; REM F1 `+3.56 pp`, $p=2.40\times 10^{-10}$). Against `SLAMSS-IFS`, `p1_100k` narrowed the gap from `-2.58 pp` to `-0.69 pp` (95% CI `[-1.57, +0.15]`, $p_{\text{Holm}}=0.1498$, $d_z=-0.229$, `17/47` wins) at `55.24x` parameter compression. Dynamic INT8 required `182.00 KiB` in-memory (`207.97 KiB` serialized), `456.1 MMACs`, and `46.35 ms` 4T (`56.58 ms` 1T) CPU latency with zero accuracy loss (`-0.0134 pp`, 95% CI `[-0.0489, +0.0210]`, $p=0.4656$).
+- **`P190` (`EXP-031` Section 9 `1-SE` Selection):** Achieved `66.60% ± 6.85%` Macro-F1 (`+1.80 pp` vs. `Model A-164k`, 95% CI `[+1.14, +2.50]`, $p=2.96\times 10^{-6}$), narrowing the gap against `SLAMSS-IFS` to `-0.77 pp` (95% CI `[-1.59, +0.07]`, $p=0.0727$) at `28.63x` compression. Dynamic INT8 required `375.16 KiB` in-memory (`402.91 KiB` serialized), `984.2 MMACs`, and `53.07 ms` 4T (`73.30 ms` 1T) CPU latency (`54.56 ms` 4T / `71.46 ms` 1T in sweep benchmark) with preserved OOF parity (`+0.0244 pp`, 95% CI `[+0.0017, +0.0480]`, $p=0.0836$).
+
+#### Table 1: Capacity Scaling (`EXP-030` & `EXP-031`), Negative Architectural Ablation (`H-ARCH`), and Edge Deployment Profile on BIDSleep ($N=47$, 5-Fold $\times$ 3-Seed CV)
+| Model / Arm | Params | Dynamic INT8 (KiB) | MMACs ($L=1200$) | 4T / 1T INT8 (ms) | BIDSleep Macro-F1 | $\Delta$ vs. `Model A-164k` (95% CI) | $\Delta$ vs. `SLAMSS-IFS` (95% CI) | Selection / Status |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| `W050` ($w=0.50$) | 43,108 | 81.00 | 202.9 | 40.89 / 43.04 | 65.61 ± 7.48% | +0.82 pp [+0.27, +1.36] | -1.76 pp [-2.67, -0.88] | Eligible |
+| `W075` ($w=0.75$) | 93,796 | 176.96 | 450.0 | 46.66 / 55.36 | 66.26 ± 7.10% | +1.47 pp [+0.86, +2.06] | -1.11 pp [-1.96, -0.30] | Eligible |
+| **`p1_100k` (`EXP-030`)** | **98,940** | **182.00** | **456.1** | **46.35 / 56.58** | **66.67 ± 7.57%** | **+1.88 pp [+1.25, +2.49]** | **-0.69 pp [-1.57, +0.15]** | **Selected (`EXP-030`)** |
+| `Model A-164k` (`A`) | 163,940 | 309.54–309.91 | 794.1 | 47.73 / 69.39 | 64.79 ± 7.45% | 0.00 pp (Anchor) | -2.58 pp [-3.53, -1.68] | Historical Anchor |
+| **`P190` ($w=1.08$)** | **190,940** | **375.16** | **984.2** | **53.07 / 73.30** | **66.60 ± 6.85%** | **+1.80 pp [+1.14, +2.50]** | **-0.77 pp [-1.59, +0.07]** | **Selected (`EXP-031`)** |
+| `full_v5` (FiLM+MS) | 190,788 | 360.50 | — | 44.02 / 67.31 | 66.74% | +0.14 pp vs. `P190` [-0.34, +0.61] | -0.63 pp [-1.36, +0.16] | `H-ARCH` Neg. Ablation |
+| `B` ($w=1.17$) | 223,268 | 368.04 | 864.7 | 50.94 / 65.98 | 66.61 ± 7.06% | +1.82 pp [+1.25, +2.43] | -0.76 pp [-1.51, +0.01] | Eligible ($m^*$) |
+| `W125` ($w=1.25$) | 253,540 | 479.86 | 1,235.2 | 57.14 / 80.42 | 66.70 ± 6.80% | +1.91 pp [+1.20, +2.63] | -0.67 pp [-1.39, +0.13] | $> 400$ KiB |
+| `p3_268k` (`EXP-030`) | 268,260 | 494.19 | 1,252.8 | 54.99 / — | 66.43 ± 7.08% | +1.64 pp | — | $> 400$ KiB |
+| `W150` ($w=1.50$) | 362,596 | 686.82 | 1,773.5 | 71.07 / 111.93 | 66.31 ± 6.82% | +1.52 pp [+0.84, +2.21] | -1.06 pp [-1.78, -0.33] | $> 400$ KiB |
+| `p4_404k` (`EXP-030`) | 403,524 | 726.88 | 1,822.3 | 68.65 / — | 66.50 ± 7.16% | +1.71 pp | — | $> 400$ KiB |
+| `W200` ($w=2.00$) | 639,076 | 1,211.72 | 3,141.2 | 86.39 / 150.91 | 66.01 ± 6.90% | +1.22 pp [+0.51, +1.92] | -1.36 pp [-2.26, -0.43] | $> 400$ KiB |
+| `p5_666k` (`EXP-030`) | 665,556 | 1,237.63 | 3,172.9 | 87.33 / — | 66.17 ± 7.02% | +1.38 pp | — | $> 400$ KiB |
+| `W250` ($w=2.50$) | 993,380 | 1,884.63 | 4,897.2 | 106.26 / 195.69 | 66.34 ± 7.05% | +1.55 pp [+0.83, +2.26] | -1.03 pp [-1.91, -0.11] | $> 400$ KiB |
+| `p6_1051k` (`EXP-030`) | 1,051,492 | 1,941.29 | 4,966.8 | 102.85 / — | 66.25 ± 6.84% | +1.46 pp | — | $> 400$ KiB |
+| `SLAMSS-IFS` (Official) | 5,465,768 | 20.85 MiB (21.86 MB) FP32 | — | Server GPU | 67.37 ± 6.73% | +2.58 pp [+1.68, +3.53] | 0.00 pp (Ref.) | Server Baseline |
+
+*Note: Full-night $L=1200$ bidirectional GRU inference requires smartwatch SoC or companion smartphone offline buffering rather than 1-epoch causal streaming on a 512 KB SRAM microcontroller. See **Figure 1A** (`figures/manuscript_v2/fig_exp030_exp031_pareto.pdf`) and **Figure 2** (`figures/manuscript_v2/Figure1_Pareto_External_PSG_Transfer.pdf`).*
+
+### 3.2 Negative Architectural Ablation (`EXP-029` & `EXP-031` `H-ARCH`)
+Comparing `full_v5` (FiLM + multi-scale temporal pooling, 190,788 parameters, `66.74%` [`66.7394%`] Macro-F1) directly against parameter-matched plain `P190` (190,940 parameters, `66.60%` [`66.5952%`]) across $N=47$ participants (**Figure 1B**) yielded $\bar{\Delta} = +0.14\text{ pp}$ (`+0.1442 pp`, 95% bootstrap CI `[-0.34, +0.61] pp`, Wilcoxon $p = 0.4037$, $p_{\text{Holm}} = 0.4037$, $d_z = +0.086$, `26W/21L`). Because the 95% CI upper bound (`+0.61 pp`) fell below the pre-registered `+0.75 pp` practical threshold and $p_{\text{Holm}} = 0.4037$, `H-ARCH` was **`NOT SUPPORTED (practically)`**. In accordance with pre-registered governance, we report `EXP-029` and `EXP-031` transparently as a negative architectural ablation with zero architectural novelty claimed.
+
+### 3.3 Confirmatory Two-Night Personalization (`N=46`), Controls (`S1`–`S3`), and Multi-Night Agreement
+On `Model A` ($N=46$, 152 evaluation nights), `FT-2` increased Macro-F1 from `64.58%` (`ZS`) to `65.59%` (`+1.01 pp`, 95% CI `[-0.17, +1.99] pp`, $p=0.00131$, 34/46 wins), which was strictly inconclusive against the locked `+1.50 pp` threshold (`H-A`). Specificity controls confirmed person-specific adaptation: `FT-2` outperformed donor fine-tuning `FT-other-2` (`62.86%`, `-1.72 pp` below `ZS`) by `+2.73 ± 5.78 pp` (95% bootstrap CI `[+1.05, +4.32]`, $p=0.00249$, Wilcoxon $p=1.89\times 10^{-5}$; `S1`), outperformed from-scratch `PS-2` (`45.27%`) by `+20.32 ± 9.14 pp` ($p=3.27\times 10^{-19}$; `S2`), and remediated InfoMax `UA-2` (`S3`) yielded a sub-benchmark `+0.21 pp` (`64.79%`, 95% CI `[+0.04, +0.39]`, one-sided $p=0.0322$). In subject-averaged multi-night Bland–Altman agreement (**Table 2**), `FT-2` tracked habitual TST ($r=0.9492$, MAE `12.61 min`) and SE ($r=0.8775$, MAE `3.03%`) while eliminating `PS-2` SOL (`-10.09 min`) and WASO (`+12.08 min`) distortions, though `FT-2` underestimated WASO (`-4.87 min`, $p=0.0104$).
+
+#### Table 2: Subject-Averaged Multi-Night Sleep-Summary Bland–Altman Agreement on BIDSleep (`Model A`, $N=46$, $df=45$)
+| Arm | Clinical Sleep Metric | EEG Ref Mean | Model Pred Mean | Bias ($\bar{d}$) | $t$-based 95% CI on Bias | 95% Parametric LoA (Multi-Night Mean) | MAE | Pearson $r$ |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **FT-2** | Total Sleep Time (min) | 356.25 | 358.53 | +2.28 | [-2.63, +7.19] | [-30.11, +34.67] | 12.61 | 0.9492 |
+| | Sleep Onset Latency (min) | 24.70 | 27.91 | +3.20 | [-0.13, +6.53] | [-18.78, +25.19] | 7.78 | 0.8023 |
+| | Wake After Sleep Onset (min) | 17.11 | 12.24 | **-4.87*** | **[-8.54, -1.20]** | [-29.09, +19.35] | 10.06 | 0.4683 |
+| | Sleep Efficiency (%) | 85.10 | 85.56 | +0.47 | [-0.72, +1.66] | [-7.40, +8.33] | 3.03 | 0.8775 |
+| | Deep Sleep (% TST) | 21.14 | 22.89 | +1.75 | [-0.62, +4.12] | [-13.90, +17.41] | 6.28 | 0.4868 |
+| | REM Sleep (% TST) | 29.67 | 27.51 | -2.16 | [-5.39, +1.07] | [-23.44, +19.13] | 8.21 | 0.4478 |
+| **ZS** | Total Sleep Time (min) | 356.25 | 357.73 | +1.47 | [-3.96, +6.90] | [-34.37, +37.31] | 12.94 | 0.9327 |
+| | Sleep Efficiency (%) | 85.10 | 85.50 | +0.40 | [-0.84, +1.64] | [-7.79, +8.59] | 3.03 | 0.8776 |
+| **FT-other-2** | Total Sleep Time (min) | 356.25 | 356.37 | +0.11 | [-6.47, +6.69] | [-43.31, +43.53] | 16.04 | 0.9006 |
+| **PS-2** | Sleep Onset Latency (min) | 24.70 | 14.61 | **-10.09*** | **[-14.62, -5.56]** | [-40.02, +19.85] | 11.86 | 0.5755 |
+| | Wake After Sleep Onset (min) | 17.11 | 29.18 | **+12.08*** | **[+4.47, +19.69]** | [-38.14, +62.29] | 16.82 | 0.4037 |
+
+### 3.4 Calibration-Depth Learning Curve ($k=1\text{–}4$ Nights)
+On the fixed common cohort $E_4$ ($N=33$, 64 nights; clean `ZS` `63.54%`), `Model A` fine-tuning scaled monotonically across $k=1\text{–}4$ (`65.28%`, `65.41%`, `65.82%`, `66.25%`; $+1.75$ to $+2.71\text{ pp}$; Page's $L=863.0$, $z=2.261$, $p=0.01187$ [9]; directional Holm $p_{\text{Holm}}=0.04748$, two-sided sensitivity $p_{\text{Holm}}=0.05935$; **Figure 3**). In the available cohort $E_k$, $k=3$ ($N=42$, 106 nights) was the first depth whose 95% CI excluded zero ($+1.42\text{ pp}$, `[+0.15, +2.58]`, $p=0.00232$), converging with van der Aar et al. (2025) [3].
+
+### 3.5 Exploratory Heterogeneity, Stage-Coverage Gating (`GATE_tau`), and Capacity-Dependent Personalization
+*(Prior-Access Exploratory Disclosure: `EXP-019B` and `EXP-020` were formulated after inspecting `EXP-019` and 5-fold baselines.)*  
+Across 12 Spearman tests (`EXP-019B`; **Figure 4**), 0/12 baseline covariates survived BH-FDR ($q \ge 0.5673$; Oldham check $\rho=+0.0376$, $p=0.8043$). Instead, extreme collapse (`Bidslab34`: `-16.34 pp`) stemmed from calibration-night Deep-sleep starvation (`0.68%`, 15 epochs). In `EXP-020` ($N=46$), `GATE_tau` ($\tau=0.01$) lifted `Model A` to `65.91%` (`+1.33 pp` vs. `ZS`, 95% CI `[+0.49, +2.12]`, $p_{\text{Holm}}=0.0028$), abstaining `2/46` subjects (`Bidslab34`) and cutting worst collapse 61% to `-6.40 pp` (whereas `FT-2-KL` yielded `65.62%`, worst `-15.14 pp`).
+
+Evaluating `EXP-020` on the higher-capacity edge backbones (`EXP-030` `p1_100k` and `EXP-031` `P190`, $N=46$) revealed a key capacity–personalization interaction:
+- **`P190` (`EXP-031`):** `ZS = 66.42%`, `FT-2 = 66.09%` (`-0.33 pp`, $p=0.5882$), nested per-fold `GATE_tau = 66.55%` (`+0.13 pp` vs. `ZS`, $p=0.7720$; `+0.46 pp` vs. `FT-2`, $p=0.5930$; `3/46` abstained).
+- **`p1_100k` (`EXP-030`):** `ZS = 66.84%`, `FT-2 = 66.27%` (`-0.57 pp`, $p=0.6571$), nested per-fold `GATE_tau = 66.74%` (`-0.10 pp` vs. `ZS`, $p=0.9519$; `+0.47 pp` vs. `FT-2`, $p=0.2850$; `3/46` abstained).
+
+Thus, once zero-shot backbone capacity reaches ~100k–191k parameters (`ZS` `66.42%`–`66.84%`), unconstrained 2-night `FT-2` yields no aggregate gain, and nested `GATE_tau` acts as a conservative safety wrapper preserving zero-shot performance.
+
+### 3.6 Zero-Shot External Single-Night PSG Validation ($N=31$; $n=25$ Quality-Clean Primary)
+On strictly zero-shot SleepAccel in-lab PSG (`em_off`, **Table 3**), `P190` (`EXP-031`) achieved **`61.52%`** single-model mean (`+1.01 pp` vs. `Model A` `60.51%`, $p=0.0755$; `-0.25 pp` vs. `full_v5`, $p=0.5602$; `+0.44 pp` vs. `SLAMSS-IFS` `61.08%`, $p=0.5424$) and **`63.42%`** 15-model probability ensemble (`+0.48 pp` vs. `Model A` `62.94%`, $p=0.2872$; `-0.09 pp` vs. `full_v5`, $p=1.0000$; `+0.64 pp` vs. `SLAMSS-IFS` `62.79%`, $p=0.7112$); in the all-subject sensitivity cohort ($N=31$), `P190` reached `61.77%` single-model and `63.94%` ensemble. Meanwhile, `p1_100k` (`EXP-030`) achieved `60.88%` single-model (`+0.36 pp` vs. `Model A`, $p=0.1645$; `-0.21 pp` vs. `SLAMSS-IFS`, $p=1.0000$) and `62.51%` ensemble (`-0.43 pp` vs. `Model A`, $p=0.2411$; `-0.28 pp` vs. `SLAMSS-IFS`, $p=0.6150$) on $n=25$ (`61.10%` / `62.51%` on $N=31$).
+
+#### Table 3: Zero-Shot External Single-Night PSG 4-Class Macro-F1 on PhysioNet SleepAccel (`em_off`)
+| Cohort & Evaluation Mode | `p1_100k` (98.9k) | `Model A` (163.9k) | `P190` (190.9k) | `SLAMSS-IFS` (5.47M) | `P190` vs. `Model A` ($p$) | `P190` vs. `SLAMSS-IFS` ($p$) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **`qc_clean` ($n=25$), Single-Model Mean** | 60.88% | 60.51% | **61.52%** | 61.08% | +1.01 pp (0.0755) | +0.44 pp (0.5424) |
+| **`qc_clean` ($n=25$), 15-Model Ensemble** | 62.51% | 62.94% | **63.42%** | 62.79% | +0.48 pp (0.2872) | +0.64 pp (0.7112) |
+| **`all` ($N=31$), Single-Model Mean** | 61.10% | 60.65% | **61.77%** | 62.27% | +1.13 pp | -0.49 pp |
+| **`all` ($N=31$), 15-Model Ensemble** | 62.51% | 62.94% | **63.94%** | 64.14% | +1.00 pp | -0.20 pp |
+
+In external Bland–Altman agreement (`qc_clean` $n=25$, **Table 4**, **Figure 5**, **Figure 6**), `P190` and `p1_100k` ensembles tracked TST (`+10.14 min` and `+12.66 min`), SOL (`+4.48 min` and `+3.36 min`), and SE (`+2.24%` and `+2.79%`), while exhibiting the same cross-modality WASO underestimation (`-13.80 min` and `-15.12 min`) and systematic Deep% (`+7.24%` and `+8.81%`) and REM% (`+10.98%` and `+10.80%`) overestimation seen in `Model A` (`+10.23%` / `+9.35%`) and `SLAMSS-IFS` (`+8.84%` / `+6.87%`). Crucially, in `EXP-029`, unsupervised EM label-prior correction (`em_on`) degraded SleepAccel Macro-F1 (`63.51% -> 61.30%`), demonstrating that stage-proportion bias stems from home Dreem 2 vs. in-lab PSG scoring and covariate shift rather than simple marginal label-prior shift.
+
+#### Table 4: External Single-Night PSG Bland–Altman Clinical Agreement on PhysioNet SleepAccel (`qc_clean` $n=25$, 15-Model Ensemble)
+| Architecture | TST Bias [95% LoA] (min) | SOL Bias [95% LoA] (min) | WASO Bias [95% LoA] (min) | SE Bias [95% LoA] (%) | Deep% Bias [95% LoA] (% TST) | REM% Bias [95% LoA] (% TST) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **`p1_100k` (`EXP-030`)** | +12.66 [-19.81, +45.13] | +3.36 [-7.09, +13.81] | -15.12 [-43.93, +13.69] | +2.79 [-4.60, +10.18] | +8.81 [-4.22, +21.83] | +10.80 [-3.30, +24.90] |
+| **`P190` (`EXP-031`)** | +10.14 [-25.29, +45.57] | +4.48 [-6.09, +15.05] | -13.80 [-43.78, +16.18] | +2.24 [-5.78, +10.27] | +7.24 [-6.68, +21.17] | +10.98 [-4.70, +26.65] |
+| **`Model A` (`EXP-028`)** | +12.22 [-23.18, +47.62] | +2.44 [-13.23, +18.11] | -13.82 [-44.60, +16.96] | +2.71 [-5.47, +10.89] | +10.23 [-3.12, +23.59] | +9.35 [-7.79, +26.49] |
+| **`SLAMSS-IFS` (`EXP-028`)** | +15.72 [-19.84, +51.28] | +0.38 [-15.46, +16.22] | -15.16 [-44.69, +14.37] | +3.49 [-4.58, +11.56] | +8.84 [-3.80, +21.49] | +6.87 [-10.65, +24.39] |
+
+---
+
+## 4. Discussion
+
+### 4.1 Capacity Scaling, Negative Architectural Ablation, and Edge Deployment
+Our pre-registered capacity-scaling experiments (`EXP-030` and `EXP-031`) overturn two common assumptions in wearable sleep staging. First, plain CNN-BiGRU capacity scales monotonically (`H-SCALE`, $p_{\text{Holm}}=0.0254$) and saturates around ~100k–254k parameters: `p1_100k` (`182.00 KiB` INT8, `46.35 ms` 4T) and `P190` (`375.16 KiB` INT8, `53.07 ms` 4T) capture 70–73% of the in-cohort gap against 5.47M-parameter `SLAMSS-IFS` (`-0.69 pp`, $p_{\text{Holm}}=0.1498$; `-0.77 pp`, $p=0.0727$) and achieve numerically higher zero-shot Macro-F1 on external in-lab PSG (`P190` `61.52%` / `63.42%` vs. `SLAMSS-IFS` `61.08%` / `62.79%`). Second, parameter-matched ablation (`H-ARCH`) demonstrates that FiLM and multi-scale temporal pooling (`full_v5`) add only $+0.14\text{ pp}$ (`p_Holm=0.4037`), failing practical significance. Reporting this negative ablation transparently prevents unwarranted architectural complexity in resource-constrained wearable pipelines.
+
+### 4.2 External PSG Label-Prior Shift and Personalization Boundaries
+Both compact and server models systematically overestimate Deep% and REM% on SleepAccel PSG relative to Dreem 2 home EEG training labels. Crucially, the `EXP-029` `em_on` negative check (`63.51% -> 61.30%`) proves that unsupervised marginal prior matching worsens staging, implicating deeper scoring/covariate differences between dry-sensor Dreem 2 EEG and laboratory PSG. For personalization, `Model A` demonstrates genuine person-specific scaling across $k=1\text{–}4$ nights ($p=0.01187$) and requires `GATE_tau` to prevent class-starvation collapse (`Bidslab34`), whereas `p1_100k` and `P190` already start at higher zero-shot baselines (`66.84%` and `66.42%`), where 2-night `FT-2` yields no aggregate gain and `GATE_tau` preserves baseline performance.
+
+### 4.3 Limitations and Future Prospective Targets
+All conclusions are scoped to healthy adults; prospective validation in clinical sleep-disorder cohorts (e.g., PhysioNet DREAMT v2.2.0) and multi-night external cohorts (e.g., Simons Sleep Project, SFARI Base DS0000089) is required before diagnostic deployment. SleepAccel provides only one PSG night per participant, precluding external multi-night personalization testing. Finally, full-night $L=1200$ bidirectional GRU inference requires offline buffering on smartwatch SoCs or companion smartphones rather than 1-epoch causal streaming on bare-metal 512 KB SRAM microcontrollers.
+
+---
+
+## References
+1. Song TA, Zhang Y, Zhou Z, et al. AI-driven sleep staging using instantaneous heart rate and accelerometry: insights from an Apple Watch study. *IEEE Trans Biomed Eng* 2026; 73(4):1596–1608. doi:`10.1109/TBME.2025.3612158`.
+2. Walch O, Huang Y, Forger D, Goldstein C. Sleep stage prediction with raw acceleration and photoplethysmography heart rate data derived from a consumer wearable device. *Sleep* 2019; 42(12):zsz180. doi:`10.1093/sleep/zsz180`.
+3. van der Aar JF, van Gilst MM, van den Ende DA, Overeem S, Peri E, Fonseca P. Learning individual autonomic representations of sleep stages to improve photoplethysmography based sleep monitoring. *Physiol Meas* 2025; 46(9):095012. doi:`10.1088/1361-6579/ae0119`.
+4. Bland JM, Altman DG. Measuring agreement in method comparison studies. *Stat Methods Med Res* 1999; 8(2):135–160.
+5. Brookshire G, Kasper J, Blauch NM, et al. Data leakage in deep learning studies of translational EEG. *Front Neurosci* 2024; 18:1373515.
+6. Beattie Z, Oyang Y, Statan A, et al. Estimation of sleep stages in a healthy adult population from optical plethysmography and accelerometer signals. *Physiol Meas* 2017; 38(11):1968–1979.
+7. Collins GS, Moons KGM, Dhiman P, et al. TRIPOD+AI statement. *BMJ* 2024; 385:e078378.
+8. Berry RB, Brooks R, Gamaldo CE, et al. *The AASM Manual for the Scoring of Sleep and Associated Events*, v2.6. Darien, IL: AASM; 2020.
+9. Page EB. Ordered hypotheses for multiple treatments: a significance test for linear ranks. *J Am Stat Assoc* 1963; 58(301):216–230.
+10. Oldham PD. A note on the analysis of repeated measurements of the same subjects. *J Chronic Dis* 1962; 15(10):969–977.

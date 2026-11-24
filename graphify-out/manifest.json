@@ -6052,5 +6052,95 @@
     "seen": 1795536452.3896937,
     "ast_hash": "686b326074bd818f3d5e181c575094ab",
     "semantic_hash": ""
+  },
+  "scripts/generate_fig_exp030_exp031_pareto.py": {
+    "mtime": 1795543713.9554098,
+    "seen": 1795543843.0318115,
+    "ast_hash": "119dc5dcc4e78770056889b049151713",
+    "semantic_hash": ""
+  },
+  "paper_orchestra_inputs/experimental_log.md": {
+    "mtime": 1795539910.7939053,
+    "seen": 1795543843.032014,
+    "ast_hash": "d0a779d4c83f8386bf026abb93d57a39",
+    "semantic_hash": ""
+  },
+  "paper_orchestra_inputs/idea_sparse.md": {
+    "mtime": 1795539910.7933052,
+    "seen": 1795543843.0320148,
+    "ast_hash": "54c47d26f8763719ef4722245fd65166",
+    "semantic_hash": ""
+  },
+  "paper_orchestra_out/latex_writeup/guidelines.md": {
+    "mtime": 1795539299.0285852,
+    "seen": 1795543843.0320156,
+    "ast_hash": "3667520008a2b1c8a4997a44f6badbc5",
+    "semantic_hash": ""
+  },
+  "paper_orchestra_out/raw_materials/experimental_log.md": {
+    "mtime": 1795539910.7939053,
+    "seen": 1795543843.0320163,
+    "ast_hash": "d0a779d4c83f8386bf026abb93d57a39",
+    "semantic_hash": ""
+  },
+  "paper_orchestra_out/raw_materials/idea_sparse.md": {
+    "mtime": 1795539910.7933052,
+    "seen": 1795543843.032017,
+    "ast_hash": "54c47d26f8763719ef4722245fd65166",
+    "semantic_hash": ""
+  },
+  "research_knowledge/updates/MANUSCRIPT_DRAFT_v2.0.md": {
+    "mtime": 1795543754.577627,
+    "seen": 1795543843.0320973,
+    "ast_hash": "abea65c82d33d701f286c345ed26b427",
+    "semantic_hash": ""
+  },
+  "figures/manuscript_v2/Figure1_Pareto_External_PSG_Transfer.pdf": {
+    "mtime": 1795543678.2152789,
+    "seen": 1795543843.0321116,
+    "ast_hash": "757c6f37eea90c2292567b9c33e6a1df",
+    "semantic_hash": ""
+  },
+  "figures/manuscript_v2/Figure2_Calibration_Depth_Learning_Curve.pdf": {
+    "mtime": 1795543678.2153318,
+    "seen": 1795543843.0321121,
+    "ast_hash": "f30612c15b1a297fb964a4d836bb0ca4",
+    "semantic_hash": ""
+  },
+  "figures/manuscript_v2/Figure3_Exploratory_Tail_Risk_and_Heterogeneity.pdf": {
+    "mtime": 1795543678.2153742,
+    "seen": 1795543843.032113,
+    "ast_hash": "0529a6c70b5b6d2ebb90143134c0a454",
+    "semantic_hash": ""
+  },
+  "figures/manuscript_v2/Figure4_External_PSG_Bland_Altman.pdf": {
+    "mtime": 1795543678.215412,
+    "seen": 1795543843.0321136,
+    "ast_hash": "2c8564f8d7e10fba0a39b2a6fd82863e",
+    "semantic_hash": ""
+  },
+  "figures/manuscript_v2/Figure5_Label_Prior_Shift_Diagnosis.pdf": {
+    "mtime": 1795543678.215454,
+    "seen": 1795543843.0321145,
+    "ast_hash": "2cc59c3367591bb9b18a7a8241e6ad77",
+    "semantic_hash": ""
+  },
+  "figures/manuscript_v2/fig_exp030_exp031_pareto.pdf": {
+    "mtime": 1795543715.9984205,
+    "seen": 1795543843.0321152,
+    "ast_hash": "0595bf9aa3b5251882e9602878322e7d",
+    "semantic_hash": ""
+  },
+  "paper_orchestra_out/manuscript_jbhi.pdf": {
+    "mtime": 1795543831.2671824,
+    "seen": 1795543843.0321157,
+    "ast_hash": "bf504f06a9fcaf8050a0b9093daabf6c",
+    "semantic_hash": ""
+  },
+  "figures/manuscript_v2/fig_exp030_exp031_pareto.png": {
+    "mtime": 1795543716.2844222,
+    "seen": 1795543843.032165,
+    "ast_hash": "f6aa0f1d21174ae5f3c21dc2e650b209",
+    "semantic_hash": ""
   }
 }
