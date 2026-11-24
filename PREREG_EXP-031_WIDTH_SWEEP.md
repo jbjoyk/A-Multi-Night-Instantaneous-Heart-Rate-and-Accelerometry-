@@ -22,7 +22,7 @@ This is a single-factor scaling study, not architecture search. No component oth
 
 ## 2. Required disclosures (before any result is interpreted)
 
-1. **Design-informed:** this experiment was designed after seeing EXP-029 (and EXP-030) results on the same 47 subjects, so it is labeled "design-informed" and cannot confirm generalization.
+1. **Design-informed:** this experiment was designed after seeing EXP-029 (and EXP-030) results on the same 47 subjects, so it is labeled "design-informed" and cannot confirm generalization. Specifically, `EXP-030` (`DEC-043`) already evaluated `p1_100k` (`98,940` params, `66.67%` Macro-F1) near `W075` (`93,796` params) on these same 47 subjects.
 2. **Iteration history (`v1`–`v4` development lineage and BIDSleep results):** `full_v5` is the fifth version in the project's architectural development lineage (`DEC-037`–`DEC-042`, `EXPERIMENTS.md`, `docs/designs/exp029_ultradian_pyramidal_coupler.md`):
    - **v1 (`ConventionalCNNBiGRU` / Model A, 163,940 params):** Matched-capacity baseline (`exp013_models.py`, frozen under `DEC-037` as `SleepStagingFinalModel_v1.0`). BIDSleep 5-fold CV ($N=47$, $L=1200$): `64.7907%` Macro-F1 (stitcher-aligned OOF, `DEC-043`; `64.79% ± 7.45%` in `EXP-021`/`DEC-038`).
    - **v2 (`SleepAdaptiveNet`, 162,325 params):** Auxiliary multi-head/multi-loss architecture (reliability gate, transition head, GRL, boundary loss, uncertainty head; `EXP-013`/`EXP-014`). BIDSleep 5-fold CV ($N=47$, $T=600$): `65.96%` Macro-F1 (`66.06%` Acc) vs. Model A `66.58%` Macro-F1 (`66.63%` Acc), yielding parity/negative attribution ($\Delta = -0.69\text{ pp}$); auxiliary heads were closed.
@@ -62,15 +62,15 @@ All 9 plain widths were instantiated on CPU (`ScaledConventionalCNNBiGRU`) and p
 |---|---|---|---|---:|---:|---:|---|---|
 | **W050** | 0.50 | `(32, 48, 32)` | 43,108 | 168.39 | 81.00 | 202.9 | **ELIGIBLE** | **New** (`experiments/EXP-031/`) |
 | **W075** | 0.75 | `(48, 72, 48)` | 93,796 | 366.39 | 176.96 | 450.0 | **ELIGIBLE** | **New** (`experiments/EXP-031/`) |
-| **A (reused)** | 1.00 | `(64, 96, 64)` | 163,940 | 640.39 | 309.91 | 794.1 | **ELIGIBLE** | Existing frozen `DEC-037` checkpoints (`64.7907%` OOF) |
+| **A (reused)** | 1.00 | `(64, 96, 64)` | 163,940 | 640.39 | 309.91 | 794.1 | **ELIGIBLE** | Existing frozen `DEC-037` checkpoints (`experiments/EXP-030/p2_164k_subject_metrics.csv`, `64.7907%` OOF via `LogitStitchingSlidingWindowPredictor`) |
 | **P190** | ~1.08 | `(72, 100, 64)` | 190,940 | 745.86 | 375.16 | 984.2 | **ELIGIBLE** | **New** (`+0.080%` vs. `full_v5` `190,788`; `experiments/EXP-031/`) |
-| **B (reused)** | ~1.17 | `(64, 128, 64)` | 223,268 | 872.14 | 368.04 | 864.7 | **ELIGIBLE** | Existing `EXP-029` `cnn_bigru_200k` checkpoints (`66.61%`) |
+| **B (reused)** | ~1.17 | `(64, 128, 64)` | 223,268 | 872.14 | 368.04 | 864.7 | **ELIGIBLE** | Existing `EXP-029` `cnn_bigru_200k` checkpoints (`experiments/EXP-029/cnn_bigru_200k_subject_metrics.csv`, `66.61%` OOF) |
 | **W125** | 1.25 | `(80, 120, 80)` | 253,540 | 990.39 | 479.86 | 1,235.2 | INELIGIBLE | **New** (`experiments/EXP-031/`) |
 | **W150** | 1.50 | `(96, 144, 96)` | 362,596 | 1,416.39 | 686.82 | 1,773.5 | INELIGIBLE | **New** (`experiments/EXP-031/`) |
 | **W200** | 2.00 | `(128, 192, 128)` | 639,076 | 2,496.39 | 1,211.72 | 3,141.2 | INELIGIBLE | **New** (`experiments/EXP-031/`) |
 | **W250** | 2.50 | `(160, 240, 160)` | 993,380 | 3,880.39 | 1,884.63 | 4,897.2 | INELIGIBLE | **New** (`experiments/EXP-031/`) |
-| **V5 (reused)** | n/a | `full_v5` | 190,788 | 745.27 | 360.50 | — | **ELIGIBLE** | Existing `EXP-029` `full_v5` (`66.74%`) |
-| **S (reused)** | n/a | `Official SLAMSS-IFS` | 5,465,768 | 21,350.66 | — | — | INELIGIBLE | Existing `EXP-021` (`67.37%`) |
+| **V5 (reused)** | n/a | `full_v5` | 190,788 | 745.27 | 360.50 | 847.7 | N/A (non-plain comparator; `360.50 KiB < 400 KiB`) | Existing `EXP-029` `full_v5` (`experiments/EXP-029/full_v5_subject_metrics.csv`, `66.74%` OOF) |
+| **S (reused)** | n/a | `Official SLAMSS-IFS` | 5,465,768 | 21,350.66 | n/a | n/a | INELIGIBLE | Existing `EXP-021` (`experiments/EXP-021/slamss_ifs_matched_subject_metrics.csv`, `67.37%` OOF) |
 
 **Comparison to `EXP-030` (`DEC-043`) & Isolation Rule:**
 - None of the 7 new `EXP-031` configurations match `EXP-030` (`p1_100k`..`p6_1051k`) bit-for-bit: under the uniform `round_to_8(base * w)` rule, `W075` has `(48, 72, 48)` (`93,796` vs. `p1_100k` `(48, 76, 48)` `98,940`), `W125` has `(80, 120, 80)` (`253,540` vs. `p3_268k` `(80, 128, 64)` `268,260`), `W150` has `(96, 144, 96)` (`362,596` vs. `p4_404k` `(96, 160, 96)` `403,524`), `W200` has `(128, 192, 128)` (`639,076` vs. `p5_666k` `(128, 200, 128)` `665,556`), and `W250` has `(160, 240, 160)` (`993,380` vs. `p6_1051k` `(160, 256, 128)` `1,051,492`).
@@ -95,7 +95,7 @@ All 9 plain widths were instantiated on CPU (`ScaledConventionalCNNBiGRU`) and p
 
 - **Primary outcome:** subject-level Macro-F1, N = 47, averaged over the three seeds within subject.
 - **Secondary outcomes:** accuracy, kappa, per-stage F1.
-- **Inference:** paired differences, 10,000-resample participant-level percentile bootstrap 95% CI, two-sided Wilcoxon signed-rank (robustness check), Cohen's d_z.
+- **Inference:** paired differences, 10,000-resample participant-level percentile bootstrap 95% CI (locked RNG `seed=42`, matching `EXP-029` and `EXP-030`), two-sided Wilcoxon signed-rank (robustness check), Cohen's d_z.
 - **Multiplicity:** Holm correction across the two confirmatory tests in section 8.
 - **Trend test:** Page's L across the ordered widths W050 to W250 plus A and B (ordered by parameter count), reporting both one-sided and two-sided p-values and stating which one decides the verdict. The two-sided p decides.
 - **Power note:** EXP-029 gives a paired SD of about 1.7 pp for `full_v5` vs the plain 223k model (derived from its CI), so with N = 47 the minimum detectable effect at 80% power is about 0.7 pp. The practical threshold in section 8 is set just above it.
@@ -120,7 +120,7 @@ All 9 plain widths were instantiated on CPU (`ScaledConventionalCNNBiGRU`) and p
 - **INCONCLUSIVE:** anything else.
 No rescue tuning or post hoc width selection for P190.
 
-**H-SCALE:** SUPPORTED if Page's two-sided p (Holm-adjusted across the two confirmatory tests) < 0.05; otherwise NOT SUPPORTED.
+**H-SCALE:** SUPPORTED if Page's trend is positive ($L > \mu_L$, i.e., $z > 0$) AND Page's two-sided $p$ (Holm-adjusted across the two confirmatory tests `H-ARCH` and `H-SCALE`) $< 0.05$; otherwise NOT SUPPORTED.
 
 **Allowed claims:**
 - If H-ARCH is NOT SUPPORTED or INCONCLUSIVE, the paper may not claim architectural novelty or benefit. `full_v5` is reported as a capacity-matched ablation.
@@ -130,8 +130,8 @@ No rescue tuning or post hoc width selection for P190.
 
 ## 9. Backbone selection rule (LOCKED at commit)
 
-1. **Deployment constraint (declared now):** dynamic-INT8 in-memory payload < 400 KiB, as in EXP-029's design targets. Only widths meeting it are eligible (`W050`, `W075`, `A`, `P190`, `B`). Wider widths (`W125`, `W150`, `W200`, `W250`) are still run to map the curve.
-2. **Selection among eligible widths:** the smallest width whose mean Macro-F1 is within one paired standard error (bootstrap SE of the paired difference) of the best eligible width. Ties go to fewer parameters.
+1. **Deployment constraint (declared now):** dynamic-INT8 in-memory payload < 400 KiB, as in EXP-029's design targets. Backbone selection operates strictly over the **5 eligible plain CNN-BiGRU widths** (`W050`, `W075`, `A`, `P190`, `B`); non-plain `V5` (`full_v5`) is excluded from selection. Wider plain widths (`W125`, `W150`, `W200`, `W250`) are still run to map the curve.
+2. **Selection among eligible plain widths:** let $m^*$ be the eligible plain width with the highest mean Macro-F1 across $N=47$ subjects (ties for $m^*$ go to fewer parameters). Select the smallest eligible plain width $m$ whose mean Macro-F1 satisfies $\overline{\text{F1}}_{m^*} - \overline{\text{F1}}_m \le \text{SE}_{\text{boot}}$, where $\text{SE}_{\text{boot}} = \text{SD}_{\text{boot}}(\overline{\text{F1}}_{m^*} - \overline{\text{F1}}_m)$ over the same 10,000 participant-level bootstrap resamples (`seed=42`; trivially satisfied for $m = m^*$). Ties go to fewer parameters.
 3. The selected backbone is the sole new backbone carried forward. No width is selected by external or personalization results.
 
 ---
