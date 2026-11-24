@@ -1,0 +1,88 @@
+{
+  "edge_curve": [
+    {
+      "grid_tag": "p1_100k",
+      "total_params": 98940,
+      "quantizable_params": 69796,
+      "fp32_only_params": 29144,
+      "quantized_ratio": 0.7054376389731151,
+      "int8_in_memory_kib": 182.00390625,
+      "fp32_serialized_kib": 404.0908203125,
+      "int8_serialized_kib": 207.9697265625,
+      "mmacs_L1200": 456.0576,
+      "cpu_latency_1t_fp32_ms": 59.37673909938894,
+      "cpu_latency_1t_int8_ms": 56.57803969952511,
+      "cpu_latency_4t_int8_ms": 46.34897639916744
+    },
+    {
+      "grid_tag": "p2_164k",
+      "total_params": 163940,
+      "quantizable_params": 112804,
+      "fp32_only_params": 51136,
+      "quantized_ratio": 0.6880810052458216,
+      "int8_in_memory_kib": 309.91015625,
+      "fp32_serialized_kib": 657.1533203125,
+      "int8_serialized_kib": 335.7822265625,
+      "mmacs_L1200": 794.0544,
+      "cpu_latency_1t_fp32_ms": 79.25040229893057,
+      "cpu_latency_1t_int8_ms": 76.29177929920843,
+      "cpu_latency_4t_int8_ms": 54.89077929960331
+    },
+    {
+      "grid_tag": "p3_268k",
+      "total_params": 268260,
+      "quantizable_params": 188996,
+      "fp32_only_params": 79264,
+      "quantized_ratio": 0.7045254603742638,
+      "int8_in_memory_kib": 494.19140625,
+      "fp32_serialized_kib": 1064.9033203125,
+      "int8_serialized_kib": 521.5322265625,
+      "mmacs_L1200": 1252.8192,
+      "cpu_latency_1t_fp32_ms": 84.73373830056516,
+      "cpu_latency_1t_int8_ms": 79.06423170061316,
+      "cpu_latency_4t_int8_ms": 54.99264570098603
+    },
+    {
+      "grid_tag": "p4_404k",
+      "total_params": 403524,
+      "quantizable_params": 289924,
+      "fp32_only_params": 113600,
+      "quantized_ratio": 0.7184801895302386,
+      "int8_in_memory_kib": 726.87890625,
+      "fp32_serialized_kib": 1593.0283203125,
+      "int8_serialized_kib": 755.2822265625,
+      "mmacs_L1200": 1822.3296,
+      "cpu_latency_1t_fp32_ms": 121.73218279931461,
+      "cpu_latency_1t_int8_ms": 113.59001689997967,
+      "cpu_latency_4t_int8_ms": 68.65288940025494
+    },
+    {
+      "grid_tag": "p5_666k",
+      "total_params": 665556,
+      "quantizable_params": 464964,
+      "fp32_only_params": 200592,
+      "quantized_ratio": 0.6986098840668554,
+      "int8_in_memory_kib": 1237.62890625,
+      "fp32_serialized_kib": 2616.7783203125,
+      "int8_serialized_kib": 1268.0947265625,
+      "mmacs_L1200": 3172.8576,
+      "cpu_latency_1t_fp32_ms": 160.69767270091688,
+      "cpu_latency_1t_int8_ms": 146.33009629906155,
+      "cpu_latency_4t_int8_ms": 87.32765169988852
+    },
+    {
+      "grid_tag": "p6_1051k",
+      "total_params": 1051492,
+      "quantizable_params": 739364,
+      "fp32_only_params": 312128,
+      "quantized_ratio": 0.7031570378091322,
+      "int8_in_memory_kib": 1941.28515625,
+      "fp32_serialized_kib": 4124.2158203125,
+      "int8_serialized_kib": 1973.5947265625,
+      "mmacs_L1200": 4966.8288,
+      "cpu_latency_1t_fp32_ms": 209.8517960999743,
+      "cpu_latency_1t_int8_ms": 192.61834240023745,
+      "cpu_latency_4t_int8_ms": 102.85080440080492
+    }
+  ]
+}

@@ -864,6 +864,21 @@
 - **`EXP-020` `FT-2` / `GATE_tau` Safety (`N = 46`, `tau* = 0.01`):** `full_v5` `ZS = 66.67%`, `FT-2 = 67.59%`, **`GATE_tau = 67.86%`** (`+1.19 pp` vs. `ZS`, `Bidslab34` abstained).
 - **Decision:** Promote **`Ultradian-Pyramidal-Coupler` (`full_v5`, 190,788 params)** as the primary `v5` architecture, while retaining `ConventionalCNNBiGRU-164k` (`163,940` params) and `Official SLAMSS-IFS` (`5,465,768` params) as locked reference baselines.
 
+---
+
+## DEC-043 — EXP-030 Single-Factor Capacity–Accuracy–Edge Pareto Sweep & `p1_100k` (`98,940` Params) Selection (2026-11-24)
+
+- **Protocol & Audit Clearance:** Executed a 75-run single-factor width sweep of plain `ScaledConventionalCNNBiGRU` (`experiments/EXP-030/exp030_models.py`) across 5 new grid points (`p1_100k`, `p3_268k`, `p4_404k`, `p5_666k`, `p6_1051k`; 5 folds $\times$ 3 seeds `42, 123, 2024`; `L = 1200`, `prep_57738d534b`, `36d84020` manifest gate) anchored against `p2_164k` (`DEC-037` frozen `Model A`, `64.7907%` via `LogitStitchingSlidingWindowPredictor`). Cleared pre-execution via `docs/audits/EXP030_PRE_EXECUTION_DRIFT_REPORT.md` (`GO`, 17/17 tests in `tests/test_exp030_preflight.py`) and post-execution via `docs/audits/EXP030_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, 0 Blocking, 0 Major).
+- **Pre-Registered In-Cohort Elbow Selection (`select_exp030_elbow.py`):**
+  - 6-point BIDSleep `N = 47` OOF Macro-F1: **`p1_100k` (`98,940` params) = `66.67% ± 7.57%`**, `p2_164k` (`163,940`) = `64.79% ± 7.45%`, `p3_268k` (`268,260`) = `66.43% ± 7.08%`, `p4_404k` (`403,524`) = `66.50% ± 7.16%`, `p5_666k` (`665,556`) = `66.17% ± 7.02%`, `p6_1051k` (`1,051,492`) = `66.25% ± 6.84%`.
+  - Deterministic rule (`M_max = 66.6726%`, `delta_max = +1.8819 pp > 0.50 pp`, `threshold_T = 66.4844%`, `guard_triggered = False`) selected **`p1_100k` (`98,940` params)** as `CNN-BiGRU-Star` strictly before any downstream evaluation.
+- **Downstream Evaluation (`p1_100k` Only):**
+  - **Pillar 1 — BIDSleep (`N = 47`):** vs. `Model A-164k` (`64.79%`): **`+1.88 pp`** `[+1.25, +2.49 pp]`, $p_{\text{Holm}} = 1.19 \times 10^{-6}$, $d_z = +0.875$, `40/47` wins (REM F1 `+3.56 pp`, $p = 2.40 \times 10^{-10}$). vs. `Official SLAMSS-IFS` (`67.37%`, `5,465,768` params): **`-0.69 pp`** `[-1.57, +0.15 pp]`, **$p_{\text{Holm}} = 0.1498$** (statistical parity at **55.24x** parameter compression).
+  - **Pillar 2 — `W0-B` Dynamic INT8:** **`182.00 KiB`** in-memory payload (`69,796 / 98,940` quantized), **`456.1 MMACs`** (`L=1200`), **`56.58 ms`** 1T / **`46.35 ms`** 4T CPU latency, OOF FP32-vs-INT8 delta $\bar{\Delta} = -0.0134\text{ pp}$ (`p = 0.4656`).
+  - **Pillar 3 — Zero-Shot SleepAccel (`em_off` only):** `qc_clean` (`n = 25`): `60.88%` (`mean_single_model`, `+0.36 pp` vs. `Model A` $p=0.1645$, `-0.21 pp` vs. `SLAMSS-IFS` $p=1.0000$) / `62.51%` (`prob_ensemble`, `-0.43 pp` vs. `Model A` $p=0.2411$, `-0.28 pp` vs. `SLAMSS-IFS` $p=0.6150$). `all` (`N = 31`): `61.10%` / `62.51%`.
+  - **Pillar 4 — `EXP-020` `FT-2` & Nested Per-Fold `GATE_tau` (`N = 46`):** Per-fold $\tau^*$ (`0.05` on Folds 1–2, `0.01` on Folds 3–5; `3/46` abstained); `ZS = 66.84%`, `FT-2 = 66.27%` (`-0.57 pp`, $p=0.6571$), `GATE_tau = 66.74%` (`-0.10 pp` vs. `ZS`, $p=0.9519$).
+- **Decision:** Ratify **`p1_100k` (`98,940` params)** as the capacity-Pareto optimal `ConventionalCNNBiGRU` operating point (`55.24x` compression vs. `SLAMSS-IFS`, `-39.65%` fewer params than `Model A-164k`, `182.00 KiB` INT8), and report `EXP-029` honestly as a negative architectural ablation superseded by capacity regularization at `~100k` parameters.
+
 
 
 

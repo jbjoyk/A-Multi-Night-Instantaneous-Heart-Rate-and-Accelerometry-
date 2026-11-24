@@ -105,5 +105,8 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
    - Executed 75 runs across 5 arms (`cnn_bigru_200k`, `film_only`, `pyramid_only`, `full_v5`, `full_v5_ce`) and full downstream suite (`eval_exp029_downstream.py`), cleared post-execution via `docs/audits/EXP029_POST_EXECUTION_EGM_DRIFT_REPORT.md` (0 Blocking, 0 Major).
    - `full_v5` (`190,788` params) achieved **`66.74%`** (`full_v5_ce` **`66.95%`**) on BIDSleep 5-fold CV ($N=47$, `+1.95 pp` vs. Model A [$p_{\text{Holm}}=1.43 \times 10^{-6}$], parity vs. SLAMSS-IFS [$p_{\text{Holm}}=0.1212$, 28.65x compression]), `360.50 KiB` INT8 payload (`44.02 ms` 4T), SleepAccel `61.78%` / `63.51%`, and `GATE_tau` `67.86%`. Promoted as primary `v5` architecture while retaining `ConventionalCNNBiGRU-164k` and `Official SLAMSS-IFS` as matched reference baselines.
    - Code-verified architecture figure generated at `figures/fig1_ultradian_pyramidal_coupler.{pdf,png}` via `scripts/generate_fig1_ultradian_coupler.py`.
-7. **Next Concrete Task (Stage E)**:
-   - Synchronize manuscript (`MANUSCRIPT_DRAFT_v1.0.md`) and Evidence-to-Claim Matrix with `EXP-029` / `DEC-042` results and Figure 1.
+7. **EXP-030 Single-Factor Capacity–Accuracy–Edge Pareto Sweep (COMPLETED & RATIFIED under `DEC-043`)**:
+   - Executed 75 new runs (`p1_100k`, `p3_268k`, `p4_404k`, `p5_666k`, `p6_1051k`) + `p2_164k` `DEC-037` stitcher-parity anchor (`64.7907%`), cleared post-execution via `docs/audits/EXP030_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, 0 Blocking, 0 Major).
+   - Pre-registered elbow rule selected **`p1_100k` (`98,940` params)**: **`66.67% ± 7.57%`** BIDSleep Macro-F1 (`+1.88 pp` vs. `Model A`, $p_{\text{Holm}}=1.19 \times 10^{-6}$, `40/47` wins; `-0.69 pp` vs. `SLAMSS-IFS`, $p_{\text{Holm}}=0.1498$, `55.24x` compression), **`182.00 KiB`** INT8 (`46.35 ms` 4T, $\Delta=-0.013\text{ pp}$), SleepAccel `60.88%` / `62.51%` (`em_off`), nested `GATE_tau` `66.74%` (`3/46` abstained).
+8. **Next Concrete Task (Stage E)**:
+   - Synchronize manuscript (`MANUSCRIPT_DRAFT_v1.0.md`) and Evidence-to-Claim Matrix with `EXP-029` (`DEC-042`), `EXP-030` (`DEC-043`), and Figure 1.

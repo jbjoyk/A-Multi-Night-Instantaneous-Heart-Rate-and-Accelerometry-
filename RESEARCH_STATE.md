@@ -109,7 +109,9 @@
   - **EXP-029 (`Ultradian-Pyramidal-Coupler` v5 — COMPLETED & RATIFIED under `DEC-042`):**
     - Promoted `Ultradian-Pyramidal-Coupler` (`full_v5`, `190,788` params, `+16.38%` vs. `163,940`) as primary `v5` architecture while retaining `ConventionalCNNBiGRU-164k` (`163,940`) and `Official SLAMSS-IFS` (`5,465,768`) as matched reference baselines.
     - BIDSleep 5-fold CV ($N=47$): `full_v5` **`66.74%`** (`full_v5_ce` **`66.95%`**), **`+1.95 pp`** vs. Model A ($p_{\text{Holm}}=1.43 \times 10^{-6}$, 38/47 wins), statistical parity vs. SLAMSS-IFS ($p_{\text{Holm}}=0.1212$, 28.65x compression); W0-B Dynamic INT8 `360.50 KiB` (`44.02 ms` 4T, $\Delta = -0.0113\text{ pp}$); SleepAccel `61.78%` / `63.51%`; `GATE_tau` `67.86%`.
-  - **Ready for Stage E:** Author `MANUSCRIPT_DRAFT_v0.2.md` / update `MANUSCRIPT_DRAFT_v1.0.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), Stage D (`DEC-040`, `DEC-041`), and `EXP-029` (`DEC-042`).
+  - **EXP-030 (Single-Factor Capacity Pareto Sweep — COMPLETED & RATIFIED under `DEC-043`):**
+    - Swept plain `ScaledConventionalCNNBiGRU` across 6 widths (`98,940`–`1,051,492` params, 75 new runs + `p2_164k` `DEC-037` anchor). Pre-registered elbow rule selected **`p1_100k`** (`98,940` params, `-39.65%` vs. `164k`): **`66.67%`** BIDSleep Macro-F1 (`+1.88 pp` vs. Model A [$p_{\text{Holm}}=1.19 \times 10^{-6}$, `40/47` wins], statistical parity vs. SLAMSS-IFS [`-0.69 pp`, $p_{\text{Holm}}=0.1498$, `55.24x` compression]), **`182.00 KiB`** INT8 (`46.35 ms` 4T, $\Delta = -0.013\text{ pp}$), SleepAccel `60.88%` / `62.51%` (`em_off`), nested `GATE_tau` `66.74%` (`3/46` abstained).
+  - **Ready for Stage E:** Author `MANUSCRIPT_DRAFT_v0.2.md` / update `MANUSCRIPT_DRAFT_v1.0.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), Stage D (`DEC-040`, `DEC-041`), `EXP-029` (`DEC-042`), and `EXP-030` (`DEC-043`).
 
 ---
 

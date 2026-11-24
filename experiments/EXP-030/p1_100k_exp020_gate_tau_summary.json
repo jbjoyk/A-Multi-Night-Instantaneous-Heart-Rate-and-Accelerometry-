@@ -1,0 +1,81 @@
+{
+  "star_tag": "p1_100k",
+  "n_subjects": 46,
+  "per_fold_tau_selection": {
+    "1": {
+      "tau_star": 0.05,
+      "tie_breaker_used": false,
+      "n_inner_subs": 5,
+      "n_outer_subs": 10,
+      "n_outer_abstained": 1
+    },
+    "2": {
+      "tau_star": 0.05,
+      "tie_breaker_used": false,
+      "n_inner_subs": 5,
+      "n_outer_subs": 10,
+      "n_outer_abstained": 2
+    },
+    "3": {
+      "tau_star": 0.01,
+      "tie_breaker_used": true,
+      "n_inner_subs": 5,
+      "n_outer_subs": 9,
+      "n_outer_abstained": 0
+    },
+    "4": {
+      "tau_star": 0.01,
+      "tie_breaker_used": true,
+      "n_inner_subs": 5,
+      "n_outer_subs": 9,
+      "n_outer_abstained": 0
+    },
+    "5": {
+      "tau_star": 0.01,
+      "tie_breaker_used": true,
+      "n_inner_subs": 5,
+      "n_outer_subs": 8,
+      "n_outer_abstained": 0
+    }
+  },
+  "n_abstained_total": 3,
+  "zs_mean_pct": 66.83586051126818,
+  "ft2_mean_pct": 66.26736508484737,
+  "gate_tau_mean_pct": 66.73811505839963,
+  "ft2_vs_zs": {
+    "primary_mean": 66.26736508484737,
+    "ref_mean": 66.83586051126818,
+    "delta": -0.5684954264207958,
+    "ci95_low": -2.0762958897306363,
+    "ci95_high": 0.9740272068218154,
+    "wilcoxon_p": 0.6571383741117813,
+    "cohens_dz": -0.10691275718588235,
+    "wins": 21,
+    "losses": 25,
+    "ties": 0
+  },
+  "gate_vs_zs": {
+    "primary_mean": 66.73811505839963,
+    "ref_mean": 66.83586051126818,
+    "delta": -0.09774545286855721,
+    "ci95_low": -1.3692869094502675,
+    "ci95_high": 1.2260155156882635,
+    "wilcoxon_p": 0.9518571588656567,
+    "cohens_dz": -0.021358984650146188,
+    "wins": 20,
+    "losses": 23,
+    "ties": 3
+  },
+  "gate_vs_ft2": {
+    "primary_mean": 66.73811505839963,
+    "ref_mean": 66.26736508484737,
+    "delta": 0.47074997355223835,
+    "ci95_low": -0.020120038865059763,
+    "ci95_high": 1.3453444146348295,
+    "wilcoxon_p": 0.28504940740261275,
+    "cohens_dz": 0.1727490166526655,
+    "wins": 2,
+    "losses": 1,
+    "ties": 43
+  }
+}
