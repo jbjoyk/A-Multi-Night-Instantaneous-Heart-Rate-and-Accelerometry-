@@ -1,0 +1,10 @@
+{
+  "arm": "pyramid_only",
+  "n_subjects": 46,
+  "tau_star": 0.01,
+  "n_abstained": 1,
+  "zs_mean_pct": 66.6870380560991,
+  "ft2_mean_pct": 67.26126084655426,
+  "gate_tau_mean_pct": 67.53093949977041,
+  "gate_vs_zs_pp": 0.8439014436713173
+}

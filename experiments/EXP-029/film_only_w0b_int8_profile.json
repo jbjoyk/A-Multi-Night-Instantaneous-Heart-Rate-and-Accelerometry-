@@ -1,0 +1,20 @@
+{
+  "arm": "film_only",
+  "total_params": 172260,
+  "quantizable_params": 112804,
+  "fp32_only_params": 59456,
+  "quantized_ratio": 0.654847323812841,
+  "int8_in_memory_kib": 342.41015625,
+  "fp32_serialized_kib": 690.3916015625,
+  "int8_serialized_kib": 369.0205078125,
+  "cpu_latency_1t_fp32_ms": 78.15493649977725,
+  "cpu_latency_1t_int8_ms": 73.98292780017073,
+  "cpu_latency_4t_int8_ms": 55.32336190008209,
+  "n_subjects": 47,
+  "fp32_macro_f1_pct": 66.67057499026356,
+  "int8_macro_f1_pct": 66.68165171731013,
+  "delta_pp": 0.011076727046571628,
+  "ci95_low_pp": -0.014725265019734505,
+  "ci95_high_pp": 0.03809763220236043,
+  "wilcoxon_p": 0.49838524528091455
+}

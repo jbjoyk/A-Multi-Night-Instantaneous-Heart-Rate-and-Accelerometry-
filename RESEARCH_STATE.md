@@ -106,7 +106,10 @@
     - `EXP-019B` (CPU exploratory heterogeneity closure): 0/12 tests significant after BH-FDR ($q \ge 0.5673$).
     - `EXP-020` (`cuda:0` exploratory regularized/gated closure): `GATE_tau` $+1.33\text{ pp}$ vs. ZS ($p_{\text{Holm}}=0.0028$, `Bidslab34` abstained); `FT-2-KL` $+1.03\text{ pp}$ ($p_{\text{Holm}}=0.0030$).
     - `EXP-027` & `EXP-028` (`cuda:1` strictly zero-shot external validation on PhysioNet SleepAccel v1.0.0, `qc_clean` $n=25$, `all` $n=31$): Model A achieved statistical parity with 33.34x larger SLAMSS-IFS (`prob_ensemble` `62.94%` vs. `62.79%` Macro-F1, $p=0.9789$; `mean_single_model` `-0.57 pp`, $p=0.5782$), with full Bland-Altman (1999) PSG agreement and raw paired tuples persisted.
-  - **Ready for Stage E:** Author `MANUSCRIPT_DRAFT_v0.2.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), and Stage D (`DEC-040`, `DEC-041`).
+  - **EXP-029 (`Ultradian-Pyramidal-Coupler` v5 — COMPLETED & RATIFIED under `DEC-042`):**
+    - Promoted `Ultradian-Pyramidal-Coupler` (`full_v5`, `190,788` params, `+16.38%` vs. `163,940`) as primary `v5` architecture while retaining `ConventionalCNNBiGRU-164k` (`163,940`) and `Official SLAMSS-IFS` (`5,465,768`) as matched reference baselines.
+    - BIDSleep 5-fold CV ($N=47$): `full_v5` **`66.74%`** (`full_v5_ce` **`66.95%`**), **`+1.95 pp`** vs. Model A ($p_{\text{Holm}}=1.43 \times 10^{-6}$, 38/47 wins), statistical parity vs. SLAMSS-IFS ($p_{\text{Holm}}=0.1212$, 28.65x compression); W0-B Dynamic INT8 `360.50 KiB` (`44.02 ms` 4T, $\Delta = -0.0113\text{ pp}$); SleepAccel `61.78%` / `63.51%`; `GATE_tau` `67.86%`.
+  - **Ready for Stage E:** Author `MANUSCRIPT_DRAFT_v0.2.md` / update `MANUSCRIPT_DRAFT_v1.0.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), Stage D (`DEC-040`, `DEC-041`), and `EXP-029` (`DEC-042`).
 
 ---
 

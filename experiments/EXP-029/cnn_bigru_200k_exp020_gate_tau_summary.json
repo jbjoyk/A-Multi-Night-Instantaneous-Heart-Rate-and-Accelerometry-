@@ -1,0 +1,10 @@
+{
+  "arm": "cnn_bigru_200k",
+  "n_subjects": 46,
+  "tau_star": 0.01,
+  "n_abstained": 1,
+  "zs_mean_pct": 66.73697874825353,
+  "ft2_mean_pct": 65.54828676965421,
+  "gate_tau_mean_pct": 66.06230973377941,
+  "gate_vs_zs_pp": -0.6746690144741312
+}

@@ -1,0 +1,76 @@
+{
+  "primary_arm": "pyramid_only",
+  "n_subjects": 47,
+  "comparisons": [
+    {
+      "reference": "arm_a_modelA_164k",
+      "primary_mean_pct": 66.92245253856393,
+      "ref_mean_pct": 64.79074784213317,
+      "delta_pp": 2.1317046964307615,
+      "ci95_low_pp": 1.3989449749755387,
+      "ci95_high_pp": 2.8914282233136226,
+      "wilcoxon_p": 9.205211739526931e-07,
+      "cohens_dz": 0.813484518260573,
+      "wins": 39,
+      "losses": 8,
+      "ties": 0,
+      "wilcoxon_p_holm": 4.602605869763465e-06
+    },
+    {
+      "reference": "arm_f_slamss_ifs",
+      "primary_mean_pct": 66.92245253856393,
+      "ref_mean_pct": 67.36740139152315,
+      "delta_pp": -0.44494885295922404,
+      "ci95_low_pp": -1.297462523635334,
+      "ci95_high_pp": 0.4605013873259405,
+      "wilcoxon_p": 0.20050109437600838,
+      "cohens_dz": -0.14470534597582874,
+      "wins": 17,
+      "losses": 30,
+      "ties": 0,
+      "wilcoxon_p_holm": 0.6015032831280251
+    },
+    {
+      "reference": "cnn_bigru_200k",
+      "primary_mean_pct": 66.92245253856393,
+      "ref_mean_pct": 66.6072426356262,
+      "delta_pp": 0.3152099029377267,
+      "ci95_low_pp": -0.14224894724715728,
+      "ci95_high_pp": 0.7793364440098184,
+      "wilcoxon_p": 0.1380846396352382,
+      "cohens_dz": 0.19518791037712208,
+      "wins": 26,
+      "losses": 21,
+      "ties": 0,
+      "wilcoxon_p_holm": 0.5523385585409528
+    },
+    {
+      "reference": "film_only",
+      "primary_mean_pct": 66.92245253856393,
+      "ref_mean_pct": 66.67104775907515,
+      "delta_pp": 0.25140477948878315,
+      "ci95_low_pp": -0.23028157898998405,
+      "ci95_high_pp": 0.7372028359568918,
+      "wilcoxon_p": 0.2904590533139384,
+      "cohens_dz": 0.14715297721718978,
+      "wins": 26,
+      "losses": 21,
+      "ties": 0,
+      "wilcoxon_p_holm": 0.6015032831280251
+    },
+    {
+      "reference": "pyramid_only",
+      "primary_mean_pct": 66.92245253856393,
+      "ref_mean_pct": 66.92245253856393,
+      "delta_pp": 0.0,
+      "ci95_low_pp": 0.0,
+      "ci95_high_pp": 0.0,
+      "wilcoxon_p": 1.0,
+      "cohens_dz": 0.0,
+      "wins": 0,
+      "losses": 0,
+      "ties": 47,
+      "wilcoxon_p_holm": 1.0
+    }
+  ]
+}

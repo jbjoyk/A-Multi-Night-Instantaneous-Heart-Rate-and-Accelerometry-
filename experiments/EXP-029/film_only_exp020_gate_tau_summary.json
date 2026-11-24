@@ -1,0 +1,10 @@
+{
+  "arm": "film_only",
+  "n_subjects": 46,
+  "tau_star": 0.01,
+  "n_abstained": 1,
+  "zs_mean_pct": 66.68389935722014,
+  "ft2_mean_pct": 66.10556271079228,
+  "gate_tau_mean_pct": 66.6641724196376,
+  "gate_vs_zs_pp": -0.01972693758255976
+}

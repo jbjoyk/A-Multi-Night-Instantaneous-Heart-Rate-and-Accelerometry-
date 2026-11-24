@@ -465,7 +465,7 @@ def evaluate_exp020_gate_tau(
                 m_ft.train()
                 for _ in range(epochs):
                     opt.zero_grad()
-                    out = m_ft(batch["x_ihr"], batch["x_acc"], batch["x_meta"], seq_lens=batch["seq_len"])
+                    out = m_ft(batch["x_ihr"], batch["x_acc"], batch["x_meta"], seq_lens=batch.get("seq_lens", batch.get("seq_len")))
                     loss = compute_stage_loss_fp32(m_ft, out["logits"], batch["y"], batch["mask"])
                     loss.backward()
                     torch.nn.utils.clip_grad_norm_(trainable, max_norm=1.0)

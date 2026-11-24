@@ -1,0 +1,10 @@
+{
+  "arm": "full_v5",
+  "n_subjects": 46,
+  "tau_star": 0.01,
+  "n_abstained": 1,
+  "zs_mean_pct": 66.66834532250859,
+  "ft2_mean_pct": 67.58794925701437,
+  "gate_tau_mean_pct": 67.8566139703346,
+  "gate_vs_zs_pp": 1.1882686478260207
+}

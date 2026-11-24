@@ -1,0 +1,20 @@
+{
+  "arm": "cnn_bigru_200k",
+  "total_params": 223268,
+  "quantizable_params": 172068,
+  "fp32_only_params": 51200,
+  "quantized_ratio": 0.7706791837612197,
+  "int8_in_memory_kib": 368.03515625,
+  "fp32_serialized_kib": 888.9033203125,
+  "int8_serialized_kib": 395.0322265625,
+  "cpu_latency_1t_fp32_ms": 81.67590660013957,
+  "cpu_latency_1t_int8_ms": 75.7168393000029,
+  "cpu_latency_4t_int8_ms": 55.72321749968978,
+  "n_subjects": 47,
+  "fp32_macro_f1_pct": 66.60607979720115,
+  "int8_macro_f1_pct": 66.64083713980021,
+  "delta_pp": 0.03475734259904933,
+  "ci95_low_pp": 0.00986146945355103,
+  "ci95_high_pp": 0.06065146932523048,
+  "wilcoxon_p": 0.02640399000823379
+}

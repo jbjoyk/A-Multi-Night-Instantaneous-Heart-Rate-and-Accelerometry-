@@ -1,0 +1,20 @@
+{
+  "arm": "full_v5",
+  "total_params": 190788,
+  "quantizable_params": 131332,
+  "fp32_only_params": 59456,
+  "quantized_ratio": 0.688366144621255,
+  "int8_in_memory_kib": 360.50390625,
+  "fp32_serialized_kib": 763.2548828125,
+  "int8_serialized_kib": 388.6220703125,
+  "cpu_latency_1t_fp32_ms": 68.42995560000418,
+  "cpu_latency_1t_int8_ms": 67.31178440022632,
+  "cpu_latency_4t_int8_ms": 44.01906720013358,
+  "n_subjects": 47,
+  "fp32_macro_f1_pct": 66.73887317564431,
+  "int8_macro_f1_pct": 66.72760742539609,
+  "delta_pp": -0.011265750248218473,
+  "ci95_low_pp": -0.0470819043376916,
+  "ci95_high_pp": 0.023970582700392797,
+  "wilcoxon_p": 0.904053463732879
+}

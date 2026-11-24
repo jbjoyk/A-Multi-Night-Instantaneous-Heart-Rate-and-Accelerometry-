@@ -845,6 +845,26 @@
   - **Label-Prior Shift:** Positive Deep% (`+10.65%` primary / `+10.23%` secondary) and REM% (`+10.13%` primary / `+9.35%` secondary) biases in Model A (and `+8.67%`/`+7.21%` in SLAMSS-IFS) reflect the cross-modality reference shift between Dreem 2 ambulatory EEG (BIDSleep training source: 44.2% Light, 18.9% Deep night-averaged EEG; 46.2% Light, 18.6% Deep across 137,801 pooled sensor-valid epochs; 21.14% Deep of TST on evaluation nights) and single-night in-lab PSG (SleepAccel: 57.7% Light, 11.1% Deep of total epochs; 12.01% Deep of TST on $n=25$ quality-clean recordings).
 - **Decision:** External zero-shot generalization of the 163,940-parameter Model A on independent single-night Apple Watch + in-lab PSG hardware is **verified**, showing no statistically significant difference in 4-class Macro-F1 versus the 33.34x larger 5,465,768-parameter Official SLAMSS-IFS (`mean_single_model` `-0.57 pp`, $p = 0.5782$; `prob_ensemble` `+0.15 pp`, $p = 0.9789$). Stage D is closed and fully synchronized with resolved submission manuscript `MANUSCRIPT_DRAFT_v1.0.md`.
 
+---
+
+## DEC-042 — EXP-029 `Ultradian-Pyramidal-Coupler` (`v5`, 190,788 Params) Ratification & Promotion (2026-11-24)
+
+- **Protocol & Audit Clearance:** Executed 5-fold subject-disjoint nested CV (3 seeds: `42, 123, 2024`; 15 runs per arm; 75 total training runs across `cnn_bigru_200k`, `film_only`, `pyramid_only`, `full_v5`, and `full_v5_ce`) under `docs/designs/exp029_ultradian_pyramidal_coupler.md` (`L = 1200`, `prep_57738d534b` cache, `36d84020` manifest gate). Cleared pre-execution via `docs/audits/EXP029_PRE_EXECUTION_DRIFT_REPORT.md` (`GO`, 16/16 unit tests) and post-execution via `docs/audits/EXP029_POST_EXECUTION_EGM_DRIFT_REPORT.md` (0 Blocking, 0 Major).
+- **In-Cohort BIDSleep 5-Fold CV (`N=47`, 10,000-resample bootstrap, two-sided Wilcoxon, Holm-Bonferroni):**
+  - `full_v5` (`RCCLoss`, `190,788` params, `+16.38%` vs. `163,940`): **`66.74% ± 6.81%`** Macro-F1 (Acc `68.17%`, $\kappa = 0.5295$, Wake `64.37%`, Light `68.66%`, Deep `67.71%`, REM `66.21%`).
+    * vs. Arm `(a)` `ConventionalCNNBiGRU-164k` (`64.79%`): **`+1.95 pp`** `[+1.31, +2.61 pp]`, $p_{\text{raw}} = 2.39 \times 10^{-7}$, **$p_{\text{Holm}} = 1.43 \times 10^{-6}$**, $d_z = 0.858$, wins **38/47**.
+    * vs. Arm `(f)` `Official SLAMSS-IFS` (`67.37%`, `5,465,768` params): **`-0.63 pp`** `[-1.36, +0.16 pp]`, **$p_{\text{Holm}} = 0.1212$** (statistical parity at **28.65x** parameter compression).
+    * vs. Arm `(b)` `cnn_bigru_200k` (`223,268` params, `66.61% ± 7.06%`): `+0.13 pp` `[-0.35, +0.63 pp]`, $p_{\text{Holm}} = 1.0000$ (matches larger capacity control with `-14.5%` fewer parameters).
+  - Ablation Arms: `film_only` (`172,260` params) `66.67% ± 7.02%`; `pyramid_only` (`182,468` params) `66.92% ± 7.05%`.
+  - Pure-`CE` Sensitivity (`full_v5_ce`, `190,788` params): **`66.95% ± 6.84%`** Macro-F1 (Acc `68.35%`, $\kappa = 0.5324$; $+0.21\text{ pp}$ over `RCCLoss`, $p_{\text{raw}} = 0.0272$, $p_{\text{Holm}} = 0.1212$).
+- **W0-B Dynamic INT8 Edge Profile (`full_v5`):** `131,332 / 190,788` (`68.84%`) parameters quantized (`nn.Linear` + `nn.GRU`), **`360.50 KiB`** in-memory payload (`< 400 KiB`), **`67.31 ms`** 1-thread / **`44.02 ms`** 4-thread CPU latency (`L=1200`), FP32 `66.74%` vs. INT8 `66.73%` ($\bar{\Delta} = -0.0113\text{ pp}$, $p = 0.9041$).
+- **External Zero-Shot PhysioNet SleepAccel (`n = 25 qc_clean`, isolated `experiments/EXP-029/sleepaccel_cache/predictions/`):**
+  - `full_v5` (`em_off`): **`61.78%`** (`mean_single_model`) / **`63.51%`** (`prob_ensemble`), improving Deep% Bland-Altman bias from `+10.65%` (Model A) to `+7.59%`.
+  - `DampedEMCalibrator` (`em_on`, `alpha=0.5, n_iter=3, T=1.0`): `59.73%` / `61.30%` (unsupervised single-night EM degraded Macro-F1 and widened Deep%/REM% bias; `em_off` retained as primary zero-shot mode).
+- **`EXP-020` `FT-2` / `GATE_tau` Safety (`N = 46`, `tau* = 0.01`):** `full_v5` `ZS = 66.67%`, `FT-2 = 67.59%`, **`GATE_tau = 67.86%`** (`+1.19 pp` vs. `ZS`, `Bidslab34` abstained).
+- **Decision:** Promote **`Ultradian-Pyramidal-Coupler` (`full_v5`, 190,788 params)** as the primary `v5` architecture, while retaining `ConventionalCNNBiGRU-164k` (`163,940` params) and `Official SLAMSS-IFS` (`5,465,768` params) as locked reference baselines.
+
+
 
 
 
