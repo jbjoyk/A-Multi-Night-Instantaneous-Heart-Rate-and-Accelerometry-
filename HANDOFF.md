@@ -108,5 +108,9 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
 7. **EXP-030 Single-Factor Capacity–Accuracy–Edge Pareto Sweep (COMPLETED & RATIFIED under `DEC-043`)**:
    - Executed 75 new runs (`p1_100k`, `p3_268k`, `p4_404k`, `p5_666k`, `p6_1051k`) + `p2_164k` `DEC-037` stitcher-parity anchor (`64.7907%`), cleared post-execution via `docs/audits/EXP030_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, 0 Blocking, 0 Major).
    - Pre-registered elbow rule selected **`p1_100k` (`98,940` params)**: **`66.67% ± 7.57%`** BIDSleep Macro-F1 (`+1.88 pp` vs. `Model A`, $p_{\text{Holm}}=1.19 \times 10^{-6}$, `40/47` wins; `-0.69 pp` vs. `SLAMSS-IFS`, $p_{\text{Holm}}=0.1498$, `55.24x` compression), **`182.00 KiB`** INT8 (`46.35 ms` 4T, $\Delta=-0.013\text{ pp}$), SleepAccel `60.88%` / `62.51%` (`em_off`), nested `GATE_tau` `66.74%` (`3/46` abstained).
-8. **Next Concrete Task (Stage E)**:
-   - Synchronize manuscript (`MANUSCRIPT_DRAFT_v1.0.md`) and Evidence-to-Claim Matrix with `EXP-029` (`DEC-042`), `EXP-030` (`DEC-043`), and Figure 1.
+8. **EXP-031 Locked Single-Factor Width Sweep (COMPLETED & RATIFIED under `DEC-044`)**:
+   - Executed 105 new runs (`W050`, `W075`, `P190`, `W125`, `W150`, `W200`, `W250`) + reused anchors (`A` `64.7907%`, `B` `66.61%`, `V5` `66.74%`, `S` `67.37%`) under `PREREG_EXP-031_WIDTH_SWEEP.md` (commit `24ca187`), cleared post-execution via `docs/audits/EXP031_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, 0 Blocking, 0 Major).
+   - `H-ARCH` (`full_v5` `66.74%` vs. `P190` `66.60%`): `+0.14 pp` `[-0.34, +0.61]`, $p_{\text{Holm}}=0.4037$ -> **`NOT SUPPORTED (practically)`**. `H-SCALE`: Page's `L=10938.0`, $z=+2.493$, $p_{\text{Holm,2s}}=0.0254$ -> **`SUPPORTED`**.
+   - Section 9 selected **`P190` (`190,940` params)**: `66.60% ± 6.85%` (optimistic BIDSleep), **`375.16 KiB`** INT8 (`53.07 ms` 4T, `W0-B` $\Delta=+0.0244\text{ pp}$ $p=0.0836$), SleepAccel `61.52%` / `63.42%` (`em_off`), nested `GATE_tau` `66.55%` (`3/46` abstained).
+9. **Next Concrete Task (Stage E)**:
+   - Synchronize manuscript (`MANUSCRIPT_DRAFT_v1.0.md`) and Evidence-to-Claim Matrix with `EXP-029` (`DEC-042`), `EXP-030` (`DEC-043`), `EXP-031` (`DEC-044`), and Figure 1.

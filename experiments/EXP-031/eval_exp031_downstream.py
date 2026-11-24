@@ -275,7 +275,8 @@ def evaluate_sleepaccel_isolated(
     df_ref_f1 = pd.read_csv(os.path.join(EXP027_DIR, "exp027_per_subject_metrics.csv"))
     df_ref_f1["subject_id"] = df_ref_f1["subject_id"].astype(str)
     df_v5_f1 = pd.read_csv(os.path.join(EXP029_DIR, "full_v5_sleepaccel_metrics.csv"))
-    df_v5_f1["subject_id"] = df_v5_f1["subject_id"].astype(str)
+    sub_col = "subject_id" if "subject_id" in df_v5_f1.columns else "subject"
+    df_v5_f1["subject_id"] = df_v5_f1[sub_col].astype(str)
 
     paired_out: Dict[str, Any] = {"selected_arm": selected_arm, "f1_comparisons": []}
     for cohort_name, qc_filter in [("qc_clean", True), ("all", None)]:

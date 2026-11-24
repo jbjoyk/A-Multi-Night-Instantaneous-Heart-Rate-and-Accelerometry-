@@ -111,7 +111,11 @@
     - BIDSleep 5-fold CV ($N=47$): `full_v5` **`66.74%`** (`full_v5_ce` **`66.95%`**), **`+1.95 pp`** vs. Model A ($p_{\text{Holm}}=1.43 \times 10^{-6}$, 38/47 wins), statistical parity vs. SLAMSS-IFS ($p_{\text{Holm}}=0.1212$, 28.65x compression); W0-B Dynamic INT8 `360.50 KiB` (`44.02 ms` 4T, $\Delta = -0.0113\text{ pp}$); SleepAccel `61.78%` / `63.51%`; `GATE_tau` `67.86%`.
   - **EXP-030 (Single-Factor Capacity Pareto Sweep — COMPLETED & RATIFIED under `DEC-043`):**
     - Swept plain `ScaledConventionalCNNBiGRU` across 6 widths (`98,940`–`1,051,492` params, 75 new runs + `p2_164k` `DEC-037` anchor). Pre-registered elbow rule selected **`p1_100k`** (`98,940` params, `-39.65%` vs. `164k`): **`66.67%`** BIDSleep Macro-F1 (`+1.88 pp` vs. Model A [$p_{\text{Holm}}=1.19 \times 10^{-6}$, `40/47` wins], statistical parity vs. SLAMSS-IFS [`-0.69 pp`, $p_{\text{Holm}}=0.1498$, `55.24x` compression]), **`182.00 KiB`** INT8 (`46.35 ms` 4T, $\Delta = -0.013\text{ pp}$), SleepAccel `60.88%` / `62.51%` (`em_off`), nested `GATE_tau` `66.74%` (`3/46` abstained).
-  - **Ready for Stage E:** Author `MANUSCRIPT_DRAFT_v0.2.md` / update `MANUSCRIPT_DRAFT_v1.0.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), Stage D (`DEC-040`, `DEC-041`), `EXP-029` (`DEC-042`), and `EXP-030` (`DEC-043`).
+  - **EXP-031 (Locked Single-Factor Width Sweep — COMPLETED & RATIFIED under `DEC-044`):**
+    - Executed 105 new runs (`W050`, `W075`, `P190`, `W125`, `W150`, `W200`, `W250`) + reused anchors (`A` `64.7907%`, `B` `66.61%`, `V5` `66.74%`, `S` `67.37%`) under `PREREG_EXP-031_WIDTH_SWEEP.md` (commit `24ca187`).
+    - **`H-ARCH` (`full_v5` vs. `P190`):** `+0.14 pp` `[-0.34, +0.61]`, $p_{\text{Holm}}=0.4037$ -> **`NOT SUPPORTED (practically)`** (architectural novelty not claimed for `full_v5`). **`H-SCALE`:** Page's `L=10938.0`, $z=+2.493$, $p_{\text{Holm,2s}}=0.0254$ -> **`SUPPORTED`**.
+    - Section 9 selected **`P190`** (`190,940` params, `66.60%` optimistic BIDSleep, `375.16 KiB` INT8, `53.07 ms` 4T, `W0-B` $\Delta=+0.0244\text{ pp}$ $p=0.0836$); SleepAccel `61.52%`/`63.42%` (`em_off`, `+0.44`/`+0.64 pp` vs. `SLAMSS-IFS`); nested `GATE_tau` `66.55%` (`3/46` abstained).
+  - **Ready for Stage E:** Synchronize `MANUSCRIPT_DRAFT_v1.0.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), Stage D (`DEC-040`, `DEC-041`), `EXP-029` (`DEC-042`), `EXP-030` (`DEC-043`), and `EXP-031` (`DEC-044`).
 
 ---
 

@@ -1,0 +1,6 @@
+{
+  "em_off__mean_single_model__qc_clean_macro_f1": 61.52421784279319,
+  "em_off__prob_ensemble__qc_clean_macro_f1": 63.42119151494874,
+  "em_off__mean_single_model__all_macro_f1": 61.77488839005877,
+  "em_off__prob_ensemble__all_macro_f1": 63.93900080314593
+}

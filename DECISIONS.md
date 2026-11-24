@@ -879,6 +879,21 @@
   - **Pillar 4 — `EXP-020` `FT-2` & Nested Per-Fold `GATE_tau` (`N = 46`):** Per-fold $\tau^*$ (`0.05` on Folds 1–2, `0.01` on Folds 3–5; `3/46` abstained); `ZS = 66.84%`, `FT-2 = 66.27%` (`-0.57 pp`, $p=0.6571$), `GATE_tau = 66.74%` (`-0.10 pp` vs. `ZS`, $p=0.9519$).
 - **Decision:** Ratify **`p1_100k` (`98,940` params)** as the capacity-Pareto optimal `ConventionalCNNBiGRU` operating point (`55.24x` compression vs. `SLAMSS-IFS`, `-39.65%` fewer params than `Model A-164k`, `182.00 KiB` INT8), and report `EXP-029` honestly as a negative architectural ablation superseded by capacity regularization at `~100k` parameters.
 
+---
+
+## DEC-044 — EXP-031 Single-Factor Width Sweep & `P190` (`190,940` Params) Confirmatory Verdicts (2026-11-24)
+
+- **Protocol & Audit Clearance:** Executed a 105-run single-factor width sweep (`w`-multiplier) of plain `ScaledConventionalCNNBiGRU` (`experiments/EXP-031/exp031_models.py`) across 7 new widths (`W050`, `W075`, `P190`, `W125`, `W150`, `W200`, `W250`; 5 folds $\times$ 3 seeds `42, 123, 2024`; `L = 1200`, `prep_57738d534b`, `36d84020` manifest gate) under locked preregistration `PREREG_EXP-031_WIDTH_SWEEP.md` (commit `24ca187`). Reused anchors: `A` (`163,940` params, `64.7907%`), `B` (`223,268`, `66.61%`), `V5` (`full_v5`, `190,788`, `66.74%`), and `S` (`SLAMSS-IFS`, `5,465,768`, `67.37%`). Cleared pre-execution via `docs/audits/EXP031_PRE_EXECUTION_DRIFT_REPORT.md` (`GO`, `25/25` tests) and post-execution via `docs/audits/EXP031_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, `0` Blocking, `0` Major).
+- **Confirmatory Verdicts (`N = 47`, Holm-corrected across `{H-ARCH, H-SCALE}`):**
+  - **`H-ARCH` (`full_v5` `66.74%` vs. `P190` `66.60%`):** $\bar{\Delta} = \mathbf{+0.14\text{ pp}}$ `[95% CI: -0.34, +0.61 pp]`, Wilcoxon $p = 0.4037$, $p_{\text{Holm}} = 0.4037$, $d_z = +0.086$, `26W/21L` -> **`NOT SUPPORTED (practically)`** (CI upper bound `+0.61 pp < +0.75 pp`). Architectural novelty/benefit is **not** claimed for `full_v5`.
+  - **`H-SCALE` (Page's $L$-trend across 9 plain widths `W050`..`W250`):** $L = 10938.0$ ($\mu_L = 10575.0$, $\sigma_L = 145.43$), $z = \mathbf{+2.493}$, positive direction, $p_{\text{one-sided}} = 0.00634$, $p_{\text{two-sided}} = 0.01268$, **$p_{\text{Holm, two-sided}} = 0.0254 < 0.05$** -> **`SUPPORTED`**.
+- **Section 9 Backbone Selection (`< 400 KiB` INT8, excluding `V5`):** $m^* = \text{B}$ (`66.61%`). `P190` (`190,940` params, `66.60% ± 6.85%`, `375.16 KiB` INT8) satisfied $\text{gap} = 0.0120\text{ pp} \le \text{SE}_{\text{boot}} = 0.1545\text{ pp}$ as the smallest qualifying eligible plain width (`selected_backbone.json`). BIDSleep estimate is labeled optimistic (design-informed).
+- **Section 10 Downstream Evaluation (`P190` Only):**
+  - **`W0-B` Dynamic INT8:** `375.16 KiB` in-memory (`126,532 / 190,940` quantized), `984.2 MMACs` (`L=1200`), `73.30 ms` 1T / `53.07 ms` 4T CPU latency; OOF FP32 `66.5940%` vs. INT8 `66.6184%`, $\bar{\Delta} = +0.0244\text{ pp}$ `[+0.0017, +0.0480]`, $p = 0.0836$.
+  - **Zero-Shot SleepAccel (`em_off` only):** `qc_clean` (`n = 25`): `61.52%` (`mean_single_model`, `+1.01 pp` vs. `Model A` $p=0.0755$, `-0.25 pp` vs. `full_v5` $p=0.5602$, `+0.44 pp` vs. `SLAMSS-IFS` $p=0.5424$) / `63.42%` (`prob_ensemble`, `+0.48 pp` vs. `Model A` $p=0.2872$, `-0.09 pp` vs. `full_v5` $p=1.0000$, `+0.64 pp` vs. `SLAMSS-IFS` $p=0.7112$). `all` (`N = 31`): `61.77%` / `63.94%`.
+  - **`EXP-020` `FT-2` & Nested `GATE_tau` (`N = 46`):** Per-fold $\tau^*$ (`0.05` Folds 1–2, `0.01` Folds 3–5; `3/46` abstained); `ZS = 66.42%`, `FT-2 = 66.09%` (`-0.33 pp`, $p=0.5882$), `GATE_tau = 66.55%` (`+0.13 pp` vs. `ZS`, $p=0.7720$).
+- **Decision:** Ratify `H-ARCH = NOT SUPPORTED (practically)`, `H-SCALE = SUPPORTED`, and **`P190` (`190,940` params)** as the Section 9 selected plain CNN-BiGRU backbone for `EXP-031`; report `full_v5` strictly as a capacity-matched ablation without architectural novelty claims.
+
 
 
 

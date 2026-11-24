@@ -15,10 +15,10 @@
       "int8_serialized_kib": 105.1572265625,
       "mmacs_L1200": 202.9248,
       "eligible_int8_400kib": true,
-      "cpu_latency_1t_fp32_ms": 54.161020000174176,
-      "cpu_latency_4t_fp32_ms": 41.725630399014335,
-      "cpu_latency_1t_int8_ms": 51.66140820074361,
-      "cpu_latency_4t_int8_ms": 45.83507259958424
+      "cpu_latency_1t_fp32_ms": 46.62248050008202,
+      "cpu_latency_4t_fp32_ms": 39.10204120038543,
+      "cpu_latency_1t_int8_ms": 43.03891910094535,
+      "cpu_latency_4t_int8_ms": 40.89277590101119
     },
     {
       "arm": "W075",
@@ -35,10 +35,10 @@
       "int8_serialized_kib": 202.4072265625,
       "mmacs_L1200": 449.952,
       "eligible_int8_400kib": true,
-      "cpu_latency_1t_fp32_ms": 59.453118199598975,
-      "cpu_latency_4t_fp32_ms": 46.109633799642324,
-      "cpu_latency_1t_int8_ms": 57.40859799989266,
-      "cpu_latency_4t_int8_ms": 46.67266269971151
+      "cpu_latency_1t_fp32_ms": 58.79386250016978,
+      "cpu_latency_4t_fp32_ms": 44.69320969947148,
+      "cpu_latency_1t_int8_ms": 55.36187019897625,
+      "cpu_latency_4t_int8_ms": 46.66166890092427
     },
     {
       "arm": "A",
@@ -55,10 +55,10 @@
       "int8_serialized_kib": 335.7822265625,
       "mmacs_L1200": 794.0544,
       "eligible_int8_400kib": true,
-      "cpu_latency_1t_fp32_ms": 75.57459480012767,
-      "cpu_latency_4t_fp32_ms": 54.74021200061543,
-      "cpu_latency_1t_int8_ms": 79.24669530038955,
-      "cpu_latency_4t_int8_ms": 57.3120946995914
+      "cpu_latency_1t_fp32_ms": 82.56330300064292,
+      "cpu_latency_4t_fp32_ms": 55.82164119987283,
+      "cpu_latency_1t_int8_ms": 77.24084570072591,
+      "cpu_latency_4t_int8_ms": 56.58287539990852
     },
     {
       "arm": "P190",
@@ -75,10 +75,10 @@
       "int8_serialized_kib": 402.9072265625,
       "mmacs_L1200": 984.2304,
       "eligible_int8_400kib": true,
-      "cpu_latency_1t_fp32_ms": 78.15409600007115,
-      "cpu_latency_4t_fp32_ms": 52.6909185005934,
-      "cpu_latency_1t_int8_ms": 74.1977871992276,
-      "cpu_latency_4t_int8_ms": 54.96539629966719
+      "cpu_latency_1t_fp32_ms": 75.79095010005403,
+      "cpu_latency_4t_fp32_ms": 52.52432039997075,
+      "cpu_latency_1t_int8_ms": 71.45785920001799,
+      "cpu_latency_4t_int8_ms": 54.55628719937522
     },
     {
       "arm": "B",
@@ -95,10 +95,10 @@
       "int8_serialized_kib": 395.0322265625,
       "mmacs_L1200": 864.7104,
       "eligible_int8_400kib": true,
-      "cpu_latency_1t_fp32_ms": 73.88846819958417,
-      "cpu_latency_4t_fp32_ms": 53.87723620078759,
-      "cpu_latency_1t_int8_ms": 67.6137779999408,
-      "cpu_latency_4t_int8_ms": 56.303702999139205
+      "cpu_latency_1t_fp32_ms": 71.18585470016114,
+      "cpu_latency_4t_fp32_ms": 51.46089859917993,
+      "cpu_latency_1t_int8_ms": 65.98215250123758,
+      "cpu_latency_4t_int8_ms": 50.943080699653365
     },
     {
       "arm": "W125",
@@ -115,10 +115,10 @@
       "int8_serialized_kib": 507.5322265625,
       "mmacs_L1200": 1235.232,
       "eligible_int8_400kib": false,
-      "cpu_latency_1t_fp32_ms": 87.21110110054724,
-      "cpu_latency_4t_fp32_ms": 57.63046779902652,
-      "cpu_latency_1t_int8_ms": 81.45056360081071,
-      "cpu_latency_4t_int8_ms": 63.51960410102038
+      "cpu_latency_1t_fp32_ms": 86.05341639922699,
+      "cpu_latency_4t_fp32_ms": 56.933132199628744,
+      "cpu_latency_1t_int8_ms": 80.41706209914992,
+      "cpu_latency_4t_int8_ms": 57.13977410050575
     },
     {
       "arm": "W150",
@@ -135,10 +135,10 @@
       "int8_serialized_kib": 714.9072265625,
       "mmacs_L1200": 1773.4848,
       "eligible_int8_400kib": false,
-      "cpu_latency_1t_fp32_ms": 123.94834299921058,
-      "cpu_latency_4t_fp32_ms": 74.75465470051859,
-      "cpu_latency_1t_int8_ms": 117.03266490076203,
-      "cpu_latency_4t_int8_ms": 74.58013130089967
+      "cpu_latency_1t_fp32_ms": 116.04473969928222,
+      "cpu_latency_4t_fp32_ms": 72.55728099989938,
+      "cpu_latency_1t_int8_ms": 111.93270579969976,
+      "cpu_latency_4t_int8_ms": 71.07170789968222
     },
     {
       "arm": "W200",
@@ -155,10 +155,10 @@
       "int8_serialized_kib": 1241.5947265625,
       "mmacs_L1200": 3141.216,
       "eligible_int8_400kib": false,
-      "cpu_latency_1t_fp32_ms": 165.1108829988516,
-      "cpu_latency_4t_fp32_ms": 90.1561156992102,
-      "cpu_latency_1t_int8_ms": 153.47664020082448,
-      "cpu_latency_4t_int8_ms": 87.2333641993464
+      "cpu_latency_1t_fp32_ms": 163.25993799982825,
+      "cpu_latency_4t_fp32_ms": 91.50052610057173,
+      "cpu_latency_1t_int8_ms": 150.90916369954357,
+      "cpu_latency_4t_int8_ms": 86.39200450124918
     },
     {
       "arm": "W250",
@@ -175,10 +175,10 @@
       "int8_serialized_kib": 1916.7197265625,
       "mmacs_L1200": 4897.248,
       "eligible_int8_400kib": false,
-      "cpu_latency_1t_fp32_ms": 215.81556949968217,
-      "cpu_latency_4t_fp32_ms": 116.02526819915511,
-      "cpu_latency_1t_int8_ms": 196.14791229978437,
-      "cpu_latency_4t_int8_ms": 103.83394119999139
+      "cpu_latency_1t_fp32_ms": 211.26386200048728,
+      "cpu_latency_4t_fp32_ms": 115.19693230075063,
+      "cpu_latency_1t_int8_ms": 195.69374089915073,
+      "cpu_latency_4t_int8_ms": 106.26426710077794
     }
   ]
 }
