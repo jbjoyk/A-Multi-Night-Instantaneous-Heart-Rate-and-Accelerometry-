@@ -6226,5 +6226,71 @@
     "seen": 1795545151.205292,
     "ast_hash": "7166fa988e3f3d4bd712e4455e244b50",
     "semantic_hash": ""
+  },
+  "scripts/generate_individual_model_diagrams.py": {
+    "mtime": 1795545368.232883,
+    "seen": 1795545421.457562,
+    "ast_hash": "2998d08bb7a1896f60711b478be8d045",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_full_v5.pdf": {
+    "mtime": 1795545383.255981,
+    "seen": 1795545421.457771,
+    "ast_hash": "873e68de83e9620ef61f4d4a502229df",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_model_a.pdf": {
+    "mtime": 1795545381.7719712,
+    "seen": 1795545421.457772,
+    "ast_hash": "fe1cda622299e249e5de436576c19245",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_official_slamss_ifs.pdf": {
+    "mtime": 1795545382.5359764,
+    "seen": 1795545421.4577727,
+    "ast_hash": "6584d865ba685b7b12bdf698b595b6b0",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_p190.pdf": {
+    "mtime": 1795545384.6179898,
+    "seen": 1795545421.4577732,
+    "ast_hash": "dd697401ab8dd0a944ab6140687d9f7c",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_p1_100k.pdf": {
+    "mtime": 1795545383.9909859,
+    "seen": 1795545421.457774,
+    "ast_hash": "66b66428cb50d624e403120e15603e2a",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_full_v5.png": {
+    "mtime": 1795545383.579983,
+    "seen": 1795545421.4578202,
+    "ast_hash": "89197541d573dfd3f850d345ab42df32",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_model_a.png": {
+    "mtime": 1795545382.0709734,
+    "seen": 1795545421.4578207,
+    "ast_hash": "0ffb4ea366f1ff41ac9b532ddacfc721",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_official_slamss_ifs.png": {
+    "mtime": 1795545382.9089787,
+    "seen": 1795545421.4578214,
+    "ast_hash": "6289eeb561919968bbbc7be501cc0873",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_p190.png": {
+    "mtime": 1795545384.9169917,
+    "seen": 1795545421.4578223,
+    "ast_hash": "8b6037719b61971d100457fce291c804",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_arch_p1_100k.png": {
+    "mtime": 1795545384.2869878,
+    "seen": 1795545421.4578228,
+    "ast_hash": "a74a6133e650ce8118dcad4c86446241",
+    "semantic_hash": ""
   }
 }
