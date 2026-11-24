@@ -1,0 +1,129 @@
+dataset,model,true_stage,pred_stage,count,row_pct
+BIDSleep,Model A,Wake,Wake,41013,62.08
+BIDSleep,Model A,Wake,Light,15209,23.02
+BIDSleep,Model A,Wake,Deep,4377,6.63
+BIDSleep,Model A,Wake,REM,5464,8.27
+BIDSleep,Model A,Light,Wake,14796,5.49
+BIDSleep,Model A,Light,Light,180940,67.1
+BIDSleep,Model A,Light,Deep,33468,12.41
+BIDSleep,Model A,Light,REM,40451,15.0
+BIDSleep,Model A,Deep,Wake,3337,2.89
+BIDSleep,Model A,Deep,Light,25043,21.71
+BIDSleep,Model A,Deep,Deep,83750,72.62
+BIDSleep,Model A,Deep,REM,3202,2.78
+BIDSleep,Model A,REM,Wake,3108,1.96
+BIDSleep,Model A,REM,Light,48586,30.56
+BIDSleep,Model A,REM,Deep,8458,5.32
+BIDSleep,Model A,REM,REM,98812,62.16
+BIDSleep,Official SLAMSS-IFS,Wake,Wake,38578,58.4
+BIDSleep,Official SLAMSS-IFS,Wake,Light,18601,28.16
+BIDSleep,Official SLAMSS-IFS,Wake,Deep,3812,5.77
+BIDSleep,Official SLAMSS-IFS,Wake,REM,5072,7.68
+BIDSleep,Official SLAMSS-IFS,Light,Wake,10095,3.74
+BIDSleep,Official SLAMSS-IFS,Light,Light,196212,72.76
+BIDSleep,Official SLAMSS-IFS,Light,Deep,24066,8.92
+BIDSleep,Official SLAMSS-IFS,Light,REM,39282,14.57
+BIDSleep,Official SLAMSS-IFS,Deep,Wake,1611,1.4
+BIDSleep,Official SLAMSS-IFS,Deep,Light,27905,24.2
+BIDSleep,Official SLAMSS-IFS,Deep,Deep,82952,71.92
+BIDSleep,Official SLAMSS-IFS,Deep,REM,2864,2.48
+BIDSleep,Official SLAMSS-IFS,REM,Wake,1627,1.02
+BIDSleep,Official SLAMSS-IFS,REM,Light,49728,31.28
+BIDSleep,Official SLAMSS-IFS,REM,Deep,4819,3.03
+BIDSleep,Official SLAMSS-IFS,REM,REM,102790,64.66
+BIDSleep,p1_100k,Wake,Wake,40390,61.14
+BIDSleep,p1_100k,Wake,Light,15472,23.42
+BIDSleep,p1_100k,Wake,Deep,3528,5.34
+BIDSleep,p1_100k,Wake,REM,6673,10.1
+BIDSleep,p1_100k,Light,Wake,11648,4.32
+BIDSleep,p1_100k,Light,Light,185619,68.84
+BIDSleep,p1_100k,Light,Deep,24735,9.17
+BIDSleep,p1_100k,Light,REM,47653,17.67
+BIDSleep,p1_100k,Deep,Wake,2480,2.15
+BIDSleep,p1_100k,Deep,Light,29451,25.54
+BIDSleep,p1_100k,Deep,Deep,79403,68.85
+BIDSleep,p1_100k,Deep,REM,3998,3.47
+BIDSleep,p1_100k,REM,Wake,2025,1.27
+BIDSleep,p1_100k,REM,Light,41376,26.03
+BIDSleep,p1_100k,REM,Deep,5698,3.58
+BIDSleep,p1_100k,REM,REM,109865,69.11
+BIDSleep,P190,Wake,Wake,41342,62.58
+BIDSleep,P190,Wake,Light,15423,23.35
+BIDSleep,P190,Wake,Deep,3261,4.94
+BIDSleep,P190,Wake,REM,6037,9.14
+BIDSleep,P190,Light,Wake,12817,4.75
+BIDSleep,P190,Light,Light,187082,69.38
+BIDSleep,P190,Light,Deep,23212,8.61
+BIDSleep,P190,Light,REM,46544,17.26
+BIDSleep,P190,Deep,Wake,2566,2.22
+BIDSleep,P190,Deep,Light,31126,26.99
+BIDSleep,P190,Deep,Deep,77813,67.47
+BIDSleep,P190,Deep,REM,3827,3.32
+BIDSleep,P190,REM,Wake,2109,1.33
+BIDSleep,P190,REM,Light,41789,26.29
+BIDSleep,P190,REM,Deep,5372,3.38
+BIDSleep,P190,REM,REM,109694,69.01
+SleepAccel,Model A,Wake,Wake,13122,46.91
+SleepAccel,Model A,Wake,Light,8022,28.68
+SleepAccel,Model A,Wake,Deep,2314,8.27
+SleepAccel,Model A,Wake,REM,4517,16.15
+SleepAccel,Model A,Light,Wake,5632,2.87
+SleepAccel,Model A,Light,Light,111650,56.95
+SleepAccel,Model A,Light,Deep,37602,19.18
+SleepAccel,Model A,Light,REM,41151,20.99
+SleepAccel,Model A,Deep,Wake,65,0.17
+SleepAccel,Model A,Deep,Light,5641,15.0
+SleepAccel,Model A,Deep,Deep,30891,82.15
+SleepAccel,Model A,Deep,REM,1008,2.68
+SleepAccel,Model A,REM,Wake,300,0.39
+SleepAccel,Model A,REM,Light,8859,11.38
+SleepAccel,Model A,REM,Deep,1394,1.79
+SleepAccel,Model A,REM,REM,67327,86.45
+SleepAccel,Official SLAMSS-IFS,Wake,Wake,11865,42.41
+SleepAccel,Official SLAMSS-IFS,Wake,Light,8977,32.09
+SleepAccel,Official SLAMSS-IFS,Wake,Deep,1958,7.0
+SleepAccel,Official SLAMSS-IFS,Wake,REM,5175,18.5
+SleepAccel,Official SLAMSS-IFS,Light,Wake,4521,2.31
+SleepAccel,Official SLAMSS-IFS,Light,Light,123444,62.97
+SleepAccel,Official SLAMSS-IFS,Light,Deep,32868,16.77
+SleepAccel,Official SLAMSS-IFS,Light,REM,35202,17.96
+SleepAccel,Official SLAMSS-IFS,Deep,Wake,44,0.12
+SleepAccel,Official SLAMSS-IFS,Deep,Light,6387,16.98
+SleepAccel,Official SLAMSS-IFS,Deep,Deep,30170,80.23
+SleepAccel,Official SLAMSS-IFS,Deep,REM,1004,2.67
+SleepAccel,Official SLAMSS-IFS,REM,Wake,599,0.77
+SleepAccel,Official SLAMSS-IFS,REM,Light,12266,15.75
+SleepAccel,Official SLAMSS-IFS,REM,Deep,1525,1.96
+SleepAccel,Official SLAMSS-IFS,REM,REM,63490,81.52
+SleepAccel,p1_100k,Wake,Wake,13324,47.63
+SleepAccel,p1_100k,Wake,Light,8116,29.01
+SleepAccel,p1_100k,Wake,Deep,1968,7.03
+SleepAccel,p1_100k,Wake,REM,4567,16.33
+SleepAccel,p1_100k,Light,Wake,5214,2.66
+SleepAccel,p1_100k,Light,Light,113624,57.96
+SleepAccel,p1_100k,Light,Deep,34777,17.74
+SleepAccel,p1_100k,Light,REM,42420,21.64
+SleepAccel,p1_100k,Deep,Wake,84,0.22
+SleepAccel,p1_100k,Deep,Light,6741,17.93
+SleepAccel,p1_100k,Deep,Deep,29287,77.88
+SleepAccel,p1_100k,Deep,REM,1493,3.97
+SleepAccel,p1_100k,REM,Wake,304,0.39
+SleepAccel,p1_100k,REM,Light,8138,10.45
+SleepAccel,p1_100k,REM,Deep,1128,1.45
+SleepAccel,p1_100k,REM,REM,68310,87.71
+SleepAccel,P190,Wake,Wake,13986,49.99
+SleepAccel,P190,Wake,Light,7584,27.11
+SleepAccel,P190,Wake,Deep,1470,5.25
+SleepAccel,P190,Wake,REM,4935,17.64
+SleepAccel,P190,Light,Wake,6839,3.49
+SleepAccel,P190,Light,Light,116856,59.61
+SleepAccel,P190,Light,Deep,30269,15.44
+SleepAccel,P190,Light,REM,42071,21.46
+SleepAccel,P190,Deep,Wake,172,0.46
+SleepAccel,P190,Deep,Light,7277,19.35
+SleepAccel,P190,Deep,Deep,28899,76.85
+SleepAccel,P190,Deep,REM,1257,3.34
+SleepAccel,P190,REM,Wake,457,0.59
+SleepAccel,P190,REM,Light,8230,10.57
+SleepAccel,P190,REM,Deep,1028,1.32
+SleepAccel,P190,REM,REM,68165,87.53

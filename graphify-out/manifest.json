@@ -6142,5 +6142,89 @@
     "seen": 1795543843.032165,
     "ast_hash": "f6aa0f1d21174ae5f3c21dc2e650b209",
     "semantic_hash": ""
+  },
+  "author_report_bundle/data/confusion_matrices.json": {
+    "mtime": 1795545049.471764,
+    "seen": 1795545151.2042902,
+    "ast_hash": "b0f51f30a0d6412bf9231cbf9896a974",
+    "semantic_hash": ""
+  },
+  "scripts/compute_author_report_confusion_matrices.py": {
+    "mtime": 1795544929.5649393,
+    "seen": 1795545151.2049751,
+    "ast_hash": "f62c028a60690f7def937846c8f93970",
+    "semantic_hash": ""
+  },
+  "scripts/generate_author_report_figures.py": {
+    "mtime": 1795545117.190222,
+    "seen": 1795545151.2049763,
+    "ast_hash": "2ae744819c5029e001bb5b073dab4812",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/MASTER_RESULTS_SUMMARY.md": {
+    "mtime": 1795545057.0788157,
+    "seen": 1795545151.2050345,
+    "ast_hash": "06158cb7d81cbe97a315e5192d631f0e",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_architectures_baseline_vs_proposed.pdf": {
+    "mtime": 1795545124.6822724,
+    "seen": 1795545151.2052336,
+    "ast_hash": "1b348e74f31e5bfd475f6ed5b3b184d0",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_confusion_matrices.pdf": {
+    "mtime": 1795545127.5152915,
+    "seen": 1795545151.2052348,
+    "ast_hash": "73c63006bb3c23e9a3b85a6b829044f6",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_dataset_splits.pdf": {
+    "mtime": 1795545125.6012785,
+    "seen": 1795545151.2052355,
+    "ast_hash": "04c44a710f49def053f4d81af234623b",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_exp030_exp031_pareto.pdf": {
+    "mtime": 1795544902.6960502,
+    "seen": 1795545151.2052362,
+    "ast_hash": "0595bf9aa3b5251882e9602878322e7d",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_latency_memory_comparison.pdf": {
+    "mtime": 1795545126.5282848,
+    "seen": 1795545151.205237,
+    "ast_hash": "b44ca2deb8535cf2346322756e9c5b45",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_architectures_baseline_vs_proposed.png": {
+    "mtime": 1795545125.193276,
+    "seen": 1795545151.2052886,
+    "ast_hash": "5d293cd2849f47803f012998b9951cc5",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_confusion_matrices.png": {
+    "mtime": 1795545128.036295,
+    "seen": 1795545151.2052894,
+    "ast_hash": "772f8c3ecf2a629f24fe38680a19b468",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_dataset_splits.png": {
+    "mtime": 1795545125.9892812,
+    "seen": 1795545151.2052903,
+    "ast_hash": "772b9d2a05209ccf07e8b7bd7f10d40f",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_exp030_exp031_pareto.png": {
+    "mtime": 1795544902.6960993,
+    "seen": 1795545151.205291,
+    "ast_hash": "f6aa0f1d21174ae5f3c21dc2e650b209",
+    "semantic_hash": ""
+  },
+  "author_report_bundle/fig_latency_memory_comparison.png": {
+    "mtime": 1795545126.9052873,
+    "seen": 1795545151.205292,
+    "ast_hash": "7166fa988e3f3d4bd712e4455e244b50",
+    "semantic_hash": ""
   }
 }
