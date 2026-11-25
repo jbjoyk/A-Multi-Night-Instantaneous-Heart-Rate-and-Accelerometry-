@@ -1,0 +1,7 @@
+model,em_mode,qc_clean_n25_single_f1_pct,qc_clean_n25_ensemble_f1_pct,all_n31_single_f1_pct,all_n31_ensemble_f1_pct
+"Model A (163,940p)",em_off,60.51,62.94,60.65,62.94
+"Official SLAMSS-IFS (5,465,768p)",em_off,61.08,62.79,62.27,64.14
+"full_v5 (190,788p)",em_off,61.78,63.51,,
+"full_v5 (190,788p)",em_on (DampedEMCalibrator),59.73,61.3,,
+"p1_100k (98,940p)",em_off,60.88,62.51,61.1,62.51
+"P190 (190,940p)",em_off,61.52,63.42,61.77,63.94

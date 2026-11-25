@@ -1,0 +1,1846 @@
+{
+  "Model A": {
+    "name": "Model A",
+    "class": "ConventionalCNNBiGRU",
+    "total_params": 163940,
+    "output_shape": "(1, 1200, 4)",
+    "children": [
+      {
+        "name": "hr_encoder",
+        "type": "HREncoder",
+        "params": 29568,
+        "pct_of_total": 18.04,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 64)"
+      },
+      {
+        "name": "acc_encoder",
+        "type": "ACCEncoder",
+        "params": 29568,
+        "pct_of_total": 18.04,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 64)"
+      },
+      {
+        "name": "meta_proj",
+        "type": "Sequential",
+        "params": 96,
+        "pct_of_total": 0.06,
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)"
+      },
+      {
+        "name": "temporal_gru",
+        "type": "GRU",
+        "params": 97920,
+        "pct_of_total": 59.73,
+        "in_shape": "Packed((1200, 144))",
+        "out_shape": "Packed((1200, 96)); (4, 1, 48)"
+      },
+      {
+        "name": "temp_norm",
+        "type": "LayerNorm",
+        "params": 192,
+        "pct_of_total": 0.12,
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 96)"
+      },
+      {
+        "name": "classifier_head",
+        "type": "Sequential",
+        "params": 6596,
+        "pct_of_total": 4.02,
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 4)"
+      }
+    ],
+    "modules": {
+      "hr_encoder.net.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 192,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.1": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 64,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.2": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.3": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.net.4.conv": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 10304,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.4.gn": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.4.act": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.4.res": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 2112,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.4": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 12544,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.net.5": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.net.6.conv": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12352,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.6.gn": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.6.act": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.6.res": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "hr_encoder.net.6": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12480,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.net.7": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "hr_encoder.net.8": {
+        "in_shape": "(1200, 64, 1)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "hr_encoder.net": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 25280,
+        "type": "Sequential"
+      },
+      "hr_encoder.proj": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 4160,
+        "type": "Linear"
+      },
+      "hr_encoder.norm": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 128,
+        "type": "LayerNorm"
+      },
+      "hr_encoder": {
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 29568,
+        "type": "HREncoder"
+      },
+      "acc_encoder.net.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 192,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.1": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 64,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.2": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.3": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.net.4.conv": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 10304,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.4.gn": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.4.act": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.4.res": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 2112,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.4": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 12544,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.net.5": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.net.6.conv": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12352,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.6.gn": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.6.act": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.6.res": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "acc_encoder.net.6": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12480,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.net.7": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "acc_encoder.net.8": {
+        "in_shape": "(1200, 64, 1)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "acc_encoder.net": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 25280,
+        "type": "Sequential"
+      },
+      "acc_encoder.proj": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 4160,
+        "type": "Linear"
+      },
+      "acc_encoder.norm": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 128,
+        "type": "LayerNorm"
+      },
+      "acc_encoder": {
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 29568,
+        "type": "ACCEncoder"
+      },
+      "meta_proj.0": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Linear"
+      },
+      "meta_proj.1": {
+        "in_shape": "(1, 1200, 16)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "meta_proj": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Sequential"
+      },
+      "temporal_gru": {
+        "in_shape": "Packed((1200, 144))",
+        "out_shape": "Packed((1200, 96)); (4, 1, 48)",
+        "params": 97920,
+        "type": "GRU"
+      },
+      "temp_norm": {
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 96)",
+        "params": 192,
+        "type": "LayerNorm"
+      },
+      "classifier_head.0": {
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 6208,
+        "type": "Linear"
+      },
+      "classifier_head.1": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 128,
+        "type": "LayerNorm"
+      },
+      "classifier_head.2": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "classifier_head.3": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "classifier_head.4": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 260,
+        "type": "Linear"
+      },
+      "classifier_head": {
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 6596,
+        "type": "Sequential"
+      }
+    }
+  },
+  "Official SLAMSS-IFS": {
+    "name": "Official SLAMSS-IFS",
+    "class": "OfficialSLAMSSIFSWrapper",
+    "total_params": 5465768,
+    "output_shape": "(1, 1200, 4)",
+    "children": [
+      {
+        "name": "cnn",
+        "type": "CNN",
+        "params": 5166272,
+        "pct_of_total": 94.52,
+        "in_shape": "(1, 36000, 2)",
+        "out_shape": "(1, 1200, 517)"
+      },
+      {
+        "name": "s2s",
+        "type": "Seq2Seq",
+        "params": 299496,
+        "pct_of_total": 5.48,
+        "in_shape": "(1, 1200, 517)",
+        "out_shape": "(1, 1200, 4)"
+      }
+    ],
+    "modules": {
+      "cnn.cnn.0": {
+        "in_shape": "(1, 2, 36000)",
+        "out_shape": "(1, 128, 36000)",
+        "params": 1408,
+        "type": "Conv1d"
+      },
+      "cnn.cnn.1": {
+        "in_shape": "(1, 128, 36000)",
+        "out_shape": "(1, 128, 36000)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn.2": {
+        "in_shape": "(1, 128, 36000)",
+        "out_shape": "(1, 128, 6000)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "cnn.cnn.3": {
+        "in_shape": "(1, 128, 6000)",
+        "out_shape": "(1, 128, 6000)",
+        "params": 82048,
+        "type": "Conv1d"
+      },
+      "cnn.cnn.4": {
+        "in_shape": "(1, 128, 6000)",
+        "out_shape": "(1, 128, 6000)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn.5": {
+        "in_shape": "(1, 128, 6000)",
+        "out_shape": "(1, 128, 6000)",
+        "params": 82048,
+        "type": "Conv1d"
+      },
+      "cnn.cnn.6": {
+        "in_shape": "(1, 128, 6000)",
+        "out_shape": "(1, 128, 6000)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn.7": {
+        "in_shape": "(1, 128, 6000)",
+        "out_shape": "(1, 128, 1200)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "cnn.cnn.8": {
+        "in_shape": "(1, 128, 1200)",
+        "out_shape": "(1, 128, 1200)",
+        "params": 82048,
+        "type": "Conv1d"
+      },
+      "cnn.cnn.9": {
+        "in_shape": "(1, 128, 1200)",
+        "out_shape": "(1, 128, 1200)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn.10": {
+        "in_shape": "(1, 128, 1200)",
+        "out_shape": "(1, 128, 1200)",
+        "params": 82048,
+        "type": "Conv1d"
+      },
+      "cnn.cnn.11": {
+        "in_shape": "(1, 128, 1200)",
+        "out_shape": "(1, 128, 1200)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "cnn.cnn": {
+        "in_shape": "(1, 2, 36000)",
+        "out_shape": "(1, 128, 1200)",
+        "params": 329600,
+        "type": "Sequential"
+      },
+      "cnn.rnn": {
+        "in_shape": "(1, 36000, 2)",
+        "out_shape": "(1, 36000, 128); (6, 1, 64)",
+        "params": 175104,
+        "type": "GRU"
+      },
+      "cnn.cnn_ACT.0": {
+        "in_shape": "(1, 5, 1200)",
+        "out_shape": "(1, 16, 1200)",
+        "params": 736,
+        "type": "Conv1d"
+      },
+      "cnn.cnn_ACT.1": {
+        "in_shape": "(1, 16, 1200)",
+        "out_shape": "(1, 16, 1200)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn_ACT.2": {
+        "in_shape": "(1, 16, 1200)",
+        "out_shape": "(1, 32, 1200)",
+        "params": 4640,
+        "type": "Conv1d"
+      },
+      "cnn.cnn_ACT.3": {
+        "in_shape": "(1, 32, 1200)",
+        "out_shape": "(1, 32, 1200)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn_ACT.4": {
+        "in_shape": "(1, 32, 1200)",
+        "out_shape": "(1, 64, 1200)",
+        "params": 18496,
+        "type": "Conv1d"
+      },
+      "cnn.cnn_ACT.5": {
+        "in_shape": "(1, 64, 1200)",
+        "out_shape": "(1, 64, 1200)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "cnn.cnn_ACT": {
+        "in_shape": "(1, 5, 1200)",
+        "out_shape": "(1, 64, 1200)",
+        "params": 23872,
+        "type": "Sequential"
+      },
+      "cnn.cnn3.0": {
+        "in_shape": "(1, 320, 1200)",
+        "out_shape": "(1, 256, 1200)",
+        "params": 901376,
+        "type": "Conv1d"
+      },
+      "cnn.cnn3.1": {
+        "in_shape": "(1, 256, 1200)",
+        "out_shape": "(1, 256, 1200)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn3.2": {
+        "in_shape": "(1, 256, 1200)",
+        "out_shape": "(1, 256, 1200)",
+        "params": 983296,
+        "type": "Conv1d"
+      },
+      "cnn.cnn3.3": {
+        "in_shape": "(1, 256, 1200)",
+        "out_shape": "(1, 256, 1200)",
+        "params": 0,
+        "type": "LeakyReLU"
+      },
+      "cnn.cnn3.4": {
+        "in_shape": "(1, 256, 1200)",
+        "out_shape": "(1, 512, 1200)",
+        "params": 2753024,
+        "type": "Conv1d"
+      },
+      "cnn.cnn3.5": {
+        "in_shape": "(1, 512, 1200)",
+        "out_shape": "(1, 512, 1200)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "cnn.cnn3": {
+        "in_shape": "(1, 320, 1200)",
+        "out_shape": "(1, 512, 1200)",
+        "params": 4637696,
+        "type": "Sequential"
+      },
+      "cnn": {
+        "in_shape": "(1, 36000, 2)",
+        "out_shape": "(1, 1200, 517)",
+        "params": 5166272,
+        "type": "CNN"
+      },
+      "s2s.encoder.rnn": {
+        "in_shape": "(1, 1200, 517)",
+        "out_shape": "(1, 1200, 96); (1, 1, 96)",
+        "params": 177120,
+        "type": "GRU"
+      },
+      "s2s.encoder.fc.0": {
+        "in_shape": "(1, 96)",
+        "out_shape": "(1, 96)",
+        "params": 9312,
+        "type": "Linear"
+      },
+      "s2s.encoder.fc": {
+        "in_shape": "(1, 96)",
+        "out_shape": "(1, 96)",
+        "params": 9312,
+        "type": "Sequential"
+      },
+      "s2s.encoder": {
+        "in_shape": "(1, 1200, 517)",
+        "out_shape": "(1, 1200, 96); (1, 96)",
+        "params": 186432,
+        "type": "Encoder"
+      },
+      "s2s.rnn.rnn": {
+        "in_shape": "(1, 30, 2)",
+        "out_shape": "(1, 30, 64); (4, 1, 32)",
+        "params": 25728,
+        "type": "GRU"
+      },
+      "s2s.rnn.fc.0": {
+        "in_shape": "(1, 64)",
+        "out_shape": "(1, 128)",
+        "params": 8320,
+        "type": "Linear"
+      },
+      "s2s.rnn.fc": {
+        "in_shape": "(1, 64)",
+        "out_shape": "(1, 128)",
+        "params": 8320,
+        "type": "Sequential"
+      },
+      "s2s.rnn": {
+        "in_shape": "(1, 30, 2)",
+        "out_shape": "(1, 30, 64); (1, 128)",
+        "params": 34048,
+        "type": "Encode_micro"
+      },
+      "s2s.decoder.attention.attn": {
+        "in_shape": "(1, 1200, 192)",
+        "out_shape": "(1, 1200, 96)",
+        "params": 18528,
+        "type": "Linear"
+      },
+      "s2s.decoder.attention": {
+        "in_shape": "(1, 96)",
+        "out_shape": "(1, 1200)",
+        "params": 18624,
+        "type": "Attention"
+      },
+      "s2s.decoder.rnn": {
+        "in_shape": "(1, 1, 100)",
+        "out_shape": "(1, 1, 96); (1, 1, 96)",
+        "params": 57024,
+        "type": "GRU"
+      },
+      "s2s.decoder.out.0": {
+        "in_shape": "(1, 1, 841)",
+        "out_shape": "(1, 1, 4)",
+        "params": 3368,
+        "type": "Linear"
+      },
+      "s2s.decoder.out": {
+        "in_shape": "(1, 1, 841)",
+        "out_shape": "(1, 1, 4)",
+        "params": 3368,
+        "type": "Sequential"
+      },
+      "s2s.decoder": {
+        "in_shape": "(1, 4)",
+        "out_shape": "(1, 1, 4); (1, 96)",
+        "params": 79016,
+        "type": "Decoder"
+      },
+      "s2s": {
+        "in_shape": "(1, 1200, 517)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 299496,
+        "type": "Seq2Seq"
+      }
+    }
+  },
+  "full_v5": {
+    "name": "full_v5",
+    "class": "UltradianPyramidalCoupler",
+    "total_params": 190788,
+    "output_shape": "(1, 1200, 4)",
+    "children": [
+      {
+        "name": "hr_encoder",
+        "type": "PrePoolEncoder",
+        "params": 29568,
+        "pct_of_total": 15.5,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1200, 64, 7)"
+      },
+      {
+        "name": "acc_encoder",
+        "type": "PrePoolEncoder",
+        "params": 29568,
+        "pct_of_total": 15.5,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1200, 64, 7)"
+      },
+      {
+        "name": "meta_proj",
+        "type": "Sequential",
+        "params": 96,
+        "pct_of_total": 0.05,
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)"
+      },
+      {
+        "name": "intra_film",
+        "type": "IntraEpochFiLM",
+        "params": 8320,
+        "pct_of_total": 4.36,
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)"
+      },
+      {
+        "name": "fine_gru",
+        "type": "GRU",
+        "params": 55872,
+        "pct_of_total": 29.28,
+        "in_shape": "Packed((1200, 144))",
+        "out_shape": "Packed((1200, 96)); (2, 1, 48)"
+      },
+      {
+        "name": "mask_pool",
+        "type": "MaskWeightedPool1d",
+        "params": 0,
+        "pct_of_total": 0.0,
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 300, 96)"
+      },
+      {
+        "name": "coarse_gru",
+        "type": "GRU",
+        "params": 42048,
+        "pct_of_total": 22.04,
+        "in_shape": "Packed((300, 96))",
+        "out_shape": "Packed((300, 96)); (2, 1, 48)"
+      },
+      {
+        "name": "fusion_proj",
+        "type": "Linear",
+        "params": 18528,
+        "pct_of_total": 9.71,
+        "in_shape": "(1, 1200, 192)",
+        "out_shape": "(1, 1200, 96)"
+      },
+      {
+        "name": "temp_norm",
+        "type": "LayerNorm",
+        "params": 192,
+        "pct_of_total": 0.1,
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 96)"
+      },
+      {
+        "name": "classifier_head",
+        "type": "Sequential",
+        "params": 6596,
+        "pct_of_total": 3.46,
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 4)"
+      }
+    ],
+    "modules": {
+      "hr_encoder.prepool.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 192,
+        "type": "Conv1d"
+      },
+      "hr_encoder.prepool.1": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 64,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.prepool.2": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.prepool.3": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.prepool.4.conv": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 10304,
+        "type": "Conv1d"
+      },
+      "hr_encoder.prepool.4.gn": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.prepool.4.act": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.prepool.4.res": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 2112,
+        "type": "Conv1d"
+      },
+      "hr_encoder.prepool.4": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 12544,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.prepool.5": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.prepool.6.conv": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12352,
+        "type": "Conv1d"
+      },
+      "hr_encoder.prepool.6.gn": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.prepool.6.act": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.prepool.6.res": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "hr_encoder.prepool.6": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12480,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.prepool": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 25280,
+        "type": "Sequential"
+      },
+      "acc_encoder.prepool.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 192,
+        "type": "Conv1d"
+      },
+      "acc_encoder.prepool.1": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 64,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.prepool.2": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.prepool.3": {
+        "in_shape": "(1200, 32, 30)",
+        "out_shape": "(1200, 32, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.prepool.4.conv": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 10304,
+        "type": "Conv1d"
+      },
+      "acc_encoder.prepool.4.gn": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.prepool.4.act": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.prepool.4.res": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 2112,
+        "type": "Conv1d"
+      },
+      "acc_encoder.prepool.4": {
+        "in_shape": "(1200, 32, 15)",
+        "out_shape": "(1200, 64, 15)",
+        "params": 12544,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.prepool.5": {
+        "in_shape": "(1200, 64, 15)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.prepool.6.conv": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12352,
+        "type": "Conv1d"
+      },
+      "acc_encoder.prepool.6.gn": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 128,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.prepool.6.act": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.prepool.6.res": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "acc_encoder.prepool.6": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 12480,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.prepool": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 25280,
+        "type": "Sequential"
+      },
+      "intra_film.film_proj": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 128, 7)",
+        "params": 8320,
+        "type": "Conv1d"
+      },
+      "intra_film": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 7)",
+        "params": 8320,
+        "type": "IntraEpochFiLM"
+      },
+      "hr_encoder.pool": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "hr_encoder.dropout": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "hr_encoder.proj": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 4160,
+        "type": "Linear"
+      },
+      "hr_encoder.norm": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 128,
+        "type": "LayerNorm"
+      },
+      "acc_encoder.pool": {
+        "in_shape": "(1200, 64, 7)",
+        "out_shape": "(1200, 64, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "acc_encoder.dropout": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "acc_encoder.proj": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 4160,
+        "type": "Linear"
+      },
+      "acc_encoder.norm": {
+        "in_shape": "(1200, 64)",
+        "out_shape": "(1200, 64)",
+        "params": 128,
+        "type": "LayerNorm"
+      },
+      "meta_proj.0": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Linear"
+      },
+      "meta_proj.1": {
+        "in_shape": "(1, 1200, 16)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "meta_proj": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Sequential"
+      },
+      "fine_gru": {
+        "in_shape": "Packed((1200, 144))",
+        "out_shape": "Packed((1200, 96)); (2, 1, 48)",
+        "params": 55872,
+        "type": "GRU"
+      },
+      "mask_pool": {
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 300, 96)",
+        "params": 0,
+        "type": "MaskWeightedPool1d"
+      },
+      "coarse_gru": {
+        "in_shape": "Packed((300, 96))",
+        "out_shape": "Packed((300, 96)); (2, 1, 48)",
+        "params": 42048,
+        "type": "GRU"
+      },
+      "fusion_proj": {
+        "in_shape": "(1, 1200, 192)",
+        "out_shape": "(1, 1200, 96)",
+        "params": 18528,
+        "type": "Linear"
+      },
+      "temp_norm": {
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 96)",
+        "params": 192,
+        "type": "LayerNorm"
+      },
+      "classifier_head.0": {
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 6208,
+        "type": "Linear"
+      },
+      "classifier_head.1": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 128,
+        "type": "LayerNorm"
+      },
+      "classifier_head.2": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "classifier_head.3": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "classifier_head.4": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 260,
+        "type": "Linear"
+      },
+      "classifier_head": {
+        "in_shape": "(1, 1200, 96)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 6596,
+        "type": "Sequential"
+      }
+    }
+  },
+  "p1_100k": {
+    "name": "p1_100k",
+    "class": "ScaledConventionalCNNBiGRU",
+    "total_params": 98940,
+    "output_shape": "(1, 1200, 4)",
+    "children": [
+      {
+        "name": "hr_encoder",
+        "type": "ScaledModalityEncoder",
+        "params": 16800,
+        "pct_of_total": 16.98,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 48)"
+      },
+      {
+        "name": "acc_encoder",
+        "type": "ScaledModalityEncoder",
+        "params": 16800,
+        "pct_of_total": 16.98,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 48)"
+      },
+      {
+        "name": "meta_proj",
+        "type": "Sequential",
+        "params": 96,
+        "pct_of_total": 0.1,
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)"
+      },
+      {
+        "name": "temporal_gru",
+        "type": "GRU",
+        "params": 61104,
+        "pct_of_total": 61.76,
+        "in_shape": "Packed((1200, 112))",
+        "out_shape": "Packed((1200, 76)); (4, 1, 38)"
+      },
+      {
+        "name": "temp_norm",
+        "type": "LayerNorm",
+        "params": 152,
+        "pct_of_total": 0.15,
+        "in_shape": "(1, 1200, 76)",
+        "out_shape": "(1, 1200, 76)"
+      },
+      {
+        "name": "classifier_head",
+        "type": "Sequential",
+        "params": 3988,
+        "pct_of_total": 4.03,
+        "in_shape": "(1, 1200, 76)",
+        "out_shape": "(1, 1200, 4)"
+      }
+    ],
+    "modules": {
+      "hr_encoder.net.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 24, 30)",
+        "params": 144,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.1": {
+        "in_shape": "(1200, 24, 30)",
+        "out_shape": "(1200, 24, 30)",
+        "params": 48,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.2": {
+        "in_shape": "(1200, 24, 30)",
+        "out_shape": "(1200, 24, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.3": {
+        "in_shape": "(1200, 24, 30)",
+        "out_shape": "(1200, 24, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.net.4.conv": {
+        "in_shape": "(1200, 24, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 5808,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.4.gn": {
+        "in_shape": "(1200, 48, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 96,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.4.act": {
+        "in_shape": "(1200, 48, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.4.res": {
+        "in_shape": "(1200, 24, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 1200,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.4": {
+        "in_shape": "(1200, 24, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 7104,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.net.5": {
+        "in_shape": "(1200, 48, 15)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.net.6.conv": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 6960,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.6.gn": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 96,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.6.act": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.6.res": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "hr_encoder.net.6": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 7056,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.net.7": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "hr_encoder.net.8": {
+        "in_shape": "(1200, 48, 1)",
+        "out_shape": "(1200, 48, 1)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "hr_encoder.net": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 48, 1)",
+        "params": 14352,
+        "type": "Sequential"
+      },
+      "hr_encoder.proj": {
+        "in_shape": "(1200, 48)",
+        "out_shape": "(1200, 48)",
+        "params": 2352,
+        "type": "Linear"
+      },
+      "hr_encoder.norm": {
+        "in_shape": "(1200, 48)",
+        "out_shape": "(1200, 48)",
+        "params": 96,
+        "type": "LayerNorm"
+      },
+      "hr_encoder": {
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 48)",
+        "params": 16800,
+        "type": "ScaledModalityEncoder"
+      },
+      "acc_encoder.net.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 24, 30)",
+        "params": 144,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.1": {
+        "in_shape": "(1200, 24, 30)",
+        "out_shape": "(1200, 24, 30)",
+        "params": 48,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.2": {
+        "in_shape": "(1200, 24, 30)",
+        "out_shape": "(1200, 24, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.3": {
+        "in_shape": "(1200, 24, 30)",
+        "out_shape": "(1200, 24, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.net.4.conv": {
+        "in_shape": "(1200, 24, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 5808,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.4.gn": {
+        "in_shape": "(1200, 48, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 96,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.4.act": {
+        "in_shape": "(1200, 48, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.4.res": {
+        "in_shape": "(1200, 24, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 1200,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.4": {
+        "in_shape": "(1200, 24, 15)",
+        "out_shape": "(1200, 48, 15)",
+        "params": 7104,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.net.5": {
+        "in_shape": "(1200, 48, 15)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.net.6.conv": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 6960,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.6.gn": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 96,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.6.act": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.6.res": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "acc_encoder.net.6": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 7)",
+        "params": 7056,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.net.7": {
+        "in_shape": "(1200, 48, 7)",
+        "out_shape": "(1200, 48, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "acc_encoder.net.8": {
+        "in_shape": "(1200, 48, 1)",
+        "out_shape": "(1200, 48, 1)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "acc_encoder.net": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 48, 1)",
+        "params": 14352,
+        "type": "Sequential"
+      },
+      "acc_encoder.proj": {
+        "in_shape": "(1200, 48)",
+        "out_shape": "(1200, 48)",
+        "params": 2352,
+        "type": "Linear"
+      },
+      "acc_encoder.norm": {
+        "in_shape": "(1200, 48)",
+        "out_shape": "(1200, 48)",
+        "params": 96,
+        "type": "LayerNorm"
+      },
+      "acc_encoder": {
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 48)",
+        "params": 16800,
+        "type": "ScaledModalityEncoder"
+      },
+      "meta_proj.0": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Linear"
+      },
+      "meta_proj.1": {
+        "in_shape": "(1, 1200, 16)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "meta_proj": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Sequential"
+      },
+      "temporal_gru": {
+        "in_shape": "Packed((1200, 112))",
+        "out_shape": "Packed((1200, 76)); (4, 1, 38)",
+        "params": 61104,
+        "type": "GRU"
+      },
+      "temp_norm": {
+        "in_shape": "(1, 1200, 76)",
+        "out_shape": "(1, 1200, 76)",
+        "params": 152,
+        "type": "LayerNorm"
+      },
+      "classifier_head.0": {
+        "in_shape": "(1, 1200, 76)",
+        "out_shape": "(1, 1200, 48)",
+        "params": 3696,
+        "type": "Linear"
+      },
+      "classifier_head.1": {
+        "in_shape": "(1, 1200, 48)",
+        "out_shape": "(1, 1200, 48)",
+        "params": 96,
+        "type": "LayerNorm"
+      },
+      "classifier_head.2": {
+        "in_shape": "(1, 1200, 48)",
+        "out_shape": "(1, 1200, 48)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "classifier_head.3": {
+        "in_shape": "(1, 1200, 48)",
+        "out_shape": "(1, 1200, 48)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "classifier_head.4": {
+        "in_shape": "(1, 1200, 48)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 196,
+        "type": "Linear"
+      },
+      "classifier_head": {
+        "in_shape": "(1, 1200, 76)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 3988,
+        "type": "Sequential"
+      }
+    }
+  },
+  "P190": {
+    "name": "P190",
+    "class": "ScaledConventionalCNNBiGRU",
+    "total_params": 190940,
+    "output_shape": "(1, 1200, 4)",
+    "children": [
+      {
+        "name": "hr_encoder",
+        "type": "ScaledModalityEncoder",
+        "params": 37296,
+        "pct_of_total": 19.53,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 72)"
+      },
+      {
+        "name": "acc_encoder",
+        "type": "ScaledModalityEncoder",
+        "params": 37296,
+        "pct_of_total": 19.53,
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 72)"
+      },
+      {
+        "name": "meta_proj",
+        "type": "Sequential",
+        "params": 96,
+        "pct_of_total": 0.05,
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)"
+      },
+      {
+        "name": "temporal_gru",
+        "type": "GRU",
+        "params": 109200,
+        "pct_of_total": 57.19,
+        "in_shape": "Packed((1200, 160))",
+        "out_shape": "Packed((1200, 100)); (4, 1, 50)"
+      },
+      {
+        "name": "temp_norm",
+        "type": "LayerNorm",
+        "params": 200,
+        "pct_of_total": 0.1,
+        "in_shape": "(1, 1200, 100)",
+        "out_shape": "(1, 1200, 100)"
+      },
+      {
+        "name": "classifier_head",
+        "type": "Sequential",
+        "params": 6852,
+        "pct_of_total": 3.59,
+        "in_shape": "(1, 1200, 100)",
+        "out_shape": "(1, 1200, 4)"
+      }
+    ],
+    "modules": {
+      "hr_encoder.net.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 36, 30)",
+        "params": 216,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.1": {
+        "in_shape": "(1200, 36, 30)",
+        "out_shape": "(1200, 36, 30)",
+        "params": 72,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.2": {
+        "in_shape": "(1200, 36, 30)",
+        "out_shape": "(1200, 36, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.3": {
+        "in_shape": "(1200, 36, 30)",
+        "out_shape": "(1200, 36, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.net.4.conv": {
+        "in_shape": "(1200, 36, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 13032,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.4.gn": {
+        "in_shape": "(1200, 72, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 144,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.4.act": {
+        "in_shape": "(1200, 72, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.4.res": {
+        "in_shape": "(1200, 36, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 2664,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.4": {
+        "in_shape": "(1200, 36, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 15840,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.net.5": {
+        "in_shape": "(1200, 72, 15)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "hr_encoder.net.6.conv": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 15624,
+        "type": "Conv1d"
+      },
+      "hr_encoder.net.6.gn": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 144,
+        "type": "GroupNorm"
+      },
+      "hr_encoder.net.6.act": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "hr_encoder.net.6.res": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "hr_encoder.net.6": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 15768,
+        "type": "TemporalConvBlock"
+      },
+      "hr_encoder.net.7": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "hr_encoder.net.8": {
+        "in_shape": "(1200, 72, 1)",
+        "out_shape": "(1200, 72, 1)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "hr_encoder.net": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 72, 1)",
+        "params": 31896,
+        "type": "Sequential"
+      },
+      "hr_encoder.proj": {
+        "in_shape": "(1200, 72)",
+        "out_shape": "(1200, 72)",
+        "params": 5256,
+        "type": "Linear"
+      },
+      "hr_encoder.norm": {
+        "in_shape": "(1200, 72)",
+        "out_shape": "(1200, 72)",
+        "params": 144,
+        "type": "LayerNorm"
+      },
+      "hr_encoder": {
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 72)",
+        "params": 37296,
+        "type": "ScaledModalityEncoder"
+      },
+      "acc_encoder.net.0": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 36, 30)",
+        "params": 216,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.1": {
+        "in_shape": "(1200, 36, 30)",
+        "out_shape": "(1200, 36, 30)",
+        "params": 72,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.2": {
+        "in_shape": "(1200, 36, 30)",
+        "out_shape": "(1200, 36, 30)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.3": {
+        "in_shape": "(1200, 36, 30)",
+        "out_shape": "(1200, 36, 15)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.net.4.conv": {
+        "in_shape": "(1200, 36, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 13032,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.4.gn": {
+        "in_shape": "(1200, 72, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 144,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.4.act": {
+        "in_shape": "(1200, 72, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.4.res": {
+        "in_shape": "(1200, 36, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 2664,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.4": {
+        "in_shape": "(1200, 36, 15)",
+        "out_shape": "(1200, 72, 15)",
+        "params": 15840,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.net.5": {
+        "in_shape": "(1200, 72, 15)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 0,
+        "type": "MaxPool1d"
+      },
+      "acc_encoder.net.6.conv": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 15624,
+        "type": "Conv1d"
+      },
+      "acc_encoder.net.6.gn": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 144,
+        "type": "GroupNorm"
+      },
+      "acc_encoder.net.6.act": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "acc_encoder.net.6.res": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 0,
+        "type": "Identity"
+      },
+      "acc_encoder.net.6": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 7)",
+        "params": 15768,
+        "type": "TemporalConvBlock"
+      },
+      "acc_encoder.net.7": {
+        "in_shape": "(1200, 72, 7)",
+        "out_shape": "(1200, 72, 1)",
+        "params": 0,
+        "type": "AdaptiveAvgPool1d"
+      },
+      "acc_encoder.net.8": {
+        "in_shape": "(1200, 72, 1)",
+        "out_shape": "(1200, 72, 1)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "acc_encoder.net": {
+        "in_shape": "(1200, 1, 30)",
+        "out_shape": "(1200, 72, 1)",
+        "params": 31896,
+        "type": "Sequential"
+      },
+      "acc_encoder.proj": {
+        "in_shape": "(1200, 72)",
+        "out_shape": "(1200, 72)",
+        "params": 5256,
+        "type": "Linear"
+      },
+      "acc_encoder.norm": {
+        "in_shape": "(1200, 72)",
+        "out_shape": "(1200, 72)",
+        "params": 144,
+        "type": "LayerNorm"
+      },
+      "acc_encoder": {
+        "in_shape": "(1, 1200, 30)",
+        "out_shape": "(1, 1200, 72)",
+        "params": 37296,
+        "type": "ScaledModalityEncoder"
+      },
+      "meta_proj.0": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Linear"
+      },
+      "meta_proj.1": {
+        "in_shape": "(1, 1200, 16)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "meta_proj": {
+        "in_shape": "(1, 1200, 5)",
+        "out_shape": "(1, 1200, 16)",
+        "params": 96,
+        "type": "Sequential"
+      },
+      "temporal_gru": {
+        "in_shape": "Packed((1200, 160))",
+        "out_shape": "Packed((1200, 100)); (4, 1, 50)",
+        "params": 109200,
+        "type": "GRU"
+      },
+      "temp_norm": {
+        "in_shape": "(1, 1200, 100)",
+        "out_shape": "(1, 1200, 100)",
+        "params": 200,
+        "type": "LayerNorm"
+      },
+      "classifier_head.0": {
+        "in_shape": "(1, 1200, 100)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 6464,
+        "type": "Linear"
+      },
+      "classifier_head.1": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 128,
+        "type": "LayerNorm"
+      },
+      "classifier_head.2": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 0,
+        "type": "GELU"
+      },
+      "classifier_head.3": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 64)",
+        "params": 0,
+        "type": "Dropout"
+      },
+      "classifier_head.4": {
+        "in_shape": "(1, 1200, 64)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 260,
+        "type": "Linear"
+      },
+      "classifier_head": {
+        "in_shape": "(1, 1200, 100)",
+        "out_shape": "(1, 1200, 4)",
+        "params": 6852,
+        "type": "Sequential"
+      }
+    }
+  }
+}

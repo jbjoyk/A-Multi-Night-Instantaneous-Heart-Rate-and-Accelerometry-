@@ -1,0 +1,16 @@
+fold,role,subjects,nights
+1,inner_train,32,168
+1,inner_val,5,24
+1,outer_test,10,54
+2,inner_train,32,168
+2,inner_val,5,25
+2,outer_test,10,53
+3,inner_train,33,175
+3,inner_val,5,26
+3,outer_test,9,45
+4,inner_train,33,174
+4,inner_val,5,25
+4,outer_test,9,47
+5,inner_train,33,171
+5,inner_val,5,28
+5,outer_test,9,47
