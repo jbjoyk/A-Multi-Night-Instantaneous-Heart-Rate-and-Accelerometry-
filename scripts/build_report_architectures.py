@@ -422,8 +422,9 @@ def render_slamss_card(ax, spec: Dict[str, Any]) -> None:
     arrow(ax, 0.50, 0.70, 0.50, 0.60)
     arrow(ax, 0.81, 0.70, 0.65, 0.60)
 
+    cnn3_pct = 100.0 * c_cnn3_p / spec["total_params"]
     draw_box(ax, 0.08, 0.45, 0.84, 0.15,
-             f"Multi-Scale Fusion cnn.cnn3 ({c_cnn3_p:,}p | 86.0% of model) | CNN total: {cnn_p:,}p",
+             f"Multi-Scale Fusion cnn.cnn3 ({c_cnn3_p:,}p | {cnn3_pct:.1f}% of model) | CNN total: {cnn_p:,}p",
              f"Conv1d(320->256,k=11) -> (256->256,k=15) -> (256->512,k=21) -> {c_cnn3_out}; +meta -> {cnn_out}",
              fc="#FEE2E2", ec=accent, tfs=6.8, sfs=5.8)
 
@@ -431,6 +432,7 @@ def render_slamss_card(ax, spec: Dict[str, Any]) -> None:
 
     enc_p = mods["s2s.encoder"]["params"]
     dec_p = mods["s2s.decoder"]["params"]
+    rem_s2s_p = s2s_p - enc_p - dec_p
     enc_out = mods["s2s.encoder"]["out_shape"]
 
     draw_box(ax, 0.08, 0.22, 0.40, 0.15,
@@ -444,10 +446,10 @@ def render_slamss_card(ax, spec: Dict[str, Any]) -> None:
     arrow(ax, 0.48, 0.295, 0.52, 0.295)
 
     arrow(ax, 0.72, 0.22, 0.50, 0.14)
-    draw_box(ax, 0.15, 0.05, 0.70, 0.09,
-             f"Seq2Seq Output ({s2s_p:,}p total)",
+    draw_box(ax, 0.08, 0.05, 0.84, 0.09,
+             f"Seq2Seq Output ({s2s_p:,}p = {enc_p:,} enc + {dec_p:,} dec + {rem_s2s_p:,} remaining s2s)",
              f"Logits: {spec['output_shape']} | FP32 weights: 20.85 MiB",
-             fc="#F1F5F9", ec="#334155", tfs=6.8, sfs=5.8)
+             fc="#F1F5F9", ec="#334155", tfs=6.5, sfs=5.7)
 
 
 def save_individual_diagrams(specs: Dict[str, Any]) -> None:

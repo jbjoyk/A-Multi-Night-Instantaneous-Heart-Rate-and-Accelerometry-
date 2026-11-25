@@ -112,5 +112,8 @@ All EXP-019 numerical results, split manifests, model checkpoints, and preregist
    - Executed 105 new runs (`W050`, `W075`, `P190`, `W125`, `W150`, `W200`, `W250`) + reused anchors (`A` `64.7907%`, `B` `66.61%`, `V5` `66.74%`, `S` `67.37%`) under `PREREG_EXP-031_WIDTH_SWEEP.md` (commit `24ca187`), cleared post-execution via `docs/audits/EXP031_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, 0 Blocking, 0 Major).
    - `H-ARCH` (`full_v5` `66.74%` vs. `P190` `66.60%`): `+0.14 pp` `[-0.34, +0.61]`, $p_{\text{Holm}}=0.4037$ -> **`NOT SUPPORTED (practically)`**. `H-SCALE`: Page's `L=10938.0`, $z=+2.493$, $p_{\text{Holm,2s}}=0.0254$ -> **`SUPPORTED`**.
    - Section 9 selected **`P190` (`190,940` params)**: `66.60% ± 6.85%` (optimistic BIDSleep), **`375.16 KiB`** INT8 (`53.07 ms` 4T, `W0-B` $\Delta=+0.0244\text{ pp}$ $p=0.0836$), SleepAccel `61.52%` / `63.42%` (`em_off`), nested `GATE_tau` `66.55%` (`3/46` abstained).
-9. **Next Concrete Task (Stage E)**:
-   - Synchronize manuscript (`MANUSCRIPT_DRAFT_v1.0.md`) and Evidence-to-Claim Matrix with `EXP-029` (`DEC-042`), `EXP-030` (`DEC-043`), `EXP-031` (`DEC-044`), and Figure 1.
+9. **EXP-031 Amendment A1 (`W100` Retrain & Interleaved CPU Latency — COMPLETED under `16e70ef`)**:
+   - Executed 15 `W100` runs (`experiments/EXP-031/runs/W100/`, `66.68% ± 7.11%` Macro-F1): **`R1: recipe effect`** (`Δ_R = +1.89 pp` `[+1.23, +2.56]`, $p = 2.12 \times 10^{-6}$ vs. frozen `Model A`; `Δ_P = +0.08 pp` `[-0.29, +0.46]`, $p_{\text{Holm}} = 1.0000$ vs. `P190`; `H-SCALE-R` $L = 10,614.0$, $z = +0.265$, $p = 0.7912$).
+   - Completed interleaved round-robin CPU latency benchmark (`experiments/EXP-031/interleaved_cpu_latency.json`) on `AMD Ryzen 7 7700 8-Core Processor`, regenerated `author_report_bundle/` with all 10 audit fixes, and synchronized/compiled `MANUSCRIPT_DRAFT_v2.0.md` and `paper_orchestra_out/manuscript_jbhi.pdf`.
+10. **Next Concrete Task**:
+    - Final submission packaging and external review of `paper_orchestra_out/manuscript_jbhi.pdf` and `author_report_bundle/`.

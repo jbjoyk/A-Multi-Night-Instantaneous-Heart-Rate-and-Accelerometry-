@@ -125,7 +125,8 @@
 - **Table 4 Notes:** `P190` (`72,100,64`) and `B` (`64,128,64`) are non-uniform width points ordered by `n_params` for `H-SCALE`; `wilcoxon_p_vs_A` and `wilcoxon_p_vs_SLAMSS` are unadjusted pairwise tests (`P190` `int8_in_memory_kib = 375.16 KiB < 400 KiB`, serialized `402.91 KiB`).
 - **EXP-031 Confirmatory Hypothesis Verdicts (`N = 47`, Holm-corrected across `{H-ARCH, H-SCALE}`):**
   - **`H-ARCH` (`full_v5` vs. `P190`):** `+0.14 pp` `[95% CI: -0.34, +0.61 pp]`, Wilcoxon `p = 0.4037`, `p_Holm = 0.4037`, `d_z = +0.086`, `26W/21L` -> **`NOT SUPPORTED (practically)`**.
-  - **`H-SCALE` (Page's L across 9 widths):** `L = 10938.0`, `z = +2.493`, `p_2s = 0.01268`, `p_Holm,2s = 0.0254` -> **`SUPPORTED`**.
+  - **`H-SCALE` (Page's L across 9 widths, original with frozen `Model A`):** `L = 10938.0`, `z = +2.493`, `p_2s = 0.01268`, `p_Holm,2s = 0.0254` -> **`SUPPORTED`**.
+  - **Amendment A1 (`W100` Retrained Control, `R1: recipe effect`):** `W100` (`163,940` params under `EXP-031` recipe) achieved `66.68% ± 7.11%` (`Δ_R = +1.89 pp` `[+1.23, +2.56]`, `p = 2.12e-6` vs. frozen `Model A`; `Δ_P = +0.08 pp` `[-0.29, +0.46]`, `p_Holm = 1.0000` vs. `P190`; `H-SCALE-R` `L = 10,614.0`, `z = +0.265`, `p = 0.7912`).
 
 ### Table 5: External Zero-Shot PhysioNet SleepAccel (`n = 25` `qc_clean` & `N = 31` `all`) ([table5_sleepaccel_zeroshot.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table5_sleepaccel_zeroshot.csv))
 
