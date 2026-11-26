@@ -30,6 +30,7 @@ predictions/
 # Local preprocessing caches
 cache/
 experiments/EXP-027/cache/
+experiments/EXP-032/cache/
 data/external/
 
 # Runtime execution logs
