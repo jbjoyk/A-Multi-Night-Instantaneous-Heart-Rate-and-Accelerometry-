@@ -1,20 +1,27 @@
 # Externally Sourced Facts Registry
 # Every externally sourced fact cited in manuscripts must appear here with exact value,
-# verifiable source URL/DOI, and retrieval date. Unverified facts (e.g., "Apple Watch Series 6"
-# when absent from the official PhysioNet README) are flagged as FAIL by verify_manuscript_numbers.py.
+# verifiable source URL/DOI, quoted evidence line, and retrieval date.
 
-schema_version: "1.0"
+schema_version: "1.1"
 retrieval_date: "2026-11-26"
 
 datasets:
   sleepaccel:
     name: "Motion and heart rate from a wrist-worn wearable and labeled sleep from polysomnography (PhysioNet SleepAccel)"
-    canonical_version: "1.0.1"
+    canonical_version: "1.0.0"
     local_archive_version: "1.0.0"
-    url: "https://physionet.org/content/sleep-accel/1.0.1/"
+    url: "https://physionet.org/content/sleep-accel/1.0.0/"
     doi: "10.13026/hmhs-py35"
+    license: "Open Data Commons Attribution License v1.0 (ODC-By v1.0)"
     retrieval_date: "2026-11-26"
+    version_evidence:
+      local_file: "data/external/sleepaccel_v1.0.0/index.html"
+      local_quote: "Index of /protected/published-projects/sleep-accel/1.0.0/"
+      physionet_quote: "Motion and heart rate from a wrist-worn wearable and labeled sleep from polysomnography (version 1.0.0). PhysioNet. RRID:SCR_007345. https://doi.org/10.13026/hmhs-py35"
     irb_institution: "University of Michigan Institutional Review Board"
+    irb_evidence:
+      source: "https://physionet.org/content/sleep-accel/1.0.0/"
+      quote: "we recruited 39 subjects from the University of Michigan after approval by the University of Michigan Institutional Review Board."
     access_tier: "open"
     hardware_devices_verified:
       wearable: "Apple Watch"
@@ -28,20 +35,30 @@ datasets:
 
   bidsleep:
     name: "A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels (PhysioNet BIDSleep)"
-    canonical_version: "1.0.0"
-    url: "https://physionet.org/content/bidsleep-dataset/1.0.0/"
+    canonical_version: "1.0.1"
+    local_archive_version: "1.0.0"
+    url: "https://physionet.org/content/bidsleep-dataset/1.0.1/"
     doi: "10.13026/rees-1092"
     license: "ODC-By v1.0"
     retrieval_date: "2026-11-26"
+    version_evidence:
+      physionet_url: "https://physionet.org/content/bidsleep-dataset/1.0.1/"
+      physionet_quote: "Song, T., Zhang, Y., Zhou, Z., & Dutta, J. (2026). A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels (version 1.0.1). PhysioNet. https://doi.org/10.13026/rees-1092"
+      local_archive_dir: "a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/"
+    irb_institution: "University of Massachusetts Lowell Institutional Review Board"
+    irb_evidence:
+      source: "https://physionet.org/content/bidsleep-dataset/1.0.1/"
+      quote: "The study protocol was reviewed and approved by the University of Massachusetts Lowell Institutional Review Board. All participants provided written informed consent prior to enrollment."
     official_readme_path: "a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/README.md"
     hardware_devices_verified_in_readme:
       wearable: "Apple Watch devices"
       wearable_sensor: "Apple Watch PPG sensor via HealthKit"
       reference_eeg: "Dreem device"
+      physionet_page_reference_eeg: "Dreem 2 headband"
     hardware_devices_unverified_in_readme:
       - phrase: "Apple Watch Series 6"
-        status: "FAIL_IF_ABSENT_FROM_README"
-        reason: "Not explicitly stated in the official PhysioNet BIDSleep README.md (which states only 'Apple Watch devices')."
+        status: "HARD_FAIL_IF_ABSENT_FROM_README"
+        reason: "Not explicitly stated in the official PhysioNet BIDSleep README.md (which states only 'Apple Watch devices') or PhysioNet page (which states only 'Apple Watch')."
     paper:
       citation: "Song TA, et al. AI-driven sleep staging using instantaneous heart rate and accelerometry: insights from an Apple Watch study. IEEE Transactions on Biomedical Engineering. 2026;73(4):1596-1608."
       journal: "IEEE Transactions on Biomedical Engineering"
@@ -95,12 +112,14 @@ references:
 
 banned_external_phrases:
   - phrase: "Apple Watch Series 6"
-    reason: "Hardware model not explicitly present in official PhysioNet BIDSleep README.md."
-  - phrase: "SleepAccel v1.0.0"
-    reason: "Stale version string; canonical PhysioNet SleepAccel version is 1.0.1 (DOI 10.13026/hmhs-py35)."
+    reason: "Hardware model not explicitly present in official PhysioNet BIDSleep README.md or PhysioNet page."
+  - phrase: "SleepAccel v1.0.1"
+    reason: "Incorrect version string; PhysioNet SleepAccel canonical and local archive version is 1.0.0 (DOI 10.13026/hmhs-py35)."
+  - phrase: "BIDSleep v1.0.0"
+    reason: "Stale PhysioNet version string; PhysioNet BIDSleep canonical version is 1.0.1 (DOI 10.13026/rees-1092)."
   - phrase: "UMass Amherst"
-    reason: "Prohibited institutional phrasing in manuscript prose per Check J."
+    reason: "Incorrect IRB institution; PhysioNet BIDSleep page explicitly names University of Massachusetts Lowell Institutional Review Board."
   - phrase: "University of Massachusetts Amherst"
-    reason: "Prohibited institutional phrasing in manuscript prose per Check J."
+    reason: "Incorrect IRB institution; PhysioNet BIDSleep page explicitly names University of Massachusetts Lowell Institutional Review Board."
   - phrase: "credentialed"
-    reason: "BIDSleep is open access (ODC-By v1.0) and SleepAccel is open access; do not label as credentialed."
+    reason: "BIDSleep and SleepAccel are both open-access ODC-By v1.0 datasets."

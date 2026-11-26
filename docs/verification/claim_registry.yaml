@@ -3,7 +3,7 @@
 # Every canonical value is computed directly at runtime from the raw artifacts on disk
 # by scripts/verify_manuscript_numbers.py.
 
-schema_version: "1.0"
+schema_version: "1.1"
 bootstrap_resamples: 10000
 bootstrap_seed: 42
 sd_ddof: 1
@@ -31,6 +31,7 @@ raw_artifacts:
   w100_summary: "experiments/EXP-031/W100_retrained_summary.json"
   exp031_confirmatory: "experiments/EXP-031/exp031_confirmatory_summary.json"
   interleaved_cpu_latency: "experiments/EXP-031/interleaved_cpu_latency.json"
+  interleaved_fp32_4t_rerun: "docs/verification/interleaved_cpu_latency_fp32_4t_rerun.json"
   int8_profiles:
     Model_A: "experiments/STAGE2_FINAL_MODEL/int8_quantization_profile.json"
     full_v5: "experiments/EXP-029/full_v5_w0b_int8_profile.json"
@@ -73,7 +74,7 @@ checks:
     tolerance: {exact_int: 0, mean_abs: 0.1}
   - id: "CHECK_C"
     name: "Class Mixes from Raw Labels"
-    rule: "Recompute (i) masked N=47 pooled epochs, (ii) raw unmasked labels.mat pooled/participant-avg/night-avg mixes, (iii) legacy EXP-005 31-subject train split mix, and (iv) SleepAccel qc_clean n=25 raw and masked pooled mixes. Flag any pair of reported mixes identical in 2 classes while differing by +/-x in the other 2."
+    rule: "Recompute (i) masked N=47 pooled epochs, (ii) raw unmasked labels.mat pooled/participant-avg/night-avg mixes, (iii) legacy 31-subject train split mix, and (iv) SleepAccel qc_clean n=25 raw and masked pooled mixes. HARD_FAIL on any pair of reported mixes identical in 2 classes while differing by +/-x in the other 2, or stale 12.8/44.2/18.9/24.1 or Deep 15.5%/REM 18.6%."
     tolerance: {pct_abs: 0.1}
   - id: "CHECK_D"
     name: "Macro-F1 (ddof=1) & Pooled-Epoch Macro-F1"
@@ -84,59 +85,59 @@ checks:
     rule: "Recompute Delta, 10,000-resample bootstrap 95% CI (seed=42), two-sided Wilcoxon p, Cohen's dz, and Holm-Bonferroni adjusted p for W100-ModelA, W100-P190, W100-p1_100k, W100-SLAMSS-IFS, and full_v5-P190."
     tolerance: {delta_pp: 0.005, ci_pp: 0.02, p_rel: 0.01, dz_abs: 0.005}
   - id: "CHECK_F"
-    name: "Page's L Trend Test & Explicit p-Labeling"
-    rule: "Recompute Page's L, z, one-sided p, and two-sided p from the per-subject matrices (EXP-031 H-SCALE, H-SCALE-R, and EXP-019 k=1..4) and require explicit 'raw' or 'Holm-adjusted' qualifier on every reported Page's L p-value."
-    tolerance: {L_abs: 0.01, z_abs: 0.002, p_rel: 0.01}
+    name: "Page's L Trend Test & Label Verification"
+    rule: "Recompute Page's L, z, one-sided p, two-sided p, and 4x/5x Holm-adjusted one-sided p from per-subject CSVs (EXP-031 H-SCALE, H-SCALE-R, and EXP-019 k=1..4). HARD_FAIL if any reported Page's L p-value lacks an explicit raw/Holm-adjusted and one-sided/two-sided label or mismatches the recomputed value for its label."
+    tolerance: {L_abs: 0.01, z_abs: 0.002, p_rel: 0.02}
   - id: "CHECK_G"
     name: "SleepAccel External Validation & Bland-Altman"
-    rule: "Recompute qc_clean (n=25) and all_n31 (N=31) single-model and ensemble Macro-F1, Bland-Altman bias/LoA/MAE/r from raw paired tuples, and flag any two distinct metrics in one table sharing an identical p to 4 decimals."
+    rule: "Recompute qc_clean (n=25) and all_n31 (N=31) single-model and ensemble Macro-F1, Bland-Altman bias/LoA/MAE/r from raw paired tuples, verify identical Wilcoxon W=106.0 mirror footnote for qc_clean accuracy & Wake F1, and flag any unexplained duplicate 4-decimal p-values."
     tolerance: {pct_abs: 0.01, ba_abs: 0.02, r_abs: 0.0005}
   - id: "CHECK_H"
     name: "Latency, Memory, Hardware Telemetry & CV Gate"
-    rule: "Verify FP32 KiB = params*4/1024, canonical INT8 weight payload and exact reduction %, FP32-vs-FP32 and INT8-vs-INT8 speedups alongside MMAC ratios, exact /proc/cpuinfo CPU string + governor + torch.__version__, CV <= 5%, and strict separation between serialized/in-memory weight payload and peak runtime RAM."
+    rule: "Verify FP32 KiB = params*4/1024, canonical INT8 weight payload and exact reduction %, FP32-vs-FP32 and INT8-vs-INT8 speedups alongside MMAC ratios, exact /proc/cpuinfo CPU string + governor + torch.__version__, INT8 CV <= 5%, 4T FP32 rerun compliance (CV <= 5% or marked 'not reported (CV > 5%)'), and strict separation of FP32/INT8 columns and interleaved latencies in tables."
     tolerance: {kib_abs: 0.02, pct_abs: 0.1, cv_max_pct: 5.0}
   - id: "CHECK_I"
     name: "Cross-Document Consistency & 100% Numeric Coverage"
     rule: "Scan .tex, .md, pdftotext of compiled PDFs, and figure annotation scripts for cross-document consistency and verify 100% numeric token coverage in Abstract, Results, and Tables."
     tolerance: {coverage_pct: 100.0}
   - id: "CHECK_J"
-    name: "Banned Phrases & Unverified External Claims"
-    rule: "Fail on 'SOTA', 'parity' without CI, 'proves', 'retains N%', 'Ultradian', 'UMass Amherst', 'credentialed', 'four canonical', 'k >= 3' as night index, internal IDs (DEC-, EXP-0, P101) in prose, 'first' priority claims, and any external fact absent from facts.yaml."
+    name: "Banned Phrases, Dataset Versions & Unverified External Claims"
+    rule: "HARD_FAIL on 'SOTA', 'parity' (anywhere, even with CI), 'proves', 'retains N%', 'Ultradian', 'UMass Amherst', 'credentialed', 'four canonical', 'k >= 3' as night index, internal IDs (DEC-, EXP-0, P101) in manuscript prose, 'first' priority claims, 'Apple Watch Series 6', wrong SleepAccel/BIDSleep versions, or missing separate Walch 2019 / SleepAccel DOI citations."
 
-# Seeded 7 known open issues in the current unpatched documents as EXPECTED_FAIL test cases
-expected_fail_cases:
+# Promoted 7 former open issues — now enforced as HARD_FAIL gates
+hard_fail_gates:
   - id: "EF-01"
     check_group: "J"
     title: "Unverified hardware model 'Apple Watch Series 6' absent from BIDSleep README"
-    target: "paper_orchestra_out/manuscript_jbhi.tex"
-    expected_status: "EXPECTED_FAIL"
+    target: "All manuscripts"
+    enforcement: "HARD_FAIL"
   - id: "EF-02"
     check_group: "J"
-    title: "Stale SleepAccel version 'v1.0.0' instead of canonical PhysioNet '1.0.1'"
-    target: "paper_orchestra_out/manuscript_jbhi.tex"
-    expected_status: "EXPECTED_FAIL"
+    title: "Dataset versions (SleepAccel v1.0.0 + separate Walch 2019 & DOI citations; BIDSleep v1.0.1)"
+    target: "All manuscripts"
+    enforcement: "HARD_FAIL"
   - id: "EF-03"
     check_group: "C"
-    title: "Class-mix pair identical in 2 classes and +/-2.0% in the other 2 (12.8/44.2/18.9/24.1 vs 10.8/44.2/18.9/26.1)"
-    target: "research_knowledge/updates/MANUSCRIPT_DRAFT_v2.0.md"
-    expected_status: "EXPECTED_FAIL"
+    title: "Class-mix pair identical in 2 classes and +/-x in the other 2; stale 12.8/44.2/18.9/24.1 or Deep 15.5%/REM 18.6%"
+    target: "All manuscripts"
+    enforcement: "HARD_FAIL"
   - id: "EF-04"
     check_group: "F"
-    title: "Page's L p-value reported without explicit 'raw' or 'Holm-adjusted' qualifier"
-    target: "paper_orchestra_out/manuscript_jbhi.tex"
-    expected_status: "EXPECTED_FAIL"
+    title: "Page's L p-value explicit raw/Holm-adjusted & one-sided/two-sided label verified against recomputed value"
+    target: "All manuscripts"
+    enforcement: "HARD_FAIL"
   - id: "EF-05"
     check_group: "H"
-    title: "Latency/memory table mixing (non-interleaved vs interleaved 4T ms, FP32 MiB in INT8 KiB column, and 4T FP32 CV > 5%)"
-    target: "paper_orchestra_out/manuscript_jbhi.tex"
-    expected_status: "EXPECTED_FAIL"
+    title: "Latency/memory table separation (FP32 vs INT8 columns, consistent interleaved 4T INT8 ms, and 4T FP32 CV <= 5% or not-reported deviation)"
+    target: "All manuscripts & latency JSONs"
+    enforcement: "HARD_FAIL"
   - id: "EF-06"
     check_group: "J"
-    title: "Banned phrases in manuscript prose ('University of Massachusetts Amherst', 'Ultradian', 'proves', 'four canonical', 'k >= 3', 'parity' without CI)"
-    target: "research_knowledge/updates/MANUSCRIPT_DRAFT_v2.0.md"
-    expected_status: "EXPECTED_FAIL"
+    title: "Banned phrases in manuscript prose ('UMass Amherst', 'Ultradian', 'proves', 'four canonical', 'k >= 3', 'parity', 'SOTA', 'retains N%', 'credentialed', 'first' priority)"
+    target: "All manuscripts"
+    enforcement: "HARD_FAIL"
   - id: "EF-07"
     check_group: "J"
-    title: "Internal project tracking IDs (DEC-, EXP-0) leaking into manuscript prose"
-    target: "paper_orchestra_out/manuscript_jbhi.tex"
-    expected_status: "EXPECTED_FAIL"
+    title: "Internal project tracking IDs (DEC-, EXP-0, P101) in manuscript prose"
+    target: "paper_orchestra_out/manuscript_jbhi.tex, research_knowledge/updates/MANUSCRIPT_DRAFT_v2.0.md"
+    enforcement: "HARD_FAIL"

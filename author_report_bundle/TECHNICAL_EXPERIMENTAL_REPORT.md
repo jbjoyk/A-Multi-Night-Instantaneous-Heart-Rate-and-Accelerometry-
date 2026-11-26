@@ -12,15 +12,20 @@
 
 ## Section 1: Dataset Descriptions & Exact Train / Validation / Test Splits
 
-- **Primary In-Cohort Dataset (`BIDSleep`):** PhysioNet BIDSleep (Song et al., 2026, DOI: `10.13026/rees-1092`; Dreem 2 ambulatory EEG ground truth).
-  - **Cohort:** `47` healthy adults, `253` recorded nights, `246` usable nights (`7` excluded by `>= 60%` signal-coverage QC filter), `203,338` valid 30-s epochs across all 47 subjects (Wake `10.8%`, Light `44.2%`, Deep `18.9%`, REM `26.1%`; legacy `EXP-005` 31-subject single training split had `137,801` epochs: Wake `11.9%`, Light `46.2%`, Deep `18.6%`, REM `23.2%`).
+- **Primary In-Cohort Dataset (`BIDSleep v1.0.1`):** PhysioNet BIDSleep v1.0.1 (Song et al., *IEEE TBME* 2026, DOI: `10.1109/TBME.2025.3612158`; PhysioNet dataset DOI: `10.13026/rees-1092`, ODC-By v1.0; local archive v1.0.0; University of Massachusetts Lowell Institutional Review Board; Dreem 2 ambulatory EEG ground truth).
+  - **Cohort:** `47` healthy adults, `253` recorded nights, `246` usable nights (`7` excluded by `>= 60%` signal-coverage QC filter).
+  - **Raw-Recomputed 4-Class Stage Mixes (five AASM stages W, N1, N2, N3, R grouped into four classes: Wake, Light = N1+N2, Deep = N3, REM):**
+    - Masked usable pooled (`N = 47`, `246` nights, `203,338` valid 30-s epochs, `~826.6`/night): Wake `10.83%`, Light `44.20%`, Deep `18.91%`, REM `26.06%`.
+    - Raw unmasked pooled (`209,482` epochs): Wake `11.06%`, Light `44.60%`, Deep `18.54%`, REM `25.79%`.
+    - Raw unmasked participant-averaged (`N = 47`): Wake `10.96%`, Light `44.39%`, Deep `18.63%`, REM `26.02%`.
+    - Legacy 31-subject single training split (`EXP-005`, `137,801` epochs): Wake `11.9%`, Light `46.2%`, Deep `18.6%`, REM `23.2%`.
   - **Signals & Sampling:** Apple Watch HealthKit instantaneous heart rate (IHR, median `0.197 Hz`, IQR `0.073 Hz`, resampled to `1 Hz`) + 3-axis wrist accelerometry (`1 Hz` magnitude), segmented into 30-s epochs (`x_ihr`: `(B, L, 30)`, `x_accel`: `(B, L, 30)`, `x_meta`: `(B, L, 5)` with `[freq, 0, 0, hr_mean, hr_std]` where the 2 circadian clock channels are zeroed).
   - **Context Horizon:** Full-night `L = 1200` epochs (10 hours) with `LogitStitchingSlidingWindowPredictor` (overlapping `L=1200` logit windows averaged across night).
   - **Cross-Validation:** Subject-disjoint 5-fold nested CV x 3 seeds (`42, 123, 2024`).
-- **External Zero-Shot Dataset (`SleepAccel v1.0.0`):** PhysioNet SleepAccel (DOI: `10.13026/hmhs-py35`, single-night in-lab PSG).
-  - **Cohort:** `N = 31` recordings; primary `qc_clean` `n = 25` (`n_epochs >= 600` & ACC `cov_mo >= 50%`); `n = 6` excluded (`5` with `< 600` epochs [`417–567`], `1` with ACC dropout `cov_mo = 0.1365`), retained in `all` (`N = 31`) sensitivity.
+- **External Zero-Shot Dataset (`SleepAccel v1.0.0`):** PhysioNet SleepAccel v1.0.0 (Walch et al., *SLEEP* 2019, DOI: `10.1093/sleep/zsz180`; PhysioNet dataset DOI: `10.13026/hmhs-py35`, ODC-By v1.0; University of Michigan Institutional Review Board; Apple Watch + single-night in-lab PSG).
+  - **Cohort:** `N = 31` recordings; primary `qc_clean` `n = 25` (`n_epochs >= 600` & ACC `cov_mo >= 50%`; `22,633` masked epochs per checkpoint: Wake `8.24%`, Light `57.74%`, Deep `11.08%`, REM `22.94%`); `n = 6` excluded (`5` with `< 600` epochs [`417–567`], `1` with ACC dropout `cov_mo = 0.1365`), retained in `all` (`N = 31`) sensitivity.
   - **Zero-Shot Rule:** Zero retraining, zero fine-tuning, zero threshold tuning.
-- **Multi-Night Personalization Denominators (`BIDSleep`):**
+- **Exploratory Multi-Night Personalization Denominators (`BIDSleep`, frozen `Model A` older recipe, pending `W100` re-run):**
   - `k = 1, 2` (available cohort): `N = 46` (`>= 3` usable nights; `Bidslab49` has 2 nights).
   - `k = 3` (available cohort): `N = 42` (`>= 4` usable nights).
   - `k = 1..4` (common cohort on fixed `E_4`, 64 nights): `N = 33` (`>= 5` usable nights).
@@ -53,26 +58,26 @@
 
 ### Table 2: Submodule Parameter & Tensor Shape Breakdown ([table2_architecture_layer_breakdown.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table2_architecture_layer_breakdown.csv))
 
-| model | model_class | total_params | submodule | module_type | params | pct_of_total | in_shape | out_shape |
+| model | architecture_family | total_params | submodule | module_type | params | pct_of_total | in_shape | out_shape |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Model A | ConventionalCNNBiGRU | 163940 | hr_encoder | HREncoder | 29568 | 18.04 | (1, 1200, 30) | (1, 1200, 64) |
-| Model A | ConventionalCNNBiGRU | 163940 | acc_encoder | ACCEncoder | 29568 | 18.04 | (1, 1200, 30) | (1, 1200, 64) |
-| Model A | ConventionalCNNBiGRU | 163940 | meta_proj | Sequential | 96 | 0.06 | (1, 1200, 5) | (1, 1200, 16) |
-| Model A | ConventionalCNNBiGRU | 163940 | temporal_gru | GRU | 97920 | 59.73 | Packed((1200, 144)) | Packed((1200, 96)); (4, 1, 48) |
-| Model A | ConventionalCNNBiGRU | 163940 | temp_norm | LayerNorm | 192 | 0.12 | (1, 1200, 96) | (1, 1200, 96) |
-| Model A | ConventionalCNNBiGRU | 163940 | classifier_head | Sequential | 6596 | 4.02 | (1, 1200, 96) | (1, 1200, 4) |
+| Model A / W100 | ConventionalCNNBiGRU | 163940 | hr_encoder | HREncoder | 29568 | 18.04 | (1, 1200, 30) | (1, 1200, 64) |
+| Model A / W100 | ConventionalCNNBiGRU | 163940 | acc_encoder | ACCEncoder | 29568 | 18.04 | (1, 1200, 30) | (1, 1200, 64) |
+| Model A / W100 | ConventionalCNNBiGRU | 163940 | meta_proj | Sequential | 96 | 0.06 | (1, 1200, 5) | (1, 1200, 16) |
+| Model A / W100 | ConventionalCNNBiGRU | 163940 | temporal_gru | GRU | 97920 | 59.73 | Packed((1200, 144)) | Packed((1200, 96)); (4, 1, 48) |
+| Model A / W100 | ConventionalCNNBiGRU | 163940 | temp_norm | LayerNorm | 192 | 0.12 | (1, 1200, 96) | (1, 1200, 96) |
+| Model A / W100 | ConventionalCNNBiGRU | 163940 | classifier_head | Sequential | 6596 | 4.02 | (1, 1200, 96) | (1, 1200, 4) |
 | Official SLAMSS-IFS | OfficialSLAMSSIFSWrapper | 5465768 | cnn | CNN | 5166272 | 94.52 | (1, 36000, 2) | (1, 1200, 517) |
 | Official SLAMSS-IFS | OfficialSLAMSSIFSWrapper | 5465768 | s2s | Seq2Seq | 299496 | 5.48 | (1, 1200, 517) | (1, 1200, 4) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | hr_encoder | PrePoolEncoder | 29568 | 15.5 | (1, 1200, 30) | (1200, 64, 7) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | acc_encoder | PrePoolEncoder | 29568 | 15.5 | (1, 1200, 30) | (1200, 64, 7) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | meta_proj | Sequential | 96 | 0.05 | (1, 1200, 5) | (1, 1200, 16) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | intra_film | IntraEpochFiLM | 8320 | 4.36 | (1200, 64, 7) | (1200, 64, 7) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | fine_gru | GRU | 55872 | 29.28 | Packed((1200, 144)) | Packed((1200, 96)); (2, 1, 48) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | mask_pool | MaskWeightedPool1d | 0 | 0.0 | (1, 1200, 96) | (1, 300, 96) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | coarse_gru | GRU | 42048 | 22.04 | Packed((300, 96)) | Packed((300, 96)); (2, 1, 48) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | fusion_proj | Linear | 18528 | 9.71 | (1, 1200, 192) | (1, 1200, 96) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | temp_norm | LayerNorm | 192 | 0.1 | (1, 1200, 96) | (1, 1200, 96) |
-| full_v5 | UltradianPyramidalCoupler | 190788 | classifier_head | Sequential | 6596 | 3.46 | (1, 1200, 96) | (1, 1200, 4) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | hr_encoder | PrePoolEncoder | 29568 | 15.5 | (1, 1200, 30) | (1200, 64, 7) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | acc_encoder | PrePoolEncoder | 29568 | 15.5 | (1, 1200, 30) | (1200, 64, 7) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | meta_proj | Sequential | 96 | 0.05 | (1, 1200, 5) | (1, 1200, 16) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | intra_film | IntraEpochFiLM | 8320 | 4.36 | (1200, 64, 7) | (1200, 64, 7) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | fine_gru | GRU | 55872 | 29.28 | Packed((1200, 144)) | Packed((1200, 96)); (2, 1, 48) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | mask_pool | MaskWeightedPool1d | 0 | 0.0 | (1, 1200, 96) | (1, 300, 96) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | coarse_gru | GRU | 42048 | 22.04 | Packed((300, 96)) | Packed((300, 96)); (2, 1, 48) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | fusion_proj | Linear | 18528 | 9.71 | (1, 1200, 192) | (1, 1200, 96) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | temp_norm | LayerNorm | 192 | 0.1 | (1, 1200, 96) | (1, 1200, 96) |
+| full_v5 | 2-scale multi-resolution FiLM+pooling | 190788 | classifier_head | Sequential | 6596 | 3.46 | (1, 1200, 96) | (1, 1200, 4) |
 | p1_100k | ScaledConventionalCNNBiGRU | 98940 | hr_encoder | ScaledModalityEncoder | 16800 | 16.98 | (1, 1200, 30) | (1, 1200, 48) |
 | p1_100k | ScaledConventionalCNNBiGRU | 98940 | acc_encoder | ScaledModalityEncoder | 16800 | 16.98 | (1, 1200, 30) | (1, 1200, 48) |
 | p1_100k | ScaledConventionalCNNBiGRU | 98940 | meta_proj | Sequential | 96 | 0.1 | (1, 1200, 5) | (1, 1200, 16) |
@@ -90,23 +95,24 @@
 
 ## Section 3: Master Performance Comparison Across All Models & Experiments
 
-### Table 3: BIDSleep 5-Fold OOF Performance (`N = 47`, 3-Seed Participant Means) ([table3_bidsleep_master_comparison.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table3_bidsleep_master_comparison.csv))
+### Table 3: BIDSleep 5-Fold OOF Performance (`N = 47`, 3-Seed Participant Means, `ddof = 1`) ([table3_bidsleep_master_comparison.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table3_bidsleep_master_comparison.csv))
 
 | experiment | model | params | macro_f1_pct | macro_f1_sd_pp | accuracy_pct | kappa | wake_f1_pct | light_f1_pct | deep_f1_pct | rem_f1_pct |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| EXP-018 / DEC-037 | Model A (ConventionalCNNBiGRU) | 163940 | 64.79 | 7.45 | 66.18 | 0.5078 | 62.7 | 66.61 | 66.76 | 63.09 |
+| EXP-018 / DEC-037 | Model A (ConventionalCNNBiGRU, frozen) | 163940 | 64.79 | 7.45 | 66.18 | 0.5078 | 62.70 | 66.61 | 66.76 | 63.09 |
+| EXP-031 A1 | W100 (ConventionalCNNBiGRU, retrained) | 163940 | 66.68 | 7.11 | 67.97 | 0.5309 | 63.67 | 68.25 | 68.14 | 66.66 |
 | EXP-021 / DEC-038 | Official SLAMSS-IFS | 5465768 | 67.37 | 6.73 | 68.75 | 0.5378 | 64.25 | 69.44 | 70.27 | 65.51 |
 | EXP-029 / DEC-042 | cnn_bigru_200k (Arm b) | 223268 | 66.61 | 7.06 | 68.07 | 0.5308 | 63.48 | 68.64 | 67.87 | 66.43 |
 | EXP-029 / DEC-042 | film_only (Arm c) | 172260 | 66.67 | 7.02 | 67.98 | 0.5318 | 63.82 | 67.99 | 68.11 | 66.76 |
 | EXP-029 / DEC-042 | pyramid_only (Arm d) | 182468 | 66.92 | 7.05 | 68.47 | 0.5336 | 64.04 | 69.15 | 67.53 | 66.97 |
 | EXP-029 / DEC-042 | full_v5 (RCCLoss) | 190788 | 66.74 | 6.81 | 68.17 | 0.5295 | 64.37 | 68.66 | 67.71 | 66.21 |
-| EXP-029 / DEC-042 | full_v5_ce (Pure CE) | 190788 | 66.95 | 6.84 | 68.35 | 0.5324 | 64.56 | 68.7 | 67.85 | 66.7 |
+| EXP-029 / DEC-042 | full_v5_ce (Pure CE) | 190788 | 66.95 | 6.84 | 68.35 | 0.5324 | 64.56 | 68.70 | 67.85 | 66.70 |
 | EXP-030 / DEC-043 | p1_100k (Selected Elbow) | 98940 | 66.67 | 7.57 | 67.89 | 0.5303 | 64.21 | 68.02 | 67.81 | 66.65 |
 | EXP-030 / DEC-043 | p3_268k | 268260 | 66.43 | 7.08 | 67.79 | 0.5251 | 64.47 | 68.26 | 67.11 | 65.89 |
-| EXP-030 / DEC-043 | p4_404k | 403524 | 66.5 | 7.16 | 67.81 | 0.5275 | 63.99 | 68.17 | 67.53 | 66.32 |
+| EXP-030 / DEC-043 | p4_404k | 403524 | 66.50 | 7.16 | 67.81 | 0.5275 | 63.99 | 68.17 | 67.53 | 66.32 |
 | EXP-030 / DEC-043 | p5_666k | 665556 | 66.17 | 7.02 | 67.46 | 0.5216 | 63.84 | 67.97 | 67.45 | 65.43 |
 | EXP-030 / DEC-043 | p6_1051k | 1051492 | 66.25 | 6.84 | 67.51 | 0.5244 | 63.63 | 67.76 | 67.75 | 65.87 |
-| EXP-031 / DEC-044 | P190 (Selected Sec.9) | 190940 | 66.6 | 6.85 | 67.92 | 0.5293 | 64.14 | 68.23 | 67.47 | 66.54 |
+| EXP-031 / DEC-044 | P190 (Selected Sec.9) | 190940 | 66.60 | 6.85 | 67.92 | 0.5293 | 64.14 | 68.23 | 67.47 | 66.54 |
 
 ### Table 4: EXP-031 Single-Factor Width Sweep (`W050`–`W250`) ([table4_exp031_width_sweep.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table4_exp031_width_sweep.csv))
 
@@ -124,11 +130,11 @@
 
 - **Table 4 Notes:** `P190` (`72,100,64`) and `B` (`64,128,64`) are non-uniform width points ordered by `n_params` for `H-SCALE`; `wilcoxon_p_vs_A` and `wilcoxon_p_vs_SLAMSS` are unadjusted pairwise tests (`P190` `int8_in_memory_kib = 375.16 KiB < 400 KiB`, serialized `402.91 KiB`).
 - **EXP-031 Confirmatory Hypothesis Verdicts (`N = 47`, Holm-corrected across `{H-ARCH, H-SCALE}`):**
-  - **`H-ARCH` (`full_v5` vs. `P190`):** `+0.14 pp` `[95% CI: -0.34, +0.61 pp]`, Wilcoxon `p = 0.4037`, `p_Holm = 0.4037`, `d_z = +0.086`, `26W/21L` -> **`NOT SUPPORTED (practically)`**.
-  - **`H-SCALE` (Page's L across 9 widths, original with frozen `Model A`):** `L = 10938.0`, `z = +2.493`, `p_2s = 0.01268`, `p_Holm,2s = 0.0254` -> **`SUPPORTED`**.
-  - **Amendment A1 (`W100` Retrained Control, `R1: recipe effect`):** `W100` (`163,940` params under `EXP-031` recipe) achieved `66.68% ± 7.11%` (`Δ_R = +1.89 pp` `[+1.23, +2.56]`, `p = 2.12e-6` vs. frozen `Model A`; `Δ_P = +0.08 pp` `[-0.29, +0.46]`, `p_Holm = 1.0000` vs. `P190`; `H-SCALE-R` `L = 10,614.0`, `z = +0.265`, `p = 0.7912`).
+  - **`H-ARCH` (`full_v5` vs. `P190`):** `+0.14 pp` `[95% CI: -0.34, +0.61 pp]`, raw Wilcoxon `p = 0.4037`, `p_Holm = 0.4037`, `d_z = +0.086`, `26W/21L` -> **`NOT SUPPORTED (practically)`**.
+  - **`H-SCALE` (Page's L across 9 widths, original with frozen `Model A`):** `L = 10938.0`, `z = +2.493`, raw two-sided `p = 0.01268`, Holm-adjusted two-sided `p_Holm = 0.0254` -> **`SUPPORTED`**.
+  - **Amendment A1 (`W100` Retrained Control, `R1: recipe effect`):** `W100` (`163,940` params under `EXP-031` recipe) achieved `66.68% ± 7.11%` (`Δ_R = +1.89 pp` `[+1.23, +2.56]`, raw `p = 2.12e-6` vs. frozen `Model A`; `Δ_P = +0.08 pp` `[-0.29, +0.46]`, `p_Holm = 1.0000` vs. `P190`; `W100 - SLAMSS-IFS`: `-0.69 pp`, 95% CI `[-1.44, +0.09]`, raw Wilcoxon `p = 0.04777`, `p_Holm = 0.1433` — raw `p < 0.05` but Holm-adjusted `p` is not significant, so a difference cannot be excluded; `H-SCALE-R` Page's `L = 10614.0`, `z = +0.265`, raw two-sided `p = 0.7912`).
 
-### Table 5: External Zero-Shot PhysioNet SleepAccel (`n = 25` `qc_clean` & `N = 31` `all`) ([table5_sleepaccel_zeroshot.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table5_sleepaccel_zeroshot.csv))
+### Table 5: External Zero-Shot PhysioNet SleepAccel v1.0.0 (`n = 25` `qc_clean` & `N = 31` `all`) ([table5_sleepaccel_zeroshot.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table5_sleepaccel_zeroshot.csv))
 
 | model | em_mode | qc_clean_n25_single_f1_pct | qc_clean_n25_ensemble_f1_pct | all_n31_single_f1_pct | all_n31_ensemble_f1_pct |
 | --- | --- | --- | --- | --- | --- |
@@ -136,12 +142,12 @@
 | Official SLAMSS-IFS (5,465,768p) | em_off | 61.08 | 62.79 | 62.27 | 64.14 |
 | full_v5 (190,788p) | em_off | 61.78 | 63.51 | — | — |
 | full_v5 (190,788p) | em_on (DampedEMCalibrator) | 59.73 | 61.3 | — | — |
-| p1_100k (98,940p) | em_off | 60.88 | 62.51 | 61.1 | 62.51 |
+| p1_100k (98,940p) | em_off | 60.88 | 62.51 | 61.10 | 62.51 |
 | P190 (190,940p) | em_off | 61.52 | 63.42 | 61.77 | 63.94 |
 
-- **Note:** `full_v5` was evaluated on `qc_clean` (`n = 25`) only (`—` on `all` `N = 31`).
+- **Notes:** `full_v5` was evaluated on `qc_clean` (`n = 25`) only (`—` on `all` `N = 31`). On `qc_clean` (`n = 25`) single-model `Model A` vs. `SLAMSS-IFS`, accuracy (`10/15` wins) and Wake F1 (`15/10` wins) share identical Wilcoxon `W = 106.0` (`p = 0.1336`) due to an exact mirrored signed-rank sum pattern (`W+ = 106.0, W- = 219.0` vs. `W+ = 219.0, W- = 106.0`).
 
-### Table 6: SleepAccel Single-Night Bland-Altman Agreement (`qc_clean` `n = 25`, `mean_single_model`) ([table6_sleepaccel_bland_altman.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table6_sleepaccel_bland_altman.csv))
+### Table 6: SleepAccel v1.0.0 Single-Night Bland-Altman Agreement (`qc_clean` `n = 25`, `mean_single_model`) ([table6_sleepaccel_bland_altman.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table6_sleepaccel_bland_altman.csv))
 
 | arm | metric | bias | loa_low | loa_high | mae | pearson_r |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -170,7 +176,7 @@
 | P190 | deep_pct_tst | 7.53 | -6.53 | 21.59 | 8.22 | 0.43 |
 | P190 | rem_pct_tst | 11.17 | -3.98 | 26.32 | 11.55 | 0.44 |
 
-### Table 7: Multi-Night Personalization (`EXP-019-K` Clean-ZS) ([table7_personalization_k_curve.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7_personalization_k_curve.csv))
+### Table 7: Exploratory Multi-Night Personalization (`EXP-019-K` Clean-ZS; Frozen `Model A` Older Recipe, Pending `W100` Re-Run) ([table7_personalization_k_curve.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7_personalization_k_curve.csv))
 
 | Cohort | k | N | Mean_ZS_Clean | Mean_FT | Delta_pp | CI_lower | CI_upper | Wilcoxon_W | p_wilcoxon_two_sided_exact | p_holm_5test_E4_allk | Holm_Sig_5test_E4_allk | p_holm_5test_driver | Holm_Sig_5test_driver | p_holm_5test_prereg | Holm_Sig_5test_prereg | Wins | Losses | Ties |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -183,44 +189,49 @@
 | Available (Ek, k=3) | 3 | 42 | 64.25% | 65.67% | +1.42 | 0.1459722440429792 | 2.5794376071624185 | 213.0 | 0.0023189899457065 | — | — | — | — | — | — | 29 | 13 | 0 |
 | Available (Ek, k=4) | 4 | 33 | 63.54% | 66.25% | +2.71 | 1.1669350853626916 | 4.328169813251022 | 110.0 | 0.0016955372411757 | — | — | — | — | — | — | 24 | 9 | 0 |
 
-### Table 7b: `EXP-020` `GATE_tau` Safety Guardrail Across Models (`N = 46`) ([table7b_exp020_gate_tau_comparison.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7b_exp020_gate_tau_comparison.csv))
+- **Exploratory Page's L (`N = 33`, `E_4`, frozen `Model A`, pending `W100` re-run):** `L = 863.0`, `z = 2.261`, raw one-sided `p = 0.01187` (raw two-sided `p = 0.02374`; 4-test Holm-adjusted one-sided `p = 0.04748`; 5-test Holm-adjusted one-sided `p = 0.05935`).
+
+### Table 7b: Exploratory `EXP-020` `GATE_tau` Safety Guardrail Across Models (`N = 46`; `Model A` Frozen Older Recipe Pending `W100` Re-Run) ([table7b_exp020_gate_tau_comparison.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7b_exp020_gate_tau_comparison.csv))
 
 | experiment | model | n_subjects | zs_f1_pct | ft2_f1_pct | gate_tau_f1_pct | gate_vs_zs_pp | n_abstained |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| EXP-020 / DEC-040 | Model A (163,940p) | 46 | 64.58 | 65.6 | 65.91 | 1.33 | 1 |
+| EXP-020 / DEC-040 | Model A (163,940p, frozen) | 46 | 64.58 | 65.60 | 65.91 | 1.33 | 1 |
 | EXP-029 / DEC-042 | full_v5 (190,788p) | 46 | 66.67 | 67.59 | 67.86 | 1.19 | 1 |
-| EXP-030 / DEC-043 | p1_100k (98,940p) | 46 | 66.84 | 66.27 | 66.74 | -0.1 | 3 |
+| EXP-030 / DEC-043 | p1_100k (98,940p) | 46 | 66.84 | 66.27 | 66.74 | -0.10 | 3 |
 | EXP-031 / DEC-044 | P190 (190,940p) | 46 | 66.42 | 66.09 | 66.55 | 0.13 | 3 |
 
-- **Donor Control (`S1`, `EXP-019`, `N = 46`):** `FT-2` (`65.59%`) vs. `FT-other-2` (`62.86%`) -> `+2.73 pp` `[+1.05, +4.32 pp]`, `p = 9.0e-6` (`FT-other-2` is `-1.72 pp` below `ZS = 64.58%`, confirming donor fine-tuning harm).
-- **Unsupervised InfoMax (`S3` / `UA-2`, `DEC-036`, `N = 46`):** `64.58% -> 64.79%`, `+0.21 pp` `[+0.04, +0.39 pp]`, `p_sup = 0.0322` (`SUB-BENCHMARK GAIN < +1.00 pp`).
+- **Exploratory Donor Control (`S1`, `EXP-019`, frozen `Model A`, pending `W100` re-run, `N = 46`):** `FT-2` (`65.59%`) vs. `FT-other-2` (`62.86%`) -> `+2.73 pp` `[+1.05, +4.32 pp]`, `p = 9.0e-6` (`FT-other-2` is `-1.72 pp` below `ZS = 64.58%`).
+- **Exploratory Unsupervised InfoMax (`S3` / `UA-2`, `DEC-036`, frozen `Model A`, pending `W100` re-run, `N = 46`):** `64.58% -> 64.79%`, `+0.21 pp` `[+0.04, +0.39 pp]`, `p_sup = 0.0322` (`SUB-BENCHMARK GAIN < +1.00 pp`).
 
 ---
 
-## Section 4: Inference Time, Memory Footprint & INT8 Quantization Parity
+## Section 4: Inference Time, Memory Footprint & Dynamic INT8 Quantization Difference
 
-### Table 8: Dynamic INT8 Edge Profile (`L = 1200`, Per-Model `W0-B` Sessions) ([table8_edge_int8_latency_memory.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table8_edge_int8_latency_memory.csv))
+### Table 8: Dynamic INT8 Edge Profile & Interleaved CPU Latency (`L = 1200`, `B = 1`, `AMD Ryzen 7 7700 8-Core Processor`, All INT8 CVs `<= 5%`)
 
-| model | total_params | quantized_params | fp32_weight_kib | int8_in_memory_kib | mmacs_L1200 | cpu_1t_int8_ms | cpu_4t_int8_ms | oof_int8_delta_pp | oof_int8_wilcoxon_p |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| p1_100k | 98940 | 69796 | 386.48 | 182.0 | 456.1 | 56.58 | 46.35 | -0.0134 | 0.4656 |
-| Model A | 163940 | 112932 | 640.39 | 309.54 | 794.1 | 69.39 | 47.73 | 0.0011 | 0.7892 |
-| full_v5 | 190788 | 131332 | 745.27 | 360.5 | — | 67.31 | 44.02 | -0.0113 | 0.9041 |
-| P190 | 190940 | 126532 | 745.86 | 375.16 | 984.2 | 73.3 | 53.07 | 0.0244 | 0.0836 |
+| model | total_params | quantized_params | fp32_weight_payload | int8_in_memory_kib | mmacs_L1200 | interleaved_1t_int8_ms | interleaved_4t_int8_ms | interleaved_4t_fp32_ms | oof_int8_delta_pp (95% CI) | oof_int8_wilcoxon_p |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| p1_100k | 98940 | 69796 | 386.48 KiB | 182.00 | 456.1 | 47.07 | 41.02 | 40.33 (CV 4.83%) | -0.0134 [-0.0489, +0.0210] | 0.4656 |
+| W100 / Model A | 163940 | 112932 | 640.39 KiB | 309.54 | 794.1 | 53.63 | 43.38 | not reported (CV > 5%) | +0.0011 [-0.0277, +0.0312] | 0.7892 |
+| full_v5 | 190788 | 131332 | 745.27 KiB | 360.50 | 847.7 | 43.73 | 31.53 | not reported (CV > 5%) | -0.0113 [-0.0566, +0.0339] | 0.9041 |
+| P190 | 190940 | 126532 | 745.86 KiB | 375.16 | 984.2 | 59.41 | 46.46 | not reported (CV > 5%) | +0.0244 [+0.0017, +0.0480] | 0.0836 |
+| Official SLAMSS-IFS | 5465768 | — | 20.85 MiB | — | 40773.2 | 3292.75 | 3186.52 | 3261.39 (CV 3.21%) | — | — |
 
-- **Reference (`Official SLAMSS-IFS`):** `5,465,768` params, `20.85 MiB` FP32 weights, `5.12 GiB` training VRAM at `B = 4`.
-- **Reconciliation Notes:** (1) `Model A` Dynamic INT8 memory is `309.54 KiB` (`DEC-039` / `int8_quantization_profile.json`, `112,932` quantized params) vs. `309.91 KiB` (`EXP-031` `exp031_width_table.csv`, `112,804` quantized params) due to buffer metadata rounding (`0.37 KiB`). (2) Table 8 / Fig 4B CPU latencies come from per-model `W0-B` benchmark JSONs (`Model A`: `69.39/47.73 ms`, `P190`: `73.30/53.07 ms`), whereas Table 4 / `exp031_cpu_profile.json` measured all 9 widths in one session (`Model A`: `77.24/56.58 ms`, `P190`: `71.46/54.56 ms`). (3) `P190` in-memory INT8 payload is `375.16 KiB` (`< 400 KiB`), serialized file is `402.91 KiB`.
+- **Amendment A1 Section 7 Latency Deviation Table (`docs/verification/interleaved_cpu_latency_fp32_4t_rerun.json`):**
+  - Interleaved Dynamic INT8 (4T and 1T) and 1T FP32 timings all satisfied `CV <= 5%` and serve as the primary latency figures.
+  - Under 4-thread FP32 pinned to 4 dedicated physical cores (`taskset -c 0,2,4,6`, `powersave` governor, up to 3 attempts of 30 warm-up + 200 timed passes), `p1_100k` passed on attempt 3 (`40.33 ms`, `CV = 4.83%`) and `Official SLAMSS-IFS` passed on attempt 1 (`3261.39 ms`, `CV = 3.21%`), whereas `W100` (best `CV = 6.29%`), `full_v5` (best `CV = 31.92%`), and `P190` (best `CV = 11.56%`) remained above `5%` due to multi-thread frequency scaling jitter under `powersave` and are marked `not reported (CV > 5%)` per Amendment A1 Section 7.
+  - Process peak runtime RAM (`peak_rss_mib`: `800.59 MiB` 1T, `799.33 MiB` 4T) is reported strictly separately from serialized/in-memory weight payload (`KiB`).
 
 ---
 
 ## Section 5: Direct Responses to Supervisor Questions & Methodological Critiques
 
-1. **Capacity vs. Architectural Novelty (`full_v5` vs. `P190` & `p1_100k`):**
-   - Matched-parameter plain control `P190` (`190,940` params) vs. `full_v5` (`190,788` params) yielded `+0.14 pp` (`p_Holm = 0.4037`, `NOT SUPPORTED`).
-   - Plain width-scaled `p1_100k` (`98,940` params) achieved `66.67%` BIDSleep Macro-F1 (`+1.88 pp` vs. `Model A` `64.79%`, `p_Holm = 1.19e-6`; no statistically significant superiority difference vs. `SLAMSS-IFS` `67.37%`, `-0.69 pp`, `p_Holm = 0.1498`, at `55.24x` compression — framed as empirical parity without a formal TOST equivalence margin).
-   - **Conclusion:** Gains over `Model A` (`163,940` params) are driven by capacity/width regularization rather than FiLM or pyramidal coupling; architectural novelty is explicitly not claimed for `full_v5`.
+1. **Capacity vs. Architectural Novelty (`full_v5` vs. `P190` & `p1_100k` / `W100`):**
+   - Matched-parameter plain control `P190` (`190,940` params) vs. `full_v5` (`190,788` params) yielded `+0.14 pp` (`95% CI [-0.34, +0.61]`, `p_Holm = 0.4037`, `NOT SUPPORTED`).
+   - Plain `W100` (`163,940` params, `66.68% ± 7.11%`) and `p1_100k` (`98,940` params, `66.67% ± 7.57%`) narrowed the gap against `SLAMSS-IFS` (`67.37% ± 6.73%`): `W100` vs. `SLAMSS-IFS` was `-0.69 pp` (`95% CI [-1.44, +0.09]`, raw Wilcoxon `p = 0.04777`, `p_Holm = 0.1433`; raw `p < 0.05` but Holm-adjusted `p` is not significant, so a difference cannot be excluded).
+   - **Conclusion:** Gains over frozen `Model A` (`64.79% ± 7.45%`) are driven by training recipe (`R1: recipe effect`) rather than FiLM or 2-scale multi-resolution coupling; architectural novelty is explicitly not claimed for `full_v5`.
 2. **Why `em_on` (`DampedEMCalibrator`) Failed on SleepAccel (`EXP-029`):**
-   - `em_on` (`alpha=0.5, n_iter=3, T=1.0`) dropped `full_v5` SleepAccel `qc_clean` Macro-F1 from `61.78% / 63.51%` (`em_off`) to `59.73% / 61.30%` because single-night EM amplified the cross-modality stage-prior shift (BIDSleep Dreem 2 `44.2%` Light / `18.9%` Deep vs. SleepAccel PSG `57.7%` Light / `11.1%` Deep).
+   - `em_on` (`alpha=0.5, n_iter=3, T=1.0`) dropped `full_v5` SleepAccel `qc_clean` Macro-F1 from `61.78% / 63.51%` (`em_off`) to `59.73% / 61.30%`, which is consistent with cross-modality scoring/covariate shift (BIDSleep masked `44.20%` Light / `18.91%` Deep vs. SleepAccel `qc_clean` `57.74%` Light / `11.08%` Deep).
 3. **Hardware Deployment Boundaries (`W0-B` Caveats, `DEC-039`):**
-   - Dynamic INT8 quantizes `nn.Linear` + `nn.GRU` (`~68.8%–70.5%` of params), leaving `Conv1d` + normalization in FP32 (`182.00 KiB` for `p1_100k`, `309.54 KiB` for `Model A`, `360.50 KiB` for `full_v5`, `375.16 KiB` for `P190`).
+   - Dynamic INT8 quantizes `nn.Linear` + `nn.GRU` (`~68.9%–70.5%` of params), leaving `Conv1d` + normalization in FP32 (`182.00 KiB` for `p1_100k` [`52.9%` reduction], `309.54 KiB` for `Model A`/`W100` [`51.7%`], `360.50 KiB` for `full_v5` [`51.6%`], `375.16 KiB` for `P190` [`49.7%`]).
    - Because all models use **bidirectional** GRUs over `L = 1200` epochs, they require **full-night sequence buffering on a smartwatch SoC or companion smartphone**, not causal 1-epoch streaming on a 512 KB SRAM bare-metal MCU.

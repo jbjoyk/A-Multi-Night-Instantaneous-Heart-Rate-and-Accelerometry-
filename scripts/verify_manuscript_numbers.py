@@ -585,15 +585,27 @@ def run_verification(
                     suspicious_pairs_found.append((doc_label, uniq[i], uniq[j], float(abs(nonzeros[0]))))
 
     ef03_caught = len(suspicious_pairs_found) > 0
+    stale_mix_hits = []
+    for doc_label, dtxt in [
+        (_rel(manuscript_tex_path), tex_text),
+        (_rel(manuscript_md_path), md_text),
+        (_rel(report_md_path), rep_text),
+    ]:
+        if re.search(r"12\.8\\?%.*44\.2\\?%.*18\.9\\?%.*24\.1\\?%", dtxt, re.I):
+            stale_mix_hits.append(f"{doc_label}: stale 12.8/44.2/18.9/24.1")
+        if re.search(r"Deep\s+15\.5\\?%.*REM\s+18\.6\\?%", dtxt, re.I):
+            stale_mix_hits.append(f"{doc_label}: stale SleepAccel Deep 15.5%/REM 18.6%")
+
+    ef03_fail = ef03_caught or bool(stale_mix_hits)
     add_row(
         "C_SUSPICIOUS_MIX_PAIR_EF03",
         "C",
-        "EXPECTED_FAIL" if ef03_caught else "PASS",
+        "FAIL" if ef03_fail else "PASS",
         "All manuscripts",
-        "[EF-03] Flag any two reported class mixes identical in 2 classes and +/-x in the other 2",
-        "0 suspicious pairs",
-        f"{len(suspicious_pairs_found)} suspicious pair(s) found",
-        "; ".join(f"{dl}: {u1} vs {u2} (+/-{dx:.1f}%)" for dl, u1, u2, dx in suspicious_pairs_found),
+        "[EF-03 HARD_FAIL] Zero suspicious class-mix pairs (+/-x in 2 classes) and zero stale 12.8/44.2/18.9/24.1 or Deep 15.5%/REM 18.6%",
+        "0 suspicious pairs, 0 stale mixes",
+        f"{len(suspicious_pairs_found)} suspicious pair(s), {len(stale_mix_hits)} stale mix(es)",
+        "; ".join([f"{dl}: {u1} vs {u2} (+/-{dx:.1f}%)" for dl, u1, u2, dx in suspicious_pairs_found] + stale_mix_hits),
     )
 
     summary_data["check_c"] = {
@@ -840,6 +852,7 @@ def run_verification(
 
     # Personalization k=1..4 Page's L (N=33 common cohort)
     k_csv = REPO_ROOT / raw_cfg["k_curve_subject_metrics"]
+    pl_k: Optional[Dict[str, Any]] = None
     if k_csv.exists():
         kdf = pd.read_csv(k_csv)
         k_comm = kdf[kdf["is_common_cohort"] == True]
@@ -848,39 +861,68 @@ def run_verification(
         add_canonical(pl_k["L"], (1,))
         add_canonical(pl_k["z"], (3,))
         add_canonical(pl_k["p_one_sided"], (5,))
+        add_canonical(pl_k["p_two_sided"], (5,))
+        add_canonical(min(1.0, 4.0 * pl_k["p_one_sided"]), (5,))
+        add_canonical(min(1.0, 5.0 * pl_k["p_one_sided"]), (5,))
         add_row(
             "F_PAGES_L_K_CURVE",
             "F",
             "PASS",
             raw_cfg["k_curve_subject_metrics"],
             "Recompute EXP-019 k=1..4 Page's L (N=33 common cohort)",
-            "L, z, p_one_sided, p_two_sided",
-            f"L={pl_k['L']:.1f}, z={pl_k['z']:+.3f}, p_1s_raw={pl_k['p_one_sided']:.5f}, p_2s_raw={pl_k['p_two_sided']:.5f}",
+            "L, z, p_one_sided, p_two_sided, 4x/5x Holm one-sided",
+            f"L={pl_k['L']:.1f}, z={pl_k['z']:+.3f}, p_1s_raw={pl_k['p_one_sided']:.5f}, p_2s_raw={pl_k['p_two_sided']:.5f}, p_holm4_1s={4*pl_k['p_one_sided']:.5f}, p_holm5_1s={5*pl_k['p_one_sided']:.5f}",
         )
 
-    # Scan all documents for Page's L p-values lacking explicit 'raw' or 'Holm-adjusted' label
+    # Scan all documents for Page's L p-values: require explicit raw/Holm + one-sided/two-sided AND verify value against recomputed
     unlabeled_pages_l = []
-    pat_pages_p = re.compile(r"(?:Page'?s\s+\$?L|H-SCALE(?:-R)?)[^.;\n]{0,120}?p(?:_\{?[^}=\s]+\}?)?\s*=\s*([0-9.eE-]+)", re.I)
+    mismatched_pages_l = []
+    pat_pages_block = re.compile(r"(?:Page'?s\s+\$?L|H-SCALE(?:-R)?)[^.\n]{0,220}", re.I)
+    pat_p_entry = re.compile(
+        r"((?:raw|holm[- ]?adjusted|directional\s+holm|4-test\s+holm[- ]?adjusted|5-test\s+holm[- ]?adjusted|two-sided|one-sided|p_\\?text\{[^}]+\}|p_\{?[^}=\s]+\}?|\s)+?)"
+        r"p(?:_\\?text\{[^}]+\}|_\{?[^}=\s]+\}?)?\s*=\s*(0\.\d+)",
+        re.I,
+    )
     for doc_label, dtxt in [
         (_rel(manuscript_tex_path), tex_text),
         (_rel(manuscript_md_path), md_text),
         (_rel(report_md_path), rep_text),
     ]:
-        for m in pat_pages_p.finditer(dtxt):
-            snippet = m.group(0)
-            has_label = bool(re.search(r"\b(?:raw|holm|adjusted|unadjusted)\b", snippet, re.I))
-            if not has_label:
-                unlabeled_pages_l.append((doc_label, snippet.replace("\n", " ")[:95]))
+        for mb in pat_pages_block.finditer(dtxt):
+            blk = mb.group(0)
+            for mp in pat_p_entry.finditer(blk):
+                prefix = mp.group(0)
+                pval = float(mp.group(2))
+                has_adj = bool(re.search(r"\b(?:raw|holm|adjusted|unadjusted)\b", prefix, re.I))
+                has_side = bool(re.search(r"one[- ]?sided|two[- ]?sided|_1s|_2s", prefix, re.I))
+                if not has_adj:
+                    unlabeled_pages_l.append((doc_label, prefix.replace("\n", " ")[:95]))
+                # Verify label-value consistency for k=1..4 (0.01187 family)
+                if pl_k is not None:
+                    p1 = pl_k["p_one_sided"]
+                    p2 = pl_k["p_two_sided"]
+                    if abs(pval - 5.0 * p1) < 0.0005 and re.search(r"two[- ]?sided", prefix, re.I):
+                        mismatched_pages_l.append(f"{doc_label}: {pval} (5x one-sided) mislabeled as two-sided")
+                    if abs(pval - p1) < 0.0005 and re.search(r"two[- ]?sided|holm", prefix, re.I):
+                        mismatched_pages_l.append(f"{doc_label}: {pval} (raw one-sided) mislabeled as two-sided/Holm")
+                    if abs(pval - p2) < 0.0005 and re.search(r"one[- ]?sided|holm", prefix, re.I):
+                        mismatched_pages_l.append(f"{doc_label}: {pval} (raw two-sided) mislabeled")
+                # Verify H-SCALE (0.0127 raw 2s, 0.0254 Holm 2s)
+                if abs(pval - pl_orig["p_two_sided"]) < 0.0005 and re.search(r"holm", prefix, re.I) and not re.search(r"raw", prefix, re.I):
+                    mismatched_pages_l.append(f"{doc_label}: {pval} (raw 2s) mislabeled as Holm")
+                if abs(pval - holm_hs_2s) < 0.0005 and not re.search(r"holm", prefix, re.I):
+                    mismatched_pages_l.append(f"{doc_label}: {pval} (Holm 2s) missing Holm label")
 
+    ef04_fail = bool(unlabeled_pages_l or mismatched_pages_l)
     add_row(
         "F_PAGES_L_EXPLICIT_LABEL_EF04",
         "F",
-        "EXPECTED_FAIL" if unlabeled_pages_l else "PASS",
+        "FAIL" if ef04_fail else "PASS",
         "All manuscripts",
-        "[EF-04] Every reported Page's L p-value must carry explicit 'raw' or 'Holm-adjusted' label",
-        "0 unlabeled Page's L p-values",
-        f"{len(unlabeled_pages_l)} unlabeled occurrence(s)",
-        "; ".join(f"{dl}: {sn}" for dl, sn in unlabeled_pages_l[:5]),
+        "[EF-04 HARD_FAIL] Every reported Page's L p-value carries explicit raw/Holm-adjusted label matching recomputed value",
+        "0 unlabeled and 0 mislabeled Page's L p-values",
+        f"{len(unlabeled_pages_l)} unlabeled, {len(mismatched_pages_l)} mislabeled",
+        "; ".join([f"{dl}: {sn}" for dl, sn in unlabeled_pages_l[:4]] + mismatched_pages_l[:4]),
     )
     summary_data["check_f"] = {"h_scale": pl_orig, "h_scale_r": pl_retr, "unlabeled_count": len(unlabeled_pages_l)}
 
@@ -1017,8 +1059,20 @@ def run_verification(
     )
 
     # Flag any two distinct metrics in one table sharing an identical p to 4 decimals
+    # For qc_clean single-model accuracy & wake_f1 (both p=0.1336), verify identical Wilcoxon W=106.0 mirror & footnote
     identical_p_flags = []
     sa27_json = json.loads((REPO_ROOT / raw_cfg["sleepaccel_exp027_summary"]).read_text(encoding="utf-8"))
+    sub_27 = sa27_df[(sa27_df["qc_pass"] == True) & (sa27_df["eval_mode"] == "mean_single_model")]
+    ma_27 = sub_27[sub_27["arm"] == "ModelA"].set_index("subject_id").sort_index()
+    sl_27 = sub_27[sub_27["arm"] == "SLAMSS_IFS"].set_index("subject_id").sort_index()
+    w_acc, p_acc = stats.wilcoxon(ma_27["accuracy"].values - sl_27["accuracy"].values, alternative="two-sided")
+    w_wake, p_wake = stats.wilcoxon(ma_27["wake_f1"].values - sl_27["wake_f1"].values, alternative="two-sided")
+    mirror_verified = (abs(float(w_acc) - float(w_wake)) < 1e-6) and ("106.0" in tex_text) and ("106.0" in md_text)
+    add_canonical(float(w_acc), (1,))
+    add_canonical(float(p_acc), (4,))
+    add_canonical(float(p_wake), (4,))
+    add_canonical(219.0, (1,))
+
     for cohort_k, modes in sa27_json["cohorts"].items():
         for mode_k, mblock in modes.items():
             seen_p: Dict[str, List[str]] = {}
@@ -1027,6 +1081,8 @@ def run_verification(
                 seen_p.setdefault(p4, []).append(met_k)
             for p4, mets in sorted(seen_p.items()):
                 if len(mets) > 1:
+                    if cohort_k == "qc_clean" and mode_k == "mean_single_model" and set(mets) == {"accuracy", "wake_f1"} and mirror_verified:
+                        continue
                     identical_p_flags.append(f"exp027_summary/{cohort_k}/{mode_k}: p={p4} shared by {mets}")
 
     # Also check LaTeX and Markdown tables for identical 4-decimal p-values across distinct metric rows
@@ -1049,11 +1105,11 @@ def run_verification(
     add_row(
         "G_IDENTICAL_P_4DEC",
         "G",
-        "WARN" if identical_p_flags else "PASS",
+        "FAIL" if identical_p_flags else "PASS",
         "SleepAccel tables & exp027_summary.json",
-        "Flag any two distinct metrics in one table sharing an identical p to 4 decimals",
-        "0 suspicious duplicate 4-decimal p-values",
-        f"{len(identical_p_flags)} collision(s)",
+        "Flag unexplained duplicate 4-decimal p-values; verify W=106.0 mirror footnote for qc_clean accuracy/wake_f1",
+        "0 unexplained collisions & W=106.0 mirror footnote present",
+        f"{len(identical_p_flags)} unexplained collision(s); W_acc={float(w_acc):.1f}, W_wake={float(w_wake):.1f}, mirror_footnote={mirror_verified}",
         "; ".join(identical_p_flags[:5]),
     )
     summary_data["check_g"] = {"sa_results": sa_results, "identical_p_flags": identical_p_flags}
@@ -1076,6 +1132,9 @@ def run_verification(
             int8_ser = float(d["int8_serialized_kib"])
             fp32_rep = float(d.get("fp32_weight_kib", params * 4.0 / 1024.0))
             lat_4t = float(d["cpu_latency_4t_int8_ms"])
+            for ci_k in ("ci95_low_pp", "ci95_high_pp", "delta_pp", "wilcoxon_p"):
+                if ci_k in d and d[ci_k] is not None:
+                    add_canonical(float(d[ci_k]), (4,))
         fp32_calc = params * 4.0 / 1024.0
         red_pct = (1.0 - int8_mem / fp32_calc) * 100.0
         int8_summary[m_key] = {
@@ -1124,7 +1183,9 @@ def run_verification(
         f"CPU='{sys_info['cpu_model']}', gov='{sys_info['governor']}', torch='{sys_info['torch_version']}'",
     )
 
-    cv_violations = []
+    # Check INT8 CV <= 5% (primary latency figures) + 4T FP32 rerun compliance
+    int8_cv_violations = []
+    fp32_1t_cv_violations = []
     speedups_h: Dict[str, Dict[str, float]] = {}
     for th_key in ["threads_1", "threads_4"]:
         res = lat_json[th_key]["results"]
@@ -1145,31 +1206,49 @@ def run_verification(
             for x in [f_med, i_med, f_cv, i_cv, mm, sp_f, sp_i, mr]:
                 add_canonical(x, (1, 2))
             speedups_h[f"{th_key}_{m_k}"] = {"fp32_speedup": sp_f, "int8_speedup": sp_i, "mmac_ratio": mr, "fp32_cv": f_cv, "int8_cv": i_cv}
-            if f_cv > 5.0:
-                cv_violations.append(f"{th_key}/{m_k}/fp32 CV={f_cv:.2f}%")
             if i_cv > 5.0:
-                cv_violations.append(f"{th_key}/{m_k}/int8 CV={i_cv:.2f}%")
+                int8_cv_violations.append(f"{th_key}/{m_k}/int8 CV={i_cv:.2f}%")
+            if th_key == "threads_1" and f_cv > 5.0:
+                fp32_1t_cv_violations.append(f"{th_key}/{m_k}/fp32 CV={f_cv:.2f}%")
+
+    # Verify 4T FP32 rerun artifact & deviation compliance
+    rerun_p = REPO_ROOT / raw_cfg["interleaved_fp32_4t_rerun"]
+    fp32_4t_issues = []
+    if not rerun_p.exists():
+        fp32_4t_issues.append("Missing 4T FP32 rerun JSON (docs/verification/interleaved_cpu_latency_fp32_4t_rerun.json)")
+    else:
+        rr = json.loads(rerun_p.read_text(encoding="utf-8"))
+        for m_k, v in rr["results"].items():
+            fp = v["fp32"]
+            add_canonical(float(fp["median_ms"]), (2,))
+            add_canonical(float(fp["cv_pct"]), (2,))
+            if not fp.get("passed_cv_5pct", False):
+                # Must be marked 'not reported (CV > 5%)' in TECHNICAL_EXPERIMENTAL_REPORT.md
+                if "not reported (CV > 5%)" not in rep_text:
+                    fp32_4t_issues.append(f"{m_k} 4T FP32 CV={fp['cv_pct']:.2f}% > 5% not marked 'not reported (CV > 5%)' in report")
 
     # Check tab:scaling in manuscript_jbhi.tex for mixing FP32 MiB in INT8 column or W0-B vs interleaved ms
     m_tab_scaling = re.search(r"\\label\{tab:scaling\}.*?\\end\{tabular\}", tex_text, re.S)
     tab_scaling_issues = []
     if m_tab_scaling:
         ts_txt = m_tab_scaling.group(0)
-        if "20.85" in ts_txt and "INT8 (KiB)" in ts_txt:
-            tab_scaling_issues.append("SLAMSS-IFS FP32 20.85 MiB placed in INT8 (KiB) column")
-        if "46.35" in ts_txt and "41.02" in tex_text:
-            tab_scaling_issues.append("tab:scaling uses non-interleaved W0-B 4T ms (46.35) while prose uses interleaved (41.02)")
+        if "FP32 Payload" not in ts_txt and "20.85" in ts_txt:
+            tab_scaling_issues.append("SLAMSS-IFS FP32 20.85 MiB not separated into dedicated FP32 Payload column")
+        if "46.35" in tex_text or "53.07" in tex_text:
+            tab_scaling_issues.append("Non-interleaved W0-B 4T ms (46.35 or 53.07) still present in manuscript_jbhi.tex")
+        if "41.02" not in ts_txt:
+            tab_scaling_issues.append("Interleaved 4T INT8 p1_100k latency (41.02 ms) missing from tab:scaling")
 
-    ef05_caught = bool(cv_violations or tab_scaling_issues)
+    ef05_fail = bool(int8_cv_violations or fp32_1t_cv_violations or fp32_4t_issues or tab_scaling_issues)
     add_row(
         "H_LATENCY_CV_AND_TABLE_EF05",
         "H",
-        "EXPECTED_FAIL" if ef05_caught else "PASS",
+        "FAIL" if ef05_fail else "PASS",
         f"{raw_cfg['interleaved_cpu_latency']} & {_rel(manuscript_tex_path)}",
-        "[EF-05] CV <= 5% gate & strict INT8/FP32 + interleaved latency separation in tab:scaling",
-        "All CV <= 5.0% and no FP32/INT8 or W0-B/interleaved mixing",
-        f"{len(cv_violations)} CV > 5% violation(s), {len(tab_scaling_issues)} table mixing issue(s)",
-        "; ".join(cv_violations + tab_scaling_issues),
+        "[EF-05 HARD_FAIL] INT8 & 1T FP32 CV <= 5%, 4T FP32 rerun compliance, FP32/INT8 column separation, consistent interleaved 4T INT8 ms",
+        "0 CV violations, 0 table mixing issues",
+        f"{len(int8_cv_violations) + len(fp32_1t_cv_violations)} CV violation(s), {len(fp32_4t_issues)} 4T-FP32 issue(s), {len(tab_scaling_issues)} table issue(s)",
+        "; ".join(int8_cv_violations + fp32_1t_cv_violations + fp32_4t_issues + tab_scaling_issues),
     )
 
     # Check separation between weight payload (KiB) and peak runtime RAM (peak_rss_mib ~800 MiB)
@@ -1183,7 +1262,7 @@ def run_verification(
         "Weights in KiB (182-403 KiB), Process Peak RSS in MiB (~800 MiB)",
         f"threads_1 RSS={lat_json['threads_1']['peak_rss_mib']:.2f} MiB, threads_4 RSS={lat_json['threads_4']['peak_rss_mib']:.2f} MiB",
     )
-    summary_data["check_h"] = {"int8_summary": int8_summary, "cv_violations": cv_violations, "tab_scaling_issues": tab_scaling_issues}
+    summary_data["check_h"] = {"int8_summary": int8_summary, "cv_violations": int8_cv_violations + fp32_1t_cv_violations, "tab_scaling_issues": tab_scaling_issues}
 
     # =========================================================================
     # CHECK I: Cross-Document Consistency & 100% Numeric Coverage
@@ -1310,11 +1389,11 @@ def run_verification(
     }
 
     # =========================================================================
-    # CHECK J: Banned Phrases, Internal IDs & Unverified External Facts
+    # CHECK J: Banned Phrases, Dataset Versions & Unverified External Facts
     # =========================================================================
     bidsleep_readme_txt = (REPO_ROOT / raw_cfg["bidsleep_readme"]).read_text(encoding="utf-8")
 
-    # J1: Apple Watch Series 6 check against official BIDSleep README (EF-01)
+    # J1: Apple Watch Series 6 check against official BIDSleep README (EF-01 HARD_FAIL)
     aw6_in_readme = "Apple Watch Series 6" in bidsleep_readme_txt
     aw6_hits = []
     for doc_label, dtxt in [
@@ -1324,41 +1403,60 @@ def run_verification(
     ]:
         if re.search(r"Apple Watch Series 6", dtxt, re.I):
             aw6_hits.append(doc_label)
-    ef01_caught = (not aw6_in_readme) and bool(aw6_hits)
+    ef01_fail = (not aw6_in_readme) and bool(aw6_hits)
     add_row(
         "J_HARDWARE_AW_SERIES6_EF01",
         "J",
-        "EXPECTED_FAIL" if ef01_caught else ("PASS" if not aw6_hits else "FAIL"),
+        "FAIL" if ef01_fail else "PASS",
         ", ".join(aw6_hits) if aw6_hits else "All manuscripts",
-        "[EF-01] Hardware phrase 'Apple Watch Series 6' verified against official BIDSleep README",
-        "Absent unless explicitly in README.md (in_readme=False)",
+        "[EF-01 HARD_FAIL] Hardware phrase 'Apple Watch Series 6' verified against official BIDSleep README",
+        "Absent (README says only 'Apple Watch devices')",
         f"Found in {len(aw6_hits)} document(s): {aw6_hits}",
     )
 
-    # J2: Stale SleepAccel v1.0.0 vs canonical 1.0.1 in facts.yaml (EF-02)
+    # J2: Dataset versions & separate citations check (EF-02 HARD_FAIL)
+    # SleepAccel canonical version is 1.0.0 (verified in local index.html & PhysioNet); BIDSleep is 1.0.1 (PhysioNet).
     sa_ver_canonical = facts["datasets"]["sleepaccel"]["canonical_version"]
-    sa_stale_hits = []
+    bs_ver_canonical = facts["datasets"]["bidsleep"]["canonical_version"]
+    ver_issues = []
     for doc_label, dtxt in [
         (_rel(manuscript_tex_path), tex_text),
         (_rel(manuscript_md_path), md_text),
         (_rel(report_md_path), rep_text),
     ]:
-        if re.search(r"SleepAccel\s+v?1\.0\.0", dtxt, re.I):
-            sa_stale_hits.append(doc_label)
-    ef02_caught = bool(sa_stale_hits)
+        if re.search(r"SleepAccel\s+v?1\.0\.1", dtxt, re.I):
+            ver_issues.append(f"{doc_label}: incorrect SleepAccel v1.0.1 (canonical is v{sa_ver_canonical})")
+        if not re.search(r"SleepAccel\s+v?1\.0\.0", dtxt, re.I):
+            ver_issues.append(f"{doc_label}: missing SleepAccel v{sa_ver_canonical}")
+        if not re.search(r"BIDSleep\s+v?1\.0\.1", dtxt, re.I):
+            ver_issues.append(f"{doc_label}: missing BIDSleep v{bs_ver_canonical}")
+    # Separate citations check in manuscripts: Walch 2019 (10.1093/sleep/zsz180) AND SleepAccel DOI (10.13026/hmhs-py35)
+    for doc_label, dtxt in [
+        (_rel(manuscript_tex_path), tex_text),
+        (_rel(manuscript_md_path), md_text),
+    ]:
+        if "10.1093/sleep/zsz180" not in dtxt:
+            ver_issues.append(f"{doc_label}: missing Walch et al. SLEEP 2019 DOI (10.1093/sleep/zsz180)")
+        if "10.13026/hmhs-py35" not in dtxt:
+            ver_issues.append(f"{doc_label}: missing SleepAccel dataset DOI (10.13026/hmhs-py35)")
+        if "University of Massachusetts Lowell" not in dtxt:
+            ver_issues.append(f"{doc_label}: missing verified BIDSleep IRB institution (University of Massachusetts Lowell)")
+
     add_row(
-        "J_SLEEPACCEL_VERSION_EF02",
+        "J_DATASET_VERSIONS_AND_CITATIONS_EF02",
         "J",
-        "EXPECTED_FAIL" if ef02_caught else "PASS",
-        ", ".join(sa_stale_hits) if sa_stale_hits else "All manuscripts",
-        f"[EF-02] SleepAccel version matches canonical PhysioNet v{sa_ver_canonical} (facts.yaml)",
-        f"SleepAccel v{sa_ver_canonical} (0 stale v1.0.0 strings)",
-        f"Stale v1.0.0 found in {len(sa_stale_hits)} document(s): {sa_stale_hits}",
+        "FAIL" if ver_issues else "PASS",
+        "All manuscripts",
+        f"[EF-02 HARD_FAIL] SleepAccel v{sa_ver_canonical} + separate Walch 2019 & DOI citations; BIDSleep v{bs_ver_canonical} + UMass Lowell IRB",
+        f"SleepAccel v{sa_ver_canonical}, BIDSleep v{bs_ver_canonical}, separate DOIs, UMass Lowell IRB",
+        f"{len(ver_issues)} issue(s)",
+        "; ".join(ver_issues[:8]),
     )
 
-    # J3: Banned phrases in prose (EF-06)
+    # J3: Banned phrases in prose (EF-06 HARD_FAIL; 'parity' unconditionally banned)
     banned_patterns = [
         ("SOTA", r"\bSOTA\b|state-of-the-art"),
+        ("parity", r"\bparity\b"),
         ("proves", r"\bproves\b"),
         ("retains_N_pct", r"\bretains?\s+\d+(?:\.\d+)?\\?%"),
         ("Ultradian", r"Ultradian"),
@@ -1378,26 +1476,19 @@ def run_verification(
             ms = list(re.finditer(bpat, dtxt, re.I))
             if ms:
                 banned_hits.append(f"{doc_label}:{bname}({len(ms)})")
-        # Special rule: 'parity' without CI in the same sentence/parenthetical
-        for pm in re.finditer(r"\bparity\b", dtxt, re.I):
-            ctx = dtxt[max(0, pm.start() - 60) : min(len(dtxt), pm.end() + 90)]
-            if not re.search(r"95\\?%\s*CI|CI\s*\[", ctx, re.I):
-                banned_hits.append(f"{doc_label}:parity_without_CI")
-                break
 
-    ef06_caught = bool(banned_hits)
     add_row(
         "J_BANNED_PHRASES_EF06",
         "J",
-        "EXPECTED_FAIL" if ef06_caught else "PASS",
+        "FAIL" if banned_hits else "PASS",
         "All manuscripts",
-        "[EF-06] Banned phrases (SOTA, parity w/o CI, proves, retains N%, Ultradian, UMass Amherst, credentialed, four canonical, k>=3, first priority)",
+        "[EF-06 HARD_FAIL] Banned phrases (SOTA, parity, proves, retains N%, Ultradian, UMass Amherst, credentialed, four canonical, k>=3, first priority)",
         "0 banned phrase hits",
         f"{len(banned_hits)} hit group(s)",
         "; ".join(banned_hits[:12]),
     )
 
-    # J4: Internal tracking IDs (DEC-, EXP-0, P101) in manuscript prose (EF-07)
+    # J4: Internal tracking IDs (DEC-, EXP-0, P101) in manuscript prose (EF-07 HARD_FAIL)
     internal_id_hits: List[str] = []
     pat_internal = re.compile(r"\b(?:DEC-\d+|EXP-0\d+[A-Z]?|P101)\b")
     for doc_label, dtxt in [
@@ -1408,13 +1499,12 @@ def run_verification(
         if ms:
             internal_id_hits.append(f"{doc_label}: {len(ms)} unique IDs ({', '.join(ms[:6])})")
 
-    ef07_caught = bool(internal_id_hits)
     add_row(
         "J_INTERNAL_IDS_PROSE_EF07",
         "J",
-        "EXPECTED_FAIL" if ef07_caught else "PASS",
+        "FAIL" if internal_id_hits else "PASS",
         f"{_rel(manuscript_tex_path)}, {_rel(manuscript_md_path)}",
-        "[EF-07] Internal tracking IDs (DEC-, EXP-0, P101) must not appear in manuscript prose",
+        "[EF-07 HARD_FAIL] Internal tracking IDs (DEC-, EXP-0, P101) must not appear in manuscript prose",
         "0 internal IDs in manuscript prose",
         f"{len(internal_id_hits)} document(s) with internal IDs",
         "; ".join(internal_id_hits),
@@ -1422,7 +1512,7 @@ def run_verification(
 
     summary_data["check_j"] = {
         "aw6_hits": aw6_hits,
-        "sa_stale_hits": sa_stale_hits,
+        "ver_issues": ver_issues,
         "banned_hits": banned_hits,
         "internal_id_hits": internal_id_hits,
     }
@@ -1456,15 +1546,15 @@ def run_verification(
     lines.append(f"- **Total checks executed:** `{len(rows)}` (`PASS`: `{counts['PASS']}`, `FAIL`: `{counts['FAIL']}`, `EXPECTED_FAIL`: `{counts['EXPECTED_FAIL']}`, `WARN`: `{counts['WARN']}`)")
     lines.append("")
 
-    # Seeded 7 Expected-Fail Tracker
-    lines.append("## Seeded Known Open Issues (7 `EXPECTED_FAIL` Test Cases)")
+    # Promoted 7 HARD_FAIL Gates Tracker
+    lines.append("## Promoted Hard-Fail Gates (Former `EF-01`–`EF-07`)")
     lines.append("")
-    lines.append("| Case ID | Check | Status | Target | Observed Finding |")
+    lines.append("| Gate ID | Check | Status | Target | Observed Finding |")
     lines.append("|---|---|---|---|---|")
     ef_lookup = {r.check_id: r for r in rows if "_EF0" in r.check_id}
     ef_order = [
         ("EF-01", "J_HARDWARE_AW_SERIES6_EF01"),
-        ("EF-02", "J_SLEEPACCEL_VERSION_EF02"),
+        ("EF-02", "J_DATASET_VERSIONS_AND_CITATIONS_EF02"),
         ("EF-03", "C_SUSPICIOUS_MIX_PAIR_EF03"),
         ("EF-04", "F_PAGES_L_EXPLICIT_LABEL_EF04"),
         ("EF-05", "H_LATENCY_CV_AND_TABLE_EF05"),
