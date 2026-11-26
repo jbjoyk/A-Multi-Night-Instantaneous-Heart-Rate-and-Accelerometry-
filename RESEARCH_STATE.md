@@ -119,6 +119,10 @@
   - **EXP-032 (`<= 1.5M` High-Accuracy Benchmark — COMPLETED & RATIFIED under `DEC-045`):**
     - Executed Stage A (`60` runs) + Stage B (`45` locked runs across `M1` `1,402,468` params, `M2` `+LinearChainCRF4` `1,402,492` params, and `M3` teacher-distilled `1,402,492` params) under `PREREG_EXP-032_HIGH_ACCURACY_BENCHMARK.md`, cleared post-execution via `docs/audits/EXP032_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, `0` Blocking, `0` Major).
     - **Locked §5.2 Verdict:** **`NOT SUPPORTED`** on primary BIDSleep (`N=47`) Macro-F1 superiority (`M1` `65.21%`, `M2` `65.18%`, **`M3` (teacher-distilled)** `67.38%` vs. `SLAMSS-IFS` `67.37%`, $p_{\text{Holm}}=0.8627$). `M3` achieves Macro-F1 parity, `+1.00 pp` Accuracy (`69.75%` vs. `68.75%`, $p=0.0040$), SleepAccel `61.43%`/`62.63%`, and `35.7x` faster 4T CPU inference (`87.75 ms`) at `3.90x` fewer params. `p1_100k` (`98,940` params / `182.00 KiB` INT8) remains the flagship wearable edge model.
+  - **EXP-033 (`W100` Personalization & SleepAccel Evaluation — COMPLETED & RATIFIED under `DEC-046`):**
+    - Executed under locked `PREREG_EXP-033_W100_PERSONALIZATION_EXTERNAL.md` (commit `c1b784305812d3c7208ed73c24a4b08a85c1ef3c`, `TA-21`), passing pre/post bitwise `ZS` reset-guard tests (`tests/test_exp033_safeguards.py`) across `1,191` runs/backbone (`W100`, `p1_100k`, `P190`, `full_v5`).
+    - **Confirmatory Verdicts (`W100`, `N=46`):** `H-A2` **NOT SUPPORTED (practically)** (`+0.58 pp` `[-0.06, +1.22]`, $p=0.0263$, $d_z=0.259$); `S-SPEC` **INCONCLUSIVE** (`+1.45 pp` `[+0.89, +2.02]`, $p=1.23\times 10^{-5}$); `E4` calibration-depth **NOT CLAIMABLE** (Page's $L=835.0$, $z=+0.573$, raw two-sided $p=0.5667$). Descriptive `FT-2 - ZS`: `p1_100k +0.51 pp`, `P190 -0.02 pp`, `full_v5 +0.45 pp`.
+    - **Part B (`W100` SleepAccel `em_off`):** `61.23%` (`mean_single_model`) / `62.93%` (`prob_ensemble`) on `qc_clean` (`n=25`), `61.58%` / `63.43%` on `all` (`N=31`). **All pre-registered experiments (`EXP-018`–`EXP-033`) are complete.**
 
 ---
 

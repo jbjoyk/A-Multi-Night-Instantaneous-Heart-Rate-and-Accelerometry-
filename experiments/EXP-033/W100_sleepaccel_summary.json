@@ -1,0 +1,10 @@
+{
+  "em_off__mean_single_model__qc_clean_macro_f1": 61.225106658651605,
+  "em_off__mean_single_model__qc_clean_accuracy": 66.6468972071186,
+  "em_off__prob_ensemble__qc_clean_macro_f1": 62.93154473562764,
+  "em_off__prob_ensemble__qc_clean_accuracy": 67.94009447987648,
+  "em_off__mean_single_model__all_macro_f1": 61.57520238737272,
+  "em_off__mean_single_model__all_accuracy": 66.71023992664847,
+  "em_off__prob_ensemble__all_macro_f1": 63.42520460420241,
+  "em_off__prob_ensemble__all_accuracy": 68.28639513130217
+}

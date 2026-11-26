@@ -908,6 +908,22 @@
 - **Interleaved FP32 CPU Latency (`L=1200`, `AMD Ryzen 7 7700`):** `W100` `53.61 / 41.61 ms`, `M1` `115.44 / 73.47 ms`, `M2` `128.49 / 87.51 ms`, `M3` `129.14 / 87.75 ms` (`28.1x` `1T` / `35.7x` `4T` faster than `SLAMSS-IFS` `3,631.24 / 3,131.18 ms`).
 - **Decision:** Ratify the locked §5.2 verdict **`NOT SUPPORTED`** on primary BIDSleep Macro-F1 superiority (`K_qualifying = 0`, all 3 arms `ARM_NOT_SUPPORTED`). Retain **`p1_100k`** (`98,940` params / `182.00 KiB` INT8) as the flagship wearable edge model, and record **`M3` (`1,402,492` params, explicitly labeled teacher-distilled)** as the server / companion-phone distillation benchmark achieving Macro-F1 parity and `+1.00 pp` Accuracy over `SLAMSS-IFS` at `3.90x` fewer parameters and `35.7x` faster 4T CPU inference.
 
+---
+
+## DEC-046 — EXP-033 Recipe-Consistent `W100` Personalization & External SleepAccel Evaluation (2026-11-26)
+
+- **Protocol & Safeguards:** Executed under locked `docs/designs/PREREG_EXP-033_W100_PERSONALIZATION_EXTERNAL.md` (lock commit `c1b784305812d3c7208ed73c24a4b08a85c1ef3c`, `TA-21`). Verified all 15 `W100` checkpoint SHA-256 digests and `review_package/fold_manifests.csv` (`36d840207e937081655438a9aa4170a682cfb90e9bac3fb63c8ec0d9b15adfcf`), passed pre-run and post-run bitwise `ZS` reset-guard unit tests (`2 passed` in `tests/test_exp033_safeguards.py`), and verified frozen `ZS` OOF Macro-F1 parity (`max abs diff <= 2.22e-16`). Executed 1,191 fine-tuning runs per backbone (`4,764` total) across `W100` (primary) and `p1_100k`, `P190`, `full_v5` (descriptive).
+- **Confirmatory Verdicts (`W100`, `N = 46`):**
+  - **`H-A2` (`FT-2 - ZS`):** $\bar{\Delta} = \mathbf{+0.58\text{ pp}}$ `[95% CI: -0.06, +1.22 pp]`, Wilcoxon raw two-sided $p = 0.0263$, $d_z = 0.259$ -> **`NOT SUPPORTED (practically)`** (CI upper bound `< +1.50 pp`).
+  - **`S-SPEC` (`FT-2 - FT-other-2`, 5 donor draws):** $\bar{\Delta} = \mathbf{+1.45\text{ pp}}$ `[95% CI: +0.89, +2.02 pp]`, Wilcoxon raw two-sided $p = 1.23 \times 10^{-5}$, $d_z = 0.730$ -> **`INCONCLUSIVE`** (donor harm check `FT-other-2 - ZS = -0.87 pp`).
+  - **Calibration-Depth Claim (`E4`, `N = 33`, `k = 1..4`):** Page's $L = 835.0$, $z = +0.573$, raw two-sided $p = 0.5667$ (raw one-sided $p = 0.2834$), `E4 k=4` $\bar{\Delta} = +0.73\text{ pp}$ `[-0.22, +1.77]` -> **NOT CLAIMABLE**.
+- **Descriptive Backbones (`FT-2 - ZS`, `N = 46`) & `GATE-τ`:** `p1_100k` `+0.51 pp` `[+0.03, +0.95]`, `P190` `-0.02 pp` `[-1.09, +0.85]`, `full_v5` `+0.45 pp` `[-0.57, +1.41]`. `W100` `GATE-τ` (`τ ∈ {1%, 2%, 3%, 5%}`) yielded `+0.65` to `+0.34 pp` (`1`–`8` abstained; `min Δ = -5.18 pp`, `1` subject `≤ -5 pp`).
+- **Part B: `W100` Zero-Shot SleepAccel (`em_off`, Descriptive, Bland-Altman margins `none; descriptive only`):**
+  - `qc_clean` (`n = 25`): `61.23%` (`mean_single_model`, `+0.71 pp` vs. `Model A` $p=0.1014$, `+0.14 pp` vs. `SLAMSS-IFS` $p=0.9578$, `+0.35 pp` vs. `p1_100k` $p=0.2521$, `-0.30 pp` vs. `P190` $p=0.3525$) / `62.93%` (`prob_ensemble`, `-0.01 pp` vs. `Model A`, `+0.15 pp` vs. `SLAMSS-IFS`).
+  - `all` (`N = 31`): `61.58%` (`mean_single_model`) / `63.43%` (`prob_ensemble`).
+  - Bland-Altman (`qc_clean n=25`, `mean_single_model`): TST `+12.12 ± 17.57 min`, SOL `+3.24 ± 5.66 min`, WASO `-14.48 ± 14.61 min`, SE `+2.67 ± 4.04%`, Deep% `+7.10 ± 6.26%`, REM% `+12.23 ± 7.57%`.
+- **Decision:** Ratify `EXP-033` verdicts (`H-A2 = NOT SUPPORTED (practically)`, `S-SPEC = INCONCLUSIVE`, `E4` depth claim `NOT CLAIMABLE`). All pre-registered experiments (`EXP-018`–`EXP-033`) are now complete; manuscript framing shifts from personalization to training-recipe parity, `< 400 KiB` edge efficiency (`p1_100k`/`W100`), and `M3` server distillation.
+
 
 
 

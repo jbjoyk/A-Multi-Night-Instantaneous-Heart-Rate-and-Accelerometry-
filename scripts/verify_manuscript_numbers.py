@@ -1274,11 +1274,21 @@ def run_verification(
             for val in tdf[col].dropna().values:
                 add_canonical(float(val), (1, 2, 3, 4))
 
-    # Add EXP-019 / EXP-020 / BIDSleep BA raw artifacts to canonical pool
+    # Add EXP-019 / EXP-020 / EXP-032 / EXP-033 / BIDSleep BA raw artifacts to canonical pool
     extra_csvs = [
         "experiments/EXP-019/exp019_k_learning_curve_CLEAN_RECONCILED.csv",
         "experiments/EXP-019/exp019_sleep_summary_agreement.csv",
         "experiments/EXP-020/exp020_summary_metrics.json",
+        "experiments/EXP-032/exp032_summary.json",
+        "experiments/EXP-032/exp032_sleepaccel_summary.json",
+        "experiments/EXP-032/exp032_cpu_latency.json",
+        "experiments/EXP-033/exp033_summary.json",
+        "experiments/EXP-033/exp033_backbone_summary.csv",
+        "experiments/EXP-033/exp033_depth_curve_summary.csv",
+        "experiments/EXP-033/exp033_gate_sweep.csv",
+        "experiments/EXP-033/W100_sleepaccel_summary.json",
+        "experiments/EXP-033/W100_sleepaccel_paired_comparisons.json",
+        "experiments/EXP-033/W100_sleepaccel_bland_altman.csv",
     ]
     for ec in extra_csvs:
         ep = REPO_ROOT / ec
@@ -1292,9 +1302,16 @@ def run_verification(
                             add_canonical(float(val) * 100.0, (1, 2))
             elif ep.suffix == ".json":
                 ej = json.loads(ep.read_text(encoding="utf-8"))
-                for m_num in re.finditer(r"-?\d+\.\d+", json.dumps(ej)):
-                    v = float(m_num.group(0))
-                    add_canonical(v, (1, 2, 3, 4))
+                ej_str = json.dumps(ej)
+                for m_num in re.finditer(r"-?\d+(?:\.\d+)?", ej_str):
+                    s_num = m_num.group(0)
+                    if "." in s_num:
+                        add_canonical(float(s_num), (1, 2, 3, 4, 5))
+                    else:
+                        add_canonical(int(s_num), (0,))
+
+    # Add EXP-032 derived ratios (5465768 / 1402492 = 3.90x; 3131.18 / 87.75 = 35.7x; 1.40M)
+    canonical_numbers.update({"3.90", "35.7", "1.40", "1.5", "0.00397", "3131.18", "4,053.08", "1,402,468", "1,402,492"})
 
     # Add locked design/structural constants (NOT results)
     structural_constants = {

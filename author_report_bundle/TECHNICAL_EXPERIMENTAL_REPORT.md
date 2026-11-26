@@ -25,7 +25,7 @@
 - **External Zero-Shot Dataset (`SleepAccel v1.0.0`):** PhysioNet SleepAccel v1.0.0 (Walch et al., *SLEEP* 2019, DOI: `10.1093/sleep/zsz180`; PhysioNet dataset DOI: `10.13026/hmhs-py35`, ODC-By v1.0; University of Michigan Institutional Review Board; Apple Watch + single-night in-lab PSG).
   - **Cohort:** `N = 31` recordings; primary `qc_clean` `n = 25` (`n_epochs >= 600` & ACC `cov_mo >= 50%`; `22,633` masked epochs per checkpoint: Wake `8.24%`, Light `57.74%`, Deep `11.08%`, REM `22.94%`); `n = 6` excluded (`5` with `< 600` epochs [`417–567`], `1` with ACC dropout `cov_mo = 0.1365`), retained in `all` (`N = 31`) sensitivity.
   - **Zero-Shot Rule:** Zero retraining, zero fine-tuning, zero threshold tuning.
-- **Exploratory Multi-Night Personalization Denominators (`BIDSleep`, frozen `Model A` older recipe, pending `W100` re-run):**
+- **Multi-Night Personalization Denominators (`BIDSleep`; `EXP-033` `W100` recipe-consistent & legacy frozen `Model A` older recipe):**
   - `k = 1, 2` (available cohort): `N = 46` (`>= 3` usable nights; `Bidslab49` has 2 nights).
   - `k = 3` (available cohort): `N = 42` (`>= 4` usable nights).
   - `k = 1..4` (common cohort on fixed `E_4`, 64 nights): `N = 33` (`>= 5` usable nights).
@@ -113,6 +113,9 @@
 | EXP-030 / DEC-043 | p5_666k | 665556 | 66.17 | 7.02 | 67.46 | 0.5216 | 63.84 | 67.97 | 67.45 | 65.43 |
 | EXP-030 / DEC-043 | p6_1051k | 1051492 | 66.25 | 6.84 | 67.51 | 0.5244 | 63.63 | 67.76 | 67.75 | 65.87 |
 | EXP-031 / DEC-044 | P190 (Selected Sec.9) | 190940 | 66.60 | 6.85 | 67.92 | 0.5293 | 64.14 | 68.23 | 67.47 | 66.54 |
+| EXP-032 / DEC-045 | M1 (MultiScaleTCNBiGRU) | 1402468 | 65.21 | 6.86 | 67.45 | 0.5244 | 61.58 | 68.02 | 66.16 | 65.07 |
+| EXP-032 / DEC-045 | M2 (+ LinearChainCRF4) | 1402492 | 65.18 | 6.84 | 67.44 | 0.5232 | 61.55 | 68.18 | 65.72 | 65.27 |
+| EXP-032 / DEC-045 | M3 (Teacher-Distilled + CRF) | 1402492 | 67.38 | 6.53 | 69.75 | 0.5548 | 64.08 | 70.66 | 68.42 | 66.37 |
 
 ### Table 4: EXP-031 Single-Factor Width Sweep (`W050`–`W250`) ([table4_exp031_width_sweep.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table4_exp031_width_sweep.csv))
 
@@ -144,6 +147,8 @@
 | full_v5 (190,788p) | em_on (DampedEMCalibrator) | 59.73 | 61.3 | — | — |
 | p1_100k (98,940p) | em_off | 60.88 | 62.51 | 61.10 | 62.51 |
 | P190 (190,940p) | em_off | 61.52 | 63.42 | 61.77 | 63.94 |
+| W100 (163,940p, EXP-033) | em_off | 61.23 | 62.93 | 61.58 | 63.43 |
+| M3 (1,402,492p, distilled, EXP-032) | em_off | 61.43 | 62.63 | 61.76 | 63.01 |
 
 - **Notes:** `full_v5` was evaluated on `qc_clean` (`n = 25`) only (`—` on `all` `N = 31`). On `qc_clean` (`n = 25`) single-model `Model A` vs. `SLAMSS-IFS`, accuracy (`10/15` wins) and Wake F1 (`15/10` wins) share identical Wilcoxon `W = 106.0` (`p = 0.1336`) due to an exact mirrored signed-rank sum pattern (`W+ = 106.0, W- = 219.0` vs. `W+ = 219.0, W- = 106.0`).
 
@@ -163,6 +168,12 @@
 | SLAMSS_IFS | sol_min | 0.53 | -14.72 | 15.78 | 5.53 | 0.54 |
 | SLAMSS_IFS | tst_min | 14.59 | -21.68 | 50.87 | 19.11 | 0.9 |
 | SLAMSS_IFS | waso_min | -14.16 | -44.39 | 16.07 | 16.34 | 0.28 |
+| W100 (EXP-033) | deep_pct_tst | 7.10 | -5.18 | 19.38 | 7.65 | 0.54 |
+| W100 (EXP-033) | rem_pct_tst | 12.23 | -2.60 | 27.06 | 12.24 | 0.50 |
+| W100 (EXP-033) | sleep_efficiency_pct | 2.67 | -5.25 | 10.60 | 3.68 | 0.42 |
+| W100 (EXP-033) | sol_min | 3.24 | -7.86 | 14.34 | 5.03 | 0.78 |
+| W100 (EXP-033) | tst_min | 12.12 | -22.31 | 46.55 | 16.37 | 0.92 |
+| W100 (EXP-033) | waso_min | -14.48 | -43.11 | 14.15 | 15.76 | 0.42 |
 | p1_100k | tst_min | 12.07 | -21.42 | 45.55 | 16.22 | 0.92 |
 | p1_100k | sol_min | 3.21 | -8.27 | 14.68 | 5.19 | 0.76 |
 | p1_100k | waso_min | -14.33 | -43.13 | 14.47 | 15.85 | 0.41 |
@@ -176,7 +187,7 @@
 | P190 | deep_pct_tst | 7.53 | -6.53 | 21.59 | 8.22 | 0.43 |
 | P190 | rem_pct_tst | 11.17 | -3.98 | 26.32 | 11.55 | 0.44 |
 
-### Table 7: Exploratory Multi-Night Personalization (`EXP-019-K` Clean-ZS; Frozen `Model A` Older Recipe, Pending `W100` Re-Run) ([table7_personalization_k_curve.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7_personalization_k_curve.csv))
+### Table 7: Multi-Night Personalization (`EXP-033` `W100` Recipe-Consistent & Legacy `EXP-019-K` Clean-ZS Frozen `Model A` Older Recipe) ([table7_personalization_k_curve.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7_personalization_k_curve.csv))
 
 | Cohort | k | N | Mean_ZS_Clean | Mean_FT | Delta_pp | CI_lower | CI_upper | Wilcoxon_W | p_wilcoxon_two_sided_exact | p_holm_5test_E4_allk | Holm_Sig_5test_E4_allk | p_holm_5test_driver | Holm_Sig_5test_driver | p_holm_5test_prereg | Holm_Sig_5test_prereg | Wins | Losses | Ties |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -189,9 +200,14 @@
 | Available (Ek, k=3) | 3 | 42 | 64.25% | 65.67% | +1.42 | 0.1459722440429792 | 2.5794376071624185 | 213.0 | 0.0023189899457065 | — | — | — | — | — | — | 29 | 13 | 0 |
 | Available (Ek, k=4) | 4 | 33 | 63.54% | 66.25% | +2.71 | 1.1669350853626916 | 4.328169813251022 | 110.0 | 0.0016955372411757 | — | — | — | — | — | — | 24 | 9 | 0 |
 
-- **Exploratory Page's L (`N = 33`, `E_4`, frozen `Model A`, pending `W100` re-run):** `L = 863.0`, `z = 2.261`, raw one-sided `p = 0.01187` (raw two-sided `p = 0.02374`; 4-test Holm-adjusted one-sided `p = 0.04748`; 5-test Holm-adjusted one-sided `p = 0.05935`).
+- **`EXP-033` (`DEC-046`, Recipe-Consistent `W100` & Multi-Backbone, `N = 46` / `E_4 N = 33`):**
+  - **`W100` (`H-A2` `FT-2 - ZS`, `N=46`):** `+0.58 pp` `[-0.06, +1.22]` (`p = 0.0263`, `d_z = 0.259`) -> **`NOT SUPPORTED (practically)`**.
+  - **`W100` (`S-SPEC` `FT-2 - FT-other-2`, 5 donor draws, `N=46`):** `+1.45 pp` `[+0.89, +2.02]` (`p = 1.23e-5`, `d_z = 0.730`) -> **`INCONCLUSIVE`** (`FT-other-2 - ZS = -0.87 pp`).
+  - **`W100` Calibration-Depth (`E_4`, `N=33`, `k=1..4`):** `+0.35`, `+0.53`, `+0.74`, `+0.73 pp` (`[-0.22, +1.77]`); Page's `L = 835.0`, `z = +0.573`, raw two-sided `p = 0.5667`, raw one-sided `p = 0.2834` -> **NOT CLAIMABLE**.
+  - **Descriptive Backbones (`FT-2 - ZS`, `N=46`):** `p1_100k` `+0.51 pp` `[+0.03, +0.95]`, `P190` `-0.02 pp` `[-1.09, +0.85]`, `full_v5` `+0.45 pp` `[-0.57, +1.41]`.
+- **Exploratory Page's L (`N = 33`, `E_4`, frozen `Model A` older recipe):** `L = 863.0`, `z = 2.261`, raw one-sided `p = 0.01187` (raw two-sided `p = 0.02374`; 4-test Holm-adjusted one-sided `p = 0.04748`; 5-test Holm-adjusted one-sided `p = 0.05935`).
 
-### Table 7b: Exploratory `EXP-020` `GATE_tau` Safety Guardrail Across Models (`N = 46`; `Model A` Frozen Older Recipe Pending `W100` Re-Run) ([table7b_exp020_gate_tau_comparison.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7b_exp020_gate_tau_comparison.csv))
+### Table 7b: `GATE_tau` Safety Guardrail Across Models (`N = 46`; `EXP-033` Recipe-Consistent & Legacy `Model A` Older Recipe) ([table7b_exp020_gate_tau_comparison.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7b_exp020_gate_tau_comparison.csv))
 
 | experiment | model | n_subjects | zs_f1_pct | ft2_f1_pct | gate_tau_f1_pct | gate_vs_zs_pp | n_abstained |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -200,8 +216,8 @@
 | EXP-030 / DEC-043 | p1_100k (98,940p) | 46 | 66.84 | 66.27 | 66.74 | -0.10 | 3 |
 | EXP-031 / DEC-044 | P190 (190,940p) | 46 | 66.42 | 66.09 | 66.55 | 0.13 | 3 |
 
-- **Exploratory Donor Control (`S1`, `EXP-019`, frozen `Model A`, pending `W100` re-run, `N = 46`):** `FT-2` (`65.59%`) vs. `FT-other-2` (`62.86%`) -> `+2.73 pp` `[+1.05, +4.32 pp]`, `p = 9.0e-6` (`FT-other-2` is `-1.72 pp` below `ZS = 64.58%`).
-- **Exploratory Unsupervised InfoMax (`S3` / `UA-2`, `DEC-036`, frozen `Model A`, pending `W100` re-run, `N = 46`):** `64.58% -> 64.79%`, `+0.21 pp` `[+0.04, +0.39 pp]`, `p_sup = 0.0322` (`SUB-BENCHMARK GAIN < +1.00 pp`).
+- **Exploratory Donor Control (`S1`, `EXP-019`, frozen `Model A` older recipe, `N = 46`):** `FT-2` (`65.59%`) vs. `FT-other-2` (`62.86%`) -> `+2.73 pp` `[+1.05, +4.32 pp]`, `p = 9.0e-6` (`FT-other-2` is `-1.72 pp` below `ZS = 64.58%`).
+- **Exploratory Unsupervised InfoMax (`S3` / `UA-2`, `DEC-036`, frozen `Model A` older recipe, `N = 46`):** `64.58% -> 64.79%`, `+0.21 pp` `[+0.04, +0.39 pp]`, `p_sup = 0.0322` (`SUB-BENCHMARK GAIN < +1.00 pp`).
 
 ---
 
