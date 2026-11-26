@@ -894,6 +894,20 @@
   - **`EXP-020` `FT-2` & Nested `GATE_tau` (`N = 46`):** Per-fold $\tau^*$ (`0.05` Folds 1–2, `0.01` Folds 3–5; `3/46` abstained); `ZS = 66.42%`, `FT-2 = 66.09%` (`-0.33 pp`, $p=0.5882$), `GATE_tau = 66.55%` (`+0.13 pp` vs. `ZS`, $p=0.7720$).
 - **Decision:** Ratify `H-ARCH = NOT SUPPORTED (practically)`, `H-SCALE = SUPPORTED`, and **`P190` (`190,940` params)** as the Section 9 selected plain CNN-BiGRU backbone for `EXP-031`; report `full_v5` strictly as a capacity-matched ablation without architectural novelty claims.
 
+---
+
+## DEC-045 — EXP-032 High-Accuracy Benchmark (`<= 1.5M` Params, `DEC-031` Exception) & Teacher-Distilled `M3` Parity (2026-11-26)
+
+- **Protocol & Audit Clearance:** Executed under locked `docs/designs/PREREG_EXP-032_HIGH_ACCURACY_BENCHMARK.md` (pre-registered exception to `DEC-031`'s `Lightweight-First` framing for a server / companion-phone high-accuracy benchmark up to `1.5M` params, non-causal `L=1200` on `prep_57738d534b`, `36d84020` manifest gate). Cleared pre-execution via `docs/audits/EXP032_PRE_EXECUTION_DRIFT_REPORT.md` (`GO`, `10/10` tests in `tests/test_exp032_preflight.py`) and post-execution via `docs/audits/EXP032_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, `0` Blocking, `0` Major).
+- **Stage A Pooled `inner_val` (`N=25` `(fold, subject_id)`, `60` runs at `seed=42`):** Locked `M1: cfg#3` (`dropout=0.3, wd=0.01`, `66.97%`), `M2: cfg#3` (`dropout=0.3, wd=0.01`, `67.06%`), and `M3: cfg#1` (`dropout=0.3, wd=0.01, tau=2.0, alpha_kd=0.50`, `69.51%`) in `experiments/EXP-032/locked_configs.json`.
+- **Stage B BIDSleep (`N=47`, `45` locked runs, 10,000-resample bootstrap, two-sided Wilcoxon, Holm-Bonferroni):**
+  - **`M1` (`1,402,468` params, `4,053.08` MMACs):** `65.21%` Macro-F1 (`-2.16 pp` `[-3.00, -1.34]` vs. `SLAMSS-IFS`, $p_{\text{Holm}} = 3.14 \times 10^{-5}$; `-1.47 pp` vs. `W100`, $p = 0.00153$), `67.45%` Accuracy, $\kappa = 0.5244$.
+  - **`M2` (`1,402,492` params, `+ LinearChainCRF4`):** `65.18%` Macro-F1 (`-2.19 pp` `[-3.06, -1.35]` vs. `SLAMSS-IFS`, $p_{\text{Holm}} = 3.14 \times 10^{-5}$; `M2 - M1 = -0.03 pp`, $p = 0.2809$), `67.44%` Accuracy, $\kappa = 0.5232$.
+  - **`M3` (*Teacher-Distilled* `EXP-021` `SLAMSS-IFS` + `M2` CRF, `1,402,492` params):** **`67.38%`** Macro-F1 (**`+0.02 pp`** `[-0.64, +0.69]` vs. `SLAMSS-IFS` `67.37%`, $p_{\text{Holm}} = 0.8627$ — statistical parity; `+2.21 pp` `[+1.69, +2.74]` vs. `M2`, $p = 5.07 \times 10^{-10}$, `43/47` wins), **`69.75%` Accuracy** (**`+1.00 pp`** `[+0.38, +1.61]` vs. `SLAMSS-IFS` `68.75%`, $p = 0.00397$, `33/47` wins), $\kappa = 0.5548$.
+- **External SleepAccel (`em_off` only, `n=25 qc_clean` / `N=31 all`):** `M1` `60.88%` / `62.50%` (`60.46%` / `62.02%` all); `M2` `61.00%` / `62.48%` (`60.51%` / `61.89%` all); `M3` **`61.43%` / `62.63%`** (`61.76%` / `63.01%` all; `+0.34 pp` single vs. `SLAMSS-IFS`, $p_{\text{NI}} = 0.00032$ at $\delta_{\text{NI}} = -2.50\text{ pp}$).
+- **Interleaved FP32 CPU Latency (`L=1200`, `AMD Ryzen 7 7700`):** `W100` `53.61 / 41.61 ms`, `M1` `115.44 / 73.47 ms`, `M2` `128.49 / 87.51 ms`, `M3` `129.14 / 87.75 ms` (`28.1x` `1T` / `35.7x` `4T` faster than `SLAMSS-IFS` `3,631.24 / 3,131.18 ms`).
+- **Decision:** Ratify the locked §5.2 verdict **`NOT SUPPORTED`** on primary BIDSleep Macro-F1 superiority (`K_qualifying = 0`, all 3 arms `ARM_NOT_SUPPORTED`). Retain **`p1_100k`** (`98,940` params / `182.00 KiB` INT8) as the flagship wearable edge model, and record **`M3` (`1,402,492` params, explicitly labeled teacher-distilled)** as the server / companion-phone distillation benchmark achieving Macro-F1 parity and `+1.00 pp` Accuracy over `SLAMSS-IFS` at `3.90x` fewer parameters and `35.7x` faster 4T CPU inference.
+
 
 
 

@@ -1,0 +1,137 @@
+{
+  "experiment_id": "EXP-032",
+  "primary_bidsleep_macro_f1_vs_slamss": {
+    "M1": {
+      "n": 47,
+      "a_mean_pct": 65.20519831598806,
+      "b_mean_pct": 67.36740139152315,
+      "delta_pp": -2.1622030755351096,
+      "ci95_low_pp": -3.0037384849918514,
+      "ci95_high_pp": -1.3361709475192773,
+      "wilcoxon_stat": 170.0,
+      "wilcoxon_p_two_sided": 1.0477247101903231e-05,
+      "wins_a": 12,
+      "wilcoxon_p_holm": 3.143174130570969e-05
+    },
+    "M2": {
+      "n": 47,
+      "a_mean_pct": 65.17593409621351,
+      "b_mean_pct": 67.36740139152315,
+      "delta_pp": -2.191467295309641,
+      "ci95_low_pp": -3.0619981991465393,
+      "ci95_high_pp": -1.3493514798777346,
+      "wilcoxon_stat": 176.0,
+      "wilcoxon_p_two_sided": 1.4984760809966247e-05,
+      "wins_a": 14,
+      "wilcoxon_p_holm": 3.143174130570969e-05
+    },
+    "M3": {
+      "n": 47,
+      "a_mean_pct": 67.3841467868296,
+      "b_mean_pct": 67.36740139152315,
+      "delta_pp": 0.01674539530643472,
+      "ci95_low_pp": -0.644050486278011,
+      "ci95_high_pp": 0.6885894092916219,
+      "wilcoxon_stat": 547.0,
+      "wilcoxon_p_two_sided": 0.8626824207139663,
+      "wins_a": 23,
+      "wilcoxon_p_holm": 0.8626824207139663
+    }
+  },
+  "accuracy_bidsleep_vs_slamss": {
+    "M1": {
+      "n": 47,
+      "a_mean_pct": 67.449581534308,
+      "b_mean_pct": 68.75125810403489,
+      "delta_pp": -1.301676569726927,
+      "ci95_low_pp": -2.2216762779152672,
+      "ci95_high_pp": -0.41631706571087224,
+      "wilcoxon_stat": 334.0,
+      "wilcoxon_p_two_sided": 0.014184076758127162,
+      "wins_a": 18
+    },
+    "M2": {
+      "n": 47,
+      "a_mean_pct": 67.43821215396515,
+      "b_mean_pct": 68.75125810403489,
+      "delta_pp": -1.3130459500697333,
+      "ci95_low_pp": -2.2136275660589395,
+      "ci95_high_pp": -0.4677156819708631,
+      "wilcoxon_stat": 322.0,
+      "wilcoxon_p_two_sided": 0.009693415752195733,
+      "wins_a": 18
+    },
+    "M3": {
+      "n": 47,
+      "a_mean_pct": 69.7476479006164,
+      "b_mean_pct": 68.75125810403489,
+      "delta_pp": 0.9963897965815044,
+      "ci95_low_pp": 0.3836614029891131,
+      "ci95_high_pp": 1.6132488458678524,
+      "wilcoxon_stat": 296.0,
+      "wilcoxon_p_two_sided": 0.0039709072601965545,
+      "wins_a": 33
+    }
+  },
+  "descriptive_contrasts_macro_f1": {
+    "M1_minus_W100": {
+      "n": 47,
+      "a_mean_pct": 65.20519831598806,
+      "b_mean_pct": 66.67795115080214,
+      "delta_pp": -1.472752834814093,
+      "ci95_low_pp": -2.290623671250654,
+      "ci95_high_pp": -0.6796443826118599,
+      "wilcoxon_stat": 271.0,
+      "wilcoxon_p_two_sided": 0.0015333794735568063,
+      "wins_a": 15
+    },
+    "M2_minus_M1": {
+      "n": 47,
+      "a_mean_pct": 65.17593409621351,
+      "b_mean_pct": 65.20519831598806,
+      "delta_pp": -0.029264219774532033,
+      "ci95_low_pp": -0.33125643038726826,
+      "ci95_high_pp": 0.2818541365515498,
+      "wilcoxon_stat": 461.0,
+      "wilcoxon_p_two_sided": 0.28089671186234,
+      "wins_a": 17
+    },
+    "M3_minus_M2": {
+      "n": 47,
+      "a_mean_pct": 67.3841467868296,
+      "b_mean_pct": 65.17593409621351,
+      "delta_pp": 2.2082126906160764,
+      "ci95_low_pp": 1.6854583400517718,
+      "ci95_high_pp": 2.7395752204833643,
+      "wilcoxon_stat": 51.0,
+      "wilcoxon_p_two_sided": 5.068869768365403e-10,
+      "wins_a": 43
+    }
+  },
+  "verdicts": {
+    "k_qualifying": 0,
+    "n_secondary_tests": 0,
+    "per_arm": {
+      "M1": {
+        "verdict": "ARM_NOT_SUPPORTED",
+        "primary_pass": false,
+        "is_teacher_distilled": false,
+        "secondary_gates": null
+      },
+      "M2": {
+        "verdict": "ARM_NOT_SUPPORTED",
+        "primary_pass": false,
+        "is_teacher_distilled": false,
+        "secondary_gates": null
+      },
+      "M3": {
+        "verdict": "ARM_NOT_SUPPORTED",
+        "primary_pass": false,
+        "is_teacher_distilled": true,
+        "secondary_gates": null
+      }
+    },
+    "overall_verdict": "NOT SUPPORTED",
+    "attribution": "all 3 arms ARM_NOT_SUPPORTED"
+  }
+}

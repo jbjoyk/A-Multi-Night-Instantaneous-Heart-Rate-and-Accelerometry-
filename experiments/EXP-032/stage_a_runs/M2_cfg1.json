@@ -1,0 +1,8 @@
+{
+  "arm": "M2",
+  "config_id": 1,
+  "dropout": 0.2,
+  "weight_decay": 0.01,
+  "n_inner_val_fold_subjects": 25,
+  "pooled_inner_val_macro_f1": 0.6642931806658855
+}

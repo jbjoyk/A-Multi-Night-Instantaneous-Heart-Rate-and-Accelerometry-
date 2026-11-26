@@ -1,0 +1,28 @@
+{
+  "M1": {
+    "config_id": 3,
+    "config": {
+      "dropout": 0.3,
+      "weight_decay": 0.01
+    },
+    "pooled_inner_val_macro_f1": 0.6696620958543439
+  },
+  "M2": {
+    "config_id": 3,
+    "config": {
+      "dropout": 0.3,
+      "weight_decay": 0.01
+    },
+    "pooled_inner_val_macro_f1": 0.6705967430636613
+  },
+  "M3": {
+    "config_id": 1,
+    "config": {
+      "dropout": 0.3,
+      "weight_decay": 0.01,
+      "tau": 2.0,
+      "alpha_kd": 0.5
+    },
+    "pooled_inner_val_macro_f1": 0.6951259307778663
+  }
+}

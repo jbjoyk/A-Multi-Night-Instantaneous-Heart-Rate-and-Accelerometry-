@@ -214,6 +214,19 @@ class TeacherCachedDataset(Dataset):
 # Stage 1: Deterministic Teacher Logit Pre-Caching (EXP-021 -> M3)
 # ==============================================================================
 
+def _parse_pairs_str(pairs_str: str) -> List[Tuple[int, int]]:
+    if not pairs_str.strip():
+        return [(f, s) for f in FOLDS_DEFAULT for s in SEEDS_DEFAULT]
+    out: List[Tuple[int, int]] = []
+    for tok in pairs_str.split(","):
+        tok = tok.strip()
+        if not tok:
+            continue
+        f_s, s_s = tok.split(":")
+        out.append((int(f_s), int(s_s)))
+    return out
+
+
 def stage_cache_teachers(args: argparse.Namespace) -> None:
     assert sha256_file(args.manifest_csv) == EXPECTED_MANIFEST_SHA256, (
         "Authoritative fold_manifests.csv SHA-256 mismatch!"
@@ -225,9 +238,7 @@ def stage_cache_teachers(args: argparse.Namespace) -> None:
     os.makedirs(cache_out_dir, exist_ok=True)
     device = torch.device(args.device)
 
-    pairs = parse_fold_seed_pairs(args.pairs) if args.pairs else [
-        (f, s) for f in FOLDS_DEFAULT for s in SEEDS_DEFAULT
-    ]
+    pairs = _parse_pairs_str(args.pairs)
 
     for fold, seed in pairs:
         out_path = os.path.join(cache_out_dir, f"teacher_logits_f{fold}_s{seed}.pt")
@@ -620,34 +631,34 @@ def stage_tune(args: argparse.Namespace) -> None:
     device = torch.device(args.device)
 
     os.makedirs(args.output_dir, exist_ok=True)
+    stage_a_dir = os.path.join(args.output_dir, "stage_a_runs")
+    os.makedirs(stage_a_dir, exist_ok=True)
     locked_path = os.path.join(args.output_dir, "locked_configs.json")
     screen_csv = os.path.join(args.output_dir, "stage_a_screening.csv")
 
     locked: Dict[str, Any] = {}
-    if os.path.exists(locked_path) and not args.force:
+    if os.path.exists(locked_path):
         with open(locked_path, "r", encoding="utf-8") as f:
             locked = json.load(f)
 
-    rows: List[Dict[str, Any]] = []
-    if os.path.exists(screen_csv) and not args.force:
-        rows = pd.read_csv(screen_csv).to_dict("records")
+    arms = [a.strip() for a in args.arms.split(",") if a.strip()] if args.arms else ARMS_ORDER
+    req_cids = [int(x.strip()) for x in args.config_ids.split(",") if x.strip()] if args.config_ids else [0, 1, 2, 3]
 
-    arms = args.arms.split(",") if args.arms else ARMS_ORDER
     for arm in arms:
-        if arm in locked and not args.force:
-            print(f"[SKIP] Locked config already exists for {arm}: {locked[arm]}")
-            continue
-
         if arm in ("M1", "M2"):
             grid = STAGE_A_M1_M2_GRID
         else:
-            assert "M2" in locked, "Stage A must tune M2 before M3 so M3 inherits M2's (dropout, weight_decay)."
+            assert "M2" in locked, "Stage A must finalize M2 in locked_configs.json before M3."
             base_m2 = locked["M2"]["config"]
             grid = [{**base_m2, **kd} for kd in STAGE_A_M3_KD_GRID]
 
-        best_cfg = None
-        best_pooled_f1 = -1.0
-        for cid, cfg in enumerate(grid):
+        for cid in req_cids:
+            cfg = grid[cid]
+            cfg_json = os.path.join(stage_a_dir, f"{arm}_cfg{cid}.json")
+            if (not args.force) and os.path.exists(cfg_json):
+                print(f"[SKIP] Stage A config already completed: {cfg_json}")
+                continue
+
             fold_sub_f1s: Dict[Tuple[int, str], float] = {}
             for fold in FOLDS_DEFAULT:
                 res = train_single_run(
@@ -668,23 +679,49 @@ def stage_tune(args: argparse.Namespace) -> None:
                 f"Stage A expected 25 (fold, subject) inner_val entries, got {len(fold_sub_f1s)}"
             )
             pooled_f1 = float(np.mean(list(fold_sub_f1s.values())))
-            rows.append({
+            rec = {
                 "arm": arm,
                 "config_id": cid,
                 **cfg,
                 "n_inner_val_fold_subjects": len(fold_sub_f1s),
                 "pooled_inner_val_macro_f1": pooled_f1,
-            })
-            pd.DataFrame(rows).to_csv(screen_csv, index=False)
+            }
+            with open(cfg_json, "w", encoding="utf-8") as f:
+                json.dump(rec, f, indent=2)
             print(f"[STAGE-A] {arm} cfg#{cid} {cfg} -> pooled inner_val Macro-F1={pooled_f1*100:.2f}% (N={len(fold_sub_f1s)})")
-            if pooled_f1 > best_pooled_f1:
-                best_pooled_f1 = pooled_f1
-                best_cfg = cfg
 
-        locked[arm] = {"config": best_cfg, "pooled_inner_val_macro_f1": best_pooled_f1}
-        with open(locked_path, "w", encoding="utf-8") as f:
-            json.dump(locked, f, indent=2)
-        print(f"[LOCKED] {arm}: {locked[arm]}")
+        # Finalize arm into locked_configs.json and stage_a_screening.csv once all 4 configs exist
+        arm_recs = []
+        for cid in range(len(grid)):
+            p_c = os.path.join(stage_a_dir, f"{arm}_cfg{cid}.json")
+            if os.path.exists(p_c):
+                with open(p_c, "r", encoding="utf-8") as f:
+                    arm_recs.append(json.load(f))
+        if len(arm_recs) == len(grid):
+            best_rec = max(arm_recs, key=lambda r: r["pooled_inner_val_macro_f1"])
+            best_cfg = {k: best_rec[k] for k in grid[0].keys()}
+            if os.path.exists(locked_path):
+                with open(locked_path, "r", encoding="utf-8") as f:
+                    locked = json.load(f)
+            locked[arm] = {
+                "config_id": int(best_rec["config_id"]),
+                "config": best_cfg,
+                "pooled_inner_val_macro_f1": float(best_rec["pooled_inner_val_macro_f1"]),
+            }
+            with open(locked_path, "w", encoding="utf-8") as f:
+                json.dump(locked, f, indent=2)
+            print(f"[LOCKED] {arm}: {locked[arm]}")
+
+    # Rebuild full stage_a_screening.csv cleanly from atomic stage_a_runs/*.json
+    all_recs = []
+    for a in ARMS_ORDER:
+        for cid in range(4):
+            p_c = os.path.join(stage_a_dir, f"{a}_cfg{cid}.json")
+            if os.path.exists(p_c):
+                with open(p_c, "r", encoding="utf-8") as f:
+                    all_recs.append(json.load(f))
+    if all_recs:
+        pd.DataFrame(all_recs).to_csv(screen_csv, index=False)
 
 
 # ==============================================================================
@@ -704,9 +741,7 @@ def stage_eval_outer(args: argparse.Namespace) -> None:
         locked = json.load(f)
 
     arms = args.arms.split(",") if args.arms else ARMS_ORDER
-    pairs = parse_fold_seed_pairs(args.pairs) if args.pairs else [
-        (f, s) for f in FOLDS_DEFAULT for s in SEEDS_DEFAULT
-    ]
+    pairs = _parse_pairs_str(args.pairs)
 
     runs_dir = os.path.join(args.output_dir, "run_results")
     ckpt_dir = os.path.join(args.output_dir, "checkpoints")
@@ -1135,6 +1170,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="EXP-032 High-Accuracy Benchmark Pipeline")
     p.add_argument("--stage", required=True, choices=["cache_teachers", "preflight", "tune", "eval_outer", "aggregate", "eval_external"])
     p.add_argument("--arms", default="", help="Comma-separated arms subset, e.g. M1,M2")
+    p.add_argument("--config-ids", default="", help="Comma-separated Stage A config indices, e.g. 0,1")
     p.add_argument("--pairs", default="", help="Comma-separated fold:seed pairs, e.g. 1:42,1:123")
     p.add_argument("--device", default="cuda:0")
     p.add_argument("--output-dir", default=EXP032_DIR)

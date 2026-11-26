@@ -115,7 +115,10 @@
     - Executed 105 new runs (`W050`, `W075`, `P190`, `W125`, `W150`, `W200`, `W250`) + reused anchors (`A` `64.7907%`, `B` `66.61%`, `V5` `66.74%`, `S` `67.37%`) under `PREREG_EXP-031_WIDTH_SWEEP.md` (commit `24ca187`).
     - **`H-ARCH` (`full_v5` vs. `P190`):** `+0.14 pp` `[-0.34, +0.61]`, $p_{\text{Holm}}=0.4037$ -> **`NOT SUPPORTED (practically)`** (architectural novelty not claimed for `full_v5`). **`H-SCALE`:** Page's `L=10938.0`, $z=+2.493$, $p_{\text{Holm,2s}}=0.0254$ -> **`SUPPORTED`**.
     - Section 9 selected **`P190`** (`190,940` params, `66.60%` optimistic BIDSleep, `375.16 KiB` INT8, `53.07 ms` 4T, `W0-B` $\Delta=+0.0244\text{ pp}$ $p=0.0836$); SleepAccel `61.52%`/`63.42%` (`em_off`, `+0.44`/`+0.64 pp` vs. `SLAMSS-IFS`); nested `GATE_tau` `66.55%` (`3/46` abstained).
-  - **Ready for Stage E:** Synchronize `MANUSCRIPT_DRAFT_v1.0.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), Stage D (`DEC-040`, `DEC-041`), `EXP-029` (`DEC-042`), `EXP-030` (`DEC-043`), and `EXP-031` (`DEC-044`).
+  - **Ready for Stage E:** Synchronize `MANUSCRIPT_DRAFT_v1.0.md` integrating Stage 3 (`EXP-021`), W0-A/W0-B (`DEC-039`), Stage D (`DEC-040`, `DEC-041`), `EXP-029` (`DEC-042`), `EXP-030` (`DEC-043`), `EXP-031` (`DEC-044`), and `EXP-032` (`DEC-045`).
+  - **EXP-032 (`<= 1.5M` High-Accuracy Benchmark — COMPLETED & RATIFIED under `DEC-045`):**
+    - Executed Stage A (`60` runs) + Stage B (`45` locked runs across `M1` `1,402,468` params, `M2` `+LinearChainCRF4` `1,402,492` params, and `M3` teacher-distilled `1,402,492` params) under `PREREG_EXP-032_HIGH_ACCURACY_BENCHMARK.md`, cleared post-execution via `docs/audits/EXP032_POST_EXECUTION_EGM_DRIFT_REPORT.md` (`PASS`, `0` Blocking, `0` Major).
+    - **Locked §5.2 Verdict:** **`NOT SUPPORTED`** on primary BIDSleep (`N=47`) Macro-F1 superiority (`M1` `65.21%`, `M2` `65.18%`, **`M3` (teacher-distilled)** `67.38%` vs. `SLAMSS-IFS` `67.37%`, $p_{\text{Holm}}=0.8627$). `M3` achieves Macro-F1 parity, `+1.00 pp` Accuracy (`69.75%` vs. `68.75%`, $p=0.0040$), SleepAccel `61.43%`/`62.63%`, and `35.7x` faster 4T CPU inference (`87.75 ms`) at `3.90x` fewer params. `p1_100k` (`98,940` params / `182.00 KiB` INT8) remains the flagship wearable edge model.
 
 ---
 
