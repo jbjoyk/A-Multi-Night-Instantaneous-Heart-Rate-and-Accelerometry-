@@ -1,0 +1,106 @@
+# Externally Sourced Facts Registry
+# Every externally sourced fact cited in manuscripts must appear here with exact value,
+# verifiable source URL/DOI, and retrieval date. Unverified facts (e.g., "Apple Watch Series 6"
+# when absent from the official PhysioNet README) are flagged as FAIL by verify_manuscript_numbers.py.
+
+schema_version: "1.0"
+retrieval_date: "2026-11-26"
+
+datasets:
+  sleepaccel:
+    name: "Motion and heart rate from a wrist-worn wearable and labeled sleep from polysomnography (PhysioNet SleepAccel)"
+    canonical_version: "1.0.1"
+    local_archive_version: "1.0.0"
+    url: "https://physionet.org/content/sleep-accel/1.0.1/"
+    doi: "10.13026/hmhs-py35"
+    retrieval_date: "2026-11-26"
+    irb_institution: "University of Michigan Institutional Review Board"
+    access_tier: "open"
+    hardware_devices_verified:
+      wearable: "Apple Watch"
+      reference_psg: "in-lab polysomnography (PSG)"
+    paper:
+      citation: "Walch O, Huang Y, Forger D, Goldstein C. Sleep stage prediction with raw acceleration and photoplethysmography heart rate data derived from a consumer wearable device. SLEEP. 2019;42(12):zsz180."
+      journal: "SLEEP"
+      year: 2019
+      doi: "10.1093/sleep/zsz180"
+      retrieval_date: "2026-11-26"
+
+  bidsleep:
+    name: "A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels (PhysioNet BIDSleep)"
+    canonical_version: "1.0.0"
+    url: "https://physionet.org/content/bidsleep-dataset/1.0.0/"
+    doi: "10.13026/rees-1092"
+    license: "ODC-By v1.0"
+    retrieval_date: "2026-11-26"
+    official_readme_path: "a-multi-night-instantaneous-heart-rate-and-accelerometry-dataset-with-eeg-sleep-stage-labels-1.0.0/README.md"
+    hardware_devices_verified_in_readme:
+      wearable: "Apple Watch devices"
+      wearable_sensor: "Apple Watch PPG sensor via HealthKit"
+      reference_eeg: "Dreem device"
+    hardware_devices_unverified_in_readme:
+      - phrase: "Apple Watch Series 6"
+        status: "FAIL_IF_ABSENT_FROM_README"
+        reason: "Not explicitly stated in the official PhysioNet BIDSleep README.md (which states only 'Apple Watch devices')."
+    paper:
+      citation: "Song TA, et al. AI-driven sleep staging using instantaneous heart rate and accelerometry: insights from an Apple Watch study. IEEE Transactions on Biomedical Engineering. 2026;73(4):1596-1608."
+      journal: "IEEE Transactions on Biomedical Engineering"
+      year: 2026
+      doi: "10.1109/TBME.2025.3612158"
+      retrieval_date: "2026-11-26"
+
+references:
+  van_der_aar_2025:
+    citation: "van der Aar JF, et al. Learning individual autonomic representations of sleep stages to improve photoplethysmography based sleep monitoring. Physiological Measurement. 2025;46(9):095012."
+    doi: "10.1088/1361-6579/ae0119"
+    retrieval_date: "2026-11-26"
+  bland_altman_1999:
+    citation: "Bland JM, Altman DG. Measuring agreement in method comparison studies. Statistical Methods in Medical Research. 1999;8(2):135-160."
+    doi: "10.1177/096228029900800204"
+    retrieval_date: "2026-11-26"
+  brookshire_2024:
+    citation: "Brookshire G, et al. Data leakage in deep learning studies of translational EEG. Frontiers in Neuroscience. 2024;18:1373515."
+    doi: "10.3389/fnins.2024.1373515"
+    retrieval_date: "2026-11-26"
+  beattie_2017:
+    citation: "Beattie Z, et al. Estimation of sleep stages in a healthy adult population from optical plethysmography and accelerometer signals. Physiological Measurement. 2017;38(11):1968-1979."
+    doi: "10.1088/1361-6579/aa9047"
+    retrieval_date: "2026-11-26"
+  collins_2024_tripod_ai:
+    citation: "Collins GS, et al. TRIPOD+AI statement: updated guidance for reporting clinical prediction models that use regression or machine learning methods. BMJ. 2024;385:e078378."
+    doi: "10.1136/bmj-2023-078378"
+    retrieval_date: "2026-11-26"
+  berry_2020_aasm:
+    citation: "Berry RB, et al. The AASM Manual for the Scoring of Sleep and Associated Events, Version 2.6. Darien, IL: American Academy of Sleep Medicine; 2020."
+    url: "https://aasm.org/clinical-resources/scoring-manual/"
+    retrieval_date: "2026-11-26"
+  page_1963:
+    citation: "Page EB. Ordered hypotheses for multiple treatments: a significance test for linear ranks. Journal of the American Statistical Association. 1963;58(301):216-230."
+    doi: "10.1080/01621459.1963.10500843"
+    retrieval_date: "2026-11-26"
+  oldham_1962:
+    citation: "Oldham PD. A note on the analysis of repeated measurements of the same subjects. Journal of Chronic Diseases. 1962;15(10):969-977."
+    doi: "10.1016/0021-9681(62)90116-9"
+    retrieval_date: "2026-11-26"
+  dreamt_v2_2_0:
+    name: "DREAMT: Dataset for Real-time sleep stage EstimAtion using Multisensor wearable Technology"
+    version: "2.2.0"
+    url: "https://physionet.org/content/dreamt/2.2.0/"
+    retrieval_date: "2026-11-26"
+  simons_sleep_project:
+    name: "Simons Sleep Project (SFARI Base DS0000089)"
+    accession: "DS0000089"
+    url: "https://www.sfari.org/resource/sfari-base/"
+    retrieval_date: "2026-11-26"
+
+banned_external_phrases:
+  - phrase: "Apple Watch Series 6"
+    reason: "Hardware model not explicitly present in official PhysioNet BIDSleep README.md."
+  - phrase: "SleepAccel v1.0.0"
+    reason: "Stale version string; canonical PhysioNet SleepAccel version is 1.0.1 (DOI 10.13026/hmhs-py35)."
+  - phrase: "UMass Amherst"
+    reason: "Prohibited institutional phrasing in manuscript prose per Check J."
+  - phrase: "University of Massachusetts Amherst"
+    reason: "Prohibited institutional phrasing in manuscript prose per Check J."
+  - phrase: "credentialed"
+    reason: "BIDSleep is open access (ODC-By v1.0) and SleepAccel is open access; do not label as credentialed."
