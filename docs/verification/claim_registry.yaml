@@ -62,6 +62,9 @@ raw_artifacts:
   sleepaccel_p190_metrics: "experiments/EXP-031/P190_sleepaccel_metrics.csv"
   sleepaccel_p190_ba: "experiments/EXP-031/P190_sleepaccel_bland_altman.csv"
   sleepaccel_v5_metrics: "experiments/EXP-029/full_v5_sleepaccel_metrics.csv"
+  sleepaccel_reconciled_references: "experiments/EXP-033/reconciled_references.json"
+  exp033_distribution_stats: "experiments/EXP-033/exp033_distribution_stats.csv"
+  exp031_recipe_comparison: "experiments/EXP-031/recipe_comparison_table.csv"
 
 checks:
   - id: "CHECK_A"
@@ -82,15 +85,15 @@ checks:
     tolerance: {pct_abs: 0.01}
   - id: "CHECK_E"
     name: "Paired Statistics (Bootstrap, Wilcoxon, Cohen's dz, Holm-Bonferroni)"
-    rule: "Recompute Delta, 10,000-resample bootstrap 95% CI (seed=42), two-sided Wilcoxon p, Cohen's dz, and Holm-Bonferroni adjusted p for W100-ModelA, W100-P190, W100-p1_100k, W100-SLAMSS-IFS, and full_v5-P190."
+    rule: "Recompute Delta, 10,000-resample bootstrap 95% CI (seed=42), two-sided Wilcoxon p, Cohen's dz, and Holm-Bonferroni adjusted p for W100-ModelA, W100-P190, W100-p1_100k, W100-SLAMSS-IFS, and full_v5-P190; verify legacy Model A row equals locked EXP-019 values (+1.0054 pp, CI [-0.17, +1.99], one-sided p=0.00131)."
     tolerance: {delta_pp: 0.005, ci_pp: 0.02, p_rel: 0.01, dz_abs: 0.005}
   - id: "CHECK_F"
     name: "Page's L Trend Test & Label Verification"
-    rule: "Recompute Page's L, z, one-sided p, two-sided p, and 4x/5x Holm-adjusted one-sided p from per-subject CSVs (EXP-031 H-SCALE, H-SCALE-R, and EXP-019 k=1..4). HARD_FAIL if any reported Page's L p-value lacks an explicit raw/Holm-adjusted and one-sided/two-sided label or mismatches the recomputed value for its label."
+    rule: "Recompute Page's L, z, one-sided p, two-sided p, and 4x/5x Holm-adjusted one-sided p from per-subject CSVs (EXP-031 H-SCALE, H-SCALE-R, and EXP-019 k=1..4). HARD_FAIL if any reported Page's L p-value lacks an explicit raw/Holm-adjusted and one-sided/two-sided label or mismatches the recomputed value for its label. Audit every reported p-value label across all documents."
     tolerance: {L_abs: 0.01, z_abs: 0.002, p_rel: 0.02}
   - id: "CHECK_G"
     name: "SleepAccel External Validation & Bland-Altman"
-    rule: "Recompute qc_clean (n=25) and all_n31 (N=31) single-model and ensemble Macro-F1, Bland-Altman bias/LoA/MAE/r from raw paired tuples, verify identical Wilcoxon W=106.0 mirror footnote for qc_clean accuracy & Wake F1, and flag any unexplained duplicate 4-decimal p-values."
+    rule: "Recompute qc_clean (n=25) and all_n31 (N=31) single-model and ensemble Macro-F1, Bland-Altman bias/LoA/MAE/r from raw paired tuples, verify identical Wilcoxon W=106.0 mirror footnote for qc_clean accuracy & Wake F1, enforce that no two cohorts share identical reference values unless explicitly justified in the registry, and flag any unexplained duplicate 4-decimal p-values."
     tolerance: {pct_abs: 0.01, ba_abs: 0.02, r_abs: 0.0005}
   - id: "CHECK_H"
     name: "Latency, Memory, Hardware Telemetry & CV Gate"
@@ -151,3 +154,70 @@ hard_fail_gates:
     title: "EXP-033 W100 Personalization (H-A2 +0.58 pp [med +0.75, 30W/16L/0T, p_Holm=0.0263] NOT SUPPORTED practically; S-SPEC +1.45 pp [med +1.31, p_Holm=2.47e-5] INCONCLUSIVE; E4 Page L=835.0 p=0.5667; GATE_tau no benefit) & W100 SleepAccel (61.23%/62.93% n=25, +0.14 pp vs SLAMSS-IFS, 2.36 pp 80% MDE, no BA clinical-agreement claim)"
     target: "experiments/EXP-033/exp033_summary.json, MANUSCRIPT_DRAFT_v2.0.md, manuscript_jbhi.tex, TECHNICAL_EXPERIMENTAL_REPORT.md"
     enforcement: "HARD_FAIL"
+  - id: "EF-08"
+    check_group: "G"
+    title: "SleepAccel cohort reference collision audit (no two cohorts share identical reference values unless explicitly justified in registry)"
+    target: "experiments/EXP-033/reconciled_references.json"
+    enforcement: "HARD_FAIL"
+  - id: "EF-09"
+    check_group: "E"
+    title: "Legacy Model A personalization row matches locked EXP-019 values (+1.0054 pp, CI [-0.17, +1.99], one-sided p=0.00131)"
+    target: "experiments/EXP-019/exp019_stage_c_results.json, experiments/EXP-033/exp033_summary.json"
+    enforcement: "HARD_FAIL"
+  - id: "EF-10"
+    check_group: "F"
+    title: "Reported p-value label and recomputation audit (every reported p-value label raw/adjusted & 1s/2s matches recomputed value)"
+    target: "All manuscripts and reports"
+    enforcement: "HARD_FAIL"
+
+# Documented Justified Reference Collisions (Task 4a)
+justified_reference_collisions:
+  - model: "ModelA"
+    eval_mode: "prob_ensemble"
+    rounded_pct: 62.94
+    qc_clean_exact: 62.938523379435395
+    all_exact: 62.93663301213288
+    delta_abs_pp: 0.001890367302515017
+    justification: "Values computed independently over n=25 and N=31 subjects. Exact unrounded means differ by 0.001890 pp (< 0.005 pp), coinciding at 62.94% upon 2-decimal rounding."
+  - model: "p1_100k"
+    eval_mode: "prob_ensemble"
+    rounded_pct: 62.51
+    qc_clean_exact: 62.505746250107485
+    all_exact: 62.51053061592847
+    delta_abs_pp: 0.004784365820981407
+    justification: "Values computed independently over n=25 and N=31 subjects. Exact unrounded means differ by 0.004784 pp (< 0.005 pp), coinciding at 62.51% upon 2-decimal rounding."
+
+# Locked EXP-019 Model A Personalization Reference (Task 4b)
+legacy_model_a_locked_exp019:
+  delta_mean_pp: 1.0054
+  delta_rounded_pp: 1.01
+  ci95_low_pp: -0.1720
+  ci95_high_pp: 1.9870
+  ci95_formatted: "[-0.17, +1.99]"
+  wilcoxon_p_locked_one_sided: 0.0013063
+  wilcoxon_p_locked_one_sided_rounded: 0.00131
+  wilcoxon_p_two_sided_asymptotic: 0.0026126
+  n_subjects: 46
+  source_metrics: "experiments/EXP-019/exp019_subject_metrics.csv"
+  source_results: "experiments/EXP-019/exp019_stage_c_results.json"
+
+# Reconciled SleepAccel Part B Reference Table (Task 2 & 4)
+reconciled_sleepaccel_part_b:
+  ModelA:
+    qc_clean: {mean_single_model: 60.51, prob_ensemble: 62.94}
+    all: {mean_single_model: 60.65, prob_ensemble: 62.94}
+  SLAMSS_IFS:
+    qc_clean: {mean_single_model: 61.08, prob_ensemble: 62.79}
+    all: {mean_single_model: 62.27, prob_ensemble: 64.14}
+  p1_100k:
+    qc_clean: {mean_single_model: 60.88, prob_ensemble: 62.51}
+    all: {mean_single_model: 61.10, prob_ensemble: 62.51}
+  P190:
+    qc_clean: {mean_single_model: 61.52, prob_ensemble: 63.42}
+    all: {mean_single_model: 61.77, prob_ensemble: 63.94}
+  full_v5:
+    qc_clean: {mean_single_model: 61.78, prob_ensemble: 63.51}
+    all: {mean_single_model: 62.30, prob_ensemble: 64.21}
+  W100:
+    qc_clean: {mean_single_model: 61.23, prob_ensemble: 62.93}
+    all: {mean_single_model: 61.58, prob_ensemble: 63.43}

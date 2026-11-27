@@ -1,0 +1,214 @@
+{
+  "metadata": {
+    "description": "Reconciled SleepAccel v1.0.0 reference Macro-F1 values computed directly from saved prediction bundles with em_off",
+    "models_evaluated": [
+      "ModelA",
+      "SLAMSS_IFS",
+      "p1_100k",
+      "P190",
+      "full_v5",
+      "W100"
+    ],
+    "cohorts": [
+      "qc_clean (n=25)",
+      "all (N=31)"
+    ],
+    "eval_modes": [
+      "mean_single_model",
+      "prob_ensemble"
+    ],
+    "note_on_cache_immutability": "EXP-027 caches were strictly read-only and unmodified"
+  },
+  "recomputed_references": {
+    "ModelA": {
+      "qc_clean": {
+        "n_subjects": 25,
+        "mean_single_model": {
+          "before_pct": 60.51,
+          "exact_mean_pct": 60.513794854295526,
+          "rounded_2dec_pct": 60.51
+        },
+        "prob_ensemble": {
+          "before_pct": 62.94,
+          "exact_mean_pct": 62.938523379435395,
+          "rounded_2dec_pct": 62.94
+        }
+      },
+      "all": {
+        "n_subjects": 31,
+        "mean_single_model": {
+          "before_pct": 60.65,
+          "exact_mean_pct": 60.64658841560466,
+          "rounded_2dec_pct": 60.65
+        },
+        "prob_ensemble": {
+          "before_pct": 62.94,
+          "exact_mean_pct": 62.93663301213288,
+          "rounded_2dec_pct": 62.94
+        }
+      }
+    },
+    "SLAMSS_IFS": {
+      "qc_clean": {
+        "n_subjects": 25,
+        "mean_single_model": {
+          "before_pct": 61.08,
+          "exact_mean_pct": 61.08462355651663,
+          "rounded_2dec_pct": 61.08
+        },
+        "prob_ensemble": {
+          "before_pct": 62.79,
+          "exact_mean_pct": 62.78529952853995,
+          "rounded_2dec_pct": 62.79
+        }
+      },
+      "all": {
+        "n_subjects": 31,
+        "mean_single_model": {
+          "before_pct": 62.27,
+          "exact_mean_pct": 62.26914246577305,
+          "rounded_2dec_pct": 62.27
+        },
+        "prob_ensemble": {
+          "before_pct": 64.14,
+          "exact_mean_pct": 64.14139137041435,
+          "rounded_2dec_pct": 64.14
+        }
+      }
+    },
+    "p1_100k": {
+      "qc_clean": {
+        "n_subjects": 25,
+        "mean_single_model": {
+          "before_pct": 60.88,
+          "exact_mean_pct": 60.87794642080838,
+          "rounded_2dec_pct": 60.88
+        },
+        "prob_ensemble": {
+          "before_pct": 62.51,
+          "exact_mean_pct": 62.505746250107485,
+          "rounded_2dec_pct": 62.51
+        }
+      },
+      "all": {
+        "n_subjects": 31,
+        "mean_single_model": {
+          "before_pct": 61.1,
+          "exact_mean_pct": 61.10205940896394,
+          "rounded_2dec_pct": 61.1
+        },
+        "prob_ensemble": {
+          "before_pct": 62.51,
+          "exact_mean_pct": 62.51053061592847,
+          "rounded_2dec_pct": 62.51
+        }
+      }
+    },
+    "P190": {
+      "qc_clean": {
+        "n_subjects": 25,
+        "mean_single_model": {
+          "before_pct": 61.52,
+          "exact_mean_pct": 61.5242178427932,
+          "rounded_2dec_pct": 61.52
+        },
+        "prob_ensemble": {
+          "before_pct": 63.42,
+          "exact_mean_pct": 63.42119151494875,
+          "rounded_2dec_pct": 63.42
+        }
+      },
+      "all": {
+        "n_subjects": 31,
+        "mean_single_model": {
+          "before_pct": 61.77,
+          "exact_mean_pct": 61.77488839005877,
+          "rounded_2dec_pct": 61.77
+        },
+        "prob_ensemble": {
+          "before_pct": 63.94,
+          "exact_mean_pct": 63.93900080314592,
+          "rounded_2dec_pct": 63.94
+        }
+      }
+    },
+    "full_v5": {
+      "qc_clean": {
+        "n_subjects": 25,
+        "mean_single_model": {
+          "before_pct": 61.78,
+          "exact_mean_pct": 61.77538473234036,
+          "rounded_2dec_pct": 61.78
+        },
+        "prob_ensemble": {
+          "before_pct": 63.51,
+          "exact_mean_pct": 63.51260069092064,
+          "rounded_2dec_pct": 63.51
+        }
+      },
+      "all": {
+        "n_subjects": 31,
+        "mean_single_model": {
+          "before_pct": 62.3,
+          "exact_mean_pct": 62.29707710158136,
+          "rounded_2dec_pct": 62.3
+        },
+        "prob_ensemble": {
+          "before_pct": 64.21,
+          "exact_mean_pct": 64.20738481584081,
+          "rounded_2dec_pct": 64.21
+        }
+      }
+    },
+    "W100": {
+      "qc_clean": {
+        "n_subjects": 25,
+        "mean_single_model": {
+          "before_pct": 61.23,
+          "exact_mean_pct": 61.22510665865161,
+          "rounded_2dec_pct": 61.23
+        },
+        "prob_ensemble": {
+          "before_pct": 62.93,
+          "exact_mean_pct": 62.93154473562764,
+          "rounded_2dec_pct": 62.93
+        }
+      },
+      "all": {
+        "n_subjects": 31,
+        "mean_single_model": {
+          "before_pct": 61.58,
+          "exact_mean_pct": 61.57520238737271,
+          "rounded_2dec_pct": 61.58
+        },
+        "prob_ensemble": {
+          "before_pct": 63.43,
+          "exact_mean_pct": 63.4252046042024,
+          "rounded_2dec_pct": 63.43
+        }
+      }
+    }
+  },
+  "identical_value_flags": [
+    {
+      "model": "ModelA",
+      "eval_mode": "prob_ensemble",
+      "shared_rounded_pct": 62.94,
+      "qc_clean_exact_pct": 62.938523379435395,
+      "all_exact_pct": 62.93663301213288,
+      "absolute_difference_pp": 0.001890367302515017,
+      "status": "JUSTIFIED_COINCIDENCE",
+      "justification": "Values are computed independently over n=25 (qc_clean) and N=31 (all) subjects. Exact unrounded means differ by 0.001890 pp (< 0.005 pp), coinciding at 62.94% when rounded to 2 decimal places per standard reporting."
+    },
+    {
+      "model": "p1_100k",
+      "eval_mode": "prob_ensemble",
+      "shared_rounded_pct": 62.51,
+      "qc_clean_exact_pct": 62.505746250107485,
+      "all_exact_pct": 62.51053061592847,
+      "absolute_difference_pp": 0.004784365820981407,
+      "status": "JUSTIFIED_COINCIDENCE",
+      "justification": "Values are computed independently over n=25 (qc_clean) and N=31 (all) subjects. Exact unrounded means differ by 0.004784 pp (< 0.005 pp), coinciding at 62.51% when rounded to 2 decimal places per standard reporting."
+    }
+  ]
+}

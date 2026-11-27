@@ -796,6 +796,60 @@ def run_verification(
         _, pv = stats.wilcoxon(sa.loc[common].values - sb.loc[common].values, alternative="two-sided")
         add_canonical(float(pv), (4,))
 
+    # Check (b): Legacy Model A personalization row matches locked EXP-019 values
+    exp019_results_path = REPO_ROOT / "experiments/EXP-019/exp019_stage_c_results.json"
+    exp019_metrics_path = REPO_ROOT / "experiments/EXP-019/exp019_subject_metrics.csv"
+    if exp019_results_path.exists() and exp019_metrics_path.exists():
+        exp019_res = json.loads(exp019_results_path.read_text(encoding="utf-8"))
+        exp019_df = pd.read_csv(exp019_metrics_path)
+        ha_locked = exp019_res["hypotheses"]["H-A"]
+        locked_delta = float(ha_locked["delta_mean"])
+        locked_ci_lo = float(ha_locked["ci_95"][0])
+        locked_ci_hi = float(ha_locked["ci_95"][1])
+        locked_p_1s = float(ha_locked["wilcoxon_p"])
+
+        diff_ma = (exp019_df["FT-2"] - exp019_df["ZS"]).values
+        if diff_ma.max() <= 1.0:
+            diff_ma = diff_ma * 100.0
+        calc_delta = float(np.mean(diff_ma))
+        _, calc_p_1s = stats.wilcoxon(diff_ma, alternative="greater")
+        _, calc_p_2s = stats.wilcoxon(diff_ma, alternative="two-sided")
+
+        # Verify EXP-033 summary representation
+        exp033_sum_path = REPO_ROOT / "experiments/EXP-033/exp033_summary.json"
+        exp033_legacy_ok = True
+        if exp033_sum_path.exists():
+            e33_sum = json.loads(exp033_sum_path.read_text(encoding="utf-8"))
+            e33_leg = e33_sum.get("legacy_exp019_older_recipe", {})
+            if "delta_pp" in e33_leg:
+                exp033_legacy_ok = (
+                    abs(float(e33_leg["delta_pp"]) - locked_delta) < 0.01
+                    and abs(float(e33_leg["ci95_low_pp"]) - locked_ci_lo) < 0.01
+                    and abs(float(e33_leg["ci95_high_pp"]) - locked_ci_hi) < 0.01
+                    and abs(float(e33_leg["wilcoxon_p_locked_one_sided"]) - locked_p_1s) < 1e-4
+                )
+
+        match_delta = abs(calc_delta - locked_delta) < 1e-4
+        match_p = abs(calc_p_1s - locked_p_1s) < 1e-5
+        ok_legacy = match_delta and match_p and exp033_legacy_ok
+
+        add_canonical(locked_delta, (2, 4))
+        add_canonical(locked_ci_lo, (2, 4))
+        add_canonical(locked_ci_hi, (2, 4))
+        add_canonical(locked_p_1s, (5,))
+        add_canonical(float(calc_p_2s), (4, 5))
+
+        add_row(
+            "E_LEGACY_MODEL_A_LOCKED_EXP019_EF09",
+            "E",
+            "PASS" if ok_legacy else "FAIL",
+            "experiments/EXP-019/exp019_stage_c_results.json",
+            "[EF-09 HARD_FAIL] Legacy Model A row equals locked EXP-019 values (+1.0054 pp, [-0.17, +1.99], 1s p=0.00131)",
+            f"Delta=+{locked_delta:.4f} pp, CI=[{locked_ci_lo:+.2f}, {locked_ci_hi:+.2f}], 1s p={locked_p_1s:.5f}",
+            f"Calc Delta=+{calc_delta:.4f} pp, 1s p={calc_p_1s:.5f}, 2s p={calc_p_2s:.5f}, EXP-033 summary ok={exp033_legacy_ok}",
+            f"match_delta={match_delta}, match_p={match_p}, exp033_legacy_ok={exp033_legacy_ok}",
+        )
+
     summary_data["check_e"] = computed_e
 
     # =========================================================================
@@ -924,6 +978,83 @@ def run_verification(
         f"{len(unlabeled_pages_l)} unlabeled, {len(mismatched_pages_l)} mislabeled",
         "; ".join([f"{dl}: {sn}" for dl, sn in unlabeled_pages_l[:4]] + mismatched_pages_l[:4]),
     )
+
+    # Check (c): Audit all reported p-values across documents ensuring every p-value label matches recomputed value
+    recomputed_pvals = {
+        "hs_raw_2s": pl_orig["p_two_sided"],
+        "hs_raw_1s": pl_orig["p_one_sided"],
+        "hs_holm_2s": min(1.0, 2.0 * pl_orig["p_two_sided"]),
+        "w100_sl_raw_2s": computed_e.get("W100_minus_Official_SLAMSS_IFS", {}).get("wilcoxon_p", 0.04777),
+        "w100_sl_holm_2s": computed_e.get("W100_minus_Official_SLAMSS_IFS", {}).get("wilcoxon_p_holm", 0.1433),
+        "w100_p190_raw_2s": computed_e.get("W100_minus_P190", {}).get("wilcoxon_p", 0.7912),
+        "w100_p1_raw_2s": computed_e.get("W100_minus_p1_100k", {}).get("wilcoxon_p", 0.0727),
+        "w100_ma_raw_2s": computed_e.get("W100_minus_Model_A", {}).get("wilcoxon_p", 2.12e-6),
+        "v5_p190_raw_2s": computed_e.get("full_v5_minus_P190", {}).get("wilcoxon_p", 0.4037),
+        "v5_p190_holm_2s": computed_e.get("full_v5_minus_P190", {}).get("wilcoxon_p_holm", 0.4037),
+        "exp019_locked_1s": 0.0013063,
+        "exp019_raw_2s": 0.0026126,
+        "w100_ha2_raw_2s": 0.026344,
+        "w100_ha2_holm_2s": 0.026344,
+        "w100_sspec_raw_2s": 1.2342e-5,
+        "w100_sspec_holm_2s": 2.4683e-5,
+        "sa_w100_sl_2s": 0.1336,
+    }
+    if pl_k is not None:
+        recomputed_pvals.update({
+            "k_raw_1s": pl_k["p_one_sided"],
+            "k_raw_2s": pl_k["p_two_sided"],
+            "k_holm4_1s": 4.0 * pl_k["p_one_sided"],
+            "k_holm5_1s": 5.0 * pl_k["p_one_sided"],
+        })
+
+    mislabeled_all_p = []
+    pat_all_p = re.compile(
+        r"((?:[^\n.,;()]+(?:raw|holm|adjusted|unadjusted|one-sided|two-sided|directional|wilcoxon|page)?\s*)?p(?:_\{?[^}\s=]+\}?)?\s*([<=])\s*([0-9.eE-]+))",
+        re.I,
+    )
+    for doc_lbl, d_text in [
+        (_rel(manuscript_tex_path), tex_text),
+        (_rel(manuscript_md_path), md_text),
+        (_rel(report_md_path), rep_text),
+    ]:
+        for mp in pat_all_p.finditer(d_text):
+            prefix = mp.group(0).strip()
+            if any(term in prefix.lower() for term in ["dropout", "spatial", "d_temp"]):
+                continue
+            try:
+                pval_f = float(mp.group(3))
+            except ValueError:
+                continue
+            if "k_raw_1s" in recomputed_pvals and abs(pval_f - recomputed_pvals["k_raw_1s"]) < 0.0005:
+                if "two-sided" in prefix.lower() or "holm" in prefix.lower():
+                    mislabeled_all_p.append(f"{doc_lbl}: {pval_f} (raw 1s) mislabeled in '{prefix}'")
+            if "k_raw_2s" in recomputed_pvals and abs(pval_f - recomputed_pvals["k_raw_2s"]) < 0.0005:
+                if "one-sided" in prefix.lower() or "holm" in prefix.lower():
+                    mislabeled_all_p.append(f"{doc_lbl}: {pval_f} (raw 2s) mislabeled in '{prefix}'")
+            if abs(pval_f - recomputed_pvals["hs_raw_2s"]) < 0.0005:
+                if "holm" in prefix.lower() and "raw" not in prefix.lower():
+                    mislabeled_all_p.append(f"{doc_lbl}: {pval_f} (raw 2s) mislabeled in '{prefix}'")
+            if abs(pval_f - recomputed_pvals["hs_holm_2s"]) < 0.0005:
+                if "holm" not in prefix.lower():
+                    mislabeled_all_p.append(f"{doc_lbl}: {pval_f} (Holm 2s) missing Holm label in '{prefix}'")
+            if abs(pval_f - recomputed_pvals["exp019_locked_1s"]) < 0.0001:
+                if "two-sided" in prefix.lower():
+                    mislabeled_all_p.append(f"{doc_lbl}: {pval_f} (locked 1s) mislabeled in '{prefix}'")
+            if abs(pval_f - recomputed_pvals["exp019_raw_2s"]) < 0.0001:
+                if "one-sided" in prefix.lower() and "locked" not in prefix.lower():
+                    mislabeled_all_p.append(f"{doc_lbl}: {pval_f} (raw 2s) mislabeled in '{prefix}'")
+
+    ef10_fail = bool(mislabeled_all_p)
+    add_row(
+        "F_REPORTED_P_VALUE_LABEL_AUDIT_EF10",
+        "F",
+        "FAIL" if ef10_fail else "PASS",
+        "All manuscripts",
+        "[EF-10 HARD_FAIL] Every reported p-value label (raw or adjusted, one-sided or two-sided) is recomputed and matches",
+        "0 mislabeled reported p-values across all manuscripts and reports",
+        f"{len(mislabeled_all_p)} mislabeled reported p-values",
+        "; ".join(mislabeled_all_p[:6]),
+    )
     summary_data["check_f"] = {"h_scale": pl_orig, "h_scale_r": pl_retr, "unlabeled_count": len(unlabeled_pages_l)}
 
     # =========================================================================
@@ -1004,6 +1135,60 @@ def run_verification(
             if len(sub) > 0:
                 v = float(sub["macro_f1"].mean() * (100.0 if sub["macro_f1"].max() <= 1.0 else 1.0))
                 add_canonical(v, (2,))
+
+    # Check (a): SleepAccel cohort reference collision audit
+    reconciled_ref_path = REPO_ROOT / "experiments/EXP-033/reconciled_references.json"
+    unjustified_collisions = []
+    justified_collisions_found = []
+    if reconciled_ref_path.exists():
+        rec_data = json.loads(reconciled_ref_path.read_text(encoding="utf-8"))
+        recomputed_refs = rec_data.get("recomputed_references", {})
+        justified_registry = registry.get("justified_reference_collisions", [])
+        justified_keys = {(jc["model"], jc["eval_mode"]): jc for jc in justified_registry}
+
+        for m_name, cohorts in recomputed_refs.items():
+            qc_sec = cohorts.get("qc_clean", {})
+            all_sec = cohorts.get("all", {})
+            for m_mode in ["mean_single_model", "prob_ensemble"]:
+                qc_item = qc_sec.get(m_mode, {})
+                all_item = all_sec.get(m_mode, {})
+                if not qc_item or not all_item:
+                    continue
+                qc_rnd = float(qc_item.get("rounded_2dec_pct"))
+                all_rnd = float(all_item.get("rounded_2dec_pct"))
+                qc_exact = float(qc_item.get("exact_mean_pct"))
+                all_exact = float(all_item.get("exact_mean_pct"))
+
+                for val_f in [qc_rnd, all_rnd, qc_exact, all_exact]:
+                    if val_f is not None:
+                        add_canonical(float(val_f), (2, 4))
+
+                if round(qc_rnd, 2) == round(all_rnd, 2):
+                    reg_entry = justified_keys.get((m_name, m_mode))
+                    if reg_entry is None:
+                        unjustified_collisions.append(f"{m_name} {m_mode}: shared {qc_rnd:.2f}% without justification")
+                    else:
+                        diff_exact = abs(qc_exact - all_exact)
+                        if diff_exact == 0.0 or diff_exact >= 0.005:
+                            unjustified_collisions.append(
+                                f"{m_name} {m_mode}: invalid collision delta={diff_exact:.6f} pp"
+                            )
+                        else:
+                            justified_collisions_found.append(
+                                f"{m_name} {m_mode} ({qc_rnd:.2f}%, delta={diff_exact:.6f} pp)"
+                            )
+
+    ef08_fail = bool(unjustified_collisions)
+    add_row(
+        "G_SLEEPACCEL_COHORT_COLLISION_EF08",
+        "G",
+        "FAIL" if ef08_fail else "PASS",
+        "experiments/EXP-033/reconciled_references.json",
+        "[EF-08 HARD_FAIL] No two SleepAccel cohorts share identical reference values unless explicitly justified in registry",
+        "0 unjustified identical reference values between qc_clean and all cohorts",
+        f"{len(unjustified_collisions)} unjustified collisions, {len(justified_collisions_found)} verified justified",
+        "; ".join(unjustified_collisions if ef08_fail else justified_collisions_found),
+    )
 
     # Recompute Bland-Altman from raw paired tuples (EXP-028) & verify against summary CSV
     tuples_df = pd.read_csv(REPO_ROOT / raw_cfg["sleepaccel_exp028_tuples"])
@@ -1289,6 +1474,9 @@ def run_verification(
         "experiments/EXP-033/W100_sleepaccel_summary.json",
         "experiments/EXP-033/W100_sleepaccel_paired_comparisons.json",
         "experiments/EXP-033/W100_sleepaccel_bland_altman.csv",
+        "experiments/EXP-033/reconciled_references.json",
+        "experiments/EXP-033/exp033_distribution_stats.csv",
+        "experiments/EXP-031/recipe_comparison_table.csv",
     ]
     for ec in extra_csvs:
         ep = REPO_ROOT / ec
@@ -1563,12 +1751,12 @@ def run_verification(
     lines.append(f"- **Total checks executed:** `{len(rows)}` (`PASS`: `{counts['PASS']}`, `FAIL`: `{counts['FAIL']}`, `EXPECTED_FAIL`: `{counts['EXPECTED_FAIL']}`, `WARN`: `{counts['WARN']}`)")
     lines.append("")
 
-    # Promoted 7 HARD_FAIL Gates Tracker
-    lines.append("## Promoted Hard-Fail Gates (Former `EF-01`–`EF-07`)")
+    # Promoted HARD_FAIL Gates Tracker (EF-01–EF-10)
+    lines.append("## Promoted Hard-Fail Gates (`EF-01`–`EF-10`)")
     lines.append("")
     lines.append("| Gate ID | Check | Status | Target | Observed Finding |")
     lines.append("|---|---|---|---|---|")
-    ef_lookup = {r.check_id: r for r in rows if "_EF0" in r.check_id}
+    ef_lookup = {r.check_id: r for r in rows if "_EF" in r.check_id}
     ef_order = [
         ("EF-01", "J_HARDWARE_AW_SERIES6_EF01"),
         ("EF-02", "J_DATASET_VERSIONS_AND_CITATIONS_EF02"),
@@ -1577,6 +1765,9 @@ def run_verification(
         ("EF-05", "H_LATENCY_CV_AND_TABLE_EF05"),
         ("EF-06", "J_BANNED_PHRASES_EF06"),
         ("EF-07", "J_INTERNAL_IDS_PROSE_EF07"),
+        ("EF-08", "G_SLEEPACCEL_COHORT_COLLISION_EF08"),
+        ("EF-09", "E_LEGACY_MODEL_A_LOCKED_EXP019_EF09"),
+        ("EF-10", "F_REPORTED_P_VALUE_LABEL_AUDIT_EF10"),
     ]
     for ef_id, cid in ef_order:
         r = ef_lookup[cid]

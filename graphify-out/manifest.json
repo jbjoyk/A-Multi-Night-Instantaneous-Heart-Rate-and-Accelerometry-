@@ -6090,9 +6090,9 @@
     "semantic_hash": ""
   },
   "research_knowledge/updates/MANUSCRIPT_DRAFT_v2.0.md": {
-    "mtime": 1795715059.1700125,
-    "seen": 1795715234.1645834,
-    "ast_hash": "af450825e1abb93a7499e649778b0290",
+    "mtime": 1795748994.969134,
+    "seen": 1795749053.6499588,
+    "ast_hash": "a62ca13811b2950a00bceb5d2e0e423f",
     "semantic_hash": ""
   },
   "figures/manuscript_v2/Figure1_Pareto_External_PSG_Transfer.pdf": {
@@ -6192,9 +6192,9 @@
     "semantic_hash": ""
   },
   "author_report_bundle/TECHNICAL_EXPERIMENTAL_REPORT.md": {
-    "mtime": 1795715159.646747,
-    "seen": 1795715234.1644192,
-    "ast_hash": "b7a5c3dc249823695007f6a0c11df749",
+    "mtime": 1795749022.361269,
+    "seen": 1795749053.6497858,
+    "ast_hash": "8707622c30dd96da0ba233a90e3e7d7b",
     "semantic_hash": ""
   },
   "author_report_bundle/consolidated_review_report.md": {
@@ -6462,9 +6462,9 @@
     "semantic_hash": ""
   },
   "docs/verification/claim_registry.yaml": {
-    "mtime": 1795715153.9607055,
-    "seen": 1795715234.1637287,
-    "ast_hash": "4adbe7b6c98c4754ccb048713904d16f",
+    "mtime": 1795779184.1979322,
+    "seen": 1795779482.1406426,
+    "ast_hash": "480ae1cfb60767a2b2fa96acf67c2198",
     "semantic_hash": ""
   },
   "docs/verification/facts.yaml": {
@@ -6510,15 +6510,15 @@
     "semantic_hash": ""
   },
   "scripts/verify_manuscript_numbers.py": {
-    "mtime": 1795715218.0521743,
-    "seen": 1795715234.1643708,
-    "ast_hash": "58fa9cf0edd82ac48c371593d866717e",
+    "mtime": 1795779420.7108495,
+    "seen": 1795779482.1414042,
+    "ast_hash": "87f06db5e950dfaf62d20eab761fba8d",
     "semantic_hash": ""
   },
   "docs/verification/verification_summary.md": {
-    "mtime": 1795715221.655111,
-    "seen": 1795715234.164447,
-    "ast_hash": "da72ffc73059244e1aca60d8265ad8d6",
+    "mtime": 1795779468.3100703,
+    "seen": 1795779482.1414776,
+    "ast_hash": "c02267f44b6e90aa2ea27c897b3fff72",
     "semantic_hash": ""
   },
   "docs/verification/interleaved_cpu_latency_fp32_4t_rerun.json": {
@@ -6906,9 +6906,9 @@
     "semantic_hash": ""
   },
   "experiments/EXP-033/analyze_exp033.py": {
-    "mtime": 1795714469.8777058,
-    "seen": 1795714493.9917862,
-    "ast_hash": "d09bf447f3f43a3554b87132d1ca9f85",
+    "mtime": 1795748939.0698583,
+    "seen": 1795749053.6497,
+    "ast_hash": "6b98687a31d4907390495308ffcc780c",
     "semantic_hash": ""
   },
   "experiments/EXP-033/exp033_core.py": {
@@ -6918,9 +6918,9 @@
     "semantic_hash": ""
   },
   "experiments/EXP-033/exp033_summary.json": {
-    "mtime": 1795714473.1077294,
-    "seen": 1795714493.9917877,
-    "ast_hash": "0e536565101c9b37ac16696ad78bbf95",
+    "mtime": 1795748942.6038759,
+    "seen": 1795749053.6497018,
+    "ast_hash": "c134778de2922c3f558f423cb5bb0035",
     "semantic_hash": ""
   },
   "experiments/EXP-033/full_v5_selected_configs.json": {
@@ -6948,21 +6948,33 @@
     "semantic_hash": ""
   },
   "experiments/EXP-033/EXP033_FINAL_REPORT.md": {
-    "mtime": 1795714473.1099014,
-    "seen": 1795714493.991959,
-    "ast_hash": "09b21ce43829fdcc330c57718b955261",
+    "mtime": 1795778754.508346,
+    "seen": 1795779482.1415353,
+    "ast_hash": "6398597db44eb1dc386c84c944c35d96",
     "semantic_hash": ""
   },
   "experiments/EXP-033/exp033_backbone_forest_plot.png": {
-    "mtime": 1795714472.9697285,
-    "seen": 1795714493.9921265,
-    "ast_hash": "2d2bb5b138fb0a877e28c363cda07c62",
+    "mtime": 1795778909.1553257,
+    "seen": 1795779482.1417015,
+    "ast_hash": "02baea0682cbe5b1c844de6aef299ec8",
     "semantic_hash": ""
   },
   "experiments/EXP-033/exp033_depth_curve.png": {
-    "mtime": 1795714473.0787292,
-    "seen": 1795714493.9921272,
-    "ast_hash": "e5ff05bd7acef2971c494f29ec55a69d",
+    "mtime": 1795778909.3123274,
+    "seen": 1795779482.1417024,
+    "ast_hash": "0ed37e4e0aee21537b2a3ac04d693bda",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-033/reconciled_references.json": {
+    "mtime": 1795778685.108158,
+    "seen": 1795779482.1413639,
+    "ast_hash": "e64ed782ce58619702e6d73acc4076f6",
+    "semantic_hash": ""
+  },
+  "experiments/EXP-031/recipe_comparison_table.md": {
+    "mtime": 1795778660.3969202,
+    "seen": 1795779482.141534,
+    "ast_hash": "dfcd28783e4284e9f9f0c6985585e74c",
     "semantic_hash": ""
   }
 }

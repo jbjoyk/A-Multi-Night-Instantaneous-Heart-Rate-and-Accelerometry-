@@ -99,3 +99,74 @@
 
 - **(e) Section 2.2 Backbone-Selection Rule Verification:** Across the `EXP-031` `< 400 KiB` INT8 eligible plain CNN-BiGRU grid (`W050` `65.61%`, `W075` `66.26%`, `W100` `66.68%`, `P190` `66.60%`, `B` `66.61%`), `W100` (`163,940` params, `66.68%` OOF Macro-F1) is the highest-scoring eligible width (`gap = 0.00 pp <= 1 SE`) and is therefore selected under the smallest-width-within-1-SE rule.
 - **(f) Confirmatory Family Holm-Bonferroni Adjustment (`{H-A2, S-SPEC}` on `W100`):** `H-A2` raw two-sided `p = 2.6344e-02`, Holm-adjusted two-sided `p_Holm = 2.6344e-02`; `S-SPEC` raw two-sided `p = 1.2342e-05`, Holm-adjusted two-sided `p_Holm = 2.4683e-05`.
+
+
+---
+
+## Addendum (post-lock completion of required outputs) — 2026-11-27
+
+### (i) Number of Donor Draws & Empirical Evidence
+- **Donor Draws per Subject-Seed:** Exactly `5` independent donor draws per `(subject, seed)` pair sampled from the fold's `inner_train_subjects` with fixed RNG seed `seed + 1000 * donor_idx`.
+- **Empirical Inventory:** 
+  - `46 subjects × 3 seeds = 138` outer test runs.
+  - `138 × 5 draws = 690` donor fine-tuning runs per backbone.
+  - Across all 4 backbones (`W100`, `p1_100k`, `P190`, `full_v5`): `690 × 4 = 2,760` donor runs (`FT-other-2_draw0` through `FT-other-2_draw4`).
+- **Verifiable Artifacts:** Recorded in `experiments/EXP-033/{W100,p1_100k,P190,full_v5}_state_dict_hashes.csv` (each contains exactly 138 rows for `FT-other-2_draw0`, 138 for `draw1`, 138 for `draw2`, 138 for `draw3`, and 138 for `draw4`).
+
+### (ii) Summary of State-Dict SHA-256 Hash Log
+- **Log Files:** Recorded during the run in `experiments/EXP-033/{W100,p1_100k,P190,full_v5}_state_dict_hashes.csv`.
+- **Total Fine-Tuning Runs Monitored:** `4,764` runs (`1,191` per backbone: 138 FT-1, 138 FT-2, 126 FT-3, 99 FT-4, 690 FT-other-2).
+- **Pre-Training Weight Integrity:** `0` mismatches detected across all 4,764 runs (`hash_before` matched the frozen checkpoint SHA-256 digest in 100% of runs).
+- **Post-Training Optimization Proof:** `0` runs where `hash_after == hash_before` (100% of runs updated weights via gradient optimization).
+
+### (iii) Reset-Guard Unit Test Output (Post-Run Check)
+- **Harness:** `pytest tests/test_exp033_safeguards.py`
+- **Execution Label:** `post-run check`
+- **Output:**
+  ```text
+  ============================= test session starts ==============================
+  platform linux -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0
+  rootdir: /home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels
+  plugins: platformdirs-4.12.4
+  collected 2 items
+
+  tests/test_exp033_safeguards.py ..                                       [100%]
+
+  ============================== 2 passed in 5.13s ===============================
+  ```
+- **Guarantees Confirmed:** (a) bitwise-identical zero-shot evaluations before and after fine-tuning on another participant's nights; (b) zero weight mutation or leakage across subjects; (c) exact OOF zero-shot parity against pre-registered frozen checkpoints (`max abs diff <= 2.22e-16`).
+
+### (iv) Inner-Validation Selected Configurations (per Fold and Backbone)
+Selected via nested grid search on `inner_val_subjects` evaluating Macro-F1 across `lr in {3e-5, 1e-4, 3e-4}`, `epochs in {5, 15}`, and `scope in {head_gru, all}`:
+
+| Backbone | Fold 1 | Fold 2 | Fold 3 | Fold 4 | Fold 5 | Source JSON |
+|---|---|---|---|---|---|---|
+| `W100` | `lr=3e-05, ep=15, head_gru` (72.64%) | `lr=3e-05, ep=15, head_gru` (72.36%) | `lr=3e-05, ep=15, head_gru` (69.08%) | `lr=3e-05, ep=5, head_gru` (69.23%) | `lr=3e-05, ep=15, head_gru` (62.08%) | `W100_selected_configs.json` |
+| `p1_100k` | `lr=3e-05, ep=5, head_gru` (72.46%) | `lr=3e-05, ep=15, head_gru` (71.87%) | `lr=3e-05, ep=15, head_gru` (68.51%) | `lr=3e-05, ep=5, head_gru` (68.65%) | `lr=3e-05, ep=15, head_gru` (63.47%) | `p1_100k_selected_configs.json` |
+| `P190` | `lr=3e-05, ep=5, head_gru` (72.40%) | `lr=0.0001, ep=15, head_gru` (72.03%) | `lr=3e-05, ep=5, head_gru` (68.95%) | `lr=3e-05, ep=5, head_gru` (69.34%) | `lr=3e-05, ep=5, head_gru` (63.27%) | `P190_selected_configs.json` |
+| `full_v5` | `lr=3e-05, ep=5, head_gru` (72.56%) | `lr=3e-05, ep=15, head_gru` (73.06%) | `lr=3e-05, ep=5, head_gru` (68.76%) | `lr=3e-05, ep=5, head_gru` (69.59%) | `lr=3e-05, ep=5, head_gru` (62.84%) | `full_v5_selected_configs.json` |
+
+### (v) W100 Backbone-Selection Check (EXP-031 Section 9 Rule Applied)
+Applying the pre-registered `PREREG_EXP-031_WIDTH_SWEEP.md` Section 9 rule with `W100` in place of frozen `Model A` across the eligible plain CNN-BiGRU widths satisfying the dynamic INT8 payload constraint (< 400 KiB):
+1. **Eligible Set:** `W050` (79,940 params), `W075` (118,440 params), `W100` (163,940 params), `P190` (190,940 params), `B` (200,420 params).
+2. **Identification of $m^*$:** Highest mean Macro-F1 across $N=47$ subjects is $m^* = \mathbf{W100}$ with $\overline{\text{F1}}_{m^*} = 66.6780\%$ (ties go to fewer parameters).
+3. **Selection Rule Evaluation:** Test smallest width $m$ satisfying $\overline{\text{F1}}_{m^*} - \overline{\text{F1}}_m \le \text{SE}_{\text{boot}}$, where $\text{SE}_{\text{boot}} = \text{SD}_{\text{boot}}(\overline{\text{F1}}_{m^*} - \overline{\text{F1}}_m)$ over 10,000 participant-level bootstrap resamples (`seed=42`):
+   - `W050` (79,940 params): Mean = 65.6104%, $\text{Gap} = +1.0675\text{ pp}$, $\text{SE}_{\text{boot}} = 0.3403\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **False**
+   - `W075` (118,440 params): Mean = 66.2602%, $\text{Gap} = +0.4177\text{ pp}$, $\text{SE}_{\text{boot}} = 0.2215\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **False**
+   - `W100` (163,940 params): Mean = 66.6780%, $\text{Gap} = +0.0000\text{ pp}$, $\text{SE}_{\text{boot}} = 0.0000\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **True**
+   - `P190` (190,940 params): Mean = 66.5952%, $\text{Gap} = +0.0827\text{ pp}$, $\text{SE}_{\text{boot}} = 0.1952\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **True**
+   - `B` (200,420 params): Mean = 66.6072%, $\text{Gap} = +0.0707\text{ pp}$, $\text{SE}_{\text{boot}} = 0.1653\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **True**
+4. **Outcome:** The smallest eligible plain width within 1 $\text{SE}_{\text{boot}}$ of $m^*$ is **`W100`**. The Section 9 rule strictly selects `W100`.
+
+### (vi) Confirmatory Family Holm-Bonferroni Adjustment
+- **Family Definition:** The pre-registered confirmatory family consists of $m=2$ primary/secondary hypotheses on the primary `W100` backbone: $\{H\text{-}A2, S\text{-}SPEC\}$ (`PREREG_EXP-033_W100_PERSONALIZATION_EXTERNAL.md` Section 6).
+- **H-A2 ($FT\text{-}2 \text{ vs } ZS$, $N=46$):**
+  - Raw two-sided Wilcoxon $p = \mathbf{2.6344 \times 10^{-2}}$ (0.0263)
+  - Holm-adjusted two-sided $p_{\text{Holm}} = \mathbf{2.6344 \times 10^{-2}}$ (0.0263) (rank 2: $\min(1.0, 1 \times 0.026344) = 0.026344$)
+  - Raw one-sided Wilcoxon $p = \mathbf{1.3172 \times 10^{-2}}$ (0.0132)
+  - Holm-adjusted one-sided $p_{\text{Holm}} = \mathbf{1.3172 \times 10^{-2}}$ (0.0132)
+- **S-SPEC ($FT\text{-}2 \text{ vs } FT\text{-}other\text{-}2$, $N=46$):**
+  - Raw two-sided Wilcoxon $p = \mathbf{1.2342 \times 10^{-5}}$
+  - Holm-adjusted two-sided $p_{\text{Holm}} = \mathbf{2.4683 \times 10^{-5}}$ (rank 1: $\min(1.0, 2 \times 1.23417 \times 10^{-5}) = 2.4683 \times 10^{-5}$)
+  - Raw one-sided Wilcoxon $p = \mathbf{6.1708 \times 10^{-6}}$
+  - Holm-adjusted one-sided $p_{\text{Holm}} = \mathbf{1.2342 \times 10^{-5}}$
