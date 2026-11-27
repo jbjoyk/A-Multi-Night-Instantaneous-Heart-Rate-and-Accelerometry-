@@ -201,10 +201,13 @@
 | Available (Ek, k=4) | 4 | 33 | 63.54% | 66.25% | +2.71 | 1.1669350853626916 | 4.328169813251022 | 110.0 | 0.0016955372411757 | — | — | — | — | — | — | 24 | 9 | 0 |
 
 - **`EXP-033` (`DEC-046`, Recipe-Consistent `W100` & Multi-Backbone, `N = 46` / `E_4 N = 33`):**
-  - **`W100` (`H-A2` `FT-2 - ZS`, `N=46`):** `+0.58 pp` `[-0.06, +1.22]` (`p = 0.0263`, `d_z = 0.259`) -> **`NOT SUPPORTED (practically)`**.
-  - **`W100` (`S-SPEC` `FT-2 - FT-other-2`, 5 donor draws, `N=46`):** `+1.45 pp` `[+0.89, +2.02]` (`p = 1.23e-5`, `d_z = 0.730`) -> **`INCONCLUSIVE`** (`FT-other-2 - ZS = -0.87 pp`).
-  - **`W100` Calibration-Depth (`E_4`, `N=33`, `k=1..4`):** `+0.35`, `+0.53`, `+0.74`, `+0.73 pp` (`[-0.22, +1.77]`); Page's `L = 835.0`, `z = +0.573`, raw two-sided `p = 0.5667`, raw one-sided `p = 0.2834` -> **NOT CLAIMABLE**.
-  - **Descriptive Backbones (`FT-2 - ZS`, `N=46`):** `p1_100k` `+0.51 pp` `[+0.03, +0.95]`, `P190` `-0.02 pp` `[-1.09, +0.85]`, `full_v5` `+0.45 pp` `[-0.57, +1.41]`.
+  - **`W100` (`H-A2` `FT-2 - ZS`, `N=46`):** mean `+0.58 pp`, median `+0.75 pp`, 95% CI `[-0.06, +1.22]`, `30W/16L/0T` (raw two-sided `p = 0.0263`, `p_Holm = 0.0263`, `d_z = 0.259`) -> **`NOT SUPPORTED (practically)`**.
+  - **`W100` (`S-SPEC` `FT-2 - FT-other-2`, 5 donor draws, `N=46`):** mean `+1.45 pp`, median `+1.31 pp`, 95% CI `[+0.89, +2.02]`, `38W/8L/0T` (raw two-sided `p = 1.23e-5`, `p_Holm = 2.47e-5`, `d_z = 0.730`) -> **`INCONCLUSIVE`** (`FT-other-2 - ZS = -0.87 pp`).
+  - **`W100` Calibration-Depth (`E_4`, `N=33`, `k=1..4`):** mean `+0.35`, `+0.53`, `+0.74`, `+0.73 pp` (`[-0.22, +1.77]`, median `+0.47 pp`, `20W/13L/0T`); Page's `L = 835.0`, `z = +0.573`, raw two-sided `p = 0.5667`, raw one-sided `p = 0.2834` -> **NOT CLAIMABLE**.
+  - **Descriptive Backbones (`FT-2 - ZS`, `N=46`):** `p1_100k` mean `+0.51 pp` (median `+0.70 pp`, `[+0.03, +0.95]`, `31W/15L/0T`), `P190` mean `-0.02 pp` (median `+0.69 pp`, `[-1.09, +0.85]`, `31W/15L/0T`, left-skewed), `full_v5` mean `+0.45 pp` (median `+1.03 pp`, `[-0.57, +1.41]`, `28W/18L/0T`).
+  - **Legacy `Model A` (`EXP-019` older recipe, `N=46`):** mean `+1.01 pp` (`+1.0054 pp`), median `+1.55 pp`, 95% CI `[-0.17, +1.99]`, `34W/12L/0T`, two-sided `p = 0.00261` (locked one-sided `p = 0.00131`).
+  - **`GATE_tau` (Descriptive, no gating benefit claimed):** On `W100` (`τ = 1%..5%`, `1..8` abstained), mean `Δ = +0.65` to `+0.34 pp`, `min Δ = -5.18 pp`.
+  - **`W100` Zero-Shot SleepAccel (`em_off`, descriptive, 2.36 pp 80% MDE):** `qc_clean (n=25)` `61.23%` single / `62.93%` ensemble (`+0.14 pp [-1.28, +1.56]` vs. `SLAMSS-IFS`, `p = 0.9578` — no statistically significant difference; a difference is not excluded); `all (N=31)` `61.58%` / `63.43%`. No clinical-agreement claim on Bland-Altman (`REM% bias +12.23%`, `Deep% bias +7.10%`).
 - **Exploratory Page's L (`N = 33`, `E_4`, frozen `Model A` older recipe):** `L = 863.0`, `z = 2.261`, raw one-sided `p = 0.01187` (raw two-sided `p = 0.02374`; 4-test Holm-adjusted one-sided `p = 0.04748`; 5-test Holm-adjusted one-sided `p = 0.05935`).
 
 ### Table 7b: `GATE_tau` Safety Guardrail Across Models (`N = 46`; `EXP-033` Recipe-Consistent & Legacy `Model A` Older Recipe) ([table7b_exp020_gate_tau_comparison.csv](file:///home/rj2826/ai-research/sleep/02.%20A%20Multi-Night%20Instantaneous%20Heart%20Rate%20and%20Accelerometry%20Dataset%20with%20EEG%20Sleep%20Stage%20Labels/author_report_bundle/tables/table7b_exp020_gate_tau_comparison.csv))

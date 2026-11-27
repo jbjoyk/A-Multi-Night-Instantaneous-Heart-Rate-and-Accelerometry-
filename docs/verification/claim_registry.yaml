@@ -148,6 +148,6 @@ hard_fail_gates:
     enforcement: "HARD_FAIL"
   - id: "CLM-033"
     check_group: "F"
-    title: "EXP-033 W100 Personalization (H-A2 +0.58 pp NOT SUPPORTED practically; S-SPEC +1.45 pp INCONCLUSIVE; E4 Page L=835.0 p=0.5667) & W100 SleepAccel (61.23%/62.93% n=25)"
+    title: "EXP-033 W100 Personalization (H-A2 +0.58 pp [med +0.75, 30W/16L/0T, p_Holm=0.0263] NOT SUPPORTED practically; S-SPEC +1.45 pp [med +1.31, p_Holm=2.47e-5] INCONCLUSIVE; E4 Page L=835.0 p=0.5667; GATE_tau no benefit) & W100 SleepAccel (61.23%/62.93% n=25, +0.14 pp vs SLAMSS-IFS, 2.36 pp 80% MDE, no BA clinical-agreement claim)"
     target: "experiments/EXP-033/exp033_summary.json, MANUSCRIPT_DRAFT_v2.0.md, manuscript_jbhi.tex, TECHNICAL_EXPERIMENTAL_REPORT.md"
     enforcement: "HARD_FAIL"
