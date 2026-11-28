@@ -1,0 +1,181 @@
+{
+  "experiment": "EXP-034",
+  "prereg_commit": "c7d2d19e34563056a2d2fe07e6c53db879ab050e",
+  "arm_summaries": {
+    "W050_500ep": {
+      "arm": "W050_500ep",
+      "n_params": 43108,
+      "n_subjects": 47,
+      "mean_macro_f1_pct": 66.23586840820653,
+      "std_macro_f1_pct": 7.199438062106574,
+      "completed_epochs_mean": 184.2,
+      "completed_epochs_range": [
+        113,
+        301
+      ],
+      "best_epoch_mean": 159.2,
+      "best_epoch_range": [
+        88,
+        276
+      ],
+      "n_early_stopped": 15,
+      "n_hit_500": 0,
+      "mean_wall_sec": 565.5798717021942,
+      "max_peak_vram_mb": 242.845703125,
+      "subject_metrics_csv": "/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-034/W050_500ep_subject_metrics.csv"
+    },
+    "W075_500ep": {
+      "arm": "W075_500ep",
+      "n_params": 93796,
+      "n_subjects": 47,
+      "mean_macro_f1_pct": 66.40014297238223,
+      "std_macro_f1_pct": 6.951058653937247,
+      "completed_epochs_mean": 130.26666666666668,
+      "completed_epochs_range": [
+        78,
+        211
+      ],
+      "best_epoch_mean": 105.26666666666667,
+      "best_epoch_range": [
+        53,
+        186
+      ],
+      "n_early_stopped": 15,
+      "n_hit_500": 0,
+      "mean_wall_sec": 430.01939406394956,
+      "max_peak_vram_mb": 344.5390625,
+      "subject_metrics_csv": "/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-034/W075_500ep_subject_metrics.csv"
+    },
+    "p1_100k_500ep": {
+      "arm": "p1_100k_500ep",
+      "n_params": 98940,
+      "n_subjects": 47,
+      "mean_macro_f1_pct": 66.67833445695388,
+      "std_macro_f1_pct": 7.532138179349114,
+      "completed_epochs_mean": 118.86666666666666,
+      "completed_epochs_range": [
+        81,
+        154
+      ],
+      "best_epoch_mean": 93.86666666666666,
+      "best_epoch_range": [
+        56,
+        129
+      ],
+      "n_early_stopped": 15,
+      "n_hit_500": 0,
+      "mean_wall_sec": 413.95995632807416,
+      "max_peak_vram_mb": 344.455078125,
+      "subject_metrics_csv": "/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-034/p1_100k_500ep_subject_metrics.csv"
+    },
+    "W100_500ep": {
+      "arm": "W100_500ep",
+      "n_params": 163940,
+      "n_subjects": 47,
+      "mean_macro_f1_pct": 66.70031927018614,
+      "std_macro_f1_pct": 7.0707183077949445,
+      "completed_epochs_mean": 112.2,
+      "completed_epochs_range": [
+        65,
+        141
+      ],
+      "best_epoch_mean": 87.2,
+      "best_epoch_range": [
+        40,
+        116
+      ],
+      "n_early_stopped": 15,
+      "n_hit_500": 0,
+      "mean_wall_sec": 413.58562916119894,
+      "max_peak_vram_mb": 433.095703125,
+      "subject_metrics_csv": "/home/rj2826/ai-research/sleep/02. A Multi-Night Instantaneous Heart Rate and Accelerometry Dataset with EEG Sleep Stage Labels/experiments/EXP-034/W100_500ep_subject_metrics.csv"
+    }
+  },
+  "paired_500_vs_100": [
+    {
+      "arm": "W050_500ep",
+      "n_params": 43108,
+      "f1_100ep_pct": 65.61040325546644,
+      "f1_500ep_pct": 66.23586840820653,
+      "delta_mean_pp": 0.625465152740098,
+      "delta_median_pp": 0.8799850656686092,
+      "sd_pp": 1.7464231717360144,
+      "ci95_low_pp": 0.08863393682322997,
+      "ci95_high_pp": 1.0942045459996217,
+      "p_raw_two_sided": 0.0006962170654816191,
+      "wins": 34,
+      "losses": 13,
+      "ties": 0,
+      "p_holm_two_sided": 0.0027848682619264764,
+      "verdict": "STATISTICALLY DETECTABLE BUT BELOW PRACTICAL THRESHOLD"
+    },
+    {
+      "arm": "W075_500ep",
+      "n_params": 93796,
+      "f1_100ep_pct": 66.26021804118267,
+      "f1_500ep_pct": 66.40014297238223,
+      "delta_mean_pp": 0.13992493119955848,
+      "delta_median_pp": 0.11906612368945968,
+      "sd_pp": 1.0316824787850685,
+      "ci95_low_pp": -0.15134630143253958,
+      "ci95_high_pp": 0.4413961344661815,
+      "p_raw_two_sided": 0.19678210170279442,
+      "wins": 25,
+      "losses": 22,
+      "ties": 0,
+      "p_holm_two_sided": 0.5903463051083833,
+      "verdict": "NOT SUPPORTED"
+    },
+    {
+      "arm": "p1_100k_500ep",
+      "n_params": 98940,
+      "f1_100ep_pct": 66.67260339990642,
+      "f1_500ep_pct": 66.67833445695388,
+      "delta_mean_pp": 0.005731057047461626,
+      "delta_median_pp": 0.0,
+      "sd_pp": 0.6212272023080359,
+      "ci95_low_pp": -0.17020928924679338,
+      "ci95_high_pp": 0.1806851876120328,
+      "p_raw_two_sided": 0.9455354646923675,
+      "wins": 14,
+      "losses": 14,
+      "ties": 19,
+      "p_holm_two_sided": 1.0,
+      "verdict": "NOT SUPPORTED"
+    },
+    {
+      "arm": "W100_500ep",
+      "n_params": 163940,
+      "f1_100ep_pct": 66.67795115080214,
+      "f1_500ep_pct": 66.70031927018614,
+      "delta_mean_pp": 0.02236811938400673,
+      "delta_median_pp": 0.0,
+      "sd_pp": 0.46054132891207433,
+      "ci95_low_pp": -0.11146489438677704,
+      "ci95_high_pp": 0.14948668924430836,
+      "p_raw_two_sided": 0.6790730414946473,
+      "wins": 10,
+      "losses": 8,
+      "ties": 29,
+      "p_holm_two_sided": 1.0,
+      "verdict": "NOT SUPPORTED"
+    }
+  ],
+  "diagnostic_h_scale_9width": {
+    "N": 47,
+    "k": 9,
+    "L": 10395.0,
+    "z_L": -1.2377054955105522,
+    "p_one_sided": 0.8920873596419954,
+    "p_two_sided": 0.21582528071600926
+  },
+  "diagnostic_h_scale_10width": {
+    "N": 47,
+    "k": 10,
+    "L": 13931.0,
+    "z_L": -1.5196480023326104,
+    "p_one_sided": 0.9357002666875341,
+    "p_two_sided": 0.1285994666249318
+  },
+  "gating_rule_triggered_train_larger_500ep": true
+}
