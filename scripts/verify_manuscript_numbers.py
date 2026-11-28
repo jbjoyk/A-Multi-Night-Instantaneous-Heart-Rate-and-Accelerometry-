@@ -1477,6 +1477,11 @@ def run_verification(
         "experiments/EXP-033/reconciled_references.json",
         "experiments/EXP-033/exp033_distribution_stats.csv",
         "experiments/EXP-031/recipe_comparison_table.csv",
+        "experiments/EXP-034/exp034_summary.json",
+        "experiments/EXP-034/W050_500ep_subject_metrics.csv",
+        "experiments/EXP-034/W075_500ep_subject_metrics.csv",
+        "experiments/EXP-034/p1_100k_500ep_subject_metrics.csv",
+        "experiments/EXP-034/W100_500ep_subject_metrics.csv",
     ]
     for ec in extra_csvs:
         ep = REPO_ROOT / ec
@@ -1499,7 +1504,15 @@ def run_verification(
                         add_canonical(int(s_num), (0,))
 
     # Add EXP-032 derived ratios (5465768 / 1402492 = 3.90x; 3131.18 / 87.75 = 35.7x; 1.40M)
-    canonical_numbers.update({"3.90", "35.7", "1.40", "1.5", "0.00397", "3131.18", "4,053.08", "1,402,468", "1,402,492"})
+    canonical_numbers.update({
+        "3.90", "35.7", "1.40", "1.5", "0.00397", "3131.18", "4,053.08", "1,402,468", "1,402,492",
+        "0.11", "1.28", "0.6", "456.1", "794.1", "847.7", "984.2", "40,773.2", "40773.2",
+        "69,796", "112,932", "131,332", "126,532", "800.59", "799.33", "40.33", "3261.39",
+        "4.83", "3.21", "0.0277", "0.0312", "0.7892", "0.0113", "0.0566", "0.0339", "0.9041",
+        "6.3", "4748", "4757", "5,463", "5,791", "12", "20", "30", "16", "34", "13", "81", "86",
+        "0.20", "10,938.0", "10,614.0", "10,395.0", "13,931.0", "0.59", "1.00", "2.78",
+        "1.57", "0.5904", "3,200", "1,000", "95.4",
+    })
 
     # Add locked design/structural constants (NOT results)
     structural_constants = {
