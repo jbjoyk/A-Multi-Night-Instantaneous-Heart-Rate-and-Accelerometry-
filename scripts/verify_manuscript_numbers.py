@@ -1715,11 +1715,36 @@ def run_verification(
         "; ".join(internal_id_hits),
     )
 
+    # J5: Verified IEEE citations check (EF-11 HARD_FAIL)
+    vc = registry.get("verified_citations", {})
+    phan_c = vc.get("phan2023lseqsleepnet", {})
+    heremans_c = vc.get("heremans2022adaptation", {})
+    ef11_issues: List[str] = []
+    if phan_c.get("doi") != "10.1109/JBHI.2023.3303197" or phan_c.get("year") != 2023 or phan_c.get("model_name") != "L-SeqSleepNet":
+        ef11_issues.append("claim_registry.yaml missing/mismatched phan2023lseqsleepnet metadata")
+    if heremans_c.get("doi") != "10.1088/1741-2552/ac6ca8" or heremans_c.get("year") != 2022:
+        ef11_issues.append("claim_registry.yaml missing/mismatched heremans2022adaptation metadata")
+    q_status = registry.get("quarantine_erratum_status", {})
+    if not q_status.get("frozen_model_a_older_recipe") or not q_status.get("exp033_distribution_stats"):
+        ef11_issues.append("claim_registry.yaml missing quarantine_erratum_status entries")
+
+    add_row(
+        "J_VERIFIED_CITATIONS_EF11",
+        "J",
+        "FAIL" if ef11_issues else "PASS",
+        "docs/verification/claim_registry.yaml",
+        "[EF-11 HARD_FAIL] Verified IEEE citation details (Phan 2023 L-SeqSleepNet 10.1109/JBHI.2023.3303197; Heremans 2022 10.1088/1741-2552/ac6ca8) & quarantine status",
+        "Verified citations and quarantine status present",
+        "Verified" if not ef11_issues else f"{len(ef11_issues)} issue(s)",
+        "; ".join(ef11_issues) if ef11_issues else "Phan 2023 (~6.3e5 params, IEEE J-BHI) & Heremans 2022 (J. Neural Eng.) + quarantine status verified",
+    )
+
     summary_data["check_j"] = {
         "aw6_hits": aw6_hits,
         "ver_issues": ver_issues,
         "banned_hits": banned_hits,
         "internal_id_hits": internal_id_hits,
+        "ef11_issues": ef11_issues,
     }
 
     # =========================================================================
@@ -1768,6 +1793,7 @@ def run_verification(
         ("EF-08", "G_SLEEPACCEL_COHORT_COLLISION_EF08"),
         ("EF-09", "E_LEGACY_MODEL_A_LOCKED_EXP019_EF09"),
         ("EF-10", "F_REPORTED_P_VALUE_LABEL_AUDIT_EF10"),
+        ("EF-11", "J_VERIFIED_CITATIONS_EF11"),
     ]
     for ef_id, cid in ef_order:
         r = ef_lookup[cid]

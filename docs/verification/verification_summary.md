@@ -3,7 +3,7 @@
 - **Primary TeX target:** `paper_orchestra_out/manuscript_jbhi.tex`
 - **Primary Markdown target:** `research_knowledge/updates/MANUSCRIPT_DRAFT_v2.0.md`
 - **Technical Report target:** `author_report_bundle/TECHNICAL_EXPERIMENTAL_REPORT.md`
-- **Total checks executed:** `82` (`PASS`: `82`, `FAIL`: `0`, `EXPECTED_FAIL`: `0`, `WARN`: `0`)
+- **Total checks executed:** `83` (`PASS`: `83`, `FAIL`: `0`, `EXPECTED_FAIL`: `0`, `WARN`: `0`)
 
 ## Promoted Hard-Fail Gates (`EF-01`–`EF-10`)
 
@@ -19,6 +19,7 @@
 | `EF-08` | `G` | **`PASS`** | `experiments/EXP-033/reconciled_references.json` | 0 unjustified collisions, 2 verified justified (ModelA prob_ensemble (62.94%, delta=0.001890 pp); p1_100k prob_ensemble (62.51%, delta=0.004784 pp)) |
 | `EF-09` | `E` | **`PASS`** | `experiments/EXP-019/exp019_stage_c_results.json` | Calc Delta=+1.0054 pp, 1s p=0.00131, 2s p=0.00261, EXP-033 summary ok=True (match_delta=True, match_p=True, exp033_legacy_ok=True) |
 | `EF-10` | `F` | **`PASS`** | `All manuscripts` | 0 mislabeled reported p-values () |
+| `EF-11` | `J` | **`PASS`** | `docs/verification/claim_registry.yaml` | Verified (Phan 2023 (~6.3e5 params, IEEE J-BHI) & Heremans 2022 (J. Neural Eng.) + quarantine status verified) |
 
 ## Results by Check Group (A–J)
 
@@ -33,7 +34,7 @@
 | `G` | 7 | 0 | 0 | 0 |
 | `H` | 7 | 0 | 0 | 0 |
 | `I` | 2 | 0 | 0 | 0 |
-| `J` | 4 | 0 | 0 | 0 |
+| `J` | 5 | 0 | 0 | 0 |
 
 ## Flagged Items Requiring Remediation (`FAIL`, `EXPECTED_FAIL`, `WARN`)
 

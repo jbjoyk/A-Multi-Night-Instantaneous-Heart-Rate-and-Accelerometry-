@@ -169,6 +169,11 @@ hard_fail_gates:
     title: "Reported p-value label and recomputation audit (every reported p-value label raw/adjusted & 1s/2s matches recomputed value)"
     target: "All manuscripts and reports"
     enforcement: "HARD_FAIL"
+  - id: "EF-11"
+    check_group: "J"
+    title: "Verified IEEE citation details for Phan, Lorenzen, Heremans et al. (IEEE J-BHI 2023, L-SeqSleepNet, ~6.3e5 params) and Heremans et al. (2022, J. Neural Eng.)"
+    target: "docs/verification/claim_registry.yaml, All manuscripts"
+    enforcement: "HARD_FAIL"
 
 # Documented Justified Reference Collisions (Task 4a)
 justified_reference_collisions:
@@ -221,3 +226,35 @@ reconciled_sleepaccel_part_b:
   W100:
     qc_clean: {mean_single_model: 61.23, prob_ensemble: 62.93}
     all: {mean_single_model: 61.58, prob_ensemble: 63.43}
+
+# Verified External Literature Citations (EF-11)
+verified_citations:
+  phan2023lseqsleepnet:
+    authors: "H. Phan, K. P. Lorenzen, E. Heremans, O. Y. Chén, M. C. Tran, P. Koch, A. Mertins, M. Baumert, K. B. Mikkelsen, and M. De Vos"
+    title: "L-SeqSleepNet: Whole-cycle Long Sequence Modelling for Automatic Sleep Staging"
+    journal: "IEEE Journal of Biomedical and Health Informatics"
+    volume: 27
+    number: 10
+    pages: "4748-4757"
+    year: 2023
+    doi: "10.1109/JBHI.2023.3303197"
+    model_name: "L-SeqSleepNet"
+    approx_params: "~6.3e5"
+  heremans2022adaptation:
+    authors: "E. R. M. Heremans, H. Phan, P. Borzée, B. Buyse, D. Testelmans, and M. De Vos"
+    title: "From unsupervised to semi-supervised adversarial domain adaptation in electroencephalography-based sleep staging"
+    journal: "Journal of Neural Engineering"
+    year: 2022
+    doi: "10.1088/1741-2552/ac6ca8"
+
+# Quarantine and Erratum Status of Superseded Recipe & Distribution Files
+quarantine_erratum_status:
+  frozen_model_a_older_recipe:
+    status: "QUARANTINED_LEGACY_OLDER_RECIPE"
+    note: "Retained read-only for historical parity; superseded for primary inference by unified EXP-031 W100 recipe (DEC-044/DEC-046)."
+  exp019_h_a_verdict_erratum:
+    status: "ERRATUM_APPLIED"
+    note: "Verdict label reconciled from NOT SUPPORTED to INCONCLUSIVE under locked PREREG_EXP-019_H-A.md Section 6; numerical values (+1.0054 pp, CI [-0.17, +1.99], 1s p=0.00131) immutable."
+  exp033_distribution_stats:
+    status: "RECONCILED_ACTIVE"
+    note: "Created in aa70fc9 with N=46 for all rows; no superseded version exists in git history."

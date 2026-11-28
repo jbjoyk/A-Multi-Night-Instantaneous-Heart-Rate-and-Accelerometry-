@@ -148,14 +148,14 @@ Selected via nested grid search on `inner_val_subjects` evaluating Macro-F1 acro
 
 ### (v) W100 Backbone-Selection Check (EXP-031 Section 9 Rule Applied)
 Applying the pre-registered `PREREG_EXP-031_WIDTH_SWEEP.md` Section 9 rule with `W100` in place of frozen `Model A` across the eligible plain CNN-BiGRU widths satisfying the dynamic INT8 payload constraint (< 400 KiB):
-1. **Eligible Set:** `W050` (79,940 params), `W075` (118,440 params), `W100` (163,940 params), `P190` (190,940 params), `B` (200,420 params).
+1. **Eligible Set:** `W050` (43,108 params), `W075` (93,796 params), `W100` (163,940 params), `P190` (190,940 params), `B` (223,268 params) (`experiments/EXP-031/exp031_models.py:7-9`).
 2. **Identification of $m^*$:** Highest mean Macro-F1 across $N=47$ subjects is $m^* = \mathbf{W100}$ with $\overline{\text{F1}}_{m^*} = 66.6780\%$ (ties go to fewer parameters).
 3. **Selection Rule Evaluation:** Test smallest width $m$ satisfying $\overline{\text{F1}}_{m^*} - \overline{\text{F1}}_m \le \text{SE}_{\text{boot}}$, where $\text{SE}_{\text{boot}} = \text{SD}_{\text{boot}}(\overline{\text{F1}}_{m^*} - \overline{\text{F1}}_m)$ over 10,000 participant-level bootstrap resamples (`seed=42`):
-   - `W050` (79,940 params): Mean = 65.6104%, $\text{Gap} = +1.0675\text{ pp}$, $\text{SE}_{\text{boot}} = 0.3403\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **False**
-   - `W075` (118,440 params): Mean = 66.2602%, $\text{Gap} = +0.4177\text{ pp}$, $\text{SE}_{\text{boot}} = 0.2215\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **False**
+   - `W050` (43,108 params): Mean = 65.6104%, $\text{Gap} = +1.0675\text{ pp}$, $\text{SE}_{\text{boot}} = 0.3403\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **False**
+   - `W075` (93,796 params): Mean = 66.2602%, $\text{Gap} = +0.4177\text{ pp}$, $\text{SE}_{\text{boot}} = 0.2215\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **False**
    - `W100` (163,940 params): Mean = 66.6780%, $\text{Gap} = +0.0000\text{ pp}$, $\text{SE}_{\text{boot}} = 0.0000\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **True**
    - `P190` (190,940 params): Mean = 66.5952%, $\text{Gap} = +0.0827\text{ pp}$, $\text{SE}_{\text{boot}} = 0.1952\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **True**
-   - `B` (200,420 params): Mean = 66.6072%, $\text{Gap} = +0.0707\text{ pp}$, $\text{SE}_{\text{boot}} = 0.1653\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **True**
+   - `B` (223,268 params): Mean = 66.6072%, $\text{Gap} = +0.0707\text{ pp}$, $\text{SE}_{\text{boot}} = 0.1653\text{ pp}$ $\rightarrow$ $\text{Gap} \le \text{SE}_{\text{boot}}$: **True**
 4. **Outcome:** The smallest eligible plain width within 1 $\text{SE}_{\text{boot}}$ of $m^*$ is **`W100`**. The Section 9 rule strictly selects `W100`.
 
 ### (vi) Confirmatory Family Holm-Bonferroni Adjustment
